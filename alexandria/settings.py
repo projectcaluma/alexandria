@@ -55,9 +55,7 @@ DATABASES = {
         ),
         "NAME": env.str("DATABASE_NAME", default="alexandria"),
         "USER": env.str("DATABASE_USER", default="alexandria"),
-        "PASSWORD": env.str(
-            "DATABASE_PASSWORD", default=default("alexandria")
-        ),
+        "PASSWORD": env.str("DATABASE_PASSWORD", default=default("alexandria")),
         "HOST": env.str("DATABASE_HOST", default="localhost"),
         "PORT": env.str("DATABASE_PORT", default=""),
         "OPTIONS": env.dict("DATABASE_OPTIONS", default={}),
