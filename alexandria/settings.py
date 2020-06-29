@@ -1,4 +1,3 @@
-import datetime
 import os
 import re
 
@@ -103,9 +102,6 @@ REST_FRAMEWORK = {
         "rest_framework.renderers.JSONRenderer",
     ),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
-    "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
-    ),
     "DEFAULT_METADATA_CLASS": "rest_framework_json_api.metadata.JSONAPIMetadata",
     "DEFAULT_FILTER_BACKENDS": (
         "rest_framework_json_api.filters.QueryParameterValidationFilter",
@@ -124,11 +120,6 @@ REST_FRAMEWORK = {
 JSON_API_FORMAT_FIELD_NAMES = "dasherize"
 JSON_API_FORMAT_TYPES = "dasherize"
 JSON_API_PLURALIZE_TYPES = True
-
-SIMPLE_AUTH = {
-    "ACCESS_TOKEN_LIFETIME": datetime.timedelta(days=2),
-    "REFRESH_TOKEN_LIFETIME": datetime.timedelta(days=7),
-}
 
 
 def parse_admins(admins):
