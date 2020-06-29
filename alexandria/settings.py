@@ -35,6 +35,9 @@ INSTALLED_APPS = [
     "alexandria.core.apps.DefaultConfig",
 ]
 
+if ENV == "dev":
+    INSTALLED_APPS.append("django_extensions")
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.middleware.common.CommonMiddleware",
