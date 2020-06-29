@@ -1,8 +1,9 @@
-FROM python:3.8
+FROM python:3.6.10-slim-buster@sha256:cf53095d28a6c1af7636357a4f1c87d56fd30a86694ab9c028737d2150eb331e
 
 WORKDIR /app
 
-RUN wget -q https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh -P /usr/local/bin \
+RUN apt-get update && apt-get install -y --no-install-recommends libpq-dev wget build-essential \
+&& wget -q https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh -P /usr/local/bin \
 && chmod +x /usr/local/bin/wait-for-it.sh \
 && mkdir -p /app \
 && useradd -u 901 -r alexandria --create-home \
@@ -23,8 +24,8 @@ ENV DJANGO_SETTINGS_MODULE alexandria.settings
 ENV APP_HOME=/app
 ENV UWSGI_INI /app/uwsgi.ini
 
-ARG REQUIREMENTS=requirements.txt
-COPY requirements.txt requirements-dev.txt $APP_HOME/
+ARG REQUIREMENTS=requirements-prod.txt
+COPY requirements-base.txt requirements-prod.txt requirements-dev.txt $APP_HOME/
 RUN pip install --upgrade --no-cache-dir --requirement $REQUIREMENTS --disable-pip-version-check
 
 USER alexandria

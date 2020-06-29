@@ -67,5 +67,6 @@ First create a virtualenv with the tool of your choice before running below comm
 ```bash
 pip install pre-commit
 pip install -r requiements-dev.txt -U
-pre-commit install
+pre-commit install --hook=pre-commit
+pre-commit install --hook=commit-msg
 ```
