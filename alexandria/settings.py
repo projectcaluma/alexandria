@@ -2,6 +2,7 @@ import os
 import re
 
 import environ
+from django.conf import global_settings
 
 env = environ.Env()
 django_root = environ.Path(__file__) - 2
@@ -31,6 +32,7 @@ INSTALLED_APPS = [
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.postgres",
+    "localized_fields",
     "alexandria.core.apps.DefaultConfig",
 ]
 
@@ -52,9 +54,7 @@ WSGI_APPLICATION = "alexandria.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": env.str(
-            "DATABASE_ENGINE", default="django.db.backends.postgresql_psycopg2"
-        ),
+        "ENGINE": "psqlextra.backend",
         "NAME": env.str("DATABASE_NAME", default="alexandria"),
         "USER": env.str("DATABASE_USER", default="alexandria"),
         "PASSWORD": env.str("DATABASE_PASSWORD", default=default("alexandria")),
@@ -80,13 +80,22 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
-LANGUAGE_CODE = env.str("LANGUAGE_CODE", "en-us")
+
+def parse_languages(languages):
+    return [(language, language) for language in languages]
+
+
+LANGUAGE_CODE = env.str("LANGUAGE_CODE", "en")
+LANGUAGES = (
+    parse_languages(env.list("LANGUAGES", default=["en"])) or global_settings.LANGUAGES
+)
+
 TIME_ZONE = env.str("TIME_ZONE", "UTC")
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-AUTH_USER_MODEL = "core.User"
+# AUTH_USER_MODEL = "core.User"
 
 REST_FRAMEWORK = {
     "EXCEPTION_HANDLER": "rest_framework_json_api.exceptions.exception_handler",
