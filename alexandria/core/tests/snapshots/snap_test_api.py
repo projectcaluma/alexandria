@@ -8,9 +8,9 @@ snapshots = Snapshot()
 
 snapshots["test_api_list[DocumentViewSet] 1"] = {
     "queries": [
-        'SELECT "core_document"."created_at", "core_document"."created_by_user", "core_document"."created_by_group", "core_document"."meta", "core_document"."id", "core_document"."name", "core_document"."title", "core_document"."description", "core_document"."category_id" FROM "core_document"',
-        'SELECT "core_category"."created_at", "core_category"."created_by_user", "core_category"."created_by_group", "core_category"."meta", "core_category"."slug", "core_category"."name", "core_category"."description" FROM "core_category" WHERE "core_category"."slug" IN (NULL)',
-        'SELECT ("core_document_tags"."document_id") AS "_prefetch_related_val_document_id", "core_tag"."created_at", "core_tag"."created_by_user", "core_tag"."created_by_group", "core_tag"."meta", "core_tag"."slug", "core_tag"."name", "core_tag"."description" FROM "core_tag" INNER JOIN "core_document_tags" ON ("core_tag"."slug" = "core_document_tags"."tag_id") WHERE "core_document_tags"."document_id" IN (\'9336ebf2-5087-d91c-818e-e6e9ec29f8c1\'::uuid, \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid, \'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad\'::uuid)',
+        'SELECT "alexandria_core_document"."created_at", "alexandria_core_document"."created_by_user", "alexandria_core_document"."created_by_group", "alexandria_core_document"."meta", "alexandria_core_document"."id", "alexandria_core_document"."name", "alexandria_core_document"."title", "alexandria_core_document"."description", "alexandria_core_document"."category_id" FROM "alexandria_core_document"',
+        'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."meta", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description" FROM "alexandria_core_category" WHERE "alexandria_core_category"."slug" IN (NULL)',
+        'SELECT ("alexandria_core_document_tags"."document_id") AS "_prefetch_related_val_document_id", "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."meta", "alexandria_core_tag"."slug", "alexandria_core_tag"."name", "alexandria_core_tag"."description" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."slug" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" IN (\'9336ebf2-5087-d91c-818e-e6e9ec29f8c1\'::uuid, \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid, \'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad\'::uuid)',
     ],
     "request": {
         "CONTENT_TYPE": "application/octet-stream",
@@ -115,7 +115,7 @@ Risk against capital factor. Product trade for brother weight.""",
 
 snapshots["test_api_list[CategoryViewSet] 1"] = {
     "queries": [
-        'SELECT "core_category"."created_at", "core_category"."created_by_user", "core_category"."created_by_group", "core_category"."meta", "core_category"."slug", "core_category"."name", "core_category"."description" FROM "core_category"'
+        'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."meta", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description" FROM "alexandria_core_category"'
     ],
     "request": {
         "CONTENT_TYPE": "application/octet-stream",
@@ -181,7 +181,7 @@ snapshots["test_api_list[CategoryViewSet] 1"] = {
 
 snapshots["test_api_list[TagViewSet] 1"] = {
     "queries": [
-        'SELECT "core_tag"."created_at", "core_tag"."created_by_user", "core_tag"."created_by_group", "core_tag"."meta", "core_tag"."slug", "core_tag"."name", "core_tag"."description" FROM "core_tag"'
+        'SELECT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."meta", "alexandria_core_tag"."slug", "alexandria_core_tag"."name", "alexandria_core_tag"."description" FROM "alexandria_core_tag"'
     ],
     "request": {
         "CONTENT_TYPE": "application/octet-stream",
@@ -247,9 +247,9 @@ snapshots["test_api_list[TagViewSet] 1"] = {
 
 snapshots["test_api_detail[DocumentViewSet] 1"] = {
     "queries": [
-        'SELECT "core_document"."created_at", "core_document"."created_by_user", "core_document"."created_by_group", "core_document"."meta", "core_document"."id", "core_document"."name", "core_document"."title", "core_document"."description", "core_document"."category_id" FROM "core_document" WHERE "core_document"."id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid',
-        'SELECT "core_category"."created_at", "core_category"."created_by_user", "core_category"."created_by_group", "core_category"."meta", "core_category"."slug", "core_category"."name", "core_category"."description" FROM "core_category" WHERE "core_category"."slug" IN (NULL)',
-        'SELECT ("core_document_tags"."document_id") AS "_prefetch_related_val_document_id", "core_tag"."created_at", "core_tag"."created_by_user", "core_tag"."created_by_group", "core_tag"."meta", "core_tag"."slug", "core_tag"."name", "core_tag"."description" FROM "core_tag" INNER JOIN "core_document_tags" ON ("core_tag"."slug" = "core_document_tags"."tag_id") WHERE "core_document_tags"."document_id" IN (\'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid)',
+        'SELECT "alexandria_core_document"."created_at", "alexandria_core_document"."created_by_user", "alexandria_core_document"."created_by_group", "alexandria_core_document"."meta", "alexandria_core_document"."id", "alexandria_core_document"."name", "alexandria_core_document"."title", "alexandria_core_document"."description", "alexandria_core_document"."category_id" FROM "alexandria_core_document" WHERE "alexandria_core_document"."id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid',
+        'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."meta", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description" FROM "alexandria_core_category" WHERE "alexandria_core_category"."slug" IN (NULL)',
+        'SELECT ("alexandria_core_document_tags"."document_id") AS "_prefetch_related_val_document_id", "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."meta", "alexandria_core_tag"."slug", "alexandria_core_tag"."name", "alexandria_core_tag"."description" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."slug" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" IN (\'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid)',
     ],
     "request": {
         "CONTENT_TYPE": "application/octet-stream",
@@ -308,7 +308,7 @@ Argue move appear catch toward help wind. Material minute ago get.""",
 
 snapshots["test_api_detail[CategoryViewSet] 1"] = {
     "queries": [
-        'SELECT "core_category"."created_at", "core_category"."created_by_user", "core_category"."created_by_group", "core_category"."meta", "core_category"."slug", "core_category"."name", "core_category"."description" FROM "core_category" WHERE "core_category"."slug" = \'mrs-shake-recent\''
+        'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."meta", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description" FROM "alexandria_core_category" WHERE "alexandria_core_category"."slug" = \'mrs-shake-recent\''
     ],
     "request": {
         "CONTENT_TYPE": "application/octet-stream",
@@ -340,7 +340,7 @@ snapshots["test_api_detail[CategoryViewSet] 1"] = {
 
 snapshots["test_api_detail[TagViewSet] 1"] = {
     "queries": [
-        'SELECT "core_tag"."created_at", "core_tag"."created_by_user", "core_tag"."created_by_group", "core_tag"."meta", "core_tag"."slug", "core_tag"."name", "core_tag"."description" FROM "core_tag" WHERE "core_tag"."slug" = \'mrs-shake-recent\''
+        'SELECT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."meta", "alexandria_core_tag"."slug", "alexandria_core_tag"."name", "alexandria_core_tag"."description" FROM "alexandria_core_tag" WHERE "alexandria_core_tag"."slug" = \'mrs-shake-recent\''
     ],
     "request": {
         "CONTENT_TYPE": "application/octet-stream",
@@ -372,13 +372,13 @@ snapshots["test_api_detail[TagViewSet] 1"] = {
 
 snapshots["test_api_create[DocumentViewSet] 1"] = {
     "queries": [
-        'SELECT "core_tag"."created_at", "core_tag"."created_by_user", "core_tag"."created_by_group", "core_tag"."meta", "core_tag"."slug", "core_tag"."name", "core_tag"."description" FROM "core_tag" WHERE "core_tag"."slug" = \'industry-call\'',
-        """INSERT INTO "core_document" ("created_at", "created_by_user", "created_by_group", "meta", "id", "name", "title", "description", "category_id") VALUES (\'2017-05-21T00:00:00+00:00\'::timestamptz, \'admin\', NULL, \'{}\', \'9336ebf2-5087-d91c-818e-e6e9ec29f8c1\'::uuid, \'Pamela Horton\', hstore(ARRAY[\'en\',\'de\',\'fr\'], ARRAY[\'David Romero\',\'\',\'\']), hstore(ARRAY[\'en\',\'de\',\'fr\'], ARRAY[\'Morning option program interesting station. First where during teach country talk across.
+        'SELECT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."meta", "alexandria_core_tag"."slug", "alexandria_core_tag"."name", "alexandria_core_tag"."description" FROM "alexandria_core_tag" WHERE "alexandria_core_tag"."slug" = \'industry-call\'',
+        """INSERT INTO "alexandria_core_document" ("created_at", "created_by_user", "created_by_group", "meta", "id", "name", "title", "description", "category_id") VALUES (\'2017-05-21T00:00:00+00:00\'::timestamptz, \'admin\', NULL, \'{}\', \'9336ebf2-5087-d91c-818e-e6e9ec29f8c1\'::uuid, \'Pamela Horton\', hstore(ARRAY[\'en\',\'de\',\'fr\'], ARRAY[\'David Romero\',\'\',\'\']), hstore(ARRAY[\'en\',\'de\',\'fr\'], ARRAY[\'Morning option program interesting station. First where during teach country talk across.
 Argue move appear catch toward help wind. Material minute ago get.','','']), NULL)""",
-        'SELECT "core_tag"."slug" FROM "core_tag" INNER JOIN "core_document_tags" ON ("core_tag"."slug" = "core_document_tags"."tag_id") WHERE "core_document_tags"."document_id" = \'9336ebf2-5087-d91c-818e-e6e9ec29f8c1\'::uuid',
-        'SELECT "core_document_tags"."tag_id" FROM "core_document_tags" WHERE ("core_document_tags"."document_id" = \'9336ebf2-5087-d91c-818e-e6e9ec29f8c1\'::uuid AND "core_document_tags"."tag_id" IN (\'industry-call\'))',
-        'INSERT INTO "core_document_tags" ("document_id", "tag_id") VALUES (\'9336ebf2-5087-d91c-818e-e6e9ec29f8c1\'::uuid, \'industry-call\') RETURNING "core_document_tags"."id"',
-        'SELECT "core_tag"."created_at", "core_tag"."created_by_user", "core_tag"."created_by_group", "core_tag"."meta", "core_tag"."slug", "core_tag"."name", "core_tag"."description" FROM "core_tag" INNER JOIN "core_document_tags" ON ("core_tag"."slug" = "core_document_tags"."tag_id") WHERE "core_document_tags"."document_id" = \'9336ebf2-5087-d91c-818e-e6e9ec29f8c1\'::uuid',
+        'SELECT "alexandria_core_tag"."slug" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."slug" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" = \'9336ebf2-5087-d91c-818e-e6e9ec29f8c1\'::uuid',
+        'SELECT "alexandria_core_document_tags"."tag_id" FROM "alexandria_core_document_tags" WHERE ("alexandria_core_document_tags"."document_id" = \'9336ebf2-5087-d91c-818e-e6e9ec29f8c1\'::uuid AND "alexandria_core_document_tags"."tag_id" IN (\'industry-call\'))',
+        'INSERT INTO "alexandria_core_document_tags" ("document_id", "tag_id") VALUES (\'9336ebf2-5087-d91c-818e-e6e9ec29f8c1\'::uuid, \'industry-call\') RETURNING "alexandria_core_document_tags"."id"',
+        'SELECT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."meta", "alexandria_core_tag"."slug", "alexandria_core_tag"."name", "alexandria_core_tag"."description" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."slug" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" = \'9336ebf2-5087-d91c-818e-e6e9ec29f8c1\'::uuid',
     ],
     "request": {
         "CONTENT_LENGTH": "564",
@@ -420,7 +420,7 @@ Argue move appear catch toward help wind. Material minute ago get.""",
 
 snapshots["test_api_create[CategoryViewSet] 1"] = {
     "queries": [
-        "INSERT INTO \"core_category\" (\"created_at\", \"created_by_user\", \"created_by_group\", \"meta\", \"slug\", \"name\", \"description\") VALUES ('2017-05-21T00:00:00+00:00'::timestamptz, 'admin', NULL, '{}', '', hstore(ARRAY['en','de','fr'], ARRAY['Jordan Mccarthy','','']), hstore(ARRAY['en','de','fr'], ARRAY['Bit among again across environment long line. Team suggest traditional boy above.','','']))"
+        "INSERT INTO \"alexandria_core_category\" (\"created_at\", \"created_by_user\", \"created_by_group\", \"meta\", \"slug\", \"name\", \"description\") VALUES ('2017-05-21T00:00:00+00:00'::timestamptz, 'admin', NULL, '{}', '', hstore(ARRAY['en','de','fr'], ARRAY['Jordan Mccarthy','','']), hstore(ARRAY['en','de','fr'], ARRAY['Bit among again across environment long line. Team suggest traditional boy above.','','']))"
     ],
     "request": {
         "CONTENT_LENGTH": "331",
@@ -453,7 +453,7 @@ snapshots["test_api_create[CategoryViewSet] 1"] = {
 
 snapshots["test_api_create[TagViewSet] 1"] = {
     "queries": [
-        "INSERT INTO \"core_tag\" (\"created_at\", \"created_by_user\", \"created_by_group\", \"meta\", \"slug\", \"name\", \"description\") VALUES ('2017-05-21T00:00:00+00:00'::timestamptz, 'admin', NULL, '{}', '', hstore(ARRAY['en','de','fr'], ARRAY['Jordan Mccarthy','','']), hstore(ARRAY['en','de','fr'], ARRAY['Bit among again across environment long line. Team suggest traditional boy above.','','']))"
+        "INSERT INTO \"alexandria_core_tag\" (\"created_at\", \"created_by_user\", \"created_by_group\", \"meta\", \"slug\", \"name\", \"description\") VALUES ('2017-05-21T00:00:00+00:00'::timestamptz, 'admin', NULL, '{}', '', hstore(ARRAY['en','de','fr'], ARRAY['Jordan Mccarthy','','']), hstore(ARRAY['en','de','fr'], ARRAY['Bit among again across environment long line. Team suggest traditional boy above.','','']))"
     ],
     "request": {
         "CONTENT_LENGTH": "325",
@@ -486,12 +486,12 @@ snapshots["test_api_create[TagViewSet] 1"] = {
 
 snapshots["test_api_patch[DocumentViewSet] 1"] = {
     "queries": [
-        'SELECT "core_document"."created_at", "core_document"."created_by_user", "core_document"."created_by_group", "core_document"."meta", "core_document"."id", "core_document"."name", "core_document"."title", "core_document"."description", "core_document"."category_id" FROM "core_document" WHERE "core_document"."id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid',
-        'SELECT "core_tag"."created_at", "core_tag"."created_by_user", "core_tag"."created_by_group", "core_tag"."meta", "core_tag"."slug", "core_tag"."name", "core_tag"."description" FROM "core_tag" WHERE "core_tag"."slug" = \'industry-call\'',
-        """UPDATE "core_document" SET "created_at" = \'2017-05-21T00:00:00+00:00\'::timestamptz, "created_by_user" = \'admin\', "created_by_group" = NULL, "meta" = \'{}\', "name" = \'Pamela Horton\', "title" = hstore(ARRAY[\'en\',\'de\',\'fr\'], ARRAY[\'David Romero\',\'\',\'\']), "description" = hstore(ARRAY[\'en\',\'de\',\'fr\'], ARRAY[\'Morning option program interesting station. First where during teach country talk across.
-Argue move appear catch toward help wind. Material minute ago get.\',\'\',\'\']), "category_id" = NULL WHERE "core_document"."id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid""",
-        'SELECT "core_tag"."slug" FROM "core_tag" INNER JOIN "core_document_tags" ON ("core_tag"."slug" = "core_document_tags"."tag_id") WHERE "core_document_tags"."document_id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid',
-        'SELECT "core_tag"."created_at", "core_tag"."created_by_user", "core_tag"."created_by_group", "core_tag"."meta", "core_tag"."slug", "core_tag"."name", "core_tag"."description" FROM "core_tag" INNER JOIN "core_document_tags" ON ("core_tag"."slug" = "core_document_tags"."tag_id") WHERE "core_document_tags"."document_id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid',
+        'SELECT "alexandria_core_document"."created_at", "alexandria_core_document"."created_by_user", "alexandria_core_document"."created_by_group", "alexandria_core_document"."meta", "alexandria_core_document"."id", "alexandria_core_document"."name", "alexandria_core_document"."title", "alexandria_core_document"."description", "alexandria_core_document"."category_id" FROM "alexandria_core_document" WHERE "alexandria_core_document"."id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid',
+        'SELECT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."meta", "alexandria_core_tag"."slug", "alexandria_core_tag"."name", "alexandria_core_tag"."description" FROM "alexandria_core_tag" WHERE "alexandria_core_tag"."slug" = \'industry-call\'',
+        """UPDATE "alexandria_core_document" SET "created_at" = \'2017-05-21T00:00:00+00:00\'::timestamptz, "created_by_user" = \'admin\', "created_by_group" = NULL, "meta" = \'{}\', "name" = \'Pamela Horton\', "title" = hstore(ARRAY[\'en\',\'de\',\'fr\'], ARRAY[\'David Romero\',\'\',\'\']), "description" = hstore(ARRAY[\'en\',\'de\',\'fr\'], ARRAY[\'Morning option program interesting station. First where during teach country talk across.
+Argue move appear catch toward help wind. Material minute ago get.\',\'\',\'\']), "category_id" = NULL WHERE "alexandria_core_document"."id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid""",
+        'SELECT "alexandria_core_tag"."slug" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."slug" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid',
+        'SELECT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."meta", "alexandria_core_tag"."slug", "alexandria_core_tag"."name", "alexandria_core_tag"."description" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."slug" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid',
     ],
     "request": {
         "CONTENT_LENGTH": "564",
@@ -533,8 +533,8 @@ Argue move appear catch toward help wind. Material minute ago get.""",
 
 snapshots["test_api_patch[CategoryViewSet] 1"] = {
     "queries": [
-        'SELECT "core_category"."created_at", "core_category"."created_by_user", "core_category"."created_by_group", "core_category"."meta", "core_category"."slug", "core_category"."name", "core_category"."description" FROM "core_category" WHERE "core_category"."slug" = \'mrs-shake-recent\'',
-        "UPDATE \"core_category\" SET \"created_at\" = '2017-05-21T00:00:00+00:00'::timestamptz, \"created_by_user\" = 'admin', \"created_by_group\" = NULL, \"meta\" = '{}', \"name\" = hstore(ARRAY['en','de','fr'], ARRAY['Jordan Mccarthy','','']), \"description\" = hstore(ARRAY['en','de','fr'], ARRAY['Bit among again across environment long line. Team suggest traditional boy above.','','']) WHERE \"core_category\".\"slug\" = 'mrs-shake-recent'",
+        'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."meta", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description" FROM "alexandria_core_category" WHERE "alexandria_core_category"."slug" = \'mrs-shake-recent\'',
+        "UPDATE \"alexandria_core_category\" SET \"created_at\" = '2017-05-21T00:00:00+00:00'::timestamptz, \"created_by_user\" = 'admin', \"created_by_group\" = NULL, \"meta\" = '{}', \"name\" = hstore(ARRAY['en','de','fr'], ARRAY['Jordan Mccarthy','','']), \"description\" = hstore(ARRAY['en','de','fr'], ARRAY['Bit among again across environment long line. Team suggest traditional boy above.','','']) WHERE \"alexandria_core_category\".\"slug\" = 'mrs-shake-recent'",
     ],
     "request": {
         "CONTENT_LENGTH": "331",
@@ -567,8 +567,8 @@ snapshots["test_api_patch[CategoryViewSet] 1"] = {
 
 snapshots["test_api_patch[TagViewSet] 1"] = {
     "queries": [
-        'SELECT "core_tag"."created_at", "core_tag"."created_by_user", "core_tag"."created_by_group", "core_tag"."meta", "core_tag"."slug", "core_tag"."name", "core_tag"."description" FROM "core_tag" WHERE "core_tag"."slug" = \'mrs-shake-recent\'',
-        "UPDATE \"core_tag\" SET \"created_at\" = '2017-05-21T00:00:00+00:00'::timestamptz, \"created_by_user\" = 'admin', \"created_by_group\" = NULL, \"meta\" = '{}', \"name\" = hstore(ARRAY['en','de','fr'], ARRAY['Jordan Mccarthy','','']), \"description\" = hstore(ARRAY['en','de','fr'], ARRAY['Bit among again across environment long line. Team suggest traditional boy above.','','']) WHERE \"core_tag\".\"slug\" = 'mrs-shake-recent'",
+        'SELECT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."meta", "alexandria_core_tag"."slug", "alexandria_core_tag"."name", "alexandria_core_tag"."description" FROM "alexandria_core_tag" WHERE "alexandria_core_tag"."slug" = \'mrs-shake-recent\'',
+        "UPDATE \"alexandria_core_tag\" SET \"created_at\" = '2017-05-21T00:00:00+00:00'::timestamptz, \"created_by_user\" = 'admin', \"created_by_group\" = NULL, \"meta\" = '{}', \"name\" = hstore(ARRAY['en','de','fr'], ARRAY['Jordan Mccarthy','','']), \"description\" = hstore(ARRAY['en','de','fr'], ARRAY['Bit among again across environment long line. Team suggest traditional boy above.','','']) WHERE \"alexandria_core_tag\".\"slug\" = 'mrs-shake-recent'",
     ],
     "request": {
         "CONTENT_LENGTH": "325",
@@ -601,10 +601,10 @@ snapshots["test_api_patch[TagViewSet] 1"] = {
 
 snapshots["test_api_destroy[DocumentViewSet] 1"] = {
     "queries": [
-        'SELECT "core_document"."created_at", "core_document"."created_by_user", "core_document"."created_by_group", "core_document"."meta", "core_document"."id", "core_document"."name", "core_document"."title", "core_document"."description", "core_document"."category_id" FROM "core_document" WHERE "core_document"."id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid',
-        'SELECT "core_document_tags"."id", "core_document_tags"."document_id", "core_document_tags"."tag_id" FROM "core_document_tags" WHERE "core_document_tags"."document_id" IN (\'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid)',
-        'DELETE FROM "core_document_tags" WHERE "core_document_tags"."id" IN (1)',
-        'DELETE FROM "core_document" WHERE "core_document"."id" IN (\'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid)',
+        'SELECT "alexandria_core_document"."created_at", "alexandria_core_document"."created_by_user", "alexandria_core_document"."created_by_group", "alexandria_core_document"."meta", "alexandria_core_document"."id", "alexandria_core_document"."name", "alexandria_core_document"."title", "alexandria_core_document"."description", "alexandria_core_document"."category_id" FROM "alexandria_core_document" WHERE "alexandria_core_document"."id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid',
+        'SELECT "alexandria_core_document_tags"."id", "alexandria_core_document_tags"."document_id", "alexandria_core_document_tags"."tag_id" FROM "alexandria_core_document_tags" WHERE "alexandria_core_document_tags"."document_id" IN (\'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid)',
+        'DELETE FROM "alexandria_core_document_tags" WHERE "alexandria_core_document_tags"."id" IN (1)',
+        'DELETE FROM "alexandria_core_document" WHERE "alexandria_core_document"."id" IN (\'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid)',
     ],
     "request": {
         "PATH_INFO": "/api/v1/documents/9dd4e461-268c-8034-f5c8-564e155c67a6",
@@ -617,9 +617,9 @@ snapshots["test_api_destroy[DocumentViewSet] 1"] = {
 
 snapshots["test_api_destroy[CategoryViewSet] 1"] = {
     "queries": [
-        'SELECT "core_category"."created_at", "core_category"."created_by_user", "core_category"."created_by_group", "core_category"."meta", "core_category"."slug", "core_category"."name", "core_category"."description" FROM "core_category" WHERE "core_category"."slug" = \'mrs-shake-recent\'',
-        'SELECT "core_document"."created_at", "core_document"."created_by_user", "core_document"."created_by_group", "core_document"."meta", "core_document"."id", "core_document"."name", "core_document"."title", "core_document"."description", "core_document"."category_id" FROM "core_document" WHERE "core_document"."category_id" IN (\'mrs-shake-recent\')',
-        'DELETE FROM "core_category" WHERE "core_category"."slug" IN (\'mrs-shake-recent\')',
+        'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."meta", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description" FROM "alexandria_core_category" WHERE "alexandria_core_category"."slug" = \'mrs-shake-recent\'',
+        'SELECT "alexandria_core_document"."created_at", "alexandria_core_document"."created_by_user", "alexandria_core_document"."created_by_group", "alexandria_core_document"."meta", "alexandria_core_document"."id", "alexandria_core_document"."name", "alexandria_core_document"."title", "alexandria_core_document"."description", "alexandria_core_document"."category_id" FROM "alexandria_core_document" WHERE "alexandria_core_document"."category_id" IN (\'mrs-shake-recent\')',
+        'DELETE FROM "alexandria_core_category" WHERE "alexandria_core_category"."slug" IN (\'mrs-shake-recent\')',
     ],
     "request": {
         "PATH_INFO": "/api/v1/categories/mrs-shake-recent",
@@ -632,9 +632,9 @@ snapshots["test_api_destroy[CategoryViewSet] 1"] = {
 
 snapshots["test_api_destroy[TagViewSet] 1"] = {
     "queries": [
-        'SELECT "core_tag"."created_at", "core_tag"."created_by_user", "core_tag"."created_by_group", "core_tag"."meta", "core_tag"."slug", "core_tag"."name", "core_tag"."description" FROM "core_tag" WHERE "core_tag"."slug" = \'mrs-shake-recent\'',
-        'SELECT "core_document_tags"."id", "core_document_tags"."document_id", "core_document_tags"."tag_id" FROM "core_document_tags" WHERE "core_document_tags"."tag_id" IN (\'mrs-shake-recent\')',
-        'DELETE FROM "core_tag" WHERE "core_tag"."slug" IN (\'mrs-shake-recent\')',
+        'SELECT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."meta", "alexandria_core_tag"."slug", "alexandria_core_tag"."name", "alexandria_core_tag"."description" FROM "alexandria_core_tag" WHERE "alexandria_core_tag"."slug" = \'mrs-shake-recent\'',
+        'SELECT "alexandria_core_document_tags"."id", "alexandria_core_document_tags"."document_id", "alexandria_core_document_tags"."tag_id" FROM "alexandria_core_document_tags" WHERE "alexandria_core_document_tags"."tag_id" IN (\'mrs-shake-recent\')',
+        'DELETE FROM "alexandria_core_tag" WHERE "alexandria_core_tag"."slug" IN (\'mrs-shake-recent\')',
     ],
     "request": {
         "PATH_INFO": "/api/v1/tags/mrs-shake-recent",
