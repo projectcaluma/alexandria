@@ -1,14 +1,39 @@
-from factory import Faker
+from factory import Faker, SubFactory
 from factory.django import DjangoModelFactory
 
 from . import models
 
 
-class UserFactory(DjangoModelFactory):
-    first_name = Faker("first_name")
-    last_name = Faker("last_name")
-    username = Faker("uuid")
-    email = Faker("safe_email")
+class CategoryFactory(DjangoModelFactory):
+    slug = Faker("slug")
+    name = Faker("name")
+    description = Faker("text")
 
     class Meta:
-        model = models.User
+        model = models.Category
+
+
+class TagFactory(DjangoModelFactory):
+    slug = Faker("slug")
+    name = Faker("name")
+    description = Faker("text")
+
+    class Meta:
+        model = models.Tag
+
+
+class DocumentFactory(DjangoModelFactory):
+    name = Faker("name")
+    title = Faker("name")
+    description = Faker("text")
+
+    class Meta:
+        model = models.Document
+
+
+class DocumentTagsFactory(DjangoModelFactory):
+    document = SubFactory(DocumentFactory)
+    tag = SubFactory(TagFactory)
+
+    class Meta:
+        model = models.Document.tags.through

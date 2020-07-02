@@ -1,6 +1,7 @@
 django==2.2.13
 django-environ==0.4.5
 django-filter==2.3.0
+django-localized-fields==5.4.2
 djangorestframework==3.11.0
 djangorestframework-jsonapi==3.1.0
 uwsgi==2.0.19.1
