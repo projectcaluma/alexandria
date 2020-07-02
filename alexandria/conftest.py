@@ -7,6 +7,8 @@ from factory.base import FactoryMetaClass
 from pytest_factoryboy import register
 from rest_framework.test import APIClient
 
+from alexandria.oidc_auth.models import OIDCUser
+
 
 def register_module(module):
     for name, obj in inspect.getmembers(module):
@@ -18,6 +20,18 @@ def register_module(module):
 
 
 register_module(importlib.import_module(".core.factories", "alexandria"))
+
+
+@pytest.fixture
+def admin_groups():
+    return ["admin"]
+
+
+@pytest.fixture
+def admin_user(settings, admin_groups):
+    return OIDCUser(
+        "sometoken", {"sub": "admin", settings.OIDC_GROUPS_CLAIM: admin_groups}
+    )
 
 
 @pytest.fixture

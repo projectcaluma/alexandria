@@ -9,12 +9,23 @@ class BaseSerializer(serializers.ModelSerializer):
     def validate(self, *args, **kwargs):
         validated_data = super().validate(*args, **kwargs)
         user = self.context["request"].user
-        validated_data["created_by_user"] = user.username
-        # validated_data["created_by_group"] = user.group
+        validated_data["modified_by_user"] = user.username
+        validated_data["modified_by_group"] = user.group
+        if self.instance is not None:
+            validated_data["created_by_user"] = user.username
+            validated_data["created_by_group"] = user.group
         return validated_data
 
     class Meta:
-        fields = ("created_at", "created_by_user", "created_by_group", "meta")
+        fields = (
+            "created_at",
+            "created_by_user",
+            "created_by_group",
+            "modified_at",
+            "modified_by_user",
+            "modified_by_group",
+            "meta",
+        )
 
 
 class CategorySerializer(BaseSerializer):

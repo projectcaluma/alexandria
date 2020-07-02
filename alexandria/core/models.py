@@ -19,11 +19,18 @@ def make_uuid():
 
 
 class BaseModel(models.Model):
-    created_at = models.DateTimeField(auto_now=True, db_index=True)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     created_by_user = models.CharField(
         _("created by user"), max_length=150, blank=True, null=True
     )
     created_by_group = models.CharField(
+        _("created by group"), max_length=255, blank=True, null=True
+    )
+    modified_at = models.DateTimeField(auto_now=True, db_index=True)
+    modified_by_user = models.CharField(
+        _("created by user"), max_length=150, blank=True, null=True
+    )
+    modified_by_group = models.CharField(
         _("created by group"), max_length=255, blank=True, null=True
     )
     meta = JSONField(_("meta"), default=dict)
