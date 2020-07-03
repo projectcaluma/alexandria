@@ -112,6 +112,21 @@ OIDC_DRF_AUTH_BACKEND = (
 )
 
 
+# Storage
+MEDIA_STORAGE_SERVICE = env.str("MEDIA_STORAGE_SERVICE", default="minio")
+MINIO_STORAGE_ENDPOINT = env.str("MINIO_STORAGE_ENDPOINT", default="minio:9000")
+MINIO_STORAGE_ACCESS_KEY = env.str("MINIO_STORAGE_ACCESS_KEY", default="minio")
+MINIO_STORAGE_SECRET_KEY = env.str("MINIO_STORAGE_SECRET_KEY", default="minio123")
+MINIO_STORAGE_USE_HTTPS = env.str("MINIO_STORAGE_USE_HTTPS", default=False)
+MINIO_STORAGE_MEDIA_BUCKET_NAME = env.str(
+    "MINIO_STORAGE_MEDIA_BUCKET_NAME", default="alexandria-media"
+)
+MINIO_STORAGE_AUTO_CREATE_MEDIA_BUCKET = env.str(
+    "MINIO_STORAGE_AUTO_CREATE_MEDIA_BUCKET", default=True
+)
+MINIO_PRESIGNED_TTL_MINUTES = env.str("MINIO_PRESIGNED_TTL_MINUTES", default=15)
+
+
 REST_FRAMEWORK = {
     "EXCEPTION_HANDLER": "rest_framework_json_api.exceptions.exception_handler",
     "DEFAULT_PAGINATION_CLASS": "rest_framework_json_api.pagination.JsonApiPageNumberPagination",

@@ -5,6 +5,8 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from localized_fields.fields import LocalizedCharField, LocalizedTextField
 
+from .storage_clients import client
+
 
 def make_uuid():
     """Return a new random UUID value.
@@ -83,7 +85,6 @@ class Tag(SlugModel):
 
 
 class Document(UUIDModel):
-    name = models.CharField(_("document name"), max_length=255)
     title = LocalizedCharField(
         _("document title"), blank=True, null=True, required=False
     )
@@ -98,3 +99,29 @@ class Document(UUIDModel):
         related_name="documents",
     )
     tags = models.ManyToManyField(Tag, blank=True, related_name="documents")
+
+
+class File(UUIDModel):
+    name = models.CharField(_("file name"), max_length=255)
+    document = models.ForeignKey(
+        Document, on_delete=models.CASCADE, related_name="files"
+    )
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def delete(self, *args, **kwargs):
+        super().delete(*args, **kwargs)
+        client.remove_object(self.object_name)
+
+    @property
+    def object_name(self):
+        return f"{self.pk}_{self.name}"
+
+    @property
+    def upload_url(self):
+        return client.upload_url(self.object_name)
+
+    @property
+    def download_url(self):
+        return client.download_url(self.object_name)

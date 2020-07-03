@@ -1,9 +1,13 @@
 import importlib
 import inspect
+import time
 
 import pytest
+from django.conf import settings
 from django.core.cache import cache
 from factory.base import FactoryMetaClass
+from minio import Minio
+from minio.definitions import Object as MinioStatObject
 from pytest_factoryboy import register
 from rest_framework.test import APIClient
 
@@ -44,3 +48,32 @@ def admin_client(db, admin_user):
 @pytest.fixture(scope="function", autouse=True)
 def _autoclear_cache():
     cache.clear()
+
+
+@pytest.fixture
+def minio_mock(mocker):
+    def side_effect(bucket, object_name, expires):
+        return f"http://minio/download-url/{object_name}"
+
+    stat_response = MinioStatObject(
+        settings.MINIO_STORAGE_MEDIA_BUCKET_NAME,
+        "some-file.pdf",
+        time.struct_time((2019, 4, 5, 7, 0, 49, 4, 95, 0)),
+        "0c81da684e6aaef48e8f3113e5b8769b",
+        8200,
+        content_type="application/pdf",
+        is_dir=False,
+        metadata={"X-Amz-Meta-Testtag": "super_file"},
+    )
+    mocker.patch.object(Minio, "presigned_get_object")
+    mocker.patch.object(Minio, "presigned_put_object")
+    mocker.patch.object(Minio, "stat_object")
+    mocker.patch.object(Minio, "bucket_exists")
+    mocker.patch.object(Minio, "make_bucket")
+    mocker.patch.object(Minio, "remove_object")
+    mocker.patch.object(Minio, "copy_object")
+    Minio.presigned_get_object.side_effect = side_effect
+    Minio.presigned_put_object.return_value = "http://minio/upload-url"
+    Minio.stat_object.return_value = stat_response
+    Minio.bucket_exists.return_value = True
+    return Minio

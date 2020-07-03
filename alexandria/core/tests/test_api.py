@@ -12,7 +12,7 @@ from django.urls import reverse
 from rest_framework_json_api.renderers import JSONRenderer
 from rest_framework_json_api.utils import get_included_serializers
 
-from ..views import CategoryViewSet, DocumentViewSet, TagViewSet
+from ..views import CategoryViewSet, DocumentViewSet, FileViewSet, TagViewSet
 
 # @pytest.fixture(params=["admin_client", "authenticated_client"])
 # def api_client(db, request):
@@ -50,8 +50,9 @@ def deterministic_uuids(mocker):
 @pytest.fixture(
     params=[
         # add your viewset and expected queries run for generic api testing...
-        DocumentViewSet,
         CategoryViewSet,
+        DocumentViewSet,
+        FileViewSet,
         TagViewSet,
     ]
 )
@@ -137,7 +138,7 @@ def assert_response(response, query_context, snapshot, include_json=True):
 
 
 @pytest.mark.freeze_time("2017-05-21")
-def test_api_list(fixture, request, admin_client, snapshot, viewset):
+def test_api_list(fixture, request, admin_client, snapshot, viewset, minio_mock):
     url = reverse("{0}-list".format(viewset.base_name))
 
     # create more data for proper num queries check
@@ -151,7 +152,7 @@ def test_api_list(fixture, request, admin_client, snapshot, viewset):
 
 
 @pytest.mark.freeze_time("2017-05-21")
-def test_api_detail(fixture, admin_client, viewset, snapshot):
+def test_api_detail(fixture, admin_client, viewset, snapshot, minio_mock):
     url = reverse("{0}-detail".format(viewset.base_name), args=[fixture.pk])
 
     included = getattr(viewset.serializer_class, "included_serializers", {})
@@ -162,7 +163,7 @@ def test_api_detail(fixture, admin_client, viewset, snapshot):
 
 
 @pytest.mark.freeze_time("2017-05-21")
-def test_api_create(fixture, admin_client, viewset, snapshot):
+def test_api_create(fixture, admin_client, viewset, snapshot, minio_mock):
     url = reverse("{0}-list".format(viewset.base_name))
 
     serializer = viewset.serializer_class(fixture)
@@ -178,7 +179,7 @@ def test_api_create(fixture, admin_client, viewset, snapshot):
 
 
 @pytest.mark.freeze_time("2017-05-21")
-def test_api_patch(fixture, admin_client, viewset, snapshot):
+def test_api_patch(fixture, admin_client, viewset, snapshot, minio_mock):
     url = reverse("{0}-detail".format(viewset.base_name), args=[fixture.pk])
 
     serializer = viewset.serializer_class(fixture)
@@ -193,7 +194,7 @@ def test_api_patch(fixture, admin_client, viewset, snapshot):
 
 
 @pytest.mark.freeze_time("2017-05-21")
-def test_api_destroy(fixture, admin_client, snapshot, viewset):
+def test_api_destroy(fixture, admin_client, snapshot, viewset, minio_mock):
     url = reverse("{0}-detail".format(viewset.base_name), args=[fixture.pk])
 
     with CaptureQueriesContext(connection) as context:

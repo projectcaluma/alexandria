@@ -15,6 +15,7 @@ services:
       - "8000:8000"
     depends_on:
       - db
+      - minio
     environment:
       - DATABASE_HOST=db
       # following options are a must to configure on production system:
@@ -25,6 +26,17 @@ services:
       # https://docs.djangoproject.com/en/2.1/ref/settings/#password
       # same as postgres password above
       # - DATABASE_PASSWORD=
+  minio:
+    image: minio/minio:latest
+    volumes:
+      - minio_data:/data
+    ports:
+      - "9000:9000"
+    environment:
+      - MINIO_ACCESS_KEY=very
+      - MINIO_SECRET_KEY=secret
+    command: server data
 
 volumes:
   dbdata:
+  minio_data:

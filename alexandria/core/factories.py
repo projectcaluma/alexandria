@@ -23,12 +23,19 @@ class TagFactory(DjangoModelFactory):
 
 
 class DocumentFactory(DjangoModelFactory):
-    name = Faker("name")
     title = Faker("name")
     description = Faker("text")
 
     class Meta:
         model = models.Document
+
+
+class FileFactory(DjangoModelFactory):
+    name = Faker("name")
+    document = SubFactory(DocumentFactory)
+
+    class Meta:
+        model = models.File
 
 
 class DocumentTagsFactory(DjangoModelFactory):
