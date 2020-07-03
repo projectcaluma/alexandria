@@ -3,6 +3,7 @@ from rest_framework.viewsets import GenericViewSet
 from rest_framework_json_api import views
 
 from . import models, serializers
+from .filters import DocumentFilterSet
 
 
 class CategoryViewSet(views.ModelViewSet):
@@ -18,6 +19,7 @@ class TagViewSet(views.ModelViewSet):
 class DocumentViewSet(views.ModelViewSet):
     serializer_class = serializers.DocumentSerializer
     queryset = models.Document.objects.all()
+    filterset_class = DocumentFilterSet
 
 
 class FileViewSet(
