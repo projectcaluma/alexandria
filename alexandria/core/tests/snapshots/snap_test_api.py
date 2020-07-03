@@ -278,9 +278,7 @@ snapshots["test_api_detail[CategoryViewSet] 1"] = {
 }
 
 snapshots["test_api_create[CategoryViewSet] 1"] = {
-    "queries": [
-        "INSERT INTO \"alexandria_core_category\" (\"created_at\", \"created_by_user\", \"created_by_group\", \"modified_at\", \"modified_by_user\", \"modified_by_group\", \"meta\", \"slug\", \"name\", \"description\") VALUES ('2017-05-21T00:00:00+00:00'::timestamptz, NULL, NULL, '2017-05-21T00:00:00+00:00'::timestamptz, 'admin', 'admin', '{}', '', hstore(ARRAY['en','de','fr'], ARRAY['Jordan Mccarthy','','']), hstore(ARRAY['en','de','fr'], ARRAY['Bit among again across environment long line. Team suggest traditional boy above.','','']))"
-    ],
+    "queries": [],
     "request": {
         "CONTENT_LENGTH": "417",
         "CONTENT_TYPE": "application/vnd.api+json; charset=None",
@@ -290,27 +288,16 @@ snapshots["test_api_create[CategoryViewSet] 1"] = {
         "SERVER_PORT": "80",
     },
     "response": {
-        "data": {
-            "attributes": {
-                "created-at": "2017-05-21T00:00:00Z",
-                "created-by-group": None,
-                "created-by-user": None,
-                "description": {
-                    "de": "",
-                    "en": "Bit among again across environment long line. Team suggest traditional boy above.",
-                    "fr": "",
-                },
-                "meta": {},
-                "modified-at": "2017-05-21T00:00:00Z",
-                "modified-by-group": "admin",
-                "modified-by-user": "admin",
-                "name": {"de": "", "en": "Jordan Mccarthy", "fr": ""},
-            },
-            "id": "",
-            "type": "categories",
-        }
+        "errors": [
+            {
+                "code": "method_not_allowed",
+                "detail": 'Method "POST" not allowed.',
+                "source": {"pointer": "/data"},
+                "status": "405",
+            }
+        ]
     },
-    "status": 201,
+    "status": 405,
 }
 
 snapshots["test_api_destroy[FileViewSet] 1"] = {
@@ -559,10 +546,7 @@ snapshots["test_api_destroy[DocumentViewSet] 1"] = {
 }
 
 snapshots["test_api_patch[CategoryViewSet] 1"] = {
-    "queries": [
-        'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."meta", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description" FROM "alexandria_core_category" WHERE "alexandria_core_category"."slug" = \'mrs-shake-recent\'',
-        "UPDATE \"alexandria_core_category\" SET \"created_at\" = '2017-05-21T00:00:00+00:00'::timestamptz, \"created_by_user\" = 'admin', \"created_by_group\" = 'admin', \"modified_at\" = '2017-05-21T00:00:00+00:00'::timestamptz, \"modified_by_user\" = 'admin', \"modified_by_group\" = 'admin', \"meta\" = '{}', \"name\" = hstore(ARRAY['en','de','fr'], ARRAY['Jordan Mccarthy','','']), \"description\" = hstore(ARRAY['en','de','fr'], ARRAY['Bit among again across environment long line. Team suggest traditional boy above.','','']) WHERE \"alexandria_core_category\".\"slug\" = 'mrs-shake-recent'",
-    ],
+    "queries": [],
     "request": {
         "CONTENT_LENGTH": "417",
         "CONTENT_TYPE": "application/vnd.api+json; charset=None",
@@ -572,27 +556,16 @@ snapshots["test_api_patch[CategoryViewSet] 1"] = {
         "SERVER_PORT": "80",
     },
     "response": {
-        "data": {
-            "attributes": {
-                "created-at": "2017-05-21T00:00:00Z",
-                "created-by-group": "admin",
-                "created-by-user": "admin",
-                "description": {
-                    "de": "",
-                    "en": "Bit among again across environment long line. Team suggest traditional boy above.",
-                    "fr": "",
-                },
-                "meta": {},
-                "modified-at": "2017-05-21T00:00:00Z",
-                "modified-by-group": "admin",
-                "modified-by-user": "admin",
-                "name": {"de": "", "en": "Jordan Mccarthy", "fr": ""},
-            },
-            "id": "mrs-shake-recent",
-            "type": "categories",
-        }
+        "errors": [
+            {
+                "code": "method_not_allowed",
+                "detail": 'Method "PATCH" not allowed.',
+                "source": {"pointer": "/data"},
+                "status": "405",
+            }
+        ]
     },
-    "status": 200,
+    "status": 405,
 }
 
 snapshots["test_api_list[CategoryViewSet] 1"] = {
@@ -867,18 +840,14 @@ Daughter single product trade.""",
 }
 
 snapshots["test_api_destroy[CategoryViewSet] 1"] = {
-    "queries": [
-        'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."meta", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description" FROM "alexandria_core_category" WHERE "alexandria_core_category"."slug" = \'mrs-shake-recent\'',
-        'SELECT "alexandria_core_document"."created_at", "alexandria_core_document"."created_by_user", "alexandria_core_document"."created_by_group", "alexandria_core_document"."modified_at", "alexandria_core_document"."modified_by_user", "alexandria_core_document"."modified_by_group", "alexandria_core_document"."meta", "alexandria_core_document"."id", "alexandria_core_document"."title", "alexandria_core_document"."description", "alexandria_core_document"."category_id" FROM "alexandria_core_document" WHERE "alexandria_core_document"."category_id" IN (\'mrs-shake-recent\')',
-        'DELETE FROM "alexandria_core_category" WHERE "alexandria_core_category"."slug" IN (\'mrs-shake-recent\')',
-    ],
+    "queries": [],
     "request": {
         "PATH_INFO": "/api/v1/categories/mrs-shake-recent",
         "QUERY_STRING": "",
         "REQUEST_METHOD": "DELETE",
         "SERVER_PORT": "80",
     },
-    "status": 204,
+    "status": 405,
 }
 
 snapshots["test_api_patch[FileViewSet] 1"] = {

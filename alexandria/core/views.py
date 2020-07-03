@@ -5,7 +5,7 @@ from rest_framework_json_api import views
 from . import models, serializers
 
 
-class CategoryViewSet(views.ModelViewSet):
+class CategoryViewSet(RetrieveModelMixin, ListModelMixin, GenericViewSet):
     serializer_class = serializers.CategorySerializer
     queryset = models.Category.objects.all()
 
