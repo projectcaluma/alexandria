@@ -40,16 +40,45 @@ class TagSerializer(BaseSerializer):
         fields = BaseSerializer.Meta.fields + ("name", "description")
 
 
+class FileSerializer(BaseSerializer):
+    included_serializers = {
+        "document": "alexandria.core.serializers.DocumentSerializer",
+    }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # We only want to provide an upload_url on creation of a file.
+        self.new = False
+        if "request" in self.context and self.context["request"].method == "POST":
+            self.new = True
+
+    download_url = serializers.CharField(read_only=True)
+    upload_url = serializers.SerializerMethodField()
+
+    def get_upload_url(self, obj):
+        return obj.upload_url if self.new else ""
+
+    class Meta:
+        model = models.File
+        fields = BaseSerializer.Meta.fields + (
+            "name",
+            "document",
+            "download_url",
+            "upload_url",
+        )
+
+
 class DocumentSerializer(BaseSerializer):
     included_serializers = {
         "category": CategorySerializer,
         "tags": TagSerializer,
+        "files": FileSerializer,
     }
 
     class Meta:
         model = models.Document
         fields = BaseSerializer.Meta.fields + (
-            "name",
+            "files",
             "title",
             "description",
             "category",

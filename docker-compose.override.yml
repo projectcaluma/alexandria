@@ -21,3 +21,13 @@ services:
       ]
     environment:
       - ENV=dev
+  minio:
+    image: minio/minio:latest@sha256:7f84f4d07cf0d3562911c6b072e1183436fbc3cad8ccef8157ec5c27456ed452
+    volumes:
+      - minio_data:/data
+    ports:
+      - "9000:9000"
+    environment:
+      - MINIO_ACCESS_KEY=minio
+      - MINIO_SECRET_KEY=minio123
+    command: server data

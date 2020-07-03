@@ -1,3 +1,5 @@
+from rest_framework.mixins import CreateModelMixin, ListModelMixin, RetrieveModelMixin
+from rest_framework.viewsets import GenericViewSet
 from rest_framework_json_api import views
 
 from . import models, serializers
@@ -16,3 +18,10 @@ class TagViewSet(views.ModelViewSet):
 class DocumentViewSet(views.ModelViewSet):
     serializer_class = serializers.DocumentSerializer
     queryset = models.Document.objects.all()
+
+
+class FileViewSet(
+    CreateModelMixin, RetrieveModelMixin, ListModelMixin, GenericViewSet,
+):
+    serializer_class = serializers.FileSerializer
+    queryset = models.File.objects.all()
