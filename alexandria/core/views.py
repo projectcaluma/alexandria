@@ -6,7 +6,7 @@ from . import models, serializers
 from .filters import DocumentFilterSet
 
 
-class CategoryViewSet(views.ModelViewSet):
+class CategoryViewSet(RetrieveModelMixin, ListModelMixin, GenericViewSet):
     serializer_class = serializers.CategorySerializer
     queryset = models.Category.objects.all()
 
