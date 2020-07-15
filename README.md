@@ -4,7 +4,14 @@
 [![Pyup](https://pyup.io/repos/github/projectcaluma/alexandria/shield.svg)](https://pyup.io/account/repos/github/projectcaluma/alexandria/)
 [![Black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/projectcaluma/alexandria)
 
-Document management service
+Our goal is to implement an external document management service to hold and provide uploaded documents.
+Documents can be uploaded and, depending on user access, managed by internal as well as external users.
+
+The goal is NOT to re implement a complex [DMS](https://en.wikipedia.org/wiki/Document_management_system) but rather to have a simple and user-friendly way of managing documents with different permissions.
+
+All User Interface interactions should be as simple as possible and easily understandable.
+
+[Original RFC that led to alexandria](docs/original_alexandria_rfc.md)
 
 ## Getting started
 
