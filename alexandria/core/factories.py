@@ -25,6 +25,7 @@ class TagFactory(DjangoModelFactory):
 class DocumentFactory(DjangoModelFactory):
     title = Faker("name")
     description = Faker("text")
+    category = SubFactory(CategoryFactory)
 
     class Meta:
         model = models.Document

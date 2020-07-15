@@ -1,6 +1,7 @@
 import uuid
 
 from django.contrib.postgres.fields import JSONField
+from django.core.exceptions import ImproperlyConfigured
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from localized_fields.fields import LocalizedCharField, LocalizedTextField
@@ -20,7 +21,23 @@ def make_uuid():
     return uuid.uuid4()
 
 
-class BaseModel(models.Model):
+class VisibilityMixin:
+    visibility_classes = None
+
+    @classmethod
+    def visibility_queryset_filter(cls, queryset, request, **kwargs):
+        if cls.visibility_classes is None:
+            raise ImproperlyConfigured(
+                "check that app `alexandria.core.apps.DefaultConfig` is part of your `INSTALLED_APPS`."
+            )
+
+        for visibility_class in cls.visibility_classes:
+            queryset = visibility_class().filter_queryset(cls, queryset, request)
+
+        return queryset
+
+
+class BaseModel(VisibilityMixin, models.Model):
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     created_by_user = models.CharField(
         _("created by user"), max_length=150, blank=True, null=True
