@@ -11,6 +11,7 @@ from minio.definitions import Object as MinioStatObject
 from pytest_factoryboy import register
 from rest_framework.test import APIClient
 
+from alexandria.core.models import VisibilityMixin
 from alexandria.oidc_auth.models import OIDCUser
 
 
@@ -32,6 +33,11 @@ def admin_groups():
 
 
 @pytest.fixture
+def user(settings, admin_groups):
+    return OIDCUser("sometoken", {"sub": "user", settings.OIDC_GROUPS_CLAIM: ["group"]})
+
+
+@pytest.fixture
 def admin_user(settings, admin_groups):
     return OIDCUser(
         "sometoken", {"sub": "admin", settings.OIDC_GROUPS_CLAIM: admin_groups}
@@ -48,6 +54,13 @@ def admin_client(db, admin_user):
 @pytest.fixture(scope="function", autouse=True)
 def _autoclear_cache():
     cache.clear()
+
+
+@pytest.fixture
+def reset_visibilities():
+    before = VisibilityMixin.visibility_classes
+    yield
+    VisibilityMixin.visibility_classes = before
 
 
 @pytest.fixture

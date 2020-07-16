@@ -95,6 +95,9 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
+
+ADMIN_USERNAME = env.str("ADMIN_USERNAME", default="admin")
+
 # Authentication
 OIDC_OP_USER_ENDPOINT = env.str("OIDC_OP_USER_ENDPOINT", default=None)
 OIDC_OP_TOKEN_ENDPOINT = "not supported in alexandria, but a value is needed"
@@ -109,6 +112,13 @@ OIDC_RP_CLIENT_ID = env.str("OIDC_RP_CLIENT_ID", default=None)
 OIDC_RP_CLIENT_SECRET = env.str("OIDC_RP_CLIENT_SECRET", default=None)
 OIDC_DRF_AUTH_BACKEND = (
     "alexandria.oidc_auth.authentication.AlexandriaAuthenticationBackend"
+)
+
+
+# Extensions
+
+VISIBILITY_CLASSES = env.list(
+    "VISIBILITY_CLASSES", default=default(["alexandria.core.visibilities.Any"])
 )
 
 
@@ -143,7 +153,9 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "mozilla_django_oidc.contrib.drf.OIDCAuthentication",
     ),
-    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    "DEFAULT_PERMISSION_CLASSES": (
+        "rest_framework.permissions.AllowAny",
+    ),  # TODO: implement proper permissions
     "DEFAULT_METADATA_CLASS": "rest_framework_json_api.metadata.JSONAPIMetadata",
     "DEFAULT_FILTER_BACKENDS": (
         "rest_framework_json_api.filters.QueryParameterValidationFilter",

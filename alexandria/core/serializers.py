@@ -1,3 +1,4 @@
+from django.contrib.auth.models import AnonymousUser
 from rest_framework_json_api import serializers
 
 from . import models
@@ -8,12 +9,15 @@ class BaseSerializer(serializers.ModelSerializer):
 
     def validate(self, *args, **kwargs):
         validated_data = super().validate(*args, **kwargs)
+
         user = self.context["request"].user
+        group = user.group if not isinstance(user, AnonymousUser) else None
+
         validated_data["modified_by_user"] = user.username
-        validated_data["modified_by_group"] = user.group
+        validated_data["modified_by_group"] = group
         if self.instance is not None:
             validated_data["created_by_user"] = user.username
-            validated_data["created_by_group"] = user.group
+            validated_data["created_by_group"] = group
         return validated_data
 
     class Meta:
