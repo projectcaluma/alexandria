@@ -5,6 +5,7 @@ from django.core.exceptions import ImproperlyConfigured
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from localized_fields.fields import LocalizedCharField, LocalizedTextField
+from rest_framework import exceptions
 
 from .storage_clients import client
 
@@ -37,7 +38,29 @@ class VisibilityMixin:
         return queryset
 
 
-class BaseModel(VisibilityMixin, models.Model):
+class PermissionMixin:
+    permission_classes = None
+
+    @classmethod
+    def check_permissions(cls, request, **kwargs):
+        if cls.permission_classes is None:
+            raise ImproperlyConfigured(
+                "check that app `alexandria.core.apps.DefaultConfig` is part of your `INSTALLED_APPS`."
+            )
+
+        for permission_class in cls.permission_classes:
+            if not permission_class().has_permission(cls, request):
+                raise exceptions.PermissionDenied()
+
+    def check_object_permissions(self, request):
+        for permission_class in self.permission_classes:
+            if not permission_class().has_object_permission(
+                self.__class__, request, self
+            ):
+                raise exceptions.PermissionDenied()
+
+
+class BaseModel(PermissionMixin, VisibilityMixin, models.Model):
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     created_by_user = models.CharField(
         _("created by user"), max_length=150, blank=True, null=True

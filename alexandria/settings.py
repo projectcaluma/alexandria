@@ -29,10 +29,11 @@ ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=default(["*"]))
 # Application definition
 
 INSTALLED_APPS = [
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
     "django.contrib.postgres",
     "localized_fields",
+    "psqlextra",
+    "django.contrib.contenttypes",
+    "django.contrib.auth",
     "alexandria.core.apps.DefaultConfig",
 ]
 
@@ -121,6 +122,10 @@ VISIBILITY_CLASSES = env.list(
     "VISIBILITY_CLASSES", default=default(["alexandria.core.visibilities.Any"])
 )
 
+PERMISSION_CLASSES = env.list(
+    "PERMISSION_CLASSES", default=default(["alexandria.core.permissions.AllowAny"])
+)
+
 
 # Storage
 MEDIA_STORAGE_SERVICE = env.str("MEDIA_STORAGE_SERVICE", default="minio")
@@ -154,8 +159,8 @@ REST_FRAMEWORK = {
         "mozilla_django_oidc.contrib.drf.OIDCAuthentication",
     ),
     "DEFAULT_PERMISSION_CLASSES": (
-        "rest_framework.permissions.AllowAny",
-    ),  # TODO: implement proper permissions
+        "rest_framework.permissions.IsAuthenticatedOrReadOnly",
+    ),
     "DEFAULT_METADATA_CLASS": "rest_framework_json_api.metadata.JSONAPIMetadata",
     "DEFAULT_FILTER_BACKENDS": (
         "rest_framework_json_api.filters.QueryParameterValidationFilter",
@@ -174,6 +179,15 @@ REST_FRAMEWORK = {
 JSON_API_FORMAT_FIELD_NAMES = "dasherize"
 JSON_API_FORMAT_TYPES = "dasherize"
 JSON_API_PLURALIZE_TYPES = True
+
+
+# Anonymous writing
+ALLOW_ANONYMOUS_WRITE = env.bool("ALLOW_ANONYMOUS_WRITE", default=False)
+
+if ALLOW_ANONYMOUS_WRITE:
+    REST_FRAMEWORK["DEFAULT_PERMISSION_CLASSES"] = [
+        "rest_framework.permissions.AllowAny",
+    ]
 
 
 def parse_admins(admins):

@@ -10,6 +10,10 @@ class BaseSerializer(serializers.ModelSerializer):
     def validate(self, *args, **kwargs):
         validated_data = super().validate(*args, **kwargs)
 
+        self.Meta.model.check_permissions(self.context["request"])
+        if self.instance is not None:
+            self.instance.check_object_permissions(self.context["request"])
+
         user = self.context["request"].user
         group = user.group if not isinstance(user, AnonymousUser) else None
 
@@ -73,6 +77,9 @@ class FileSerializer(BaseSerializer):
 
 
 class DocumentSerializer(BaseSerializer):
+    files = serializers.ResourceRelatedField(
+        queryset=models.File.objects.all(), required=False, many=True
+    )
     included_serializers = {
         "category": CategorySerializer,
         "tags": TagSerializer,
