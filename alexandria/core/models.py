@@ -142,6 +142,22 @@ class Document(UUIDModel):
 
 
 class File(UUIDModel):
+    ORIGINAL = "original"
+    THUMBNAIL = "thumbnail"
+
+    TYPE_CHOICES = (
+        ORIGINAL,
+        THUMBNAIL,
+    )
+    TYPE_CHOICES_TUPLE = ((type_choice, type_choice) for type_choice in TYPE_CHOICES)
+    type = models.CharField(choices=TYPE_CHOICES_TUPLE, max_length=23, default=ORIGINAL)
+    original = models.ForeignKey(
+        "self",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="renderings",
+    )
     name = models.CharField(_("file name"), max_length=255)
     document = models.ForeignKey(
         Document, on_delete=models.CASCADE, related_name="files"

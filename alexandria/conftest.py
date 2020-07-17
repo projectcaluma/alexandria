@@ -1,17 +1,19 @@
 import importlib
 import inspect
 import time
+from io import BytesIO
 
 import pytest
-from django.conf import settings
 from django.core.cache import cache
 from factory.base import FactoryMetaClass
 from minio import Minio
 from minio.definitions import Object as MinioStatObject
 from pytest_factoryboy import register
 from rest_framework.test import APIClient
+from urllib3 import HTTPResponse
 
 from alexandria.core.models import VisibilityMixin
+from alexandria.core.tests import file_data
 from alexandria.oidc_auth.models import OIDCUser
 
 
@@ -70,9 +72,23 @@ def reset_visibilities():
 
 
 @pytest.fixture
-def minio_mock(mocker):
-    def side_effect(bucket, object_name, expires):
+def preview_cache_dir(tmp_path, settings):
+    settings.THUMBNAIL_CACHE_DIR = tmp_path
+    return tmp_path
+
+
+@pytest.fixture
+def minio_mock(mocker, settings):
+    def presigned_get_object_side_effect(bucket, object_name, expires):
         return f"http://minio/download-url/{object_name}"
+
+    def get_object_side_effect(bucket, object_name):
+        file = (
+            file_data.unsupported
+            if object_name.endswith(".unsupported")
+            else file_data.png
+        )
+        return HTTPResponse(body=BytesIO(file), preload_content=False,)
 
     stat_response = MinioStatObject(
         settings.MINIO_STORAGE_MEDIA_BUCKET_NAME,
@@ -91,7 +107,11 @@ def minio_mock(mocker):
     mocker.patch.object(Minio, "make_bucket")
     mocker.patch.object(Minio, "remove_object")
     mocker.patch.object(Minio, "copy_object")
-    Minio.presigned_get_object.side_effect = side_effect
+    mocker.patch.object(Minio, "get_object")
+    mocker.patch.object(Minio, "put_object")
+    Minio.get_object.side_effect = get_object_side_effect
+    Minio.presigned_get_object.side_effect = presigned_get_object_side_effect
+    Minio.put_object.return_value = "af1421c17294eed533ec99eb82b468fb"
     Minio.presigned_put_object.return_value = "http://minio/upload-url"
     Minio.stat_object.return_value = stat_response
     Minio.bucket_exists.return_value = True

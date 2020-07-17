@@ -2,6 +2,7 @@
 import hashlib
 import json
 import re
+import uuid
 
 import inflection
 import pytest
@@ -34,14 +35,16 @@ def deterministic_uuids(mocker):
         # format: 9336ebf2-5087-d91c-818e-e6e9 ec29 f8c1
         # lengths: 8        4    4    4    12
         digest = hashy.hexdigest()
-        return "-".join(
-            [
-                digest[:8],  # 8
-                digest[8:12],  # 4
-                digest[12:16],  # 4
-                digest[16:20],  # 4
-                digest[20:],  # 4
-            ]
+        return uuid.UUID(
+            "-".join(
+                [
+                    digest[:8],  # 8
+                    digest[8:12],  # 4
+                    digest[12:16],  # 4
+                    digest[16:20],  # 4
+                    digest[20:],  # 4
+                ]
+            )
         )
 
     mocker.patch("uuid.uuid4", next_uuid)
@@ -169,7 +172,8 @@ def test_api_create(fixture, admin_client, viewset, snapshot, minio_mock):
     serializer = viewset.serializer_class(fixture)
     renderer = JSONRenderer()
     context = {"view": viewset}
-    data = renderer.render(serializer.data, renderer_context=context)
+    serializer_data = serializer.data
+    data = renderer.render(serializer_data, renderer_context=context)
     fixture.delete()  # avoid constraint issues
 
     with CaptureQueriesContext(connection) as context:
