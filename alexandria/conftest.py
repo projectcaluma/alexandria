@@ -45,6 +45,12 @@ def admin_user(settings, admin_groups):
 
 
 @pytest.fixture
+def client(db):
+    client = APIClient()
+    return client
+
+
+@pytest.fixture
 def admin_client(db, admin_user):
     client = APIClient()
     client.force_authenticate(user=admin_user)
