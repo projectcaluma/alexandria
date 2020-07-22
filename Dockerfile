@@ -3,6 +3,8 @@ FROM python:3.6.11-slim-buster@sha256:9111ff37d96bdcd84bcac261951ac410ee276144eb
 WORKDIR /app
 
 RUN apt-get update && apt-get install -y --no-install-recommends libpq-dev wget build-essential \
+# Dependencies for preview-generator
+zlib1g-dev libjpeg-dev python3-pythonmagick libmagic-dev inkscape xvfb poppler-utils libfile-mimeinfo-perl qpdf libimage-exiftool-perl ufraw-batch ffmpeg imagemagick libreoffice \
 && wget -q https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh -P /usr/local/bin \
 && chmod +x /usr/local/bin/wait-for-it.sh \
 && mkdir -p /app \

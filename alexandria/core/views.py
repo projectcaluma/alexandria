@@ -1,11 +1,23 @@
+import json
+
+from django.conf import settings
+from django.http import HttpResponse
+from django.views.decorators.http import require_http_methods
 from rest_framework.mixins import CreateModelMixin, ListModelMixin, RetrieveModelMixin
 from rest_framework.response import Response
-from rest_framework.status import HTTP_204_NO_CONTENT
+from rest_framework.status import (
+    HTTP_200_OK,
+    HTTP_201_CREATED,
+    HTTP_204_NO_CONTENT,
+    HTTP_400_BAD_REQUEST,
+    HTTP_403_FORBIDDEN,
+)
 from rest_framework.viewsets import GenericViewSet
 from rest_framework_json_api import views
 
 from . import models, serializers
-from .filters import DocumentFilterSet
+from .filters import DocumentFilterSet, FileFilterSet
+from .thumbs import create_thumbnail
 
 
 class PermissionViewMixin(views.ModelViewSet):
@@ -51,3 +63,43 @@ class FileViewSet(
 ):
     serializer_class = serializers.FileSerializer
     queryset = models.File.objects.all()
+    filterset_class = FileFilterSet
+
+
+@require_http_methods(["HEAD", "POST"])
+def hook_view(request):
+    if not settings.ENABLE_THUMBNAIL_GENERATION:
+        return HttpResponse(status=HTTP_403_FORBIDDEN)
+
+    if request.method == "HEAD":
+        return HttpResponse(status=HTTP_200_OK)
+
+    data = json.loads(request.body.decode("utf-8"))
+
+    response_statuses = []
+    for record in data["Records"]:
+        bucket_name = record["s3"]["bucket"]["name"]
+        if not bucket_name == settings.MINIO_STORAGE_MEDIA_BUCKET_NAME:
+            response_statuses.append(HTTP_200_OK)
+            continue
+
+        file_pk = record["s3"]["object"]["key"].split("_")[0]
+        try:
+            file = models.File.objects.get(pk=file_pk)
+        except models.File.DoesNotExist:
+            response_statuses.append(HTTP_400_BAD_REQUEST)
+            continue
+
+        if file.type == models.File.THUMBNAIL:
+            response_statuses.append(HTTP_200_OK)
+            continue
+
+        created = create_thumbnail(file)
+        if created is False:
+            response_statuses.append(HTTP_200_OK)
+            continue
+
+        response_statuses.append(HTTP_201_CREATED)
+
+    # Just return the highest status
+    return HttpResponse(status=max(response_statuses))

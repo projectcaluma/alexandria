@@ -1,3 +1,4 @@
+from django.urls import path
 from rest_framework.routers import SimpleRouter
 
 from . import views
@@ -10,3 +11,5 @@ r.register(r"files", views.FileViewSet)
 r.register(r"tags", views.TagViewSet)
 
 urlpatterns = r.urls
+
+urlpatterns.append(path("hook", views.hook_view, name="hook"))

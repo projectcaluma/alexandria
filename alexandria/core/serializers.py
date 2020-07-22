@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AnonymousUser
+from rest_framework.exceptions import ValidationError
 from rest_framework_json_api import serializers
 
 from . import models
@@ -49,8 +50,14 @@ class TagSerializer(BaseSerializer):
 
 
 class FileSerializer(BaseSerializer):
+    renderings = serializers.ResourceRelatedField(
+        required=False, many=True, read_only=True,
+    )
+
     included_serializers = {
         "document": "alexandria.core.serializers.DocumentSerializer",
+        "original": "alexandria.core.serializers.FileSerializer",
+        "renderings": "alexandria.core.serializers.FileSerializer",
     }
 
     def __init__(self, *args, **kwargs):
@@ -66,10 +73,29 @@ class FileSerializer(BaseSerializer):
     def get_upload_url(self, obj):
         return obj.upload_url if self.new else ""
 
+    def validate(self, *args, **kwargs):
+        validated_data = super().validate(*args, **kwargs)
+        if validated_data.get(
+            "type"
+        ) != models.File.ORIGINAL and not validated_data.get("original"):
+            f_type = validated_data.get("type")
+            raise ValidationError(f'"original" must be set for type "{f_type}".')
+
+        if validated_data.get("type") == models.File.ORIGINAL and validated_data.get(
+            "original"
+        ):
+            f_type = validated_data.get("type")
+            raise ValidationError(f'"original" must not be set for type "{f_type}".')
+
+        return validated_data
+
     class Meta:
         model = models.File
         fields = BaseSerializer.Meta.fields + (
+            "type",
             "name",
+            "original",
+            "renderings",
             "document",
             "download_url",
             "upload_url",

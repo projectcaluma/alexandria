@@ -1,4 +1,5 @@
 from datetime import timedelta
+from pathlib import Path
 
 import minio
 from django.conf import settings
@@ -41,6 +42,19 @@ class Minio:
 
     def remove_object(self, object_name):
         self.client.remove_object(self.bucket, object_name)
+
+    def get_object(self, object_name):
+        data = self.client.get_object(self.bucket, object_name)
+        return data
+
+    def put_object(self, filepath, object_name):
+        filepath = Path(filepath)  # make sure we got a Path object
+
+        with filepath.open("rb") as file_data:
+            file_stat = filepath.stat()
+            return self.client.put_object(
+                self.bucket, object_name, file_data, file_stat.st_size
+            )
 
 
 if settings.MEDIA_STORAGE_SERVICE == "minio":

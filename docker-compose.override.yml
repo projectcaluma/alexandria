@@ -23,12 +23,12 @@ services:
       - ENV=dev
       - ALLOW_ANONYMOUS_WRITE=true
   minio:
-    image: minio/minio:latest@sha256:7f84f4d07cf0d3562911c6b072e1183436fbc3cad8ccef8157ec5c27456ed452
-    volumes:
-      - minio_data:/data
-    ports:
-      - "9000:9000"
     environment:
       - MINIO_ACCESS_KEY=minio
       - MINIO_SECRET_KEY=minio123
-    command: server data
+      - MINIO_NOTIFY_WEBHOOK_ENABLE_ALEXANDRIA=on
+      - MINIO_NOTIFY_WEBHOOK_ENDPOINT_ALEXANDRIA=http://alexandria:8000/api/v1/hook
+  mc:
+    environment:
+      - MINIO_ACCESS_KEY=minio
+      - MINIO_SECRET_KEY=minio123

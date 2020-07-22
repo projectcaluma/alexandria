@@ -59,3 +59,11 @@ class DocumentFilterSet(FilterSet):
     class Meta:
         model = models.Document
         fields = ["meta"]
+
+
+class FileFilterSet(FilterSet):
+    meta = JSONValueFilter(field_name="meta")
+
+    class Meta:
+        model = models.File
+        fields = ["original", "renderings", "type", "meta"]
