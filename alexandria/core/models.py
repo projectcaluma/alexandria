@@ -1,7 +1,9 @@
+import re
 import uuid
 
 from django.contrib.postgres.fields import JSONField
 from django.core.exceptions import ImproperlyConfigured
+from django.core.validators import RegexValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from localized_fields.fields import LocalizedCharField, LocalizedTextField
@@ -108,12 +110,19 @@ class SlugModel(BaseModel):
         abstract = True
 
 
+COLOR_RE = re.compile("^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$")
+color_validator = RegexValidator(COLOR_RE, _("Enter a valid color."), "invalid")
+
+
 class Category(SlugModel):
     name = LocalizedCharField(
         _("category name"), blank=False, null=False, required=False
     )
     description = LocalizedTextField(
         _("category description"), null=True, blank=True, required=False
+    )
+    color = models.CharField(
+        max_length=18, default="#FFFFFF", validators=[color_validator],
     )
 
 

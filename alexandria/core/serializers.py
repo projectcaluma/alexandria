@@ -40,7 +40,7 @@ class BaseSerializer(serializers.ModelSerializer):
 class CategorySerializer(BaseSerializer):
     class Meta:
         model = models.Category
-        fields = BaseSerializer.Meta.fields + ("name", "description")
+        fields = BaseSerializer.Meta.fields + ("name", "description", "color")
 
 
 class TagSerializer(BaseSerializer):
