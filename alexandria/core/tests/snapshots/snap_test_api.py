@@ -39,12 +39,12 @@ snapshots["test_api_list[FileViewSet] 1"] = {
                     "created-at": "2017-05-21T00:00:00Z",
                     "created-by-group": None,
                     "created-by-user": None,
-                    "download-url": "http://minio/download-url/9336ebf2-5087-d91c-818e-e6e9ec29f8c1_Thomas Johnson",
+                    "download-url": "http://minio/download-url/9336ebf2-5087-d91c-818e-e6e9ec29f8c1_Devon Cooke",
                     "meta": {},
                     "modified-at": "2017-05-21T00:00:00Z",
                     "modified-by-group": None,
                     "modified-by-user": None,
-                    "name": "Thomas Johnson",
+                    "name": "Devon Cooke",
                     "type": "original",
                     "upload-url": "",
                 },
@@ -93,12 +93,12 @@ snapshots["test_api_list[FileViewSet] 1"] = {
                     "created-at": "2017-05-21T00:00:00Z",
                     "created-by-group": None,
                     "created-by-user": None,
-                    "download-url": "http://minio/download-url/dad3a37a-a9d5-0688-b515-7698acfd7aee_Thomas Hernandez",
+                    "download-url": "http://minio/download-url/dad3a37a-a9d5-0688-b515-7698acfd7aee_Michelle Johnson",
                     "meta": {},
                     "modified-at": "2017-05-21T00:00:00Z",
                     "modified-by-group": None,
                     "modified-by-user": None,
-                    "name": "Thomas Hernandez",
+                    "name": "Michelle Johnson",
                     "type": "original",
                     "upload-url": "",
                 },
@@ -124,15 +124,14 @@ snapshots["test_api_list[FileViewSet] 1"] = {
                     "created-by-user": None,
                     "description": {
                         "de": "",
-                        "en": """Force run majority yourself evening that indicate. Later still industry call attention. Fire try cell open else look.
-Price focus mean finally realize us movie. Truth deep public these.""",
+                        "en": "Decade wall thing for east later still. Number inside put fire try cell.",
                         "fr": "",
                     },
                     "meta": {},
                     "modified-at": "2017-05-21T00:00:00Z",
                     "modified-by-group": None,
                     "modified-by-user": None,
-                    "title": {"de": "", "en": "Charlotte Smith", "fr": ""},
+                    "title": {"de": "", "en": "John Fernandez", "fr": ""},
                 },
                 "id": "9dd4e461-268c-8034-f5c8-564e155c67a6",
                 "relationships": {
@@ -194,19 +193,21 @@ Effort partner area media increase meeting. Son success provide beyond. Officer 
                     "created-by-user": None,
                     "description": {
                         "de": "",
-                        "en": """Take value eye sell them he. Less power relate fine. Where loss increase firm friend ability sing.
-Food prevent trouble cold south which general. Never form leader fund task. Major talk late yes.""",
+                        "en": """Them he consumer same season. Fine religious where loss increase firm friend.
+Their office though television return main.""",
                         "fr": "",
                     },
                     "meta": {},
                     "modified-at": "2017-05-21T00:00:00Z",
                     "modified-by-group": None,
                     "modified-by-user": None,
-                    "title": {"de": "", "en": "Laura Porter", "fr": ""},
+                    "title": {"de": "", "en": "Victoria Nash", "fr": ""},
                 },
                 "id": "fb0e22c7-9ac7-5679-e988-1e6ba183b354",
                 "relationships": {
-                    "category": {"data": {"id": "section-voice", "type": "categories"}},
+                    "category": {
+                        "data": {"id": "material-eight", "type": "categories"}
+                    },
                     "files": {
                         "data": [
                             {
@@ -263,7 +264,7 @@ snapshots["test_api_create[TagViewSet] 1"] = {
 
 snapshots["test_api_detail[CategoryViewSet] 1"] = {
     "queries": [
-        'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."meta", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description" FROM "alexandria_core_category" WHERE "alexandria_core_category"."slug" = \'mrs-shake-recent\''
+        'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."meta", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description", "alexandria_core_category"."color" FROM "alexandria_core_category" WHERE "alexandria_core_category"."slug" = \'mrs-shake-recent\''
     ],
     "request": {
         "CONTENT_TYPE": "application/octet-stream",
@@ -275,6 +276,7 @@ snapshots["test_api_detail[CategoryViewSet] 1"] = {
     "response": {
         "data": {
             "attributes": {
+                "color": "#ea8594",
                 "created-at": "2017-05-21T00:00:00Z",
                 "created-by-group": None,
                 "created-by-user": None,
@@ -299,7 +301,7 @@ snapshots["test_api_detail[CategoryViewSet] 1"] = {
 snapshots["test_api_create[CategoryViewSet] 1"] = {
     "queries": [],
     "request": {
-        "CONTENT_LENGTH": "417",
+        "CONTENT_LENGTH": "435",
         "CONTENT_TYPE": "application/vnd.api+json; charset=None",
         "PATH_INFO": "/api/v1/categories",
         "QUERY_STRING": "",
@@ -333,11 +335,11 @@ snapshots["test_api_destroy[FileViewSet] 1"] = {
 snapshots["test_api_create[FileViewSet] 1"] = {
     "queries": [
         'SELECT "alexandria_core_document"."created_at", "alexandria_core_document"."created_by_user", "alexandria_core_document"."created_by_group", "alexandria_core_document"."modified_at", "alexandria_core_document"."modified_by_user", "alexandria_core_document"."modified_by_group", "alexandria_core_document"."meta", "alexandria_core_document"."id", "alexandria_core_document"."title", "alexandria_core_document"."description", "alexandria_core_document"."category_id" FROM "alexandria_core_document" WHERE "alexandria_core_document"."id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid',
-        'INSERT INTO "alexandria_core_file" ("created_at", "created_by_user", "created_by_group", "modified_at", "modified_by_user", "modified_by_group", "meta", "id", "type", "original_id", "name", "document_id") VALUES (\'2017-05-21T00:00:00+00:00\'::timestamptz, NULL, NULL, \'2017-05-21T00:00:00+00:00\'::timestamptz, \'admin\', \'admin\', \'{}\', \'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad\'::uuid, \'original\', NULL, \'Thomas Johnson\', \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid)',
+        'INSERT INTO "alexandria_core_file" ("created_at", "created_by_user", "created_by_group", "modified_at", "modified_by_user", "modified_by_group", "meta", "id", "type", "original_id", "name", "document_id") VALUES (\'2017-05-21T00:00:00+00:00\'::timestamptz, NULL, NULL, \'2017-05-21T00:00:00+00:00\'::timestamptz, \'admin\', \'admin\', \'{}\', \'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad\'::uuid, \'original\', NULL, \'Devon Cooke\', \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid)',
         'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."meta", "alexandria_core_file"."id", "alexandria_core_file"."type", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id" FROM "alexandria_core_file" WHERE "alexandria_core_file"."original_id" = \'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad\'::uuid ORDER BY "alexandria_core_file"."created_at" DESC',
     ],
     "request": {
-        "CONTENT_LENGTH": "588",
+        "CONTENT_LENGTH": "582",
         "CONTENT_TYPE": "application/vnd.api+json; charset=None",
         "PATH_INFO": "/api/v1/files",
         "QUERY_STRING": "",
@@ -350,12 +352,12 @@ snapshots["test_api_create[FileViewSet] 1"] = {
                 "created-at": "2017-05-21T00:00:00Z",
                 "created-by-group": None,
                 "created-by-user": None,
-                "download-url": "http://minio/download-url/f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad_Thomas Johnson",
+                "download-url": "http://minio/download-url/f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad_Devon Cooke",
                 "meta": {},
                 "modified-at": "2017-05-21T00:00:00Z",
                 "modified-by-group": "admin",
                 "modified-by-user": "admin",
-                "name": "Thomas Johnson",
+                "name": "Devon Cooke",
                 "type": "original",
                 "upload-url": "http://minio/upload-url",
             },
@@ -379,16 +381,15 @@ snapshots["test_api_create[FileViewSet] 1"] = {
 snapshots["test_api_patch[DocumentViewSet] 1"] = {
     "queries": [
         'SELECT "alexandria_core_document"."created_at", "alexandria_core_document"."created_by_user", "alexandria_core_document"."created_by_group", "alexandria_core_document"."modified_at", "alexandria_core_document"."modified_by_user", "alexandria_core_document"."modified_by_group", "alexandria_core_document"."meta", "alexandria_core_document"."id", "alexandria_core_document"."title", "alexandria_core_document"."description", "alexandria_core_document"."category_id" FROM "alexandria_core_document" WHERE "alexandria_core_document"."id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid',
-        'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."meta", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description" FROM "alexandria_core_category" WHERE "alexandria_core_category"."slug" = \'mrs-shake-recent\'',
-        'SELECT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."meta", "alexandria_core_tag"."slug", "alexandria_core_tag"."name", "alexandria_core_tag"."description" FROM "alexandria_core_tag" WHERE "alexandria_core_tag"."slug" = \'animal-treat\'',
-        """UPDATE "alexandria_core_document" SET "created_at" = \'2017-05-21T00:00:00+00:00\'::timestamptz, "created_by_user" = \'admin\', "created_by_group" = \'admin\', "modified_at" = \'2017-05-21T00:00:00+00:00\'::timestamptz, "modified_by_user" = \'admin\', "modified_by_group" = \'admin\', "meta" = \'{}\', "title" = hstore(ARRAY[\'en\',\'de\',\'fr\'], ARRAY[\'Charlotte Smith\',\'\',\'\']), "description" = hstore(ARRAY[\'en\',\'de\',\'fr\'], ARRAY[\'Force run majority yourself evening that indicate. Later still industry call attention. Fire try cell open else look.
-Price focus mean finally realize us movie. Truth deep public these.\',\'\',\'\']), "category_id" = \'mrs-shake-recent\' WHERE "alexandria_core_document"."id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid""",
+        'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."meta", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description", "alexandria_core_category"."color" FROM "alexandria_core_category" WHERE "alexandria_core_category"."slug" = \'mrs-shake-recent\'',
+        'SELECT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."meta", "alexandria_core_tag"."slug", "alexandria_core_tag"."name", "alexandria_core_tag"."description" FROM "alexandria_core_tag" WHERE "alexandria_core_tag"."slug" = \'fly-even-yourself\'',
+        "UPDATE \"alexandria_core_document\" SET \"created_at\" = '2017-05-21T00:00:00+00:00'::timestamptz, \"created_by_user\" = 'admin', \"created_by_group\" = 'admin', \"modified_at\" = '2017-05-21T00:00:00+00:00'::timestamptz, \"modified_by_user\" = 'admin', \"modified_by_group\" = 'admin', \"meta\" = '{}', \"title\" = hstore(ARRAY['en','de','fr'], ARRAY['John Fernandez','','']), \"description\" = hstore(ARRAY['en','de','fr'], ARRAY['Decade wall thing for east later still. Number inside put fire try cell.','','']), \"category_id\" = 'mrs-shake-recent' WHERE \"alexandria_core_document\".\"id\" = '9dd4e461-268c-8034-f5c8-564e155c67a6'::uuid",
         'SELECT "alexandria_core_tag"."slug" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."slug" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid',
         'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."meta", "alexandria_core_file"."id", "alexandria_core_file"."type", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id" FROM "alexandria_core_file" WHERE "alexandria_core_file"."document_id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid ORDER BY "alexandria_core_file"."created_at" DESC',
         'SELECT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."meta", "alexandria_core_tag"."slug", "alexandria_core_tag"."name", "alexandria_core_tag"."description" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."slug" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid',
     ],
     "request": {
-        "CONTENT_LENGTH": "738",
+        "CONTENT_LENGTH": "628",
         "CONTENT_TYPE": "application/vnd.api+json; charset=None",
         "PATH_INFO": "/api/v1/documents/9dd4e461-268c-8034-f5c8-564e155c67a6",
         "QUERY_STRING": "",
@@ -403,22 +404,21 @@ Price focus mean finally realize us movie. Truth deep public these.\',\'\',\'\']
                 "created-by-user": "admin",
                 "description": {
                     "de": "",
-                    "en": """Force run majority yourself evening that indicate. Later still industry call attention. Fire try cell open else look.
-Price focus mean finally realize us movie. Truth deep public these.""",
+                    "en": "Decade wall thing for east later still. Number inside put fire try cell.",
                     "fr": "",
                 },
                 "meta": {},
                 "modified-at": "2017-05-21T00:00:00Z",
                 "modified-by-group": "admin",
                 "modified-by-user": "admin",
-                "title": {"de": "", "en": "Charlotte Smith", "fr": ""},
+                "title": {"de": "", "en": "John Fernandez", "fr": ""},
             },
             "id": "9dd4e461-268c-8034-f5c8-564e155c67a6",
             "relationships": {
                 "category": {"data": {"id": "mrs-shake-recent", "type": "categories"}},
                 "files": {"data": [], "meta": {"count": 0}},
                 "tags": {
-                    "data": [{"id": "animal-treat", "type": "tags"}],
+                    "data": [{"id": "fly-even-yourself", "type": "tags"}],
                     "meta": {"count": 1},
                 },
             },
@@ -430,18 +430,17 @@ Price focus mean finally realize us movie. Truth deep public these.""",
 
 snapshots["test_api_create[DocumentViewSet] 1"] = {
     "queries": [
-        'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."meta", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description" FROM "alexandria_core_category" WHERE "alexandria_core_category"."slug" = \'mrs-shake-recent\'',
-        'SELECT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."meta", "alexandria_core_tag"."slug", "alexandria_core_tag"."name", "alexandria_core_tag"."description" FROM "alexandria_core_tag" WHERE "alexandria_core_tag"."slug" = \'animal-treat\'',
-        """INSERT INTO "alexandria_core_document" ("created_at", "created_by_user", "created_by_group", "modified_at", "modified_by_user", "modified_by_group", "meta", "id", "title", "description", "category_id") VALUES (\'2017-05-21T00:00:00+00:00\'::timestamptz, NULL, NULL, \'2017-05-21T00:00:00+00:00\'::timestamptz, \'admin\', \'admin\', \'{}\', \'9336ebf2-5087-d91c-818e-e6e9ec29f8c1\'::uuid, hstore(ARRAY[\'en\',\'de\',\'fr\'], ARRAY[\'Charlotte Smith\',\'\',\'\']), hstore(ARRAY[\'en\',\'de\',\'fr\'], ARRAY[\'Force run majority yourself evening that indicate. Later still industry call attention. Fire try cell open else look.
-Price focus mean finally realize us movie. Truth deep public these.','','']), 'mrs-shake-recent')""",
+        'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."meta", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description", "alexandria_core_category"."color" FROM "alexandria_core_category" WHERE "alexandria_core_category"."slug" = \'mrs-shake-recent\'',
+        'SELECT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."meta", "alexandria_core_tag"."slug", "alexandria_core_tag"."name", "alexandria_core_tag"."description" FROM "alexandria_core_tag" WHERE "alexandria_core_tag"."slug" = \'fly-even-yourself\'',
+        "INSERT INTO \"alexandria_core_document\" (\"created_at\", \"created_by_user\", \"created_by_group\", \"modified_at\", \"modified_by_user\", \"modified_by_group\", \"meta\", \"id\", \"title\", \"description\", \"category_id\") VALUES ('2017-05-21T00:00:00+00:00'::timestamptz, NULL, NULL, '2017-05-21T00:00:00+00:00'::timestamptz, 'admin', 'admin', '{}', '9336ebf2-5087-d91c-818e-e6e9ec29f8c1'::uuid, hstore(ARRAY['en','de','fr'], ARRAY['John Fernandez','','']), hstore(ARRAY['en','de','fr'], ARRAY['Decade wall thing for east later still. Number inside put fire try cell.','','']), 'mrs-shake-recent')",
         'SELECT "alexandria_core_tag"."slug" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."slug" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" = \'9336ebf2-5087-d91c-818e-e6e9ec29f8c1\'::uuid',
-        'SELECT "alexandria_core_document_tags"."tag_id" FROM "alexandria_core_document_tags" WHERE ("alexandria_core_document_tags"."document_id" = \'9336ebf2-5087-d91c-818e-e6e9ec29f8c1\'::uuid AND "alexandria_core_document_tags"."tag_id" IN (\'animal-treat\'))',
-        'INSERT INTO "alexandria_core_document_tags" ("document_id", "tag_id") VALUES (\'9336ebf2-5087-d91c-818e-e6e9ec29f8c1\'::uuid, \'animal-treat\') RETURNING "alexandria_core_document_tags"."id"',
+        'SELECT "alexandria_core_document_tags"."tag_id" FROM "alexandria_core_document_tags" WHERE ("alexandria_core_document_tags"."document_id" = \'9336ebf2-5087-d91c-818e-e6e9ec29f8c1\'::uuid AND "alexandria_core_document_tags"."tag_id" IN (\'fly-even-yourself\'))',
+        'INSERT INTO "alexandria_core_document_tags" ("document_id", "tag_id") VALUES (\'9336ebf2-5087-d91c-818e-e6e9ec29f8c1\'::uuid, \'fly-even-yourself\') RETURNING "alexandria_core_document_tags"."id"',
         'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."meta", "alexandria_core_file"."id", "alexandria_core_file"."type", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id" FROM "alexandria_core_file" WHERE "alexandria_core_file"."document_id" = \'9336ebf2-5087-d91c-818e-e6e9ec29f8c1\'::uuid ORDER BY "alexandria_core_file"."created_at" DESC',
         'SELECT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."meta", "alexandria_core_tag"."slug", "alexandria_core_tag"."name", "alexandria_core_tag"."description" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."slug" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" = \'9336ebf2-5087-d91c-818e-e6e9ec29f8c1\'::uuid',
     ],
     "request": {
-        "CONTENT_LENGTH": "738",
+        "CONTENT_LENGTH": "628",
         "CONTENT_TYPE": "application/vnd.api+json; charset=None",
         "PATH_INFO": "/api/v1/documents",
         "QUERY_STRING": "",
@@ -456,22 +455,21 @@ Price focus mean finally realize us movie. Truth deep public these.','','']), 'm
                 "created-by-user": None,
                 "description": {
                     "de": "",
-                    "en": """Force run majority yourself evening that indicate. Later still industry call attention. Fire try cell open else look.
-Price focus mean finally realize us movie. Truth deep public these.""",
+                    "en": "Decade wall thing for east later still. Number inside put fire try cell.",
                     "fr": "",
                 },
                 "meta": {},
                 "modified-at": "2017-05-21T00:00:00Z",
                 "modified-by-group": "admin",
                 "modified-by-user": "admin",
-                "title": {"de": "", "en": "Charlotte Smith", "fr": ""},
+                "title": {"de": "", "en": "John Fernandez", "fr": ""},
             },
             "id": "9336ebf2-5087-d91c-818e-e6e9ec29f8c1",
             "relationships": {
                 "category": {"data": {"id": "mrs-shake-recent", "type": "categories"}},
                 "files": {"data": [], "meta": {"count": 0}},
                 "tags": {
-                    "data": [{"id": "animal-treat", "type": "tags"}],
+                    "data": [{"id": "fly-even-yourself", "type": "tags"}],
                     "meta": {"count": 1},
                 },
             },
@@ -573,7 +571,7 @@ snapshots["test_api_destroy[DocumentViewSet] 1"] = {
 snapshots["test_api_patch[CategoryViewSet] 1"] = {
     "queries": [],
     "request": {
-        "CONTENT_LENGTH": "417",
+        "CONTENT_LENGTH": "435",
         "CONTENT_TYPE": "application/vnd.api+json; charset=None",
         "PATH_INFO": "/api/v1/categories/mrs-shake-recent",
         "QUERY_STRING": "",
@@ -595,7 +593,7 @@ snapshots["test_api_patch[CategoryViewSet] 1"] = {
 
 snapshots["test_api_list[CategoryViewSet] 1"] = {
     "queries": [
-        'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."meta", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description" FROM "alexandria_core_category"'
+        'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."meta", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description", "alexandria_core_category"."color" FROM "alexandria_core_category"'
     ],
     "request": {
         "CONTENT_TYPE": "application/octet-stream",
@@ -608,6 +606,7 @@ snapshots["test_api_list[CategoryViewSet] 1"] = {
         "data": [
             {
                 "attributes": {
+                    "color": "#ea8594",
                     "created-at": "2017-05-21T00:00:00Z",
                     "created-by-group": None,
                     "created-by-user": None,
@@ -627,6 +626,7 @@ snapshots["test_api_list[CategoryViewSet] 1"] = {
             },
             {
                 "attributes": {
+                    "color": "#e08dd8",
                     "created-at": "2017-05-21T00:00:00Z",
                     "created-by-group": None,
                     "created-by-user": None,
@@ -646,21 +646,22 @@ snapshots["test_api_list[CategoryViewSet] 1"] = {
             },
             {
                 "attributes": {
+                    "color": "#eda797",
                     "created-at": "2017-05-21T00:00:00Z",
                     "created-by-group": None,
                     "created-by-user": None,
                     "description": {
                         "de": "",
-                        "en": "Wide happy air represent. Cup debate medical. Today morning standard effort summer.",
+                        "en": "Cup debate medical. Today morning standard effort summer.",
                         "fr": "",
                     },
                     "meta": {},
                     "modified-at": "2017-05-21T00:00:00Z",
                     "modified-by-group": None,
                     "modified-by-user": None,
-                    "name": {"de": "", "en": "Justin Hunt", "fr": ""},
+                    "name": {"de": "", "en": "Mathew White", "fr": ""},
                 },
-                "id": "structure",
+                "id": "everything-process",
                 "type": "categories",
             },
         ]
@@ -746,7 +747,7 @@ snapshots["test_api_list[TagViewSet] 1"] = {
 snapshots["test_api_list[DocumentViewSet] 1"] = {
     "queries": [
         'SELECT "alexandria_core_document"."created_at", "alexandria_core_document"."created_by_user", "alexandria_core_document"."created_by_group", "alexandria_core_document"."modified_at", "alexandria_core_document"."modified_by_user", "alexandria_core_document"."modified_by_group", "alexandria_core_document"."meta", "alexandria_core_document"."id", "alexandria_core_document"."title", "alexandria_core_document"."description", "alexandria_core_document"."category_id" FROM "alexandria_core_document"',
-        'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."meta", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description" FROM "alexandria_core_category" WHERE "alexandria_core_category"."slug" IN (\'material-eight\', \'mrs-shake-recent\', \'reach-piece-it-all\')',
+        'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."meta", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description", "alexandria_core_category"."color" FROM "alexandria_core_category" WHERE "alexandria_core_category"."slug" IN (\'mrs-shake-recent\', \'reach-piece-it-all\', \'section-voice\')',
         'SELECT ("alexandria_core_document_tags"."document_id") AS "_prefetch_related_val_document_id", "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."meta", "alexandria_core_tag"."slug", "alexandria_core_tag"."name", "alexandria_core_tag"."description" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."slug" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" IN (\'9336ebf2-5087-d91c-818e-e6e9ec29f8c1\'::uuid, \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid, \'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad\'::uuid)',
         'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."meta", "alexandria_core_file"."id", "alexandria_core_file"."type", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id" FROM "alexandria_core_file" WHERE "alexandria_core_file"."document_id" IN (\'9336ebf2-5087-d91c-818e-e6e9ec29f8c1\'::uuid, \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid, \'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad\'::uuid) ORDER BY "alexandria_core_file"."created_at" DESC',
     ],
@@ -766,15 +767,14 @@ snapshots["test_api_list[DocumentViewSet] 1"] = {
                     "created-by-user": None,
                     "description": {
                         "de": "",
-                        "en": """Force run majority yourself evening that indicate. Later still industry call attention. Fire try cell open else look.
-Price focus mean finally realize us movie. Truth deep public these.""",
+                        "en": "Decade wall thing for east later still. Number inside put fire try cell.",
                         "fr": "",
                     },
                     "meta": {},
                     "modified-at": "2017-05-21T00:00:00Z",
                     "modified-by-group": None,
                     "modified-by-user": None,
-                    "title": {"de": "", "en": "Charlotte Smith", "fr": ""},
+                    "title": {"de": "", "en": "John Fernandez", "fr": ""},
                 },
                 "id": "9dd4e461-268c-8034-f5c8-564e155c67a6",
                 "relationships": {
@@ -783,7 +783,7 @@ Price focus mean finally realize us movie. Truth deep public these.""",
                     },
                     "files": {"data": [], "meta": {"count": 0}},
                     "tags": {
-                        "data": [{"id": "animal-treat", "type": "tags"}],
+                        "data": [{"id": "fly-even-yourself", "type": "tags"}],
                         "meta": {"count": 1},
                     },
                 },
@@ -823,20 +823,19 @@ Son success provide beyond. Officer player possible issue ahead suffer.""",
                     "created-by-user": None,
                     "description": {
                         "de": "",
-                        "en": "Agency season worry take value eye sell. He consumer same season natural think Mr. Loss increase firm friend ability. Their office though television return main.",
+                        "en": """Take value eye sell them he. Less power relate fine. Where loss increase firm friend ability sing.
+Food prevent trouble cold south which general. Never form leader fund task. Major talk late yes.""",
                         "fr": "",
                     },
                     "meta": {},
                     "modified-at": "2017-05-21T00:00:00Z",
                     "modified-by-group": None,
                     "modified-by-user": None,
-                    "title": {"de": "", "en": "Thomas Hernandez", "fr": ""},
+                    "title": {"de": "", "en": "Michelle Johnson", "fr": ""},
                 },
                 "id": "f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad",
                 "relationships": {
-                    "category": {
-                        "data": {"id": "material-eight", "type": "categories"}
-                    },
+                    "category": {"data": {"id": "section-voice", "type": "categories"}},
                     "files": {"data": [], "meta": {"count": 0}},
                     "tags": {"data": [], "meta": {"count": 0}},
                 },
@@ -846,26 +845,7 @@ Son success provide beyond. Officer player possible issue ahead suffer.""",
         "included": [
             {
                 "attributes": {
-                    "created-at": "2017-05-21T00:00:00Z",
-                    "created-by-group": None,
-                    "created-by-user": None,
-                    "description": {
-                        "de": "",
-                        "en": """Raise gun second base hear human high word. Boy per news traditional article.
-Pressure dog sell maybe kitchen. Impact wide yourself win reflect purpose important.""",
-                        "fr": "",
-                    },
-                    "meta": {},
-                    "modified-at": "2017-05-21T00:00:00Z",
-                    "modified-by-group": None,
-                    "modified-by-user": None,
-                    "name": {"de": "", "en": "Tracy Elliott", "fr": ""},
-                },
-                "id": "material-eight",
-                "type": "categories",
-            },
-            {
-                "attributes": {
+                    "color": "#ea8594",
                     "created-at": "2017-05-21T00:00:00Z",
                     "created-by-group": None,
                     "created-by-user": None,
@@ -885,6 +865,7 @@ Pressure dog sell maybe kitchen. Impact wide yourself win reflect purpose import
             },
             {
                 "attributes": {
+                    "color": "#e8a78f",
                     "created-at": "2017-05-21T00:00:00Z",
                     "created-by-group": None,
                     "created-by-user": None,
@@ -905,21 +886,42 @@ Daughter single product trade.""",
             },
             {
                 "attributes": {
+                    "color": "#72e5bb",
                     "created-at": "2017-05-21T00:00:00Z",
                     "created-by-group": None,
                     "created-by-user": None,
                     "description": {
                         "de": "",
-                        "en": "State section rock event recent. Final activity hope star check record well. Radio with Mr letter eye.",
+                        "en": """Expert pressure dog. Maybe kitchen mother.
+Tell save term few military feeling. Avoid generation nearly laugh. Human great region administration bar rate threat.""",
                         "fr": "",
                     },
                     "meta": {},
                     "modified-at": "2017-05-21T00:00:00Z",
                     "modified-by-group": None,
                     "modified-by-user": None,
-                    "name": {"de": "", "en": "Mark Lopez", "fr": ""},
+                    "name": {"de": "", "en": "Dr. Ashley Oliver DDS", "fr": ""},
                 },
-                "id": "animal-treat",
+                "id": "section-voice",
+                "type": "categories",
+            },
+            {
+                "attributes": {
+                    "created-at": "2017-05-21T00:00:00Z",
+                    "created-by-group": None,
+                    "created-by-user": None,
+                    "description": {
+                        "de": "",
+                        "en": "Character last guy. Plan contain task various few. Section rock event recent public final activity hope.",
+                        "fr": "",
+                    },
+                    "meta": {},
+                    "modified-at": "2017-05-21T00:00:00Z",
+                    "modified-by-group": None,
+                    "modified-by-user": None,
+                    "name": {"de": "", "en": "Amanda Boyd", "fr": ""},
+                },
+                "id": "fly-even-yourself",
                 "type": "tags",
             },
         ],
@@ -941,7 +943,7 @@ snapshots["test_api_destroy[CategoryViewSet] 1"] = {
 snapshots["test_api_patch[FileViewSet] 1"] = {
     "queries": [],
     "request": {
-        "CONTENT_LENGTH": "588",
+        "CONTENT_LENGTH": "582",
         "CONTENT_TYPE": "application/vnd.api+json; charset=None",
         "PATH_INFO": "/api/v1/files/9336ebf2-5087-d91c-818e-e6e9ec29f8c1",
         "QUERY_STRING": "",
@@ -964,7 +966,7 @@ snapshots["test_api_patch[FileViewSet] 1"] = {
 snapshots["test_api_detail[DocumentViewSet] 1"] = {
     "queries": [
         'SELECT "alexandria_core_document"."created_at", "alexandria_core_document"."created_by_user", "alexandria_core_document"."created_by_group", "alexandria_core_document"."modified_at", "alexandria_core_document"."modified_by_user", "alexandria_core_document"."modified_by_group", "alexandria_core_document"."meta", "alexandria_core_document"."id", "alexandria_core_document"."title", "alexandria_core_document"."description", "alexandria_core_document"."category_id" FROM "alexandria_core_document" WHERE "alexandria_core_document"."id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid',
-        'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."meta", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description" FROM "alexandria_core_category" WHERE "alexandria_core_category"."slug" IN (\'mrs-shake-recent\')',
+        'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."meta", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description", "alexandria_core_category"."color" FROM "alexandria_core_category" WHERE "alexandria_core_category"."slug" IN (\'mrs-shake-recent\')',
         'SELECT ("alexandria_core_document_tags"."document_id") AS "_prefetch_related_val_document_id", "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."meta", "alexandria_core_tag"."slug", "alexandria_core_tag"."name", "alexandria_core_tag"."description" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."slug" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" IN (\'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid)',
         'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."meta", "alexandria_core_file"."id", "alexandria_core_file"."type", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id" FROM "alexandria_core_file" WHERE "alexandria_core_file"."document_id" IN (\'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid) ORDER BY "alexandria_core_file"."created_at" DESC',
     ],
@@ -983,22 +985,21 @@ snapshots["test_api_detail[DocumentViewSet] 1"] = {
                 "created-by-user": None,
                 "description": {
                     "de": "",
-                    "en": """Force run majority yourself evening that indicate. Later still industry call attention. Fire try cell open else look.
-Price focus mean finally realize us movie. Truth deep public these.""",
+                    "en": "Decade wall thing for east later still. Number inside put fire try cell.",
                     "fr": "",
                 },
                 "meta": {},
                 "modified-at": "2017-05-21T00:00:00Z",
                 "modified-by-group": None,
                 "modified-by-user": None,
-                "title": {"de": "", "en": "Charlotte Smith", "fr": ""},
+                "title": {"de": "", "en": "John Fernandez", "fr": ""},
             },
             "id": "9dd4e461-268c-8034-f5c8-564e155c67a6",
             "relationships": {
                 "category": {"data": {"id": "mrs-shake-recent", "type": "categories"}},
                 "files": {"data": [], "meta": {"count": 0}},
                 "tags": {
-                    "data": [{"id": "animal-treat", "type": "tags"}],
+                    "data": [{"id": "fly-even-yourself", "type": "tags"}],
                     "meta": {"count": 1},
                 },
             },
@@ -1007,6 +1008,7 @@ Price focus mean finally realize us movie. Truth deep public these.""",
         "included": [
             {
                 "attributes": {
+                    "color": "#ea8594",
                     "created-at": "2017-05-21T00:00:00Z",
                     "created-by-group": None,
                     "created-by-user": None,
@@ -1031,16 +1033,16 @@ Price focus mean finally realize us movie. Truth deep public these.""",
                     "created-by-user": None,
                     "description": {
                         "de": "",
-                        "en": "State section rock event recent. Final activity hope star check record well. Radio with Mr letter eye.",
+                        "en": "Character last guy. Plan contain task various few. Section rock event recent public final activity hope.",
                         "fr": "",
                     },
                     "meta": {},
                     "modified-at": "2017-05-21T00:00:00Z",
                     "modified-by-group": None,
                     "modified-by-user": None,
-                    "name": {"de": "", "en": "Mark Lopez", "fr": ""},
+                    "name": {"de": "", "en": "Amanda Boyd", "fr": ""},
                 },
-                "id": "animal-treat",
+                "id": "fly-even-yourself",
                 "type": "tags",
             },
         ],
@@ -1070,12 +1072,12 @@ snapshots["test_api_detail[FileViewSet] 1"] = {
                 "created-at": "2017-05-21T00:00:00Z",
                 "created-by-group": None,
                 "created-by-user": None,
-                "download-url": "http://minio/download-url/9336ebf2-5087-d91c-818e-e6e9ec29f8c1_Thomas Johnson",
+                "download-url": "http://minio/download-url/9336ebf2-5087-d91c-818e-e6e9ec29f8c1_Devon Cooke",
                 "meta": {},
                 "modified-at": "2017-05-21T00:00:00Z",
                 "modified-by-group": None,
                 "modified-by-user": None,
-                "name": "Thomas Johnson",
+                "name": "Devon Cooke",
                 "type": "original",
                 "upload-url": "",
             },
@@ -1100,15 +1102,14 @@ snapshots["test_api_detail[FileViewSet] 1"] = {
                     "created-by-user": None,
                     "description": {
                         "de": "",
-                        "en": """Force run majority yourself evening that indicate. Later still industry call attention. Fire try cell open else look.
-Price focus mean finally realize us movie. Truth deep public these.""",
+                        "en": "Decade wall thing for east later still. Number inside put fire try cell.",
                         "fr": "",
                     },
                     "meta": {},
                     "modified-at": "2017-05-21T00:00:00Z",
                     "modified-by-group": None,
                     "modified-by-user": None,
-                    "title": {"de": "", "en": "Charlotte Smith", "fr": ""},
+                    "title": {"de": "", "en": "John Fernandez", "fr": ""},
                 },
                 "id": "9dd4e461-268c-8034-f5c8-564e155c67a6",
                 "relationships": {
