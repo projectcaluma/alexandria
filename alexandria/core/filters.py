@@ -58,7 +58,7 @@ class DocumentFilterSet(FilterSet):
 
     class Meta:
         model = models.Document
-        fields = ["meta"]
+        fields = ["meta", "category", "tags"]
 
 
 class FileFilterSet(FilterSet):
