@@ -78,3 +78,20 @@ def test_document_search_filter(
 
     result = resp.json()
     assert len(result["data"]) == amount
+
+
+def test_tag_category_filter(db, document_factory, tag_factory, admin_client):
+    blue = tag_factory(slug="blue")
+    red = tag_factory(slug="red")
+    tag_factory(slug="green")
+    doc1 = document_factory(category__slug="cat1")
+    doc1.tags.add(blue)
+    doc2 = document_factory(category__slug="cat2")
+    doc2.tags.add(red)
+
+    url = reverse("tag-list")
+    resp = admin_client.get(url, {"filter[with-documents-in-category]": "cat1"})
+    assert resp.status_code == HTTP_200_OK
+    result = resp.json()
+    assert len(result["data"]) == 1
+    assert result["data"][0]["id"] == str(blue.pk)

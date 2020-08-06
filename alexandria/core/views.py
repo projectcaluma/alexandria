@@ -16,7 +16,7 @@ from rest_framework.viewsets import GenericViewSet
 from rest_framework_json_api import views
 
 from . import models, serializers
-from .filters import DocumentFilterSet, FileFilterSet
+from .filters import DocumentFilterSet, FileFilterSet, TagFilterSet
 from .thumbs import create_thumbnail
 
 
@@ -46,6 +46,7 @@ class CategoryViewSet(
 class TagViewSet(PermissionViewMixin, VisibilityViewMixin, views.ModelViewSet):
     serializer_class = serializers.TagSerializer
     queryset = models.Tag.objects.all()
+    filterset_class = TagFilterSet
 
 
 class DocumentViewSet(PermissionViewMixin, VisibilityViewMixin, views.ModelViewSet):
