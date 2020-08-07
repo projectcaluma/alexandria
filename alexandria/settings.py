@@ -97,6 +97,8 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
+LOCALIZED_FIELDS_EXPERIMENTAL = True
+
 
 ADMIN_USERNAME = env.str("ADMIN_USERNAME", default="admin")
 
@@ -177,6 +179,7 @@ REST_FRAMEWORK = {
         "rest_framework.filters.SearchFilter",
     ),
     "ORDERING_PARAM": "sort",
+    "SEARCH_PARAM": "filter[search]",
     "TEST_REQUEST_RENDERER_CLASSES": (
         "rest_framework_json_api.renderers.JSONRenderer",
         "rest_framework.renderers.JSONRenderer",
