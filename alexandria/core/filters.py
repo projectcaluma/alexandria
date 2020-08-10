@@ -1,7 +1,7 @@
 import json
 
 from django.contrib.postgres.fields.jsonb import KeyTextTransform
-from django_filters import Filter, FilterSet
+from django_filters import CharFilter, Filter, FilterSet
 from django_filters.constants import EMPTY_VALUES
 from rest_framework.exceptions import ValidationError
 
@@ -67,3 +67,12 @@ class FileFilterSet(FilterSet):
     class Meta:
         model = models.File
         fields = ["original", "renderings", "type", "meta"]
+
+
+class TagFilterSet(FilterSet):
+    meta = JSONValueFilter(field_name="meta")
+    with_documents_in_category = CharFilter(field_name="documents__category__slug")
+
+    class Meta:
+        model = models.Tag
+        fields = ["with_documents_in_category", "meta"]
