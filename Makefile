@@ -39,3 +39,7 @@ migrate: ## Migrate django
 .PHONY: dbshell
 dbshell: ## Start a psql shell
 	@docker-compose exec db psql -Ualexandria
+
+.PHONY: load_example_data
+load_example_data: ## Load a set of example data
+	@docker-compose run alexandria ./manage.py loaddata initial_data.json

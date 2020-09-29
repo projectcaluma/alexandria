@@ -29,6 +29,13 @@ docker-compose up -d
 
 You can now access the api at [http://localhost:8000/api/v1/](http://localhost:8000/api/v1/).
 
+### Example data
+
+To load a set of categories run the following command:
+```bash
+make load_example_data
+```
+
 ### Configuration
 
 Document Merge Service is a [12factor app](https://12factor.net/) which means that configuration is stored in environment variables.
