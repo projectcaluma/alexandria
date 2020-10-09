@@ -12,7 +12,7 @@
             "meta": {
 
             },
-            "name": "{\"en\": \"Alle Beteiligten\", \"de\": \"Alle Beteiligten\"}",
+            "name": "{\"en\": \"All involved\", \"de\": \"Alle Beteiligten\"}",
             "description": "{\"en\": \"\"}",
             "color": "#CB68C1"
         }
@@ -30,7 +30,7 @@
             "meta": {
 
             },
-            "name": "{\"de\": \"Beilagen zum Gesuch\"}",
+            "name": "{\"en\": \"Supplements to the application\",\"de\": \"Beilagen zum Gesuch\"}",
             "description": "{\"en\": \"\"}",
             "color": "#9CDD69"
         }
@@ -48,7 +48,7 @@
             "meta": {
 
             },
-            "name": "{\"de\": \"Beteiligte Beh\\u00f6rden\"}",
+            "name": "{\"en\": \"Involved Authorities\",\"de\": \"Beteiligte Beh\\u00f6rden\"}",
             "description": "{\"en\": \"\"}",
             "color": "#8791EC"
         }
@@ -66,7 +66,7 @@
             "meta": {
 
             },
-            "name": "{\"de\": \"Intern\"}",
+            "name": "{\"en\": \"Internal\",\"de\": \"Intern\"}",
             "description": "{\"en\": \"\"}",
             "color": "#DB8B72"
         }
@@ -84,7 +84,7 @@
             "meta": {
               "instanceid": "1"
             },
-            "name": "{\"de\": \"Nachforderungen\"}",
+            "name": "{\"en\": \"Additional claims\",\"de\": \"Nachforderungen\"}",
             "description": "{\"en\": \"\"}",
             "color": "#66CFC9"
         }
