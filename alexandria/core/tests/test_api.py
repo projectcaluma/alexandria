@@ -117,7 +117,9 @@ def prefetch_query_in_normalizer(query):
     return query
 
 
-def assert_response(response, query_context, snapshot, include_json=True):
+def assert_response(
+    response, query_context, snapshot, *, request_payload=None, include_json=True
+):
     value = {
         "status": response.status_code,
         "queries": [
@@ -127,6 +129,7 @@ def assert_response(response, query_context, snapshot, include_json=True):
         "request": {
             k: v for k, v in response.request.items() if not k.startswith("wsgi")
         },
+        "request_payload": json.loads(request_payload) if request_payload else None,
     }
 
     # Drop `SAVEPOINT` statements because they will change on every run.
@@ -179,7 +182,7 @@ def test_api_create(fixture, admin_client, viewset, snapshot, minio_mock):
     with CaptureQueriesContext(connection) as context:
         response = admin_client.post(url, data=json.loads(data))
 
-    assert_response(response, context, snapshot)
+    assert_response(response, context, snapshot, request_payload=data)
 
 
 @pytest.mark.freeze_time("2017-05-21")
@@ -194,7 +197,7 @@ def test_api_patch(fixture, admin_client, viewset, snapshot, minio_mock):
     with CaptureQueriesContext(connection) as context:
         response = admin_client.patch(url, data=json.loads(data))
 
-    assert_response(response, context, snapshot)
+    assert_response(response, context, snapshot, request_payload=data)
 
 
 @pytest.mark.freeze_time("2017-05-21")
@@ -204,4 +207,4 @@ def test_api_destroy(fixture, admin_client, snapshot, viewset, minio_mock):
     with CaptureQueriesContext(connection) as context:
         response = admin_client.delete(url)
 
-    assert_response(response, context, snapshot, False)
+    assert_response(response, context, snapshot, include_json=False)
