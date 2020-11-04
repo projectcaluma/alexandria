@@ -1,5 +1,3 @@
-"""Module to test api in a generic way."""
-
 import pytest
 from django.urls import reverse
 
