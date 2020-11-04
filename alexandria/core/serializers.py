@@ -1,4 +1,6 @@
 from django.contrib.auth.models import AnonymousUser
+from django.template.defaultfilters import slugify
+from django.utils import translation
 from rest_framework.exceptions import ValidationError
 from rest_framework_json_api import serializers
 
@@ -37,16 +39,40 @@ class BaseSerializer(serializers.ModelSerializer):
         )
 
 
-class CategorySerializer(BaseSerializer):
+class SlugModelSerializer(BaseSerializer):
+    """
+    Ensure on creation that the model will receive a slug.
+
+    If no slug is passed via API, one is derived from the `name` field of
+    the model, via Django's `slugify()` helper. If the model in question
+    does not have a `name` field, you can specify a `slug_source_field`
+    attribute on your serializer's `Meta` class to tell it which
+    field to use instead.
+    """
+
+    def create(self, validated_data):
+        slug_field = getattr(self.Meta, "slug_source_field", "name")
+        if "slug" not in validated_data:
+            slug_source_value = validated_data.get(slug_field)
+            if isinstance(slug_source_value, dict):
+                lang = translation.get_language()
+                slug_source_value = slug_source_value.get(lang)
+            validated_data["slug"] = slugify(slug_source_value)
+
+        return super().create(validated_data)
+
+
+class CategorySerializer(SlugModelSerializer):
     class Meta:
         model = models.Category
-        fields = BaseSerializer.Meta.fields + ("name", "description", "color")
+        fields = SlugModelSerializer.Meta.fields + ("name", "description", "color")
 
 
-class TagSerializer(BaseSerializer):
+class TagSerializer(SlugModelSerializer):
     class Meta:
         model = models.Tag
-        fields = BaseSerializer.Meta.fields + ("name", "description")
+        fields = SlugModelSerializer.Meta.fields + ("name", "description")
+        slug_source_field = "name"
 
 
 class FileSerializer(BaseSerializer):
