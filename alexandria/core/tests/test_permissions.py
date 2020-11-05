@@ -1,4 +1,5 @@
 import pytest
+from django.contrib.auth.models import AnonymousUser
 from django.core.exceptions import ImproperlyConfigured
 from django.urls import reverse
 from rest_framework.status import (
@@ -8,9 +9,10 @@ from rest_framework.status import (
     HTTP_403_FORBIDDEN,
 )
 
-from alexandria.core.models import Document, PermissionMixin, Tag
+from alexandria.core.models import Document, File, PermissionMixin, Tag
 from alexandria.core.permissions import (
     BasePermission,
+    IsAuthenticated,
     object_permission_for,
     permission_for,
 )
@@ -171,3 +173,24 @@ def test_custom_permission_override_has_object_permission_with_multiple_mutation
 
     assert not CustomPermission().has_object_permission(Document, request, document)
     assert not CustomPermission().has_object_permission(Tag, request, tag)
+
+
+@pytest.mark.parametrize(
+    "authenticated, expect_permission", [(True, True), (False, False)]
+)
+def test_authenticated_permission(
+    db, document, authenticated, expect_permission, mocker, user
+):
+    request = mocker.MagicMock()
+    request.user = user if authenticated else AnonymousUser()
+
+    permissions = IsAuthenticated()
+    perms = [
+        permissions.has_permission(Document, request),
+        permissions.has_object_permission(Document, request, document),
+        permissions.has_permission(Tag, request),
+        permissions.has_object_permission(Tag, request, document),
+        permissions.has_permission(File, request),
+        permissions.has_object_permission(File, request, document),
+    ]
+    assert perms == [expect_permission for _ in perms]

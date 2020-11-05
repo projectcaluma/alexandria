@@ -13,6 +13,7 @@ from alexandria.core.models import (
     VisibilityMixin,
 )
 from alexandria.core.visibilities import (
+    Authenticated,
     BaseVisibility,
     OwnAndAdmin,
     Union,
@@ -244,3 +245,19 @@ def test_own_and_admin_visibility(
 
     result = OwnAndAdmin().filter_queryset(File, File.objects, request)
     assert result.count() == expected_count
+
+
+@pytest.mark.parametrize("authenticated, expected_count", [(True, 1), (False, 0)])
+def test_authenticated_visibility(
+    db, document, tag, file, authenticated, expected_count, mocker, user
+):
+    request = mocker.MagicMock()
+    request.user = user if authenticated else AnonymousUser()
+
+    visibility = Authenticated()
+    perms = [
+        visibility.filter_queryset(Document, Document.objects.all(), request).count(),
+        visibility.filter_queryset(Tag, Tag.objects.all(), request).count(),
+        visibility.filter_queryset(File, File.objects.all(), request).count(),
+    ]
+    assert perms == [expected_count for _ in perms]
