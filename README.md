@@ -38,15 +38,21 @@ Different environment variable types are explained at [django-environ](https://g
 
 A list of configuration options which you need
 
-* `SECRET_KEY`: A secret key used for cryptography. This needs to be a random string of a certain length. See [more](https://docs.djangoproject.com/en/2.1/ref/settings/#std:setting-SECRET_KEY).
-* `ALLOWED_HOSTS`: A list of hosts/domains your service will be served from. See [more](https://docs.djangoproject.com/en/2.1/ref/settings/#allowed-hosts).
-* `DATABASE_ENGINE`: Database backend to use. See [more](https://docs.djangoproject.com/en/2.1/ref/settings/#std:setting-DATABASE-ENGINE). (default: django.db.backends.postgresql)
-* `DATABASE_HOST`: Host to use when connecting to database (default: localhost)
-* `DATABASE_PORT`: Port to use when connecting to database (default: 5432)
-* `DATABASE_NAME`: Name of database to use (default: alexandria)
-* `DATABASE_USER`: Username to use when connecting to the database (default: alexandria)
-* `DATABASE_PASSWORD`: Password to use when connecting to database
-
+* Django configuration
+  * `SECRET_KEY`: A secret key used for cryptography. This needs to be a random string of a certain length. See [more](https://docs.djangoproject.com/en/2.1/ref/settings/#std:setting-SECRET_KEY).
+  * `ALLOWED_HOSTS`: A list of hosts/domains your service will be served from. See [more](https://docs.djangoproject.com/en/2.1/ref/settings/#allowed-hosts).
+  * `DATABASE_ENGINE`: Database backend to use. See [more](https://docs.djangoproject.com/en/2.1/ref/settings/#std:setting-DATABASE-ENGINE). (default: django.db.backends.postgresql)
+  * `DATABASE_HOST`: Host to use when connecting to database (default: localhost)
+  * `DATABASE_PORT`: Port to use when connecting to database (default: 5432)
+  * `DATABASE_NAME`: Name of database to use (default: alexandria)
+  * `DATABASE_USER`: Username to use when connecting to the database (default: alexandria)
+  * `DATABASE_PASSWORD`: Password to use when connecting to database
+* Authentication configuration
+  * `OIDC_OP_USER_ENDPOINT`: Userinfo endpoint for OIDC
+  * `OIDC_VERIFY_SSL`: Set to `false` if you want to disable verifying SSL certs. Useful for development
+* Authorization configurations
+  * `VISIBILITY_CLASSES`: Comma-separated list of classes that define visibility for all models
+  * `PERMISSION_CLASSES` Comma-separated list of classes that define permissions for all models
 ## Contributing
 
 Look at our [contributing guidelines](CONTRIBUTING.md) to start with your first contribution.

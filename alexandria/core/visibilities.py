@@ -129,3 +129,19 @@ class Union(BaseVisibility):
             queryset = queryset.filter(pk__in=result_queryset.values("pk"))
 
         return queryset
+
+
+class Authenticated(BaseVisibility):
+    """
+    Visibility for authenticated users.
+
+    This is useful if you only ever want to show data
+    to authenticated users.
+
+    If you want to make an exception, you can subclass this
+    and implement the corresponding filter.
+    """
+
+    @filter_queryset_for(models.BaseModel)
+    def filter_for_authenticated(self, queryset, request):
+        return queryset.none() if isinstance(request.user, AnonymousUser) else queryset

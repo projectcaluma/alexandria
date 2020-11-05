@@ -1,8 +1,10 @@
 import inspect
 
+from django.contrib.auth.models import AnonymousUser
 from django.core.exceptions import ImproperlyConfigured
 
 from .collections import list_duplicates
+from .models import BaseModel
 
 
 def permission_for(model):
@@ -111,3 +113,21 @@ class BasePermission(object):
 
 class AllowAny(BasePermission):
     pass
+
+
+class IsAuthenticated(BasePermission):
+    """
+    Allow access only to authenticated users.
+
+    You can either use this in combination with your own permission
+    classes, or inherit from it if you want *some* models to be accessible
+    publicly.
+    """
+
+    @permission_for(BaseModel)
+    def base_permission(self, request):
+        return not isinstance(request.user, AnonymousUser)
+
+    @object_permission_for(BaseModel)
+    def base_object_permission(self, request, instance):
+        return self.base_permission(request)
