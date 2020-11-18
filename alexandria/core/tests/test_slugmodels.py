@@ -24,8 +24,8 @@ def test_create_tags(admin_client):
                 "id": name_en,
                 "attributes": {
                     "created-at": "2017-05-21T00:00:00Z",
-                    "created-by-user": None,
-                    "created-by-group": None,
+                    "created-by-user": "admin",
+                    "created-by-group": "admin",
                     "modified-at": "2017-05-21T00:00:00Z",
                     "modified-by-user": "admin",
                     "modified-by-group": "admin",

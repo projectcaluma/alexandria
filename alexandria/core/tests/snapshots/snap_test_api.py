@@ -4,7 +4,6 @@ from __future__ import unicode_literals
 
 from snapshottest import Snapshot
 
-
 snapshots = Snapshot()
 
 snapshots["test_api_list[FileViewSet] 1"] = {
@@ -230,7 +229,7 @@ Their office though television return main.""",
 
 snapshots["test_api_create[TagViewSet] 1"] = {
     "queries": [
-        "INSERT INTO \"alexandria_core_tag\" (\"created_at\", \"created_by_user\", \"created_by_group\", \"modified_at\", \"modified_by_user\", \"modified_by_group\", \"meta\", \"slug\", \"name\", \"description\") VALUES ('2017-05-21T00:00:00+00:00'::timestamptz, NULL, NULL, '2017-05-21T00:00:00+00:00'::timestamptz, 'admin', 'admin', '{}', 'jordan-mccarthy', hstore(ARRAY['en','de','fr'], ARRAY['Jordan Mccarthy','','']), hstore(ARRAY['en','de','fr'], ARRAY['Bit among again across environment long line. Team suggest traditional boy above.','','']))"
+        "INSERT INTO \"alexandria_core_tag\" (\"created_at\", \"created_by_user\", \"created_by_group\", \"modified_at\", \"modified_by_user\", \"modified_by_group\", \"meta\", \"slug\", \"name\", \"description\") VALUES ('2017-05-21T00:00:00+00:00'::timestamptz, 'admin', 'admin', '2017-05-21T00:00:00+00:00'::timestamptz, 'admin', 'admin', '{}', 'jordan-mccarthy', hstore(ARRAY['en','de','fr'], ARRAY['Jordan Mccarthy','','']), hstore(ARRAY['en','de','fr'], ARRAY['Bit among again across environment long line. Team suggest traditional boy above.','','']))"
     ],
     "request": {
         "CONTENT_LENGTH": "411",
@@ -265,8 +264,8 @@ snapshots["test_api_create[TagViewSet] 1"] = {
         "data": {
             "attributes": {
                 "created-at": "2017-05-21T00:00:00Z",
-                "created-by-group": None,
-                "created-by-user": None,
+                "created-by-group": "admin",
+                "created-by-user": "admin",
                 "description": {
                     "de": "",
                     "en": "Bit among again across environment long line. Team suggest traditional boy above.",
@@ -382,7 +381,7 @@ snapshots["test_api_destroy[FileViewSet] 1"] = {
 snapshots["test_api_create[FileViewSet] 1"] = {
     "queries": [
         'SELECT "alexandria_core_document"."created_at", "alexandria_core_document"."created_by_user", "alexandria_core_document"."created_by_group", "alexandria_core_document"."modified_at", "alexandria_core_document"."modified_by_user", "alexandria_core_document"."modified_by_group", "alexandria_core_document"."meta", "alexandria_core_document"."id", "alexandria_core_document"."title", "alexandria_core_document"."description", "alexandria_core_document"."category_id" FROM "alexandria_core_document" WHERE "alexandria_core_document"."id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid',
-        'INSERT INTO "alexandria_core_file" ("created_at", "created_by_user", "created_by_group", "modified_at", "modified_by_user", "modified_by_group", "meta", "id", "type", "original_id", "name", "document_id") VALUES (\'2017-05-21T00:00:00+00:00\'::timestamptz, NULL, NULL, \'2017-05-21T00:00:00+00:00\'::timestamptz, \'admin\', \'admin\', \'{}\', \'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad\'::uuid, \'original\', NULL, \'Devon Cooke\', \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid)',
+        'INSERT INTO "alexandria_core_file" ("created_at", "created_by_user", "created_by_group", "modified_at", "modified_by_user", "modified_by_group", "meta", "id", "type", "original_id", "name", "document_id") VALUES (\'2017-05-21T00:00:00+00:00\'::timestamptz, \'admin\', \'admin\', \'2017-05-21T00:00:00+00:00\'::timestamptz, \'admin\', \'admin\', \'{}\', \'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad\'::uuid, \'original\', NULL, \'Devon Cooke\', \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid)',
         'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."meta", "alexandria_core_file"."id", "alexandria_core_file"."type", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id" FROM "alexandria_core_file" WHERE "alexandria_core_file"."original_id" = \'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad\'::uuid ORDER BY "alexandria_core_file"."created_at" DESC',
     ],
     "request": {
@@ -426,8 +425,8 @@ snapshots["test_api_create[FileViewSet] 1"] = {
         "data": {
             "attributes": {
                 "created-at": "2017-05-21T00:00:00Z",
-                "created-by-group": None,
-                "created-by-user": None,
+                "created-by-group": "admin",
+                "created-by-user": "admin",
                 "download-url": "http://minio/download-url/f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad_Devon Cooke",
                 "meta": {},
                 "modified-at": "2017-05-21T00:00:00Z",
@@ -459,7 +458,7 @@ snapshots["test_api_patch[DocumentViewSet] 1"] = {
         'SELECT "alexandria_core_document"."created_at", "alexandria_core_document"."created_by_user", "alexandria_core_document"."created_by_group", "alexandria_core_document"."modified_at", "alexandria_core_document"."modified_by_user", "alexandria_core_document"."modified_by_group", "alexandria_core_document"."meta", "alexandria_core_document"."id", "alexandria_core_document"."title", "alexandria_core_document"."description", "alexandria_core_document"."category_id" FROM "alexandria_core_document" WHERE "alexandria_core_document"."id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid',
         'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."meta", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description", "alexandria_core_category"."color" FROM "alexandria_core_category" WHERE "alexandria_core_category"."slug" = \'mrs-shake-recent\'',
         'SELECT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."meta", "alexandria_core_tag"."slug", "alexandria_core_tag"."name", "alexandria_core_tag"."description" FROM "alexandria_core_tag" WHERE "alexandria_core_tag"."slug" = \'fly-even-yourself\'',
-        "UPDATE \"alexandria_core_document\" SET \"created_at\" = '2017-05-21T00:00:00+00:00'::timestamptz, \"created_by_user\" = 'admin', \"created_by_group\" = 'admin', \"modified_at\" = '2017-05-21T00:00:00+00:00'::timestamptz, \"modified_by_user\" = 'admin', \"modified_by_group\" = 'admin', \"meta\" = '{}', \"title\" = hstore(ARRAY['en','de','fr'], ARRAY['John Fernandez','','']), \"description\" = hstore(ARRAY['en','de','fr'], ARRAY['Decade wall thing for east later still. Number inside put fire try cell.','','']), \"category_id\" = 'mrs-shake-recent' WHERE \"alexandria_core_document\".\"id\" = '9dd4e461-268c-8034-f5c8-564e155c67a6'::uuid",
+        "UPDATE \"alexandria_core_document\" SET \"created_at\" = '2017-05-21T00:00:00+00:00'::timestamptz, \"created_by_user\" = NULL, \"created_by_group\" = NULL, \"modified_at\" = '2017-05-21T00:00:00+00:00'::timestamptz, \"modified_by_user\" = 'admin', \"modified_by_group\" = 'admin', \"meta\" = '{}', \"title\" = hstore(ARRAY['en','de','fr'], ARRAY['John Fernandez','','']), \"description\" = hstore(ARRAY['en','de','fr'], ARRAY['Decade wall thing for east later still. Number inside put fire try cell.','','']), \"category_id\" = 'mrs-shake-recent' WHERE \"alexandria_core_document\".\"id\" = '9dd4e461-268c-8034-f5c8-564e155c67a6'::uuid",
         'SELECT "alexandria_core_tag"."slug" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."slug" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid',
         'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."meta", "alexandria_core_file"."id", "alexandria_core_file"."type", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id" FROM "alexandria_core_file" WHERE "alexandria_core_file"."document_id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid ORDER BY "alexandria_core_file"."created_at" DESC',
         'SELECT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."meta", "alexandria_core_tag"."slug", "alexandria_core_tag"."name", "alexandria_core_tag"."description" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."slug" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid',
@@ -505,8 +504,8 @@ snapshots["test_api_patch[DocumentViewSet] 1"] = {
         "data": {
             "attributes": {
                 "created-at": "2017-05-21T00:00:00Z",
-                "created-by-group": "admin",
-                "created-by-user": "admin",
+                "created-by-group": None,
+                "created-by-user": None,
                 "description": {
                     "de": "",
                     "en": "Decade wall thing for east later still. Number inside put fire try cell.",
@@ -537,7 +536,7 @@ snapshots["test_api_create[DocumentViewSet] 1"] = {
     "queries": [
         'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."meta", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description", "alexandria_core_category"."color" FROM "alexandria_core_category" WHERE "alexandria_core_category"."slug" = \'mrs-shake-recent\'',
         'SELECT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."meta", "alexandria_core_tag"."slug", "alexandria_core_tag"."name", "alexandria_core_tag"."description" FROM "alexandria_core_tag" WHERE "alexandria_core_tag"."slug" = \'fly-even-yourself\'',
-        "INSERT INTO \"alexandria_core_document\" (\"created_at\", \"created_by_user\", \"created_by_group\", \"modified_at\", \"modified_by_user\", \"modified_by_group\", \"meta\", \"id\", \"title\", \"description\", \"category_id\") VALUES ('2017-05-21T00:00:00+00:00'::timestamptz, NULL, NULL, '2017-05-21T00:00:00+00:00'::timestamptz, 'admin', 'admin', '{}', '9336ebf2-5087-d91c-818e-e6e9ec29f8c1'::uuid, hstore(ARRAY['en','de','fr'], ARRAY['John Fernandez','','']), hstore(ARRAY['en','de','fr'], ARRAY['Decade wall thing for east later still. Number inside put fire try cell.','','']), 'mrs-shake-recent')",
+        "INSERT INTO \"alexandria_core_document\" (\"created_at\", \"created_by_user\", \"created_by_group\", \"modified_at\", \"modified_by_user\", \"modified_by_group\", \"meta\", \"id\", \"title\", \"description\", \"category_id\") VALUES ('2017-05-21T00:00:00+00:00'::timestamptz, 'admin', 'admin', '2017-05-21T00:00:00+00:00'::timestamptz, 'admin', 'admin', '{}', '9336ebf2-5087-d91c-818e-e6e9ec29f8c1'::uuid, hstore(ARRAY['en','de','fr'], ARRAY['John Fernandez','','']), hstore(ARRAY['en','de','fr'], ARRAY['Decade wall thing for east later still. Number inside put fire try cell.','','']), 'mrs-shake-recent')",
         'SELECT "alexandria_core_tag"."slug" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."slug" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" = \'9336ebf2-5087-d91c-818e-e6e9ec29f8c1\'::uuid',
         'SELECT "alexandria_core_document_tags"."tag_id" FROM "alexandria_core_document_tags" WHERE ("alexandria_core_document_tags"."document_id" = \'9336ebf2-5087-d91c-818e-e6e9ec29f8c1\'::uuid AND "alexandria_core_document_tags"."tag_id" IN (\'fly-even-yourself\'))',
         'INSERT INTO "alexandria_core_document_tags" ("document_id", "tag_id") VALUES (\'9336ebf2-5087-d91c-818e-e6e9ec29f8c1\'::uuid, \'fly-even-yourself\') RETURNING "alexandria_core_document_tags"."id"',
@@ -585,8 +584,8 @@ snapshots["test_api_create[DocumentViewSet] 1"] = {
         "data": {
             "attributes": {
                 "created-at": "2017-05-21T00:00:00Z",
-                "created-by-group": None,
-                "created-by-user": None,
+                "created-by-group": "admin",
+                "created-by-user": "admin",
                 "description": {
                     "de": "",
                     "en": "Decade wall thing for east later still. Number inside put fire try cell.",
@@ -616,7 +615,7 @@ snapshots["test_api_create[DocumentViewSet] 1"] = {
 snapshots["test_api_patch[TagViewSet] 1"] = {
     "queries": [
         'SELECT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."meta", "alexandria_core_tag"."slug", "alexandria_core_tag"."name", "alexandria_core_tag"."description" FROM "alexandria_core_tag" WHERE "alexandria_core_tag"."slug" = \'mrs-shake-recent\'',
-        "UPDATE \"alexandria_core_tag\" SET \"created_at\" = '2017-05-21T00:00:00+00:00'::timestamptz, \"created_by_user\" = 'admin', \"created_by_group\" = 'admin', \"modified_at\" = '2017-05-21T00:00:00+00:00'::timestamptz, \"modified_by_user\" = 'admin', \"modified_by_group\" = 'admin', \"meta\" = '{}', \"name\" = hstore(ARRAY['en','de','fr'], ARRAY['Jordan Mccarthy','','']), \"description\" = hstore(ARRAY['en','de','fr'], ARRAY['Bit among again across environment long line. Team suggest traditional boy above.','','']) WHERE \"alexandria_core_tag\".\"slug\" = 'mrs-shake-recent'",
+        "UPDATE \"alexandria_core_tag\" SET \"created_at\" = '2017-05-21T00:00:00+00:00'::timestamptz, \"created_by_user\" = NULL, \"created_by_group\" = NULL, \"modified_at\" = '2017-05-21T00:00:00+00:00'::timestamptz, \"modified_by_user\" = 'admin', \"modified_by_group\" = 'admin', \"meta\" = '{}', \"name\" = hstore(ARRAY['en','de','fr'], ARRAY['Jordan Mccarthy','','']), \"description\" = hstore(ARRAY['en','de','fr'], ARRAY['Bit among again across environment long line. Team suggest traditional boy above.','','']) WHERE \"alexandria_core_tag\".\"slug\" = 'mrs-shake-recent'",
     ],
     "request": {
         "CONTENT_LENGTH": "411",
@@ -651,8 +650,8 @@ snapshots["test_api_patch[TagViewSet] 1"] = {
         "data": {
             "attributes": {
                 "created-at": "2017-05-21T00:00:00Z",
-                "created-by-group": "admin",
-                "created-by-user": "admin",
+                "created-by-group": None,
+                "created-by-user": None,
                 "description": {
                     "de": "",
                     "en": "Bit among again across environment long line. Team suggest traditional boy above.",

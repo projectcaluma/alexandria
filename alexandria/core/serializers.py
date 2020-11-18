@@ -22,7 +22,7 @@ class BaseSerializer(serializers.ModelSerializer):
 
         validated_data["modified_by_user"] = user.username
         validated_data["modified_by_group"] = group
-        if self.instance is not None:
+        if self.instance is None:
             validated_data["created_by_user"] = user.username
             validated_data["created_by_group"] = group
         return validated_data
