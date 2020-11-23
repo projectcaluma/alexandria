@@ -9,6 +9,8 @@ from rest_framework.status import (
 
 from alexandria.core.models import File
 
+from ..views import DocumentViewSet, FileViewSet, TagViewSet
+
 
 @pytest.mark.parametrize("allow_anon", [True, False])
 @pytest.mark.parametrize("method", ["post", "patch"])
@@ -196,3 +198,43 @@ def test_hook_view(
         assert File.objects.count() == 1
 
     assert len(list(settings.THUMBNAIL_CACHE_DIR.iterdir())) == 0
+
+
+@pytest.mark.parametrize(
+    "admin_groups, active_group, expect_failure",
+    [
+        (["foo", "bar"], "foo", False),
+        (["foo", "bar"], None, False),
+        (["foo", "bar"], "somethingelse", True),
+    ],
+)
+@pytest.mark.parametrize("viewset", [DocumentViewSet, FileViewSet, TagViewSet])
+def test_validate_created_by_group(
+    db, viewset, request, admin_client, active_group, expect_failure
+):
+    viewset_inst = viewset()
+    model_name = viewset_inst.queryset.model.__name__.lower()
+    model = request.getfixturevalue(f"{model_name}_factory").create()
+    serializer = viewset_inst.serializer_class()
+    serialized_model = serializer.to_representation(model)
+
+    # delete model in the DB so we can then create it via API
+    model.delete()
+    serialized_model["created_by_group"] = active_group
+
+    post_data = {
+        # Note: model name pluralisation may not always be with an "s" suffix,
+        # but for now, this holds true
+        "data": {"attributes": serialized_model, "type": f"{model_name}s"}
+    }
+
+    url = reverse(f"{model_name}-list")
+
+    if expect_failure:
+        response = admin_client.post(url, post_data)
+        assert response.status_code == HTTP_400_BAD_REQUEST
+
+    else:
+        response = admin_client.post(url, post_data)
+        # we expect no filtering
+        assert response.status_code == HTTP_201_CREATED

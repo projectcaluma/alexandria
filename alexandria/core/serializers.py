@@ -18,14 +18,30 @@ class BaseSerializer(serializers.ModelSerializer):
             self.instance.check_object_permissions(self.context["request"])
 
         user = self.context["request"].user
-        group = user.group if not isinstance(user, AnonymousUser) else None
+        default_group = user.group if not isinstance(user, AnonymousUser) else None
 
         validated_data["modified_by_user"] = user.username
-        validated_data["modified_by_group"] = group
+        if not validated_data.get("modified_by_group"):
+            validated_data["modified_by_group"] = default_group
         if self.instance is None:
             validated_data["created_by_user"] = user.username
-            validated_data["created_by_group"] = group
+            if not validated_data.get("created_by_group"):
+                validated_data["created_by_group"] = default_group
         return validated_data
+
+    def validate_created_by_group(self, value):
+        return self._validate_group(value, "created_by_group")
+
+    def validate_modified_by_group(self, value):
+        return self._validate_group(value, "modified_by_group")
+
+    def _validate_group(self, value, field_name):
+        user = self.context["request"].user
+        if value and value not in user.groups:
+            raise ValidationError(
+                f"Given {field_name} '{value}' is not part of user's assigned groups"
+            )
+        return value
 
     class Meta:
         fields = (
