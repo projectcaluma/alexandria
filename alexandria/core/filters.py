@@ -53,8 +53,29 @@ class JSONValueFilter(Filter):
         return qs
 
 
+class ActiveGroupFilter(CharFilter):
+    def filter(self, qs, value):
+        if value in EMPTY_VALUES:
+            return qs
+        if value not in self.parent.request.user.groups:
+            raise ValidationError(
+                f"Active group '{value}' is not part of user's assigned groups"
+            )
+        return qs
+
+
+class CategoryFilterSet(FilterSet):
+    meta = JSONValueFilter(field_name="meta")
+    active_group = ActiveGroupFilter()
+
+    class Meta:
+        model = models.Category
+        fields = ["active_group", "meta"]
+
+
 class DocumentFilterSet(FilterSet):
     meta = JSONValueFilter(field_name="meta")
+    active_group = ActiveGroupFilter()
 
     class Meta:
         model = models.Document
@@ -63,6 +84,7 @@ class DocumentFilterSet(FilterSet):
 
 class FileFilterSet(FilterSet):
     meta = JSONValueFilter(field_name="meta")
+    active_group = ActiveGroupFilter()
 
     class Meta:
         model = models.File
@@ -71,6 +93,7 @@ class FileFilterSet(FilterSet):
 
 class TagFilterSet(FilterSet):
     meta = JSONValueFilter(field_name="meta")
+    active_group = ActiveGroupFilter()
     with_documents_in_category = CharFilter(field_name="documents__category__slug")
 
     class Meta:
