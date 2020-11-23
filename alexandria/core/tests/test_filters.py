@@ -4,6 +4,8 @@ import pytest
 from django.urls import reverse
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 
+from ..views import CategoryViewSet, DocumentViewSet, FileViewSet, TagViewSet
+
 
 @pytest.mark.parametrize(
     "value,status_code",
@@ -95,3 +97,38 @@ def test_tag_category_filter(db, document_factory, tag_factory, admin_client):
     result = resp.json()
     assert len(result["data"]) == 1
     assert result["data"][0]["id"] == str(blue.pk)
+
+
+@pytest.mark.parametrize(
+    "admin_groups, active_group, expect_failure",
+    [
+        (["foo", "bar"], "foo", False),
+        (["foo", "bar"], None, False),
+        (["foo", "bar"], "somethingelse", True),
+    ],
+)
+@pytest.mark.parametrize(
+    "viewset", [CategoryViewSet, DocumentViewSet, FileViewSet, TagViewSet]
+)
+def test_active_group_filter(
+    db, viewset, request, admin_client, active_group, expect_failure
+):
+    viewset_inst = viewset()
+    model_name = viewset_inst.queryset.model.__name__.lower()
+    records = request.getfixturevalue(f"{model_name}_factory").create_batch(2)
+    url = reverse(f"{model_name}-list")
+
+    filter = {"filter[activeGroup]": active_group} if active_group is not None else {}
+
+    if expect_failure:
+        # with pytest.raises(ValidationError):
+        response = admin_client.get(url, filter)
+        assert response.status_code == HTTP_400_BAD_REQUEST
+
+    else:
+        response = admin_client.get(url, filter)
+        # we expect no filtering
+        assert response.status_code == HTTP_200_OK
+        # >= as there might be leftovers from other tests (shouldn't but may happen.)
+        # Important is that the filter doesn't LIMIT its output
+        assert len(response.json()["data"]) >= len(records)
