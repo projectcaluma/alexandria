@@ -127,7 +127,7 @@ class Category(SlugModel):
 
 
 class Tag(SlugModel):
-    name = LocalizedCharField(_("tag name"), blank=False, null=False, required=False)
+    name = models.CharField(_("tag name"), blank=False, null=False, max_length=100)
     description = LocalizedTextField(
         _("tag description"), null=True, blank=True, required=False
     )

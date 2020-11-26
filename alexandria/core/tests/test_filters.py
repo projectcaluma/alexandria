@@ -63,8 +63,8 @@ def test_document_search_filter(
 
     This test makes sure that search lookups are restricted to the current language.
     """
-    tag1 = tag_factory(name={"en": "foo_tag", "de": "bar_tag"})  # matches
-    tag2 = tag_factory(name={"en": "bar_tag", "de": "foo_tag"})  # doesn't match
+    tag1 = tag_factory(name="bar_tag")  # matches
+    tag2 = tag_factory(name="foo_tag")  # doesn't match
     doc = document_factory(title={"en": "foo_title", "de": "bar_title"})  # matches
     doc2 = document_factory(
         title={"en": "bar_title", "de": "foo_title"}
@@ -168,3 +168,27 @@ def test_active_group_filter(
         # >= as there might be leftovers from other tests (shouldn't but may happen.)
         # Important is that the filter doesn't LIMIT its output
         assert len(response.json()["data"]) >= len(records)
+
+
+@pytest.mark.parametrize(
+    "mangle",
+    [
+        lambda name: name.lower(),
+        lambda name: name.upper(),
+        lambda name: name.lower()[:-3],
+        lambda name: name.lower()[:-3],
+        lambda name: name.upper()[:-3],
+    ],
+)
+def test_tag_search(db, tag_factory, mangle, admin_client):
+    tags = tag_factory.create_batch(4)
+
+    search = mangle(tags[0].name)
+
+    url = reverse("tag-list")
+    resp = admin_client.get(url, {"filter[name]": search})
+    assert resp.status_code == HTTP_200_OK
+    result = resp.json()
+
+    received_ids = set([obj["id"] for obj in result["data"]])
+    assert str(tags[0].pk) in received_ids

@@ -70,7 +70,7 @@ class SlugModelSerializer(BaseSerializer):
         slug_field = getattr(self.Meta, "slug_source_field", "name")
         if "slug" not in validated_data:
             slug_source_value = validated_data.get(slug_field)
-            if isinstance(slug_source_value, dict):
+            if isinstance(slug_source_value, dict):  # pragma: todo cover
                 lang = translation.get_language()
                 slug_source_value = slug_source_value.get(lang)
             validated_data["slug"] = slugify(slug_source_value)
