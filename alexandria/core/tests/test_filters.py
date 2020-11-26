@@ -100,6 +100,42 @@ def test_tag_category_filter(db, document_factory, tag_factory, admin_client):
 
 
 @pytest.mark.parametrize(
+    "tag_filter, expect_documents",
+    [
+        ("blue", ["doc1"]),
+        ("green", ["doc1", "doc2"]),
+        ("green,red", ["doc2"]),
+        ("pink,green", ["doc1"]),
+    ],
+)
+def test_tag_filter(
+    db, document_factory, tag_factory, tag_filter, expect_documents, admin_client
+):
+    blue = tag_factory(slug="blue")
+    red = tag_factory(slug="red")
+    green = tag_factory(slug="green")
+    pink = tag_factory(slug="pink")
+
+    doc1 = document_factory()
+    doc1.tags.add(blue)
+    doc1.tags.add(green)
+    doc1.tags.add(pink)
+    doc2 = document_factory()
+    doc2.tags.add(red)
+    doc2.tags.add(green)
+
+    documents = {"doc1": doc1, "doc2": doc2}
+
+    url = reverse("document-list")
+    resp = admin_client.get(url, {"filter[tags]": tag_filter})
+    assert resp.status_code == HTTP_200_OK
+    result = resp.json()
+    received_ids = set([obj["id"] for obj in result["data"]])
+    expected_ids = set([str(documents[doc].pk) for doc in expect_documents])
+    assert received_ids == expected_ids
+
+
+@pytest.mark.parametrize(
     "admin_groups, active_group, expect_failure",
     [
         (["foo", "bar"], "foo", False),

@@ -1,7 +1,7 @@
 import json
 
 from django.contrib.postgres.fields.jsonb import KeyTextTransform
-from django_filters import CharFilter, Filter, FilterSet
+from django_filters import BaseInFilter, CharFilter, Filter, FilterSet
 from django_filters.constants import EMPTY_VALUES
 from rest_framework.exceptions import ValidationError
 
@@ -64,6 +64,17 @@ class ActiveGroupFilter(CharFilter):
         return qs
 
 
+class TagsFilter(BaseInFilter):
+    def filter(self, qs, value):
+        if value in EMPTY_VALUES:
+            return qs
+        # Documents must have all given tags
+        for tag in value:
+            qs = qs.filter(tags__pk=tag)
+
+        return qs
+
+
 class CategoryFilterSet(FilterSet):
     meta = JSONValueFilter(field_name="meta")
     active_group = ActiveGroupFilter()
@@ -76,6 +87,7 @@ class CategoryFilterSet(FilterSet):
 class DocumentFilterSet(FilterSet):
     meta = JSONValueFilter(field_name="meta")
     active_group = ActiveGroupFilter()
+    tags = TagsFilter()
 
     class Meta:
         model = models.Document
