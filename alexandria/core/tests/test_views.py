@@ -201,40 +201,57 @@ def test_hook_view(
 
 
 @pytest.mark.parametrize(
-    "admin_groups, active_group, expect_failure",
+    "admin_groups, update, active_group, expect_response",
     [
-        (["foo", "bar"], "foo", False),
-        (["foo", "bar"], None, False),
-        (["foo", "bar"], "somethingelse", True),
+        (["foo", "bar"], False, "foo", HTTP_201_CREATED),
+        (["foo", "bar"], False, None, HTTP_201_CREATED),
+        (["foo", "bar"], False, "somethingelse", HTTP_400_BAD_REQUEST),
+        (["foo", "bar"], True, "foo", HTTP_200_OK),
+        (["somegroup"], True, "foo", HTTP_200_OK),
+        (["somegroup"], True, "somegroup", HTTP_200_OK),
+        (["foobar"], True, "somegroup", HTTP_200_OK),
     ],
 )
 @pytest.mark.parametrize("viewset", [DocumentViewSet, FileViewSet, TagViewSet])
 def test_validate_created_by_group(
-    db, viewset, request, admin_client, active_group, expect_failure
+    db, viewset, request, update, admin_client, active_group, expect_response,
 ):
     viewset_inst = viewset()
     model_name = viewset_inst.queryset.model.__name__.lower()
-    model = request.getfixturevalue(f"{model_name}_factory").create()
+    model = request.getfixturevalue(f"{model_name}_factory").create(
+        created_by_group="somegroup"
+    )
     serializer = viewset_inst.serializer_class()
     serialized_model = serializer.to_representation(model)
-
-    # delete model in the DB so we can then create it via API
-    model.delete()
     serialized_model["created_by_group"] = active_group
+    del serialized_model["modified_by_group"]
+
+    if not update:
+        # delete model in the DB so we can then create it via API
+        model.delete()
 
     post_data = {
         # Note: model name pluralisation may not always be with an "s" suffix,
         # but for now, this holds true
         "data": {"attributes": serialized_model, "type": f"{model_name}s"}
     }
+    if update:
+        post_data["data"]["id"] = str(model.pk)
 
-    url = reverse(f"{model_name}-list")
+    if model_name == "file" and update:
+        # PATCH on files not implemented, but I don't wanna
+        # not test it on POST
+        return
 
-    if expect_failure:
-        response = admin_client.post(url, post_data)
-        assert response.status_code == HTTP_400_BAD_REQUEST
-
+    if update:
+        request_meth = admin_client.patch
+        url = reverse(f"{model_name}-detail", args=[model.pk])
+        # updates are not allowed to change created_by_group
+        model.refresh_from_db()
+        assert model.created_by_group == "somegroup"
     else:
-        response = admin_client.post(url, post_data)
-        # we expect no filtering
-        assert response.status_code == HTTP_201_CREATED
+        request_meth = admin_client.post
+        url = reverse(f"{model_name}-list")
+
+    response = request_meth(url, post_data)
+    assert response.status_code == expect_response

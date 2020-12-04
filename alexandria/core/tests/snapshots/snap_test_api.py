@@ -38,13 +38,13 @@ snapshots["test_api_list[FileViewSet] 1"] = {
             {
                 "attributes": {
                     "created-at": "2017-05-21T00:00:00Z",
-                    "created-by-group": None,
-                    "created-by-user": None,
+                    "created-by-group": "admin",
+                    "created-by-user": "admin",
                     "download-url": "http://minio/download-url/9336ebf2-5087-d91c-818e-e6e9ec29f8c1_Devon Cooke",
                     "meta": {},
                     "modified-at": "2017-05-21T00:00:00Z",
-                    "modified-by-group": None,
-                    "modified-by-user": None,
+                    "modified-by-group": "admin",
+                    "modified-by-user": "admin",
                     "name": "Devon Cooke",
                     "type": "original",
                     "upload-url": "",
@@ -65,13 +65,13 @@ snapshots["test_api_list[FileViewSet] 1"] = {
             {
                 "attributes": {
                     "created-at": "2017-05-21T00:00:00Z",
-                    "created-by-group": None,
-                    "created-by-user": None,
+                    "created-by-group": "admin",
+                    "created-by-user": "admin",
                     "download-url": "http://minio/download-url/ea416ed0-759d-46a8-de58-f63a59077499_Rebecca Gonzalez",
                     "meta": {},
                     "modified-at": "2017-05-21T00:00:00Z",
-                    "modified-by-group": None,
-                    "modified-by-user": None,
+                    "modified-by-group": "admin",
+                    "modified-by-user": "admin",
                     "name": "Rebecca Gonzalez",
                     "type": "original",
                     "upload-url": "",
@@ -92,13 +92,13 @@ snapshots["test_api_list[FileViewSet] 1"] = {
             {
                 "attributes": {
                     "created-at": "2017-05-21T00:00:00Z",
-                    "created-by-group": None,
-                    "created-by-user": None,
+                    "created-by-group": "admin",
+                    "created-by-user": "admin",
                     "download-url": "http://minio/download-url/dad3a37a-a9d5-0688-b515-7698acfd7aee_Michelle Johnson",
                     "meta": {},
                     "modified-at": "2017-05-21T00:00:00Z",
-                    "modified-by-group": None,
-                    "modified-by-user": None,
+                    "modified-by-group": "admin",
+                    "modified-by-user": "admin",
                     "name": "Michelle Johnson",
                     "type": "original",
                     "upload-url": "",
@@ -121,8 +121,8 @@ snapshots["test_api_list[FileViewSet] 1"] = {
             {
                 "attributes": {
                     "created-at": "2017-05-21T00:00:00Z",
-                    "created-by-group": None,
-                    "created-by-user": None,
+                    "created-by-group": "admin",
+                    "created-by-user": "admin",
                     "description": {
                         "de": "",
                         "en": "Decade wall thing for east later still. Number inside put fire try cell.",
@@ -130,8 +130,8 @@ snapshots["test_api_list[FileViewSet] 1"] = {
                     },
                     "meta": {},
                     "modified-at": "2017-05-21T00:00:00Z",
-                    "modified-by-group": None,
-                    "modified-by-user": None,
+                    "modified-by-group": "admin",
+                    "modified-by-user": "admin",
                     "title": {"de": "", "en": "John Fernandez", "fr": ""},
                 },
                 "id": "9dd4e461-268c-8034-f5c8-564e155c67a6",
@@ -155,8 +155,8 @@ snapshots["test_api_list[FileViewSet] 1"] = {
             {
                 "attributes": {
                     "created-at": "2017-05-21T00:00:00Z",
-                    "created-by-group": None,
-                    "created-by-user": None,
+                    "created-by-group": "admin",
+                    "created-by-user": "admin",
                     "description": {
                         "de": "",
                         "en": """Serious live by. Run then project find white continue.
@@ -165,8 +165,8 @@ Effort partner area media increase meeting. Son success provide beyond. Officer 
                     },
                     "meta": {},
                     "modified-at": "2017-05-21T00:00:00Z",
-                    "modified-by-group": None,
-                    "modified-by-user": None,
+                    "modified-by-group": "admin",
+                    "modified-by-user": "admin",
                     "title": {"de": "", "en": "Olivia Miller", "fr": ""},
                 },
                 "id": "f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad",
@@ -190,8 +190,8 @@ Effort partner area media increase meeting. Son success provide beyond. Officer 
             {
                 "attributes": {
                     "created-at": "2017-05-21T00:00:00Z",
-                    "created-by-group": None,
-                    "created-by-user": None,
+                    "created-by-group": "admin",
+                    "created-by-user": "admin",
                     "description": {
                         "de": "",
                         "en": """Them he consumer same season. Fine religious where loss increase firm friend.
@@ -200,8 +200,8 @@ Their office though television return main.""",
                     },
                     "meta": {},
                     "modified-at": "2017-05-21T00:00:00Z",
-                    "modified-by-group": None,
-                    "modified-by-user": None,
+                    "modified-by-group": "admin",
+                    "modified-by-user": "admin",
                     "title": {"de": "", "en": "Victoria Nash", "fr": ""},
                 },
                 "id": "fb0e22c7-9ac7-5679-e988-1e6ba183b354",
@@ -232,7 +232,7 @@ snapshots["test_api_create[TagViewSet] 1"] = {
         "INSERT INTO \"alexandria_core_tag\" (\"created_at\", \"created_by_user\", \"created_by_group\", \"modified_at\", \"modified_by_user\", \"modified_by_group\", \"meta\", \"slug\", \"name\", \"description\") VALUES ('2017-05-21T00:00:00+00:00'::timestamptz, 'admin', 'admin', '2017-05-21T00:00:00+00:00'::timestamptz, 'admin', 'admin', '{}', 'jordan-mccarthy', 'Jordan Mccarthy', hstore(ARRAY['en','de','fr'], ARRAY['Bit among again across environment long line. Team suggest traditional boy above.','','']))"
     ],
     "request": {
-        "CONTENT_LENGTH": "388",
+        "CONTENT_LENGTH": "400",
         "CONTENT_TYPE": "application/vnd.api+json; charset=None",
         "PATH_INFO": "/api/v1/tags",
         "QUERY_STRING": "",
@@ -243,8 +243,8 @@ snapshots["test_api_create[TagViewSet] 1"] = {
         "data": {
             "attributes": {
                 "created-at": "2017-05-21T00:00:00Z",
-                "created-by-group": None,
-                "created-by-user": None,
+                "created-by-group": "admin",
+                "created-by-user": "admin",
                 "description": {
                     "de": "",
                     "en": "Bit among again across environment long line. Team suggest traditional boy above.",
@@ -252,8 +252,8 @@ snapshots["test_api_create[TagViewSet] 1"] = {
                 },
                 "meta": {},
                 "modified-at": "2017-05-21T00:00:00Z",
-                "modified-by-group": None,
-                "modified-by-user": None,
+                "modified-by-group": "admin",
+                "modified-by-user": "admin",
                 "name": "Jordan Mccarthy",
             },
             "id": "mrs-shake-recent",
@@ -301,8 +301,8 @@ snapshots["test_api_detail[CategoryViewSet] 1"] = {
             "attributes": {
                 "color": "#ea8594",
                 "created-at": "2017-05-21T00:00:00Z",
-                "created-by-group": None,
-                "created-by-user": None,
+                "created-by-group": "admin",
+                "created-by-user": "admin",
                 "description": {
                     "de": "",
                     "en": "Bit among again across environment long line. Team suggest traditional boy above.",
@@ -310,8 +310,8 @@ snapshots["test_api_detail[CategoryViewSet] 1"] = {
                 },
                 "meta": {},
                 "modified-at": "2017-05-21T00:00:00Z",
-                "modified-by-group": None,
-                "modified-by-user": None,
+                "modified-by-group": "admin",
+                "modified-by-user": "admin",
                 "name": {"de": "", "en": "Jordan Mccarthy", "fr": ""},
             },
             "id": "mrs-shake-recent",
@@ -324,7 +324,7 @@ snapshots["test_api_detail[CategoryViewSet] 1"] = {
 snapshots["test_api_create[CategoryViewSet] 1"] = {
     "queries": [],
     "request": {
-        "CONTENT_LENGTH": "435",
+        "CONTENT_LENGTH": "447",
         "CONTENT_TYPE": "application/vnd.api+json; charset=None",
         "PATH_INFO": "/api/v1/categories",
         "QUERY_STRING": "",
@@ -336,8 +336,8 @@ snapshots["test_api_create[CategoryViewSet] 1"] = {
             "attributes": {
                 "color": "#ea8594",
                 "created-at": "2017-05-21T00:00:00Z",
-                "created-by-group": None,
-                "created-by-user": None,
+                "created-by-group": "admin",
+                "created-by-user": "admin",
                 "description": {
                     "de": "",
                     "en": "Bit among again across environment long line. Team suggest traditional boy above.",
@@ -345,8 +345,8 @@ snapshots["test_api_create[CategoryViewSet] 1"] = {
                 },
                 "meta": {},
                 "modified-at": "2017-05-21T00:00:00Z",
-                "modified-by-group": None,
-                "modified-by-user": None,
+                "modified-by-group": "admin",
+                "modified-by-user": "admin",
                 "name": {"de": "", "en": "Jordan Mccarthy", "fr": ""},
             },
             "id": "mrs-shake-recent",
@@ -385,7 +385,7 @@ snapshots["test_api_create[FileViewSet] 1"] = {
         'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."meta", "alexandria_core_file"."id", "alexandria_core_file"."type", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id" FROM "alexandria_core_file" WHERE "alexandria_core_file"."original_id" = \'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad\'::uuid ORDER BY "alexandria_core_file"."created_at" DESC',
     ],
     "request": {
-        "CONTENT_LENGTH": "582",
+        "CONTENT_LENGTH": "594",
         "CONTENT_TYPE": "application/vnd.api+json; charset=None",
         "PATH_INFO": "/api/v1/files",
         "QUERY_STRING": "",
@@ -396,13 +396,13 @@ snapshots["test_api_create[FileViewSet] 1"] = {
         "data": {
             "attributes": {
                 "created-at": "2017-05-21T00:00:00Z",
-                "created-by-group": None,
-                "created-by-user": None,
+                "created-by-group": "admin",
+                "created-by-user": "admin",
                 "download-url": "http://minio/download-url/9336ebf2-5087-d91c-818e-e6e9ec29f8c1_Devon Cooke",
                 "meta": {},
                 "modified-at": "2017-05-21T00:00:00Z",
-                "modified-by-group": None,
-                "modified-by-user": None,
+                "modified-by-group": "admin",
+                "modified-by-user": "admin",
                 "name": "Devon Cooke",
                 "type": "original",
                 "upload-url": "",
@@ -458,13 +458,13 @@ snapshots["test_api_patch[DocumentViewSet] 1"] = {
         'SELECT "alexandria_core_document"."created_at", "alexandria_core_document"."created_by_user", "alexandria_core_document"."created_by_group", "alexandria_core_document"."modified_at", "alexandria_core_document"."modified_by_user", "alexandria_core_document"."modified_by_group", "alexandria_core_document"."meta", "alexandria_core_document"."id", "alexandria_core_document"."title", "alexandria_core_document"."description", "alexandria_core_document"."category_id" FROM "alexandria_core_document" WHERE "alexandria_core_document"."id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid',
         'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."meta", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description", "alexandria_core_category"."color" FROM "alexandria_core_category" WHERE "alexandria_core_category"."slug" = \'mrs-shake-recent\'',
         'SELECT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."meta", "alexandria_core_tag"."slug", "alexandria_core_tag"."name", "alexandria_core_tag"."description" FROM "alexandria_core_tag" WHERE "alexandria_core_tag"."slug" = \'fly-even-yourself\'',
-        "UPDATE \"alexandria_core_document\" SET \"created_at\" = '2017-05-21T00:00:00+00:00'::timestamptz, \"created_by_user\" = NULL, \"created_by_group\" = NULL, \"modified_at\" = '2017-05-21T00:00:00+00:00'::timestamptz, \"modified_by_user\" = 'admin', \"modified_by_group\" = 'admin', \"meta\" = '{}', \"title\" = hstore(ARRAY['en','de','fr'], ARRAY['John Fernandez','','']), \"description\" = hstore(ARRAY['en','de','fr'], ARRAY['Decade wall thing for east later still. Number inside put fire try cell.','','']), \"category_id\" = 'mrs-shake-recent' WHERE \"alexandria_core_document\".\"id\" = '9dd4e461-268c-8034-f5c8-564e155c67a6'::uuid",
+        "UPDATE \"alexandria_core_document\" SET \"created_at\" = '2017-05-21T00:00:00+00:00'::timestamptz, \"created_by_user\" = 'admin', \"created_by_group\" = 'admin', \"modified_at\" = '2017-05-21T00:00:00+00:00'::timestamptz, \"modified_by_user\" = 'admin', \"modified_by_group\" = 'admin', \"meta\" = '{}', \"title\" = hstore(ARRAY['en','de','fr'], ARRAY['John Fernandez','','']), \"description\" = hstore(ARRAY['en','de','fr'], ARRAY['Decade wall thing for east later still. Number inside put fire try cell.','','']), \"category_id\" = 'mrs-shake-recent' WHERE \"alexandria_core_document\".\"id\" = '9dd4e461-268c-8034-f5c8-564e155c67a6'::uuid",
         'SELECT "alexandria_core_tag"."slug" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."slug" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid',
         'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."meta", "alexandria_core_file"."id", "alexandria_core_file"."type", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id" FROM "alexandria_core_file" WHERE "alexandria_core_file"."document_id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid ORDER BY "alexandria_core_file"."created_at" DESC',
         'SELECT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."meta", "alexandria_core_tag"."slug", "alexandria_core_tag"."name", "alexandria_core_tag"."description" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."slug" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid',
     ],
     "request": {
-        "CONTENT_LENGTH": "628",
+        "CONTENT_LENGTH": "640",
         "CONTENT_TYPE": "application/vnd.api+json; charset=None",
         "PATH_INFO": "/api/v1/documents/9dd4e461-268c-8034-f5c8-564e155c67a6",
         "QUERY_STRING": "",
@@ -475,8 +475,8 @@ snapshots["test_api_patch[DocumentViewSet] 1"] = {
         "data": {
             "attributes": {
                 "created-at": "2017-05-21T00:00:00Z",
-                "created-by-group": None,
-                "created-by-user": None,
+                "created-by-group": "admin",
+                "created-by-user": "admin",
                 "description": {
                     "de": "",
                     "en": "Decade wall thing for east later still. Number inside put fire try cell.",
@@ -484,8 +484,8 @@ snapshots["test_api_patch[DocumentViewSet] 1"] = {
                 },
                 "meta": {},
                 "modified-at": "2017-05-21T00:00:00Z",
-                "modified-by-group": None,
-                "modified-by-user": None,
+                "modified-by-group": "admin",
+                "modified-by-user": "admin",
                 "title": {"de": "", "en": "John Fernandez", "fr": ""},
             },
             "id": "9dd4e461-268c-8034-f5c8-564e155c67a6",
@@ -504,8 +504,8 @@ snapshots["test_api_patch[DocumentViewSet] 1"] = {
         "data": {
             "attributes": {
                 "created-at": "2017-05-21T00:00:00Z",
-                "created-by-group": None,
-                "created-by-user": None,
+                "created-by-group": "admin",
+                "created-by-user": "admin",
                 "description": {
                     "de": "",
                     "en": "Decade wall thing for east later still. Number inside put fire try cell.",
@@ -544,7 +544,7 @@ snapshots["test_api_create[DocumentViewSet] 1"] = {
         'SELECT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."meta", "alexandria_core_tag"."slug", "alexandria_core_tag"."name", "alexandria_core_tag"."description" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."slug" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" = \'9336ebf2-5087-d91c-818e-e6e9ec29f8c1\'::uuid',
     ],
     "request": {
-        "CONTENT_LENGTH": "628",
+        "CONTENT_LENGTH": "640",
         "CONTENT_TYPE": "application/vnd.api+json; charset=None",
         "PATH_INFO": "/api/v1/documents",
         "QUERY_STRING": "",
@@ -555,8 +555,8 @@ snapshots["test_api_create[DocumentViewSet] 1"] = {
         "data": {
             "attributes": {
                 "created-at": "2017-05-21T00:00:00Z",
-                "created-by-group": None,
-                "created-by-user": None,
+                "created-by-group": "admin",
+                "created-by-user": "admin",
                 "description": {
                     "de": "",
                     "en": "Decade wall thing for east later still. Number inside put fire try cell.",
@@ -564,8 +564,8 @@ snapshots["test_api_create[DocumentViewSet] 1"] = {
                 },
                 "meta": {},
                 "modified-at": "2017-05-21T00:00:00Z",
-                "modified-by-group": None,
-                "modified-by-user": None,
+                "modified-by-group": "admin",
+                "modified-by-user": "admin",
                 "title": {"de": "", "en": "John Fernandez", "fr": ""},
             },
             "id": "9dd4e461-268c-8034-f5c8-564e155c67a6",
@@ -615,10 +615,10 @@ snapshots["test_api_create[DocumentViewSet] 1"] = {
 snapshots["test_api_patch[TagViewSet] 1"] = {
     "queries": [
         'SELECT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."meta", "alexandria_core_tag"."slug", "alexandria_core_tag"."name", "alexandria_core_tag"."description" FROM "alexandria_core_tag" WHERE "alexandria_core_tag"."slug" = \'mrs-shake-recent\'',
-        "UPDATE \"alexandria_core_tag\" SET \"created_at\" = '2017-05-21T00:00:00+00:00'::timestamptz, \"created_by_user\" = NULL, \"created_by_group\" = NULL, \"modified_at\" = '2017-05-21T00:00:00+00:00'::timestamptz, \"modified_by_user\" = 'admin', \"modified_by_group\" = 'admin', \"meta\" = '{}', \"name\" = 'Jordan Mccarthy', \"description\" = hstore(ARRAY['en','de','fr'], ARRAY['Bit among again across environment long line. Team suggest traditional boy above.','','']) WHERE \"alexandria_core_tag\".\"slug\" = 'mrs-shake-recent'",
+        "UPDATE \"alexandria_core_tag\" SET \"created_at\" = '2017-05-21T00:00:00+00:00'::timestamptz, \"created_by_user\" = 'admin', \"created_by_group\" = 'admin', \"modified_at\" = '2017-05-21T00:00:00+00:00'::timestamptz, \"modified_by_user\" = 'admin', \"modified_by_group\" = 'admin', \"meta\" = '{}', \"name\" = 'Jordan Mccarthy', \"description\" = hstore(ARRAY['en','de','fr'], ARRAY['Bit among again across environment long line. Team suggest traditional boy above.','','']) WHERE \"alexandria_core_tag\".\"slug\" = 'mrs-shake-recent'",
     ],
     "request": {
-        "CONTENT_LENGTH": "388",
+        "CONTENT_LENGTH": "400",
         "CONTENT_TYPE": "application/vnd.api+json; charset=None",
         "PATH_INFO": "/api/v1/tags/mrs-shake-recent",
         "QUERY_STRING": "",
@@ -629,8 +629,8 @@ snapshots["test_api_patch[TagViewSet] 1"] = {
         "data": {
             "attributes": {
                 "created-at": "2017-05-21T00:00:00Z",
-                "created-by-group": None,
-                "created-by-user": None,
+                "created-by-group": "admin",
+                "created-by-user": "admin",
                 "description": {
                     "de": "",
                     "en": "Bit among again across environment long line. Team suggest traditional boy above.",
@@ -638,8 +638,8 @@ snapshots["test_api_patch[TagViewSet] 1"] = {
                 },
                 "meta": {},
                 "modified-at": "2017-05-21T00:00:00Z",
-                "modified-by-group": None,
-                "modified-by-user": None,
+                "modified-by-group": "admin",
+                "modified-by-user": "admin",
                 "name": "Jordan Mccarthy",
             },
             "id": "mrs-shake-recent",
@@ -650,8 +650,8 @@ snapshots["test_api_patch[TagViewSet] 1"] = {
         "data": {
             "attributes": {
                 "created-at": "2017-05-21T00:00:00Z",
-                "created-by-group": None,
-                "created-by-user": None,
+                "created-by-group": "admin",
+                "created-by-user": "admin",
                 "description": {
                     "de": "",
                     "en": "Bit among again across environment long line. Team suggest traditional boy above.",
@@ -686,8 +686,8 @@ snapshots["test_api_detail[TagViewSet] 1"] = {
         "data": {
             "attributes": {
                 "created-at": "2017-05-21T00:00:00Z",
-                "created-by-group": None,
-                "created-by-user": None,
+                "created-by-group": "admin",
+                "created-by-user": "admin",
                 "description": {
                     "de": "",
                     "en": "Bit among again across environment long line. Team suggest traditional boy above.",
@@ -695,8 +695,8 @@ snapshots["test_api_detail[TagViewSet] 1"] = {
                 },
                 "meta": {},
                 "modified-at": "2017-05-21T00:00:00Z",
-                "modified-by-group": None,
-                "modified-by-user": None,
+                "modified-by-group": "admin",
+                "modified-by-user": "admin",
                 "name": "Jordan Mccarthy",
             },
             "id": "mrs-shake-recent",
@@ -727,7 +727,7 @@ snapshots["test_api_destroy[DocumentViewSet] 1"] = {
 snapshots["test_api_patch[CategoryViewSet] 1"] = {
     "queries": [],
     "request": {
-        "CONTENT_LENGTH": "435",
+        "CONTENT_LENGTH": "447",
         "CONTENT_TYPE": "application/vnd.api+json; charset=None",
         "PATH_INFO": "/api/v1/categories/mrs-shake-recent",
         "QUERY_STRING": "",
@@ -739,8 +739,8 @@ snapshots["test_api_patch[CategoryViewSet] 1"] = {
             "attributes": {
                 "color": "#ea8594",
                 "created-at": "2017-05-21T00:00:00Z",
-                "created-by-group": None,
-                "created-by-user": None,
+                "created-by-group": "admin",
+                "created-by-user": "admin",
                 "description": {
                     "de": "",
                     "en": "Bit among again across environment long line. Team suggest traditional boy above.",
@@ -748,8 +748,8 @@ snapshots["test_api_patch[CategoryViewSet] 1"] = {
                 },
                 "meta": {},
                 "modified-at": "2017-05-21T00:00:00Z",
-                "modified-by-group": None,
-                "modified-by-user": None,
+                "modified-by-group": "admin",
+                "modified-by-user": "admin",
                 "name": {"de": "", "en": "Jordan Mccarthy", "fr": ""},
             },
             "id": "mrs-shake-recent",
@@ -787,8 +787,8 @@ snapshots["test_api_list[CategoryViewSet] 1"] = {
                 "attributes": {
                     "color": "#ea8594",
                     "created-at": "2017-05-21T00:00:00Z",
-                    "created-by-group": None,
-                    "created-by-user": None,
+                    "created-by-group": "admin",
+                    "created-by-user": "admin",
                     "description": {
                         "de": "",
                         "en": "Bit among again across environment long line. Team suggest traditional boy above.",
@@ -796,8 +796,8 @@ snapshots["test_api_list[CategoryViewSet] 1"] = {
                     },
                     "meta": {},
                     "modified-at": "2017-05-21T00:00:00Z",
-                    "modified-by-group": None,
-                    "modified-by-user": None,
+                    "modified-by-group": "admin",
+                    "modified-by-user": "admin",
                     "name": {"de": "", "en": "Jordan Mccarthy", "fr": ""},
                 },
                 "id": "mrs-shake-recent",
@@ -807,8 +807,8 @@ snapshots["test_api_list[CategoryViewSet] 1"] = {
                 "attributes": {
                     "color": "#e08dd8",
                     "created-at": "2017-05-21T00:00:00Z",
-                    "created-by-group": None,
-                    "created-by-user": None,
+                    "created-by-group": "admin",
+                    "created-by-user": "admin",
                     "description": {
                         "de": "",
                         "en": "Size lead run then project find white. Those player foreign idea. Area media increase meeting article.",
@@ -816,8 +816,8 @@ snapshots["test_api_list[CategoryViewSet] 1"] = {
                     },
                     "meta": {},
                     "modified-at": "2017-05-21T00:00:00Z",
-                    "modified-by-group": None,
-                    "modified-by-user": None,
+                    "modified-by-group": "admin",
+                    "modified-by-user": "admin",
                     "name": {"de": "", "en": "Angela Brown", "fr": ""},
                 },
                 "id": "reason-son-current",
@@ -827,8 +827,8 @@ snapshots["test_api_list[CategoryViewSet] 1"] = {
                 "attributes": {
                     "color": "#eda797",
                     "created-at": "2017-05-21T00:00:00Z",
-                    "created-by-group": None,
-                    "created-by-user": None,
+                    "created-by-group": "admin",
+                    "created-by-user": "admin",
                     "description": {
                         "de": "",
                         "en": "Cup debate medical. Today morning standard effort summer.",
@@ -836,8 +836,8 @@ snapshots["test_api_list[CategoryViewSet] 1"] = {
                     },
                     "meta": {},
                     "modified-at": "2017-05-21T00:00:00Z",
-                    "modified-by-group": None,
-                    "modified-by-user": None,
+                    "modified-by-group": "admin",
+                    "modified-by-user": "admin",
                     "name": {"de": "", "en": "Mathew White", "fr": ""},
                 },
                 "id": "everything-process",
@@ -865,8 +865,8 @@ snapshots["test_api_list[TagViewSet] 1"] = {
             {
                 "attributes": {
                     "created-at": "2017-05-21T00:00:00Z",
-                    "created-by-group": None,
-                    "created-by-user": None,
+                    "created-by-group": "admin",
+                    "created-by-user": "admin",
                     "description": {
                         "de": "",
                         "en": "Bit among again across environment long line. Team suggest traditional boy above.",
@@ -874,8 +874,8 @@ snapshots["test_api_list[TagViewSet] 1"] = {
                     },
                     "meta": {},
                     "modified-at": "2017-05-21T00:00:00Z",
-                    "modified-by-group": None,
-                    "modified-by-user": None,
+                    "modified-by-group": "admin",
+                    "modified-by-user": "admin",
                     "name": "Jordan Mccarthy",
                 },
                 "id": "mrs-shake-recent",
@@ -884,8 +884,8 @@ snapshots["test_api_list[TagViewSet] 1"] = {
             {
                 "attributes": {
                     "created-at": "2017-05-21T00:00:00Z",
-                    "created-by-group": None,
-                    "created-by-user": None,
+                    "created-by-group": "admin",
+                    "created-by-user": "admin",
                     "description": {
                         "de": "",
                         "en": "Size lead run then project find white. Those player foreign idea. Area media increase meeting article.",
@@ -893,8 +893,8 @@ snapshots["test_api_list[TagViewSet] 1"] = {
                     },
                     "meta": {},
                     "modified-at": "2017-05-21T00:00:00Z",
-                    "modified-by-group": None,
-                    "modified-by-user": None,
+                    "modified-by-group": "admin",
+                    "modified-by-user": "admin",
                     "name": "Angela Brown",
                 },
                 "id": "reason-son-current",
@@ -903,8 +903,8 @@ snapshots["test_api_list[TagViewSet] 1"] = {
             {
                 "attributes": {
                     "created-at": "2017-05-21T00:00:00Z",
-                    "created-by-group": None,
-                    "created-by-user": None,
+                    "created-by-group": "admin",
+                    "created-by-user": "admin",
                     "description": {
                         "de": "",
                         "en": "Wide happy air represent. Cup debate medical. Today morning standard effort summer.",
@@ -912,8 +912,8 @@ snapshots["test_api_list[TagViewSet] 1"] = {
                     },
                     "meta": {},
                     "modified-at": "2017-05-21T00:00:00Z",
-                    "modified-by-group": None,
-                    "modified-by-user": None,
+                    "modified-by-group": "admin",
+                    "modified-by-user": "admin",
                     "name": "Justin Hunt",
                 },
                 "id": "structure",
@@ -944,8 +944,8 @@ snapshots["test_api_list[DocumentViewSet] 1"] = {
             {
                 "attributes": {
                     "created-at": "2017-05-21T00:00:00Z",
-                    "created-by-group": None,
-                    "created-by-user": None,
+                    "created-by-group": "admin",
+                    "created-by-user": "admin",
                     "description": {
                         "de": "",
                         "en": "Decade wall thing for east later still. Number inside put fire try cell.",
@@ -953,8 +953,8 @@ snapshots["test_api_list[DocumentViewSet] 1"] = {
                     },
                     "meta": {},
                     "modified-at": "2017-05-21T00:00:00Z",
-                    "modified-by-group": None,
-                    "modified-by-user": None,
+                    "modified-by-group": "admin",
+                    "modified-by-user": "admin",
                     "title": {"de": "", "en": "John Fernandez", "fr": ""},
                 },
                 "id": "9dd4e461-268c-8034-f5c8-564e155c67a6",
@@ -973,8 +973,8 @@ snapshots["test_api_list[DocumentViewSet] 1"] = {
             {
                 "attributes": {
                     "created-at": "2017-05-21T00:00:00Z",
-                    "created-by-group": None,
-                    "created-by-user": None,
+                    "created-by-group": "admin",
+                    "created-by-user": "admin",
                     "description": {
                         "de": "",
                         "en": """Bank arm serious live by itself. Project find white continue none president. Idea eye plan third program.
@@ -983,8 +983,8 @@ Son success provide beyond. Officer player possible issue ahead suffer.""",
                     },
                     "meta": {},
                     "modified-at": "2017-05-21T00:00:00Z",
-                    "modified-by-group": None,
-                    "modified-by-user": None,
+                    "modified-by-group": "admin",
+                    "modified-by-user": "admin",
                     "title": {"de": "", "en": "Rebecca Gonzalez", "fr": ""},
                 },
                 "id": "9336ebf2-5087-d91c-818e-e6e9ec29f8c1",
@@ -1000,8 +1000,8 @@ Son success provide beyond. Officer player possible issue ahead suffer.""",
             {
                 "attributes": {
                     "created-at": "2017-05-21T00:00:00Z",
-                    "created-by-group": None,
-                    "created-by-user": None,
+                    "created-by-group": "admin",
+                    "created-by-user": "admin",
                     "description": {
                         "de": "",
                         "en": """Take value eye sell them he. Less power relate fine. Where loss increase firm friend ability sing.
@@ -1010,8 +1010,8 @@ Food prevent trouble cold south which general. Never form leader fund task. Majo
                     },
                     "meta": {},
                     "modified-at": "2017-05-21T00:00:00Z",
-                    "modified-by-group": None,
-                    "modified-by-user": None,
+                    "modified-by-group": "admin",
+                    "modified-by-user": "admin",
                     "title": {"de": "", "en": "Michelle Johnson", "fr": ""},
                 },
                 "id": "f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad",
@@ -1028,8 +1028,8 @@ Food prevent trouble cold south which general. Never form leader fund task. Majo
                 "attributes": {
                     "color": "#ea8594",
                     "created-at": "2017-05-21T00:00:00Z",
-                    "created-by-group": None,
-                    "created-by-user": None,
+                    "created-by-group": "admin",
+                    "created-by-user": "admin",
                     "description": {
                         "de": "",
                         "en": "Bit among again across environment long line. Team suggest traditional boy above.",
@@ -1037,8 +1037,8 @@ Food prevent trouble cold south which general. Never form leader fund task. Majo
                     },
                     "meta": {},
                     "modified-at": "2017-05-21T00:00:00Z",
-                    "modified-by-group": None,
-                    "modified-by-user": None,
+                    "modified-by-group": "admin",
+                    "modified-by-user": "admin",
                     "name": {"de": "", "en": "Jordan Mccarthy", "fr": ""},
                 },
                 "id": "mrs-shake-recent",
@@ -1048,8 +1048,8 @@ Food prevent trouble cold south which general. Never form leader fund task. Majo
                 "attributes": {
                     "color": "#e8a78f",
                     "created-at": "2017-05-21T00:00:00Z",
-                    "created-by-group": None,
-                    "created-by-user": None,
+                    "created-by-group": "admin",
+                    "created-by-user": "admin",
                     "description": {
                         "de": "",
                         "en": """Outside capital direction capital Congress doctor land. Minute can second prove every check official. Stay culture create risk.
@@ -1058,8 +1058,8 @@ Daughter single product trade.""",
                     },
                     "meta": {},
                     "modified-at": "2017-05-21T00:00:00Z",
-                    "modified-by-group": None,
-                    "modified-by-user": None,
+                    "modified-by-group": "admin",
+                    "modified-by-user": "admin",
                     "name": {"de": "", "en": "Nicholas Davidson", "fr": ""},
                 },
                 "id": "reach-piece-it-all",
@@ -1069,8 +1069,8 @@ Daughter single product trade.""",
                 "attributes": {
                     "color": "#72e5bb",
                     "created-at": "2017-05-21T00:00:00Z",
-                    "created-by-group": None,
-                    "created-by-user": None,
+                    "created-by-group": "admin",
+                    "created-by-user": "admin",
                     "description": {
                         "de": "",
                         "en": """Expert pressure dog. Maybe kitchen mother.
@@ -1079,8 +1079,8 @@ Tell save term few military feeling. Avoid generation nearly laugh. Human great 
                     },
                     "meta": {},
                     "modified-at": "2017-05-21T00:00:00Z",
-                    "modified-by-group": None,
-                    "modified-by-user": None,
+                    "modified-by-group": "admin",
+                    "modified-by-user": "admin",
                     "name": {"de": "", "en": "Dr. Ashley Oliver DDS", "fr": ""},
                 },
                 "id": "section-voice",
@@ -1089,8 +1089,8 @@ Tell save term few military feeling. Avoid generation nearly laugh. Human great 
             {
                 "attributes": {
                     "created-at": "2017-05-21T00:00:00Z",
-                    "created-by-group": None,
-                    "created-by-user": None,
+                    "created-by-group": "admin",
+                    "created-by-user": "admin",
                     "description": {
                         "de": "",
                         "en": "Character last guy. Plan contain task various few. Section rock event recent public final activity hope.",
@@ -1098,8 +1098,8 @@ Tell save term few military feeling. Avoid generation nearly laugh. Human great 
                     },
                     "meta": {},
                     "modified-at": "2017-05-21T00:00:00Z",
-                    "modified-by-group": None,
-                    "modified-by-user": None,
+                    "modified-by-group": "admin",
+                    "modified-by-user": "admin",
                     "name": "Amanda Boyd",
                 },
                 "id": "fly-even-yourself",
@@ -1125,7 +1125,7 @@ snapshots["test_api_destroy[CategoryViewSet] 1"] = {
 snapshots["test_api_patch[FileViewSet] 1"] = {
     "queries": [],
     "request": {
-        "CONTENT_LENGTH": "582",
+        "CONTENT_LENGTH": "594",
         "CONTENT_TYPE": "application/vnd.api+json; charset=None",
         "PATH_INFO": "/api/v1/files/9336ebf2-5087-d91c-818e-e6e9ec29f8c1",
         "QUERY_STRING": "",
@@ -1136,13 +1136,13 @@ snapshots["test_api_patch[FileViewSet] 1"] = {
         "data": {
             "attributes": {
                 "created-at": "2017-05-21T00:00:00Z",
-                "created-by-group": None,
-                "created-by-user": None,
+                "created-by-group": "admin",
+                "created-by-user": "admin",
                 "download-url": "http://minio/download-url/9336ebf2-5087-d91c-818e-e6e9ec29f8c1_Devon Cooke",
                 "meta": {},
                 "modified-at": "2017-05-21T00:00:00Z",
-                "modified-by-group": None,
-                "modified-by-user": None,
+                "modified-by-group": "admin",
+                "modified-by-user": "admin",
                 "name": "Devon Cooke",
                 "type": "original",
                 "upload-url": "",
@@ -1193,8 +1193,8 @@ snapshots["test_api_detail[DocumentViewSet] 1"] = {
         "data": {
             "attributes": {
                 "created-at": "2017-05-21T00:00:00Z",
-                "created-by-group": None,
-                "created-by-user": None,
+                "created-by-group": "admin",
+                "created-by-user": "admin",
                 "description": {
                     "de": "",
                     "en": "Decade wall thing for east later still. Number inside put fire try cell.",
@@ -1202,8 +1202,8 @@ snapshots["test_api_detail[DocumentViewSet] 1"] = {
                 },
                 "meta": {},
                 "modified-at": "2017-05-21T00:00:00Z",
-                "modified-by-group": None,
-                "modified-by-user": None,
+                "modified-by-group": "admin",
+                "modified-by-user": "admin",
                 "title": {"de": "", "en": "John Fernandez", "fr": ""},
             },
             "id": "9dd4e461-268c-8034-f5c8-564e155c67a6",
@@ -1222,8 +1222,8 @@ snapshots["test_api_detail[DocumentViewSet] 1"] = {
                 "attributes": {
                     "color": "#ea8594",
                     "created-at": "2017-05-21T00:00:00Z",
-                    "created-by-group": None,
-                    "created-by-user": None,
+                    "created-by-group": "admin",
+                    "created-by-user": "admin",
                     "description": {
                         "de": "",
                         "en": "Bit among again across environment long line. Team suggest traditional boy above.",
@@ -1231,8 +1231,8 @@ snapshots["test_api_detail[DocumentViewSet] 1"] = {
                     },
                     "meta": {},
                     "modified-at": "2017-05-21T00:00:00Z",
-                    "modified-by-group": None,
-                    "modified-by-user": None,
+                    "modified-by-group": "admin",
+                    "modified-by-user": "admin",
                     "name": {"de": "", "en": "Jordan Mccarthy", "fr": ""},
                 },
                 "id": "mrs-shake-recent",
@@ -1241,8 +1241,8 @@ snapshots["test_api_detail[DocumentViewSet] 1"] = {
             {
                 "attributes": {
                     "created-at": "2017-05-21T00:00:00Z",
-                    "created-by-group": None,
-                    "created-by-user": None,
+                    "created-by-group": "admin",
+                    "created-by-user": "admin",
                     "description": {
                         "de": "",
                         "en": "Character last guy. Plan contain task various few. Section rock event recent public final activity hope.",
@@ -1250,8 +1250,8 @@ snapshots["test_api_detail[DocumentViewSet] 1"] = {
                     },
                     "meta": {},
                     "modified-at": "2017-05-21T00:00:00Z",
-                    "modified-by-group": None,
-                    "modified-by-user": None,
+                    "modified-by-group": "admin",
+                    "modified-by-user": "admin",
                     "name": "Amanda Boyd",
                 },
                 "id": "fly-even-yourself",
@@ -1283,13 +1283,13 @@ snapshots["test_api_detail[FileViewSet] 1"] = {
         "data": {
             "attributes": {
                 "created-at": "2017-05-21T00:00:00Z",
-                "created-by-group": None,
-                "created-by-user": None,
+                "created-by-group": "admin",
+                "created-by-user": "admin",
                 "download-url": "http://minio/download-url/9336ebf2-5087-d91c-818e-e6e9ec29f8c1_Devon Cooke",
                 "meta": {},
                 "modified-at": "2017-05-21T00:00:00Z",
-                "modified-by-group": None,
-                "modified-by-user": None,
+                "modified-by-group": "admin",
+                "modified-by-user": "admin",
                 "name": "Devon Cooke",
                 "type": "original",
                 "upload-url": "",
@@ -1311,8 +1311,8 @@ snapshots["test_api_detail[FileViewSet] 1"] = {
             {
                 "attributes": {
                     "created-at": "2017-05-21T00:00:00Z",
-                    "created-by-group": None,
-                    "created-by-user": None,
+                    "created-by-group": "admin",
+                    "created-by-user": "admin",
                     "description": {
                         "de": "",
                         "en": "Decade wall thing for east later still. Number inside put fire try cell.",
@@ -1320,8 +1320,8 @@ snapshots["test_api_detail[FileViewSet] 1"] = {
                     },
                     "meta": {},
                     "modified-at": "2017-05-21T00:00:00Z",
-                    "modified-by-group": None,
-                    "modified-by-user": None,
+                    "modified-by-group": "admin",
+                    "modified-by-user": "admin",
                     "title": {"de": "", "en": "John Fernandez", "fr": ""},
                 },
                 "id": "9dd4e461-268c-8034-f5c8-564e155c67a6",
