@@ -3,6 +3,7 @@ from django.urls import reverse
 
 
 @pytest.mark.freeze_time("2017-05-21")
+@pytest.mark.parametrize("admin_groups", [["foo"]])
 def test_create_tags(admin_client):
     url = reverse("tag-list")
     # create multiple to ensure PK generation works
@@ -19,10 +20,10 @@ def test_create_tags(admin_client):
                 "attributes": {
                     "created-at": "2017-05-21T00:00:00Z",
                     "created-by-user": "admin",
-                    "created-by-group": "admin",
+                    "created-by-group": "foo",
                     "modified-at": "2017-05-21T00:00:00Z",
                     "modified-by-user": "admin",
-                    "modified-by-group": "admin",
+                    "modified-by-group": "foo",
                     "meta": {},
                     "name": name,
                     "description": {"en": "", "de": "", "fr": ""},

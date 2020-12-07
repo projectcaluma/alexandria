@@ -10,30 +10,38 @@ from . import models
 class BaseSerializer(serializers.ModelSerializer):
     created_at = serializers.DateTimeField(read_only=True)
 
+    def is_valid(self, *args, **kwargs):
+        # Prime data so the validators are called (and default values filled
+        # if client didn't pass them.)
+        self.initial_data.setdefault("created_by_group", self._default_group())
+        self.initial_data.setdefault("modified_by_group", self._default_group())
+        return super().is_valid(*args, **kwargs)
+
     def validate(self, *args, **kwargs):
         validated_data = super().validate(*args, **kwargs)
+
+        user = self.context["request"].user
+        validated_data["created_by_user"] = user.username
+        validated_data["modified_by_user"] = user.username
 
         self.Meta.model.check_permissions(self.context["request"])
         if self.instance is not None:
             self.instance.check_object_permissions(self.context["request"])
 
-        user = self.context["request"].user
-        default_group = user.group if not isinstance(user, AnonymousUser) else None
-
-        validated_data["modified_by_user"] = user.username
-        if not validated_data.get("modified_by_group"):
-            validated_data["modified_by_group"] = default_group
-        if self.instance is None:
-            validated_data["created_by_user"] = user.username
-            if not validated_data.get("created_by_group"):
-                validated_data["created_by_group"] = default_group
         return validated_data
 
     def validate_created_by_group(self, value):
-        return self._validate_group(value, "created_by_group")
+        # Created by group can be set on creation, then must remain constant
+        if self.instance:
+            # can't change created_by_group on existing instances
+            return self.instance.created_by_group
+        else:
+            return self._validate_group(value, "created_by_group")
 
     def validate_modified_by_group(self, value):
-        return self._validate_group(value, "modified_by_group")
+        # Modified by group is validated against the user's list of groups,
+        # with a fallback to the default group if no value is given
+        return self._validate_group(value or self._default_group(), "modified_by_group")
 
     def _validate_group(self, value, field_name):
         user = self.context["request"].user
@@ -42,6 +50,10 @@ class BaseSerializer(serializers.ModelSerializer):
                 f"Given {field_name} '{value}' is not part of user's assigned groups"
             )
         return value
+
+    def _default_group(self):
+        user = self.context["request"].user
+        return user.group if not isinstance(user, AnonymousUser) else None
 
     class Meta:
         fields = (
