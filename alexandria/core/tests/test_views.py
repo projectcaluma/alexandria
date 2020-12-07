@@ -217,7 +217,8 @@ def test_validate_created_by_group(
     db, viewset, request, update, admin_client, active_group, expect_response,
 ):
     viewset_inst = viewset()
-    model_name = viewset_inst.queryset.model.__name__.lower()
+    model_class = viewset_inst.queryset.model
+    model_name = model_class.__name__.lower()
     model = request.getfixturevalue(f"{model_name}_factory").create(
         created_by_group="somegroup"
     )
@@ -231,9 +232,10 @@ def test_validate_created_by_group(
         model.delete()
 
     post_data = {
-        # Note: model name pluralisation may not always be with an "s" suffix,
-        # but for now, this holds true
-        "data": {"attributes": serialized_model, "type": f"{model_name}s"}
+        "data": {
+            "attributes": serialized_model,
+            "type": model_class._meta.verbose_name_plural,
+        }
     }
     if update:
         post_data["data"]["id"] = str(model.pk)
