@@ -85,18 +85,26 @@ def test_document_search_filter(
 def test_tag_category_filter(db, document_factory, tag_factory, admin_client):
     blue = tag_factory(slug="blue")
     red = tag_factory(slug="red")
-    tag_factory(slug="green")
+    green = tag_factory(slug="green")
     doc1 = document_factory(category__slug="cat1")
     doc1.tags.add(blue)
-    doc2 = document_factory(category__slug="cat2")
-    doc2.tags.add(red)
+    doc2 = document_factory(category_id="cat1")
+    doc2.tags.add(green)
+    doc3 = document_factory(category__slug="cat2")
+    doc3.tags.add(red)
+
+    # one more to test distinctiveness of the result
+    doc4 = document_factory(category_id="cat1")
+    doc4.tags.add(blue)
 
     url = reverse("tag-list")
     resp = admin_client.get(url, {"filter[with-documents-in-category]": "cat1"})
     assert resp.status_code == HTTP_200_OK
     result = resp.json()
-    assert len(result["data"]) == 1
-    assert result["data"][0]["id"] == str(blue.pk)
+    assert len(result["data"]) == 2
+
+    returned_tags = [tag["id"] for tag in result["data"]]
+    assert sorted(returned_tags) == sorted(["blue", "green"])
 
 
 @pytest.mark.parametrize(

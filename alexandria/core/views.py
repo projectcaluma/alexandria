@@ -46,7 +46,7 @@ class CategoryViewSet(
 
 class TagViewSet(PermissionViewMixin, VisibilityViewMixin, views.ModelViewSet):
     serializer_class = serializers.TagSerializer
-    queryset = models.Tag.objects.all()
+    queryset = models.Tag.objects.all().distinct()
     filterset_class = TagFilterSet
 
 
