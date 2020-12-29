@@ -107,8 +107,15 @@ class TagFilterSet(FilterSet):
     meta = JSONValueFilter(field_name="meta")
     active_group = ActiveGroupFilter()
     with_documents_in_category = CharFilter(field_name="documents__category__slug")
+    with_documents_meta = JSONValueFilter(field_name="documents__meta")
     name = CharFilter(lookup_expr="istartswith")
 
     class Meta:
         model = models.Tag
-        fields = ["with_documents_in_category", "meta"]
+        fields = [
+            "meta",
+            "active_group",
+            "with_documents_in_category",
+            "with_documents_meta",
+            "name",
+        ]
