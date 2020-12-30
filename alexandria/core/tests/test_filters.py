@@ -107,6 +107,32 @@ def test_tag_category_filter(db, document_factory, tag_factory, admin_client):
     assert sorted(returned_tags) == sorted(["blue", "green"])
 
 
+def test_tag_document_meta(db, document_factory, tag_factory, admin_client):
+    blue = tag_factory(slug="blue")
+    red = tag_factory(slug="red")
+    green = tag_factory(slug="green")
+    doc1 = document_factory(meta={"foo": "bar"})
+    doc2 = document_factory(meta={"foo": "baz"})
+    doc3 = document_factory(meta={"foo": "blah"})
+
+    doc1.tags.add(blue)
+    doc1.tags.add(red)
+    doc2.tags.add(green)
+    doc2.tags.add(blue)
+    doc3.tags.add(green)
+
+    url = reverse("tag-list")
+    resp = admin_client.get(
+        url, {"filter[with-documents-meta]": json.dumps({"key": "foo", "value": "bar"})}
+    )
+    assert resp.status_code == HTTP_200_OK
+    result = resp.json()
+    assert len(result["data"]) == 2
+
+    returned_tags = [tag["id"] for tag in result["data"]]
+    assert sorted(returned_tags) == ["blue", "red"]
+
+
 @pytest.mark.parametrize(
     "tag_filter, expect_documents",
     [
