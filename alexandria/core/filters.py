@@ -13,7 +13,7 @@ class JSONValueFilter(Filter):
         if value in EMPTY_VALUES:
             return qs
 
-        valid_lookups = qs.model._meta.get_field(self.field_name).get_lookups()
+        valid_lookups = self._valid_lookups(qs)
 
         try:
             value = json.loads(value)
@@ -55,6 +55,17 @@ class JSONValueFilter(Filter):
                 }
             qs = qs.filter(**lookup)
         return qs
+
+    def _valid_lookups(self, qs):
+        # We need some traversal magic in case field name is a related lookup
+        traversals = self.field_name.split("__")
+        actual_field = traversals.pop()
+
+        model = qs.model
+        for field in traversals:
+            model = model._meta.get_field(field).related_model
+
+        return model._meta.get_field(actual_field).get_lookups()
 
 
 class ActiveGroupFilter(CharFilter):
