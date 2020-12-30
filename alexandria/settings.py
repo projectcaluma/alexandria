@@ -114,10 +114,13 @@ OIDC_BEARER_TOKEN_REVALIDATION_TIME = env.int(
 OIDC_OP_INTROSPECT_ENDPOINT = env.str("OIDC_OP_INTROSPECT_ENDPOINT", default=None)
 OIDC_RP_CLIENT_ID = env.str("OIDC_RP_CLIENT_ID", default=None)
 OIDC_RP_CLIENT_SECRET = env.str("OIDC_RP_CLIENT_SECRET", default=None)
-OIDC_DRF_AUTH_BACKEND = (
-    "alexandria.oidc_auth.authentication.AlexandriaAuthenticationBackend"
-)
 
+DEV_AUTH_BACKEND = env.bool("DEV_AUTH_BACKEND", default=False)
+OIDC_DRF_AUTH_BACKEND = (
+    "alexandria.oidc_auth.authentication.DevelopmentAutnenticationBackend"
+    if DEV_AUTH_BACKEND
+    else "alexandria.oidc_auth.authentication.AlexandriaAuthenticationBackend"
+)
 
 # Extensions
 
