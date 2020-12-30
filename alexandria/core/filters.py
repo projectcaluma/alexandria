@@ -20,6 +20,10 @@ class JSONValueFilter(Filter):
         except json.decoder.JSONDecodeError:
             raise ValidationError("JSONValueFilter value needs to be json encoded.")
 
+        if isinstance(value, dict):
+            # be a bit more tolerant
+            value = [value]
+
         for expr in value:
             if expr in EMPTY_VALUES:  # pragma: no cover
                 continue
