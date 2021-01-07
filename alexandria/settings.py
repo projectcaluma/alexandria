@@ -117,7 +117,7 @@ OIDC_RP_CLIENT_SECRET = env.str("OIDC_RP_CLIENT_SECRET", default=None)
 
 DEV_AUTH_BACKEND = env.bool("DEV_AUTH_BACKEND", default=False)
 OIDC_DRF_AUTH_BACKEND = (
-    "alexandria.oidc_auth.authentication.DevelopmentAutnenticationBackend"
+    "alexandria.oidc_auth.authentication.DevelopmentAuthenticationBackend"
     if DEV_AUTH_BACKEND
     else "alexandria.oidc_auth.authentication.AlexandriaAuthenticationBackend"
 )
