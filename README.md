@@ -60,6 +60,13 @@ A list of configuration options which you need
 * Authorization configurations
   * `VISIBILITY_CLASSES`: Comma-separated list of classes that define visibility for all models
   * `PERMISSION_CLASSES` Comma-separated list of classes that define permissions for all models
+
+For development, you can also set the following environemnt variables to help
+you:
+
+  * `DEV_AUTH_BACKEND`: Set this to "true" to enable a fake auth backend that simulates an authenticated user. Requires `DEBUG` to be set to `True` as well.
+  * `DEBUG`: Set this to true for debugging during development. Never enable this in production, as it **will** leak information to the public if you do.
+
 ## Contributing
 
 Look at our [contributing guidelines](CONTRIBUTING.md) to start with your first contribution.

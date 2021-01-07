@@ -3,6 +3,7 @@ import json
 
 import pytest
 from django.core.cache import cache
+from django.core.exceptions import ImproperlyConfigured
 from mozilla_django_oidc.contrib.drf import OIDCAuthentication
 from requests.exceptions import HTTPError
 from rest_framework import exceptions, status
@@ -95,3 +96,23 @@ def test_authentication_no_client(
     request = rf.get("/openid", HTTP_AUTHORIZATION="Bearer Token")
     with pytest.raises(AuthenticationFailed):
         OIDCAuthentication().authenticate(request)
+
+
+@pytest.mark.parametrize("debug", [True, False])
+def test_authentication_dev(
+    db, rf, requests_mock, settings, debug,
+):
+    settings.OIDC_DRF_AUTH_BACKEND = (
+        "alexandria.oidc_auth.authentication.DevelopmentAuthenticationBackend"
+    )
+    settings.DEBUG = debug
+
+    request = rf.get("/openid", HTTP_AUTHORIZATION="Bearer Token")
+    if debug:
+        user, _ = OIDCAuthentication().authenticate(request)
+        assert user.groups == ["dev-group", "secondary-group"]
+        assert user.username == "dev"
+    else:
+        with pytest.raises(ImproperlyConfigured) as exc:
+            user = OIDCAuthentication().authenticate(request)
+        assert exc.match("The Dev auth backend can only be used in DEBUG mode!")
