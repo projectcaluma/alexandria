@@ -54,11 +54,7 @@ class DocumentViewSet(PermissionViewMixin, VisibilityViewMixin, views.ModelViewS
     serializer_class = serializers.DocumentSerializer
     queryset = models.Document.objects.all()
     filterset_class = DocumentFilterSet
-    search_fields = (
-        "title",
-        "files__name",
-        "tags__name",
-    )
+    search_fields = ("title", "files__name", "tags__name", "description")
 
 
 class FileViewSet(
