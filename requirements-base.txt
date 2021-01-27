@@ -6,6 +6,6 @@ djangorestframework==3.12.2
 djangorestframework-jsonapi==4.0.0
 minio==5.0.10
 mozilla-django-oidc==1.2.4
-preview-generator==0.13
+preview-generator==0.15.4
 requests==2.24.0
 uwsgi==2.0.19.1
