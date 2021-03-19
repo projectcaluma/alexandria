@@ -44,6 +44,13 @@ class CategoryViewSet(
     filterset_class = CategoryFilterSet
 
 
+class TagSynonymGroupViewSet(
+    PermissionViewMixin, VisibilityViewMixin, views.ModelViewSet
+):
+    serializer_class = serializers.TagSynonymGroupSerializer
+    queryset = models.TagSynonymGroup.objects.all().distinct()
+
+
 class TagViewSet(PermissionViewMixin, VisibilityViewMixin, views.ModelViewSet):
     serializer_class = serializers.TagSerializer
     queryset = models.Tag.objects.all().distinct()

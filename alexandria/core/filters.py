@@ -84,9 +84,15 @@ class TagsFilter(BaseInFilter):
         if value in EMPTY_VALUES:
             return qs
         # Documents must have all given tags
-        for tag in value:
-            qs = qs.filter(tags__pk=tag)
-
+        # including each tag's synonyms
+        for key in value:
+            tag_obj = models.Tag.objects.get(pk=key)
+            if tag_obj.tag_synonym_group:
+                synonyms = tag_obj.tag_synonym_group.tags.all()
+                if synonyms:
+                    qs = qs.filter(tags__in=synonyms)
+            else:
+                qs = qs.filter(tags__pk=key)
         return qs
 
 
