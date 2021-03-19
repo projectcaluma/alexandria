@@ -1,4 +1,4 @@
-from factory import Faker, SubFactory
+from factory import Faker, SubFactory, post_generation
 from factory.django import DjangoModelFactory
 
 from . import models
@@ -34,13 +34,40 @@ class TagFactory(BaseFactory):
         model = models.Tag
 
 
+class TagSynonymGroupFactory(BaseFactory):
+    class Meta:
+        model = models.TagSynonymGroup
+
+    @post_generation
+    def tags(self, create, extracted, **kwargs):
+        if not create:
+            # Simple build, do nothing.
+            return
+
+        if extracted:
+            # A list of tags were passed in, use them
+            for tag in extracted:
+                self.tags.add(tag)
+
+
 class DocumentFactory(BaseFactory):
+    class Meta:
+        model = models.Document
+
     title = Faker("name")
     description = Faker("text")
     category = SubFactory(CategoryFactory)
 
-    class Meta:
-        model = models.Document
+    @post_generation
+    def tags(self, create, extracted, **kwargs):
+        if not create:
+            # Simple build, do nothing.
+            return
+
+        if extracted:
+            # A list of tags were passed in, use them
+            for tag in extracted:
+                self.tags.add(tag)
 
 
 class FileFactory(BaseFactory):

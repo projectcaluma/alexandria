@@ -28,5 +28,6 @@ def test_create_tags(admin_client):
                     "name": name,
                     "description": {"en": "", "de": "", "fr": ""},
                 },
+                "relationships": {"tag-synonym-group": {"data": None}},
             }
         }
