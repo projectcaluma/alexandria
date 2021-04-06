@@ -10,6 +10,20 @@ from . import models
 class BaseSerializer(serializers.ModelSerializer):
     created_at = serializers.DateTimeField(read_only=True)
 
+    validation_classes = []
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self._custom_validators = []
+
+        validators = [cls(self) for cls in self.validation_classes]
+        for validator in validators:
+            for method_name in [m for m in dir(validator) if not m.startswith("_")]:
+                method = getattr(validator, method_name)
+                if getattr(method, "_validate_model", None) == self.Meta.model:
+                    self._custom_validators.append(method)
+
     def is_valid(self, *args, **kwargs):
         # Prime data so the validators are called (and default values filled
         # if client didn't pass them.)
@@ -19,6 +33,9 @@ class BaseSerializer(serializers.ModelSerializer):
 
     def validate(self, *args, **kwargs):
         validated_data = super().validate(*args, **kwargs)
+
+        for func in self._custom_validators:
+            validated_data = func(validated_data)
 
         user = self.context["request"].user
         validated_data["created_by_user"] = user.username

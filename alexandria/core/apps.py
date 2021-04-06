@@ -11,10 +11,15 @@ class DefaultConfig(AppConfig):
         # to avoid recursive import error, load extension classes
         # only once the app is ready
         from .models import VisibilityMixin, PermissionMixin
+        from .serializers import BaseSerializer
 
         PermissionMixin.permission_classes = [
             import_string(cls) for cls in settings.PERMISSION_CLASSES
         ]
         VisibilityMixin.visibility_classes = [
             import_string(cls) for cls in settings.VISIBILITY_CLASSES
+        ]
+
+        BaseSerializer.validation_classes = [
+            import_string(cls) for cls in settings.VALIDATION_CLASSES
         ]

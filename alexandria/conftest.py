@@ -13,6 +13,7 @@ from rest_framework.test import APIClient
 from urllib3 import HTTPResponse
 
 from alexandria.core.models import VisibilityMixin
+from alexandria.core.serializers import BaseSerializer
 from alexandria.core.tests import file_data
 from alexandria.oidc_auth.models import OIDCUser
 
@@ -69,6 +70,13 @@ def reset_visibilities():
     before = VisibilityMixin.visibility_classes
     yield
     VisibilityMixin.visibility_classes = before
+
+
+@pytest.fixture
+def reset_validators():
+    before = BaseSerializer.validation_classes
+    yield
+    BaseSerializer.validation_classes = before
 
 
 @pytest.fixture
