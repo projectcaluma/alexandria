@@ -37,13 +37,20 @@ def admin_groups():
 
 @pytest.fixture
 def user(settings, admin_groups):
-    return OIDCUser("sometoken", {"sub": "user", settings.OIDC_GROUPS_CLAIM: ["group"]})
+    return OIDCUser(
+        "sometoken",
+        {settings.OIDC_USERNAME_CLAIM: "user", settings.OIDC_GROUPS_CLAIM: ["group"]},
+    )
 
 
 @pytest.fixture
 def admin_user(settings, admin_groups):
     return OIDCUser(
-        "sometoken", {"sub": "admin", settings.OIDC_GROUPS_CLAIM: admin_groups}
+        "sometoken",
+        {
+            settings.OIDC_USERNAME_CLAIM: "admin",
+            settings.OIDC_GROUPS_CLAIM: admin_groups,
+        },
     )
 
 
