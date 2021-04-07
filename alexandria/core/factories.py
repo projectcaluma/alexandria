@@ -19,6 +19,7 @@ class CategoryFactory(BaseFactory):
     name = Faker("name")
     description = Faker("text")
     color = Faker("color")
+    meta = {}
 
     class Meta:
         model = models.Category
