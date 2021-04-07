@@ -131,6 +131,7 @@ VISIBILITY_CLASSES = env.list(
 PERMISSION_CLASSES = env.list(
     "PERMISSION_CLASSES", default=default(["alexandria.core.permissions.AllowAny"])
 )
+VALIDATION_CLASSES = env.list("VALIDATION_CLASSES", default=[])
 
 
 # Storage

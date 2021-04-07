@@ -59,7 +59,9 @@ A list of configuration options which you need
   * `OIDC_VERIFY_SSL`: Set to `false` if you want to disable verifying SSL certs. Useful for development
 * Authorization configurations
   * `VISIBILITY_CLASSES`: Comma-separated list of classes that define visibility for all models
-  * `PERMISSION_CLASSES` Comma-separated list of classes that define permissions for all models
+  * `PERMISSION_CLASSES`: Comma-separated list of classes that define permissions for all models
+* Data validation configuration
+  * `VALIDATION_CLASSES`: Comma-separated list of classes that define [custom validations](docs/validation.md)
 
 For development, you can also set the following environemnt variables to help
 you:
