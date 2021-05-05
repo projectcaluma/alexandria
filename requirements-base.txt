@@ -9,3 +9,4 @@ mozilla-django-oidc==1.2.4
 preview-generator==0.13
 requests==2.25.1
 uwsgi==2.0.19.1
+vtk==9.0.1
