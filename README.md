@@ -21,9 +21,12 @@ All User Interface interactions should be as simple as possible and easily under
 * docker
 * docker-compose
 
-After installing and configuring those, download [docker-compose.yml](https://raw.githubusercontent.com/projectcaluma/alexandria/master/docker-compose.yml) and run the following command:
+After installing and configuring those, download [docker-compose.yml](https://raw.githubusercontent.com/projectcaluma/alexandria/master/docker-compose.yml) and run the following commands:
 
 ```bash
+# only needs to be run once
+echo UID=$UID > .env
+
 docker-compose up -d
 ```
 
