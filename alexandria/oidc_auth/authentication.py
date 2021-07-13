@@ -86,7 +86,7 @@ class AlexandriaAuthenticationBackend(OIDCAuthenticationBackend):
 
 
 class DevelopmentAuthenticationBackend(AlexandriaAuthenticationBackend):
-    def __init__(self, *args, **kwargs):  # pragma: no cover
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if not settings.DEBUG:
             raise ImproperlyConfigured(

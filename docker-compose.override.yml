@@ -21,6 +21,8 @@ services:
       ]
     environment:
       - ENV=dev
+      - DEBUG=true
+      - DEV_AUTH_BACKEND=true
       - ALLOW_ANONYMOUS_WRITE=true
   minio:
     environment:
