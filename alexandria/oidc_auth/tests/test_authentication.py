@@ -31,6 +31,9 @@ def test_authentication(
     requests_mock,
     settings,
 ):
+    settings.OIDC_DRF_AUTH_BACKEND = (
+        "alexandria.oidc_auth.authentication.AlexandriaAuthenticationBackend"
+    )
     userinfo = {"sub": "1"}
     requests_mock.get(settings.OIDC_OP_USER_ENDPOINT, text=json.dumps(userinfo))
 
@@ -62,6 +65,9 @@ def test_authentication(
 def test_authentication_idp_502(
     db, rf, requests_mock, settings,
 ):
+    settings.OIDC_DRF_AUTH_BACKEND = (
+        "alexandria.oidc_auth.authentication.AlexandriaAuthenticationBackend"
+    )
     requests_mock.get(
         settings.OIDC_OP_USER_ENDPOINT, status_code=status.HTTP_502_BAD_GATEWAY
     )
@@ -74,6 +80,9 @@ def test_authentication_idp_502(
 def test_authentication_idp_missing_claim(
     db, rf, requests_mock, settings,
 ):
+    settings.OIDC_DRF_AUTH_BACKEND = (
+        "alexandria.oidc_auth.authentication.AlexandriaAuthenticationBackend"
+    )
     settings.OIDC_USERNAME_CLAIM = "missing"
     userinfo = {"sub": "1"}
     requests_mock.get(settings.OIDC_OP_USER_ENDPOINT, text=json.dumps(userinfo))
@@ -86,6 +95,9 @@ def test_authentication_idp_missing_claim(
 def test_authentication_no_client(
     db, rf, requests_mock, settings,
 ):
+    settings.OIDC_DRF_AUTH_BACKEND = (
+        "alexandria.oidc_auth.authentication.AlexandriaAuthenticationBackend"
+    )
     requests_mock.get(
         settings.OIDC_OP_USER_ENDPOINT, status_code=status.HTTP_401_UNAUTHORIZED
     )
@@ -102,9 +114,6 @@ def test_authentication_no_client(
 def test_authentication_dev(
     db, rf, requests_mock, settings, debug,
 ):
-    settings.OIDC_DRF_AUTH_BACKEND = (
-        "alexandria.oidc_auth.authentication.DevelopmentAuthenticationBackend"
-    )
     settings.DEBUG = debug
 
     request = rf.get("/openid", HTTP_AUTHORIZATION="Bearer Token")
