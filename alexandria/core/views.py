@@ -1,8 +1,15 @@
+import io
 import json
+import zipfile
+from tempfile import NamedTemporaryFile
 
 from django.conf import settings
-from django.http import HttpResponse
+from django.core.exceptions import ValidationError as DjangoCoreValidationError
+from django.http import FileResponse, HttpResponse
+from django.utils.translation import gettext as _
 from django.views.decorators.http import require_http_methods
+from rest_framework.decorators import action
+from rest_framework.exceptions import NotFound, ValidationError
 from rest_framework.mixins import CreateModelMixin, ListModelMixin, RetrieveModelMixin
 from rest_framework.response import Response
 from rest_framework.status import (
@@ -17,6 +24,7 @@ from rest_framework_json_api import views
 
 from . import models, serializers
 from .filters import CategoryFilterSet, DocumentFilterSet, FileFilterSet, TagFilterSet
+from .storage_clients import client
 from .thumbs import create_thumbnail
 
 
@@ -67,6 +75,51 @@ class FileViewSet(
     serializer_class = serializers.FileSerializer
     queryset = models.File.objects.all()
     filterset_class = FileFilterSet
+
+    def _write_zip(self, file_obj, queryset):
+        with zipfile.ZipFile(file_obj, "w", zipfile.ZIP_DEFLATED) as zipf:
+            for file in queryset.iterator():
+                temp_file = io.BytesIO()
+                data = client.get_object(file.object_name)
+
+                for d in data.stream(32 * 1024):
+                    temp_file.write(d)
+
+                temp_file.seek(0)
+                zipf.writestr(
+                    file.name, temp_file.read(),
+                )
+        file_obj.seek(0)
+        return file_obj
+
+    @action(methods=["get"], detail=False)
+    def multi(self, request, **kwargs):
+        if not request.query_params.get("filter[files]"):
+            raise ValidationError(_('Specifying a "files" filter is mandatory!'))
+
+        queryset = self.filter_queryset(self.get_queryset())
+
+        try:
+            if not queryset:
+                raise NotFound()
+        except DjangoCoreValidationError:
+            raise ValidationError(
+                _(
+                    'The "files" filter must consist of a comma delimited list of '
+                    "File PKs!"
+                )
+            )
+
+        with NamedTemporaryFile() as file_obj:
+            file_obj = self._write_zip(file_obj, queryset)
+
+            response = FileResponse(
+                open(file_obj.name, "rb"),
+                content_type="application/zip",
+                filename="files.zip",
+            )
+
+            return response
 
 
 @require_http_methods(["HEAD", "POST"])
