@@ -1,7 +1,7 @@
 import json
 
 from django.contrib.postgres.fields.jsonb import KeyTextTransform
-from django_filters import BaseInFilter, CharFilter, Filter, FilterSet
+from django_filters import BaseCSVFilter, BaseInFilter, CharFilter, Filter, FilterSet
 from django_filters.constants import EMPTY_VALUES
 from rest_framework.exceptions import ValidationError
 
@@ -112,10 +112,11 @@ class DocumentFilterSet(FilterSet):
 class FileFilterSet(FilterSet):
     meta = JSONValueFilter(field_name="meta")
     active_group = ActiveGroupFilter()
+    files = BaseCSVFilter(field_name="pk", lookup_expr="in")
 
     class Meta:
         model = models.File
-        fields = ["original", "renderings", "type", "meta"]
+        fields = ["original", "renderings", "type", "meta", "files"]
 
 
 class TagFilterSet(FilterSet):

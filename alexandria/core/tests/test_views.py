@@ -1,3 +1,7 @@
+import io
+import uuid
+import zipfile
+
 import pytest
 from django.urls import reverse
 from rest_framework.status import (
@@ -5,11 +9,13 @@ from rest_framework.status import (
     HTTP_201_CREATED,
     HTTP_400_BAD_REQUEST,
     HTTP_403_FORBIDDEN,
+    HTTP_404_NOT_FOUND,
 )
 
 from alexandria.core.models import File
 
 from ..views import DocumentViewSet, FileViewSet, TagViewSet
+from . import file_data
 
 
 @pytest.mark.parametrize("allow_anon", [True, False])
@@ -257,3 +263,42 @@ def test_validate_created_by_group(
 
     response = request_meth(url, post_data)
     assert response.status_code == expect_response
+
+
+def test_multi_download(admin_client, minio_mock, file_factory):
+    file1 = file_factory(name="my_file1.png")
+    file2 = file_factory(name="my_file2.png")
+    file_factory(name="my_file3.png")  # should not be returned
+
+    url = reverse("file-multi")
+
+    resp = admin_client.get(url, {"filter[files]": f"{str(file1.pk)},{str(file2.pk)}"})
+    assert resp.status_code == HTTP_200_OK
+    assert resp.filename == "files.zip"
+
+    zip_buffer = io.BytesIO()
+    for c in resp.streaming_content:
+        zip_buffer.write(c)
+    zip = zipfile.ZipFile(zip_buffer)
+
+    assert len(zip.filelist) == 2
+    filelist = sorted(zip.filelist, key=lambda a: a.filename)
+    assert filelist[0].filename == file1.name
+    assert zip.open(file1.name).read() == file_data.png
+    assert filelist[1].filename == file2.name
+    assert zip.open(file2.name).read() == file_data.png
+
+
+@pytest.mark.parametrize(
+    "params,expected_status",
+    [
+        ({}, HTTP_400_BAD_REQUEST),
+        ({"filter[files]": str(uuid.uuid4())}, HTTP_404_NOT_FOUND),
+        ({"filter[files]": "no uuid"}, HTTP_400_BAD_REQUEST),
+    ],
+)
+def test_multi_download_failure(admin_client, params, expected_status):
+    url = reverse("file-multi")
+
+    resp = admin_client.get(url, params)
+    assert resp.status_code == expected_status
