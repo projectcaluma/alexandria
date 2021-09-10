@@ -1,4 +1,4 @@
-FROM python:3.6.12-slim-buster@sha256:da8ff33b695949d986005fc1c5d0811e517289aefd592841bb6493dc7f49dc45
+FROM python:3.6.15-slim-buster@sha256:760b66a8a90751b711bf20243c023bd2a039c9283979b634dfae076e15c6d8b2
 
 WORKDIR /app
 
