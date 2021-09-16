@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 
 from snapshottest import Snapshot
 
+
 snapshots = Snapshot()
 
 snapshots["test_api_list[FileViewSet] 1"] = {
@@ -725,9 +726,8 @@ Central meeting anyone remember. There today material minute ago get. Range whos
 snapshots["test_api_destroy[DocumentViewSet] 1"] = {
     "queries": [
         'SELECT "alexandria_core_document"."created_at", "alexandria_core_document"."created_by_user", "alexandria_core_document"."created_by_group", "alexandria_core_document"."modified_at", "alexandria_core_document"."modified_by_user", "alexandria_core_document"."modified_by_group", "alexandria_core_document"."meta", "alexandria_core_document"."id", "alexandria_core_document"."title", "alexandria_core_document"."description", "alexandria_core_document"."category_id" FROM "alexandria_core_document" WHERE "alexandria_core_document"."id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid',
-        'SELECT "alexandria_core_document_tags"."id", "alexandria_core_document_tags"."document_id", "alexandria_core_document_tags"."tag_id" FROM "alexandria_core_document_tags" WHERE "alexandria_core_document_tags"."document_id" IN (\'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid)',
         'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."meta", "alexandria_core_file"."id", "alexandria_core_file"."type", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id" FROM "alexandria_core_file" WHERE "alexandria_core_file"."document_id" IN (\'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid) ORDER BY "alexandria_core_file"."created_at" DESC',
-        'DELETE FROM "alexandria_core_document_tags" WHERE "alexandria_core_document_tags"."id" IN (1)',
+        'DELETE FROM "alexandria_core_document_tags" WHERE "alexandria_core_document_tags"."document_id" IN (\'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid)',
         'DELETE FROM "alexandria_core_document" WHERE "alexandria_core_document"."id" IN (\'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid)',
     ],
     "request": {
@@ -1379,7 +1379,7 @@ Public these health team change. Tax final upon stay sing middle suggest.""",
 snapshots["test_api_destroy[TagViewSet] 1"] = {
     "queries": [
         'SELECT DISTINCT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."meta", "alexandria_core_tag"."slug", "alexandria_core_tag"."name", "alexandria_core_tag"."description" FROM "alexandria_core_tag" WHERE "alexandria_core_tag"."slug" = \'note-act-source\'',
-        'SELECT "alexandria_core_document_tags"."id", "alexandria_core_document_tags"."document_id", "alexandria_core_document_tags"."tag_id" FROM "alexandria_core_document_tags" WHERE "alexandria_core_document_tags"."tag_id" IN (\'note-act-source\')',
+        'DELETE FROM "alexandria_core_document_tags" WHERE "alexandria_core_document_tags"."tag_id" IN (\'note-act-source\')',
         'DELETE FROM "alexandria_core_tag" WHERE "alexandria_core_tag"."slug" IN (\'note-act-source\')',
     ],
     "request": {

@@ -1,7 +1,7 @@
-django==2.2.20
+django==2.2.24
 django-environ==0.4.5
 django-filter==2.3.0
-django-localized-fields==5.4.2
+django-localized-fields==6.4.0
 djangorestframework==3.12.2
 djangorestframework-jsonapi==4.0.0
 minio==5.0.10
