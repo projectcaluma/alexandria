@@ -1,3 +1,15 @@
+# v0.2.0
+
+### Feature
+* Add endpoint for downloading multiple files as zip ([`bc15973`](https://github.com/projectcaluma/alexandria/commit/bc15973957e33ffce5a81a717b25a6e224cf1cc9))
+* Support more formats ([`4d5a656`](https://github.com/projectcaluma/alexandria/commit/4d5a656c2741750b489086738eb240f2fc57c7c0))
+
+### Fix
+* **docs:** Add hint about UID in .env to README ([`1506ea0`](https://github.com/projectcaluma/alexandria/commit/1506ea0256a9fd37435273f2974250ded9c218f6))
+* Use debug auth backend by default ([`b47a7f0`](https://github.com/projectcaluma/alexandria/commit/b47a7f09038f574c53771b4798caf7b0cf6d1d77))
+* **ci:** Use correct claims for username ([`a1a2f0a`](https://github.com/projectcaluma/alexandria/commit/a1a2f0a246feb89d80ac1bfb677f903b3bc3ad35))
+
+
 # v0.1.0
 
 This is the first initial release. Things are still changing around here...
