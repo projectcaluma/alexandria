@@ -22,6 +22,8 @@ services:
     environment:
       - ENV=dev
       - DEBUG=true
+      - MINIO_ACCESS_KEY=minio
+      - MINIO_SECRET_KEY=minio123
       - DEV_AUTH_BACKEND=true
       - ALLOW_ANONYMOUS_WRITE=true
   minio:
