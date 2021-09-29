@@ -111,6 +111,7 @@ class DocumentFilterSet(FilterSet):
 
 class FileFilterSet(FilterSet):
     meta = JSONValueFilter(field_name="meta")
+    document_meta = JSONValueFilter(field_name="document__meta")
     active_group = ActiveGroupFilter()
     files = BaseCSVFilter(field_name="pk", lookup_expr="in")
 
