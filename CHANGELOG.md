@@ -1,4 +1,8 @@
-# v0.2.0
+# v0.2.1
+
+### Fix
+* Add the document_meta filter ([`6921558`](https://github.com/projectcaluma/alexandria/commit/692155820033dfd8737ad2f53305658b2de5475f))
+* Extend uwsgi buffer ([`e2863e9`](https://github.com/projectcaluma/alexandria/commit/e2863e9b3eff2f7d485531a1ea32d24f262812c5))
 
 ### Feature
 * Add endpoint for downloading multiple files as zip ([`bc15973`](https://github.com/projectcaluma/alexandria/commit/bc15973957e33ffce5a81a717b25a6e224cf1cc9))
