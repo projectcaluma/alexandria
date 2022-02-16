@@ -76,3 +76,7 @@ you:
 ## Contributing
 
 Look at our [contributing guidelines](CONTRIBUTING.md) to start with your first contribution.
+
+## Maintainer's Handbook
+
+Some notes for maintaining this project can be found in [the maintainer's handbook](MAINTAINING.md).
