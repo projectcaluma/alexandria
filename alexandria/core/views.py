@@ -64,6 +64,13 @@ class DocumentViewSet(PermissionViewMixin, VisibilityViewMixin, views.ModelViewS
     filterset_class = DocumentFilterSet
     search_fields = ("title", "files__name", "tags__name", "description")
 
+    def update(self, request, *args, **kwargs):
+        """Override so we can delete unused tags."""
+        response = super().update(request, *args, **kwargs)
+        models.Tag.objects.all().filter(documents__pk__isnull=True).delete()
+
+        return response
+
 
 class FileViewSet(
     VisibilityViewMixin,

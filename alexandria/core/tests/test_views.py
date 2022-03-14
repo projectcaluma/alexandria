@@ -14,6 +14,7 @@ from rest_framework.status import (
 
 from alexandria.core.models import File
 
+from ..models import Tag
 from ..views import DocumentViewSet, FileViewSet, TagViewSet
 from . import file_data
 
@@ -302,3 +303,43 @@ def test_multi_download_failure(admin_client, params, expected_status):
 
     resp = admin_client.get(url, params)
     assert resp.status_code == expected_status
+
+
+def test_document_delete_some_tags(admin_client, tag_factory, document_factory):
+    """Test clearing of unused tags."""
+    tag_1, tag_2, tag_3, tag_4 = tag_factory.create_batch(4)
+
+    # document from which we delete tags
+    document_1 = document_factory()
+    document_1.tags.add(tag_1, tag_2, tag_3, tag_4)
+    document_1.save()
+
+    # docuemnt with tags, that can't be deleted
+    document_2 = document_factory()
+    document_2.tags.add(tag_3)
+    document_2.save()
+
+    url = reverse("document-detail", args=[document_1.id])
+
+    data = {
+        "data": {
+            "type": "documents",
+            "id": document_1.id,
+            "relationships": {
+                "tags": {
+                    "data": [
+                        {"id": tag_1.slug, "type": "tags"},
+                        {"id": tag_2.slug, "type": "tags"},
+                    ]
+                }
+            },
+        }
+    }
+
+    response = admin_client.patch(url, data)
+
+    assert response.status_code == HTTP_200_OK
+    assert Tag.objects.all().count() == 3
+    assert set(Tag.objects.all().values_list("slug", flat=True)) == set(
+        [tag_1.slug, tag_2.slug, tag_3.slug]
+    )
