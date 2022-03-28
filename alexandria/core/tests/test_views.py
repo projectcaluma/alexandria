@@ -95,7 +95,6 @@ def test_file_validation(
     ],
 )
 def test_hook_view(
-    preview_cache_dir,
     admin_client,
     minio_mock,
     document_factory,
@@ -203,8 +202,6 @@ def test_hook_view(
 
     if is_thumb:
         assert File.objects.count() == 1
-
-    assert len(list(settings.THUMBNAIL_CACHE_DIR.iterdir())) == 0
 
 
 @pytest.mark.parametrize(

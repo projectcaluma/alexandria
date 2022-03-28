@@ -1,6 +1,5 @@
 import os
 import re
-from pathlib import Path
 
 import environ
 from django.conf import global_settings
@@ -151,7 +150,6 @@ MINIO_PRESIGNED_TTL_MINUTES = env.str("MINIO_PRESIGNED_TTL_MINUTES", default=15)
 
 # Thumbnails
 ENABLE_THUMBNAIL_GENERATION = env.bool("ENABLE_THUMBNAIL_GENERATION", default=True)
-THUMBNAIL_CACHE_DIR = Path(env.str("THUMBNAIL_CACHE_DIR", default="/tmp/preview_cache"))
 THUMBNAIL_WIDTH = env.int("THUMBNAIL_WIDTH", default=None)
 THUMBNAIL_HEIGHT = env.int("THUMBNAIL_HEIGHT", default=None)
 
