@@ -11,6 +11,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/cache@v3
+        with:
+          path: .venv
+          key: poetry-${{ hashFiles('poetry.lock')}}
+          restore-keys: |
+            peotry-
       - name: Set UID
         run: echo "UID=$(id --user)" > .env
       - name: Build the containers
