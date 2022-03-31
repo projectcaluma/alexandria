@@ -1,4 +1,6 @@
+import os
 from pathlib import Path
+from tempfile import TemporaryDirectory
 from uuid import uuid4
 
 from django.conf import settings
@@ -14,15 +16,14 @@ def create_thumbnail(file):
     # TODO: this should be run by a task queue
     data = client.get_object(file.object_name)
 
-    temp_filepath = settings.THUMBNAIL_CACHE_DIR / str(uuid4())
-
-    settings.THUMBNAIL_CACHE_DIR.mkdir(parents=True, exist_ok=True)
+    temp_dir = TemporaryDirectory()
+    temp_filepath = Path(os.path.join(temp_dir.name, str(uuid4())))
 
     with temp_filepath.open("wb") as f:
         for d in data.stream(32 * 1024):
             f.write(d)
 
-    manager = PreviewManager(str(settings.THUMBNAIL_CACHE_DIR))
+    manager = PreviewManager(str(temp_dir.name))
 
     preview_kwargs = {}
     if settings.THUMBNAIL_WIDTH:  # pragma: no cover
@@ -45,7 +46,6 @@ def create_thumbnail(file):
     )
     etag = client.put_object(path_to_preview_image, thumb_file.object_name)
 
-    Path(path_to_preview_image).unlink()
-    temp_filepath.unlink()
+    temp_dir.cleanup()
 
     return etag

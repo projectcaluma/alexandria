@@ -87,12 +87,6 @@ def reset_validators():
 
 
 @pytest.fixture
-def preview_cache_dir(tmp_path, settings):
-    settings.THUMBNAIL_CACHE_DIR = tmp_path
-    return tmp_path
-
-
-@pytest.fixture
 def minio_mock(mocker, settings):
     def presigned_get_object_side_effect(bucket, object_name, expires):
         return f"http://minio/download-url/{object_name}"
