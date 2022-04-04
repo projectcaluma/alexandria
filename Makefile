@@ -14,11 +14,11 @@ start: ## Start the development server
 
 .PHONY: test
 test: ## Test the backend
-	@docker-compose run alexandria pytest --no-cov-on-fail --cov --create-db -vv
+	@docker-compose run alexandria poetry run pytest --no-cov-on-fail --cov --create-db -vv
 
 .PHONY: lint
 lint: ## Lint the backend
-	@docker-compose run alexandria sh -c "black --check . && flake8"
+	@docker-compose run alexandria sh -c "poetry run black --check . && poetry run flake8"
 
 .PHONY: bash
 bash: ## Shell into the backend
@@ -26,15 +26,15 @@ bash: ## Shell into the backend
 
 .PHONY: shell_plus
 shell_plus: ## Run shell_plus
-	@docker-compose run alexandria python ./manage.py shell_plus
+	@docker-compose run alexandria poetry run python ./manage.py shell_plus
 
 .PHONY: makemigrations
 makemigrations: ## Make django migrations
-	@docker-compose run alexandria python ./manage.py makemigrations
+	@docker-compose run alexandria poetry run python ./manage.py makemigrations
 
 .PHONY: migrate
 migrate: ## Migrate django
-	@docker-compose run alexandria python ./manage.py migrate
+	@docker-compose run alexandria poetry run python ./manage.py migrate
 
 .PHONY: dbshell
 dbshell: ## Start a psql shell
@@ -42,4 +42,4 @@ dbshell: ## Start a psql shell
 
 .PHONY: load_example_data
 load_example_data: ## Load a set of example data
-	@docker-compose run alexandria ./manage.py loaddata initial_data.json
+	@docker-compose run alexandria poetry run python ./manage.py loaddata initial_data.json

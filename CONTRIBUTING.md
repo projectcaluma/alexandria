@@ -36,15 +36,13 @@ etc.
 
 ```bash
 # linting
-flake8
+poetry run flake8
 # format code
-black .
+poetry run black .
 # running tests
-pytest
+poetry run pytest
 # create migrations
-./manage.py makemigrations
-# install debugger or other temporary dependencies
-pip install --user pdbpp
+poetry run ./manage.py makemigrations
 ```
 
 Writing of code can still happen outside the docker container of course.
@@ -65,8 +63,7 @@ Pre commit hooks is an additional option instead of executing checks in your edi
 First create a virtualenv with the tool of your choice before running below commands:
 
 ```bash
-pip install pre-commit
-pip install -r requiements-dev.txt -U
-pre-commit install --hook=pre-commit
-pre-commit install --hook=commit-msg
+poetry install
+poetry run pre-commit install --hook=pre-commit
+poetry run pre-commit install --hook=commit-msg
 ```

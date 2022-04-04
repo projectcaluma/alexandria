@@ -27,9 +27,11 @@ ENV DJANGO_SETTINGS_MODULE alexandria.settings
 ENV APP_HOME=/app
 ENV UWSGI_INI /app/uwsgi.ini
 
-ARG REQUIREMENTS=requirements-prod.txt
-COPY requirements-base.txt requirements-prod.txt requirements-dev.txt $APP_HOME/
-RUN pip install --upgrade --no-cache-dir --requirement $REQUIREMENTS --disable-pip-version-check
+RUN pip install -U poetry
+
+ARG INSTALL_DEV_DEPENDENCIES=false
+COPY pyproject.toml poetry.lock $APP_HOME/
+RUN if [ "$INSTALL_DEV_DEPENDENCIES" = "true" ]; then poetry install; else poetry install --no-dev; fi
 
 USER alexandria
 
@@ -37,4 +39,4 @@ COPY . $APP_HOME
 
 EXPOSE 8000
 
-CMD /bin/sh -c "wait-for-it.sh $DATABASE_HOST:${DATABASE_PORT:-5432} -- ./manage.py migrate && uwsgi"
+CMD /bin/sh -c "wait-for-it.sh $DATABASE_HOST:${DATABASE_PORT:-5432} -- poetry run python ./manage.py migrate && uwsgi"

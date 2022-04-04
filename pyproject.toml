@@ -1,0 +1,119 @@
+[tool.poetry]
+name = "alexandria"
+version = "0.2.1"
+description = "Document management service"
+repository = "https://github.com/projectcaluma/alexandria"
+authors = ["Caluma <info@caluma.io>"]
+license = "GPL-3.0-or-later"
+readme = "README.md"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Programming Language :: Python :: 3.8",
+]
+include = ["CHANGELOG.md"]
+exclude = [
+    "alexandria/conftest.py",
+    "alexandria/**/tests",
+]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+django = "~2.2.27"
+django-environ = "^0.4.5"
+django-filter = "^2.4.0"
+django-localized-fields = "^6.4.0"
+djangorestframework = "^3.12.2"
+djangorestframework-jsonapi = "~4.0.0"
+minio = "^5.0.10"
+mozilla-django-oidc = "^2.0.0"
+preview-generator = "^0.28"
+requests = "^2.25.1"
+uwsgi = "^2.0.19.1"
+vtk = "^9.0.1"
+
+[tool.poetry.dev-dependencies]
+black = "^19.10b0"
+django_extensions = "^3.1.2"
+factory-boy = "^3.2.0"
+flake8 = "^3.9.0"
+flake8-blind-except = "^0.1.1"
+flake8-debugger = "^3.2.1"
+flake8-docstrings = "^1.6.0"
+flake8-isort = "^4.0.0"
+flake8-string-format = "^0.3.0"
+flake8-tuple = "^0.4.1"
+gitlint = "^0.13.1"
+isort = "^4.3.21"
+pdbpp = "^0.10.2"
+pre_commit = "^2.17.0"
+psycopg2-binary = "~2.8.6"
+pytest-cov = "^2.12.1"
+pytest-django = "^4.4.0"
+pytest-env = "^0.6.2"
+pytest-factoryboy = "^2.0.3"
+pytest-freezegun = "^0.4.2"
+pytest-mock = "^3.6.1"
+pytest-randomly = "^3.11.0"
+requests-mock = "^1.9.3"
+snapshottest = "^0.6.0"
+werkzeug = "^1.0.1"
+python-semantic-release = "^7.15.3"
+pytest = "^6.0.0"
+
+
+[tool.isort]
+skip = [
+    "migrations",
+    "snapshots",
+]
+known_first_party = ["alexandria"]
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+combine_as_imports = true
+line_length = 88
+
+[tool.pytest.ini_options]
+addopts = "--reuse-db --randomly-seed=1521188766"
+DJANGO_SETTINGS_MODULE = "alexandria.settings"
+django_debug_mode = true
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "error::PendingDeprecationWarning",
+]
+env = [
+    "ADMINS=Test Example <test@example.com>,Test2 <test2@example.com>",
+    "LANGUAGES=en,de,fr",
+    "OIDC_OP_USER_ENDPOINT=mock://alexandria.github.com/openid/userinfo",
+    "OIDC_OP_INTROSPECT_ENDPOINT=mock://alexandria.github.com/openid/introspect",
+    "OIDC_BEARER_TOKEN_REVALIDATION_TIME=60",
+]
+
+[coverage.run]
+source = ["."]
+
+[coverage.report]
+fail_under = 100
+exclude_lines = [
+    "pragma: no cover",
+    "pragma: todo cover",
+    "def __str__",
+    "def __unicode__",
+    "def __repr__",
+]
+omit = [
+    "*/migrations/*",
+    "*/apps.py",
+    "manage.py",
+    "setup.py",
+    "alexandria/settings_*.py",
+    "alexandria/wsgi.py",
+    "alexandria/alexandria_metadata.py",
+]
+show_missing = true
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
