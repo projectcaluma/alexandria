@@ -60,7 +60,7 @@ requests-mock = "^1.9.3"
 snapshottest = "^0.6.0"
 werkzeug = "^1.0.1"
 python-semantic-release = "^7.27.1"
-pytest = "^6.0.0"
+pytest = "^7.1.1"
 
 
 [tool.isort]
