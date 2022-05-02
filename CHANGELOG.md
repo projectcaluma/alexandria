@@ -1,3 +1,10 @@
+# v0.2.2
+
+### Fix
+* **thumbnail:** Use temporary directory instead of THUMBNAIL_CACHE_DIR ([`bb6aee4`](https://github.com/projectcaluma/alexandria/commit/bb6aee4ce388bd9de1bc13efdaba7893b72e9be7))
+* **core:** Delete unused tags ([`69dab65`](https://github.com/projectcaluma/alexandria/commit/69dab6523bff4ff8233afe5fac3faf410ac90059))
+
+
 # v0.2.1
 
 ### Fix
