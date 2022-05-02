@@ -10,7 +10,7 @@ Here is a rough outline / checklist for the release (explained further below):
 4. Update code (CHANGELOG, version info)
 5. Pull Request with the version bump.
 6. Create tag on the merge commit
-7. Upload / edit change log
+7. Upload / edit change log on Github
 
 Here's how this works in detail:
 
@@ -25,16 +25,16 @@ git checkout main
 git pull origin --tags
 
 # Prepare changelog
-semantic-release changelog --noop --unreleased -D version_source=tag
+poetry run semantic-release changelog --noop --unreleased -D version_source=tag
 
 # Figure out the next version
-semantic-release version --noop -D version_source=tag
+poetry run semantic-release version --noop -D version_source=tag
 ```
 
 ### Update version, changelog in source
 
 The version is also put in code. Update the file
-`alexandria/alexandria_metadata.py`.
+`pyproject.toml`.
 
 Put the changelog on top of the `CHANGELOG.md` file along with the proposed date
 of release. If needed, amend it with some informative text about the release.
