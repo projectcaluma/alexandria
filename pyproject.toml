@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "alexandria"
-version = "0.2.1"
+version = "0.2.2"
 description = "Document management service"
 repository = "https://github.com/projectcaluma/alexandria"
 authors = ["Caluma <info@caluma.io>"]
