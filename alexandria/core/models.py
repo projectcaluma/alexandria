@@ -172,6 +172,22 @@ class File(UUIDModel):
         Document, on_delete=models.CASCADE, related_name="files"
     )
 
+    UNDEFINED = "undefined"
+    COMPLETED = "completed"
+    ERROR = "error"
+
+    STATUS_CHOICES = (
+        UNDEFINED,
+        COMPLETED,
+        ERROR,
+    )
+    UPLOAD_STATUS_TUPLE = tuple(
+        [(status_choice, status_choice) for status_choice in STATUS_CHOICES]
+    )
+    upload_status = models.CharField(
+        choices=UPLOAD_STATUS_TUPLE, max_length=32, default=UNDEFINED
+    )
+
     class Meta:
         ordering = ["-created_at"]
 

@@ -199,6 +199,8 @@ def test_hook_view(
         orig = File.objects.get(type=File.ORIGINAL)
         thumb = File.objects.get(type=File.THUMBNAIL)
         assert thumb.original == orig
+        assert orig.upload_status == File.COMPLETED
+        assert thumb.upload_status == File.COMPLETED
 
     if is_thumb:
         assert File.objects.count() == 1

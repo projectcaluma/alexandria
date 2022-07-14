@@ -46,6 +46,9 @@ def create_thumbnail(file):
     )
     etag = client.put_object(path_to_preview_image, thumb_file.object_name)
 
+    thumb_file.upload_status = File.COMPLETED if etag else File.ERROR
+    thumb_file.save()
+
     temp_dir.cleanup()
 
     return etag

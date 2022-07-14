@@ -170,6 +170,7 @@ class FileSerializer(BaseSerializer):
             "document",
             "download_url",
             "upload_url",
+            "upload_status",
         )
 
 

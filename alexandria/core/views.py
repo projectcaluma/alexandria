@@ -157,6 +157,9 @@ def hook_view(request):
             response_statuses.append(HTTP_200_OK)
             continue
 
+        file.upload_status = models.File.COMPLETED
+        file.save()
+
         created = create_thumbnail(file)
         if created is False:
             response_statuses.append(HTTP_200_OK)
