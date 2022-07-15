@@ -1,6 +1,7 @@
 import json
 
 from django.contrib.postgres.fields.jsonb import KeyTextTransform
+from django.db.models import Q
 from django_filters import BaseCSVFilter, BaseInFilter, CharFilter, Filter, FilterSet
 from django_filters.constants import EMPTY_VALUES
 from rest_framework.exceptions import ValidationError
@@ -84,9 +85,12 @@ class TagsFilter(BaseInFilter):
         if value in EMPTY_VALUES:
             return qs
         # Documents must have all given tags
+        # including each tag's synonyms
         for tag in value:
-            qs = qs.filter(tags__pk=tag)
-
+            synonyms = models.Tag.objects.filter(
+                Q(pk=tag) | Q(tag_synonym_group__tags=tag)
+            )
+            qs = qs.filter(tags__in=synonyms)
         return qs
 
 

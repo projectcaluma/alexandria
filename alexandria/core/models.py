@@ -126,10 +126,21 @@ class Category(SlugModel):
     )
 
 
+class TagSynonymGroup(BaseModel):
+    pass
+
+
 class Tag(SlugModel):
     name = models.CharField(_("tag name"), blank=False, null=False, max_length=100)
     description = LocalizedTextField(
         _("tag description"), null=True, blank=True, required=False
+    )
+    tag_synonym_group = models.ForeignKey(
+        TagSynonymGroup,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name="tags",
     )
 
 

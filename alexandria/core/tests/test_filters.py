@@ -1,9 +1,12 @@
 import json
+from itertools import combinations
+from typing import Optional
 
 import pytest
 from django.urls import reverse
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 
+from ..models import Document, Tag, TagSynonymGroup
 from ..views import CategoryViewSet, DocumentViewSet, FileViewSet, TagViewSet
 
 
@@ -56,7 +59,7 @@ def test_json_value_filter(db, document_factory, admin_client, value, status_cod
     ],
 )
 def test_document_search_filter(
-    db, document_factory, tag_factory, file_factory, admin_client, value, amount
+    db, document_factory, tag_factory, file_factory, admin_client, value, amount,
 ):
     """
     Test document search filter.
@@ -149,7 +152,6 @@ def test_tag_filter(
     red = tag_factory(slug="red")
     green = tag_factory(slug="green")
     pink = tag_factory(slug="pink")
-
     doc1 = document_factory()
     doc1.tags.add(blue)
     doc1.tags.add(green)
@@ -167,6 +169,75 @@ def test_tag_filter(
     received_ids = set([obj["id"] for obj in result["data"]])
     expected_ids = set([str(documents[doc].pk) for doc in expect_documents])
     assert received_ids == expected_ids
+
+
+def test_tag_synonym_filter(  # noqa: C901
+    db, document_factory, tag_factory, admin_client, tag_synonym_group_factory
+):
+    url = reverse("document-list")
+    ngroups = 2
+    groups = {}
+    groupsize = 3
+    tagged_group = {}
+    for i in range(1, ngroups + 1):
+        group = f"synonyms{i}"
+        groups[group] = None
+        tagged_group[group] = [f"group{i}_syn{n}" for n in range(1, groupsize + 1)]
+    ungrouped = [f"word{i}" for i in range(1, groupsize + 1)]
+
+    def create_tagged_docs(
+        synonyms: list, grouped: bool = True
+    ) -> Optional[TagSynonymGroup]:
+        try:
+            assert len(synonyms) > 0
+        except (TypeError, AssertionError) as e:
+            raise e
+
+        if grouped:
+            tag_group = tag_synonym_group_factory(
+                tags=[tag_factory(slug=word) for word in synonyms]
+            )
+            for n in range(1, len(synonyms) + 1):
+                if not tag_group.tags:
+                    return
+                perm = list(combinations(tag_group.tags.all(), n))
+                for tag_set in perm:
+                    document_factory(tags=tag_set)
+            return tag_group
+        else:
+            for color in synonyms:
+                document_factory(tags=[tag_factory(slug=color)])
+
+    for key, value in groups.items():
+        groups[key] = create_tagged_docs(tagged_group[key])
+
+    create_tagged_docs(ungrouped, False)
+
+    key = list(groups.keys())[0]
+    tag_sets_base = [
+        doc.tags.all().values_list("slug", flat=True)
+        for doc in Document.objects.filter(tags__tag_synonym_group=groups[key])
+    ]
+
+    tag_group_synonyms1_tagged_documents = Document.objects.filter(
+        tags__tag_synonym_group=groups[key]
+    )
+
+    for tags in tag_sets_base:
+        resp = admin_client.get(url, {"filter[tags]": tags})
+        assert resp.status_code == HTTP_200_OK
+        result = resp.json()
+        assert set(
+            [str(doc.id) for doc in tag_group_synonyms1_tagged_documents]
+        ) == set([obj["id"] for obj in result["data"]])
+
+    for tag in ungrouped:
+        resp = admin_client.get(url, {"filter[tags]": [tag]})
+        assert resp.status_code == HTTP_200_OK
+        result = resp.json()
+        assert set(
+            [str(doc.id) for doc in Tag.objects.get(slug=tag).documents.all()]
+        ) == set([obj["id"] for obj in result["data"]])
 
 
 @pytest.mark.parametrize(
