@@ -12,7 +12,7 @@
             "meta": {
 
             },
-            "name": "{\"en\": \"All involved\", \"de\": \"Alle Beteiligten\"}",
+            "name": "{\"en\": \"All involved\", \"de-ch\": \"Alle Beteiligten\",\"de\": \"Alle Beteiligten\"}",
             "description": "{\"en\": \"\"}",
             "color": "#CB68C1"
         }
@@ -30,7 +30,7 @@
             "meta": {
 
             },
-            "name": "{\"en\": \"Supplements to the application\",\"de\": \"Beilagen zum Gesuch\"}",
+            "name": "{\"en\": \"Supplements to the application\",\"de-ch\": \"Beilagen zum Gesuch\",\"de\": \"Beilagen zum Gesuch\"}",
             "description": "{\"en\": \"\"}",
             "color": "#9CDD69"
         }
@@ -48,7 +48,7 @@
             "meta": {
 
             },
-            "name": "{\"en\": \"Involved Authorities\",\"de\": \"Beteiligte Beh\\u00f6rden\"}",
+            "name": "{\"en\": \"Involved Authorities\",\"de-ch\": \"Beteiligte Beh\\u00f6rden\",\"de\": \"Beteiligte Beh\\u00f6rden\"}",
             "description": "{\"en\": \"\"}",
             "color": "#8791EC"
         }
@@ -66,7 +66,7 @@
             "meta": {
 
             },
-            "name": "{\"en\": \"Internal\",\"de\": \"Intern\"}",
+            "name": "{\"en\": \"Internal\",\"de-ch\": \"Intern\",\"de\": \"Intern\"}",
             "description": "{\"en\": \"\"}",
             "color": "#DB8B72"
         }
@@ -84,7 +84,7 @@
             "meta": {
               "instanceid": "1"
             },
-            "name": "{\"en\": \"Additional claims\",\"de\": \"Nachforderungen\"}",
+            "name": "{\"en\": \"Additional claims\",\"de-ch\": \"Nachforderungen\",\"de\": \"Nachforderungen\"}",
             "description": "{\"en\": \"\"}",
             "color": "#66CFC9"
         }
