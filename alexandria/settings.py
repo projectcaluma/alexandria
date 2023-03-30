@@ -115,11 +115,15 @@ OIDC_RP_CLIENT_ID = env.str("OIDC_RP_CLIENT_ID", default=None)
 OIDC_RP_CLIENT_SECRET = env.str("OIDC_RP_CLIENT_SECRET", default=None)
 
 DEV_AUTH_BACKEND = env.bool("DEV_AUTH_BACKEND", default=False)
-OIDC_DRF_AUTH_BACKEND = (
-    "alexandria.oidc_auth.authentication.DevelopmentAuthenticationBackend"
-    if DEV_AUTH_BACKEND
-    else "alexandria.oidc_auth.authentication.AlexandriaAuthenticationBackend"
+OIDC_DRF_AUTH_BACKEND = env.str(
+    "OIDC_DRF_AUTH_BACKEND",
+    default="alexandria.oidc_auth.authentication.DMSAuthenticationBackend",
 )
+if DEV_AUTH_BACKEND:
+    OIDC_DRF_AUTH_BACKEND = (
+        "alexandria.oidc_auth.authentication.DevelopmentAuthenticationBackend"
+    )
+
 
 # Extensions
 

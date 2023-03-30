@@ -61,6 +61,7 @@ A list of configuration options which you need
 * Authentication configuration
   * `OIDC_OP_USER_ENDPOINT`: Userinfo endpoint for OIDC
   * `OIDC_VERIFY_SSL`: Set to `false` if you want to disable verifying SSL certs. Useful for development
+  * `OIDC_DRF_AUTH_BACKEND`: Overwrite the default authentication backend with your own.
 * Authorization configurations
   * `VISIBILITY_CLASSES`: Comma-separated list of classes that define visibility for all models
   * `PERMISSION_CLASSES`: Comma-separated list of classes that define permissions for all models
