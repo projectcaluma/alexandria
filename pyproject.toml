@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "alexandria"
-version = "0.2.2"
+version = "0.3.0"
 description = "Document management service"
 repository = "https://github.com/projectcaluma/alexandria"
 authors = ["Caluma <info@caluma.io>"]
@@ -90,6 +90,9 @@ env = [
     "OIDC_OP_INTROSPECT_ENDPOINT=mock://alexandria.github.com/openid/introspect",
     "OIDC_BEARER_TOKEN_REVALIDATION_TIME=60",
 ]
+
+[tool.semantic_release]
+version_toml = "pyproject.toml:tool.poetry.version"
 
 [coverage.run]
 source = ["."]

@@ -1,3 +1,14 @@
+# v0.3.0
+### Feature
+* Make authentication backend configurable ([`23ebe28`](https://github.com/projectcaluma/alexandria/commit/23ebe28fda16b9f8133100554d03b0ca1541b643))
+* Add documents filtering with tag synonyms ([`3b68a74`](https://github.com/projectcaluma/alexandria/commit/3b68a7400b9eb31b99af592534c8e965afe1d76c))
+* Add upload_status field to file models to track upload status ([`ea6cf87`](https://github.com/projectcaluma/alexandria/commit/ea6cf87eb31570ad1a8d0ec1fa7f3bc3d285ef51))
+
+### Fix
+* **Dockerfile:** Use poetry to run uwsgi ([`72fe409`](https://github.com/projectcaluma/alexandria/commit/72fe4091211cc1ead70033980be9977c08034fed))
+* Make psycopg2 a regular dependency ([`301baf5`](https://github.com/projectcaluma/alexandria/commit/301baf569f297b6db434664852f8c9f012a48915))
+* **deps:** Move psycopg2-binary to dependencies ([`6d6e4e7`](https://github.com/projectcaluma/alexandria/commit/6d6e4e7411320ccf4814a7f1ed0f2fc2be778ea6))
+
 # v0.2.2
 
 ### Fix
