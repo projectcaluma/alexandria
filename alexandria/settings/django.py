@@ -3,8 +3,7 @@ import re
 from django.conf import global_settings
 
 from .alexandria import *  # noqa
-from .alexandria import default, django_root, env, environ
-
+from .alexandria import default, env, environ
 
 SECRET_KEY = env.str("SECRET_KEY", default=default("uuuuuuuuuu"))
 DEBUG = env.bool("DEBUG", default=default(True, False))
@@ -22,7 +21,7 @@ INSTALLED_APPS = [
     "alexandria.core.apps.DefaultConfig",
 ]
 
-if ENV == "dev":
+if ENV == "dev":  # noqa
     INSTALLED_APPS.append("django_extensions")
 
 MIDDLEWARE = [
@@ -117,6 +116,10 @@ REST_FRAMEWORK = {
     ),
     "TEST_REQUEST_DEFAULT_FORMAT": "vnd.api+json",
 }
+
+JSON_API_FORMAT_FIELD_NAMES = "dasherize"
+JSON_API_FORMAT_TYPES = "dasherize"
+JSON_API_PLURALIZE_TYPES = True
 
 # Anonymous writing
 ALLOW_ANONYMOUS_WRITE = env.bool("ALLOW_ANONYMOUS_WRITE", default=False)

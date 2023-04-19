@@ -1,1 +1,1 @@
-from .django import *
+from .django import *  # noqa

@@ -1,10 +1,16 @@
+"""
+This settings module only contains alexandria specific settings.
+
+It's imported by the main alexandria settings and is intended to also be used by third party
+applications integrating alexandria.
+"""
+
 import os
-import re
 
 import environ
 
 env = environ.Env()
-django_root = environ.Path(__file__) - 2
+django_root = environ.Path(__file__) - 3
 
 ENV_FILE = env.str("ENV_FILE", default=django_root(".env"))
 if os.path.exists(ENV_FILE):
