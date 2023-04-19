@@ -77,7 +77,7 @@ line_length = 88
 
 [tool.pytest.ini_options]
 addopts = "--reuse-db --randomly-seed=1521188766"
-DJANGO_SETTINGS_MODULE = "alexandria.settings"
+DJANGO_SETTINGS_MODULE = "alexandria.settings.django"
 django_debug_mode = true
 filterwarnings = [
     "ignore::DeprecationWarning",
