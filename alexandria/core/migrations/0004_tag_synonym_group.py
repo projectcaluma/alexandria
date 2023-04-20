@@ -7,7 +7,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("alexandria_core", "0003_file_upload_status"),
     ]
@@ -70,7 +69,9 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"abstract": False,},
+            options={
+                "abstract": False,
+            },
             bases=(
                 alexandria.core.models.PermissionMixin,
                 alexandria.core.models.VisibilityMixin,

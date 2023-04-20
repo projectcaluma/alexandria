@@ -2,12 +2,14 @@ import importlib
 import inspect
 import time
 from io import BytesIO
+import sys
 
 import pytest
 from django.core.cache import cache
 from factory.base import FactoryMetaClass
+from pytest_factoryboy.fixture import Box, get_model_name
 from minio import Minio
-from minio.definitions import Object as MinioStatObject
+from minio.datatypes import Object as MinioStatObject
 from pytest_factoryboy import register
 from rest_framework.test import APIClient
 from urllib3 import HTTPResponse
@@ -18,6 +20,7 @@ from alexandria.core.tests import file_data
 from alexandria.oidc_auth.models import OIDCUser
 
 
+"""
 def register_module(module):
     for name, obj in inspect.getmembers(module):
         if isinstance(obj, FactoryMetaClass) and not obj._meta.abstract:
@@ -25,6 +28,16 @@ def register_module(module):
             # `rest_framework.routers.SimpleRouter` naming for easier testing
             base_name = obj._meta.model._meta.object_name.lower()
             register(obj, base_name)
+"""
+def register_module(module):
+    # We need to pass the locals of this file to the register method to make
+    # sure they are injected on the conftest locals instead of the default
+    # locals which would be the locals of this function
+    conftest_locals = Box(sys._getframe(1).f_locals)
+
+    for _, obj in inspect.getmembers(module):
+        if isinstance(obj, FactoryMetaClass) and not obj._meta.abstract:
+            register(obj, _caller_locals=conftest_locals)
 
 
 register_module(importlib.import_module(".core.factories", "alexandria"))
@@ -97,7 +110,10 @@ def minio_mock(mocker, settings):
             if object_name.endswith(".unsupported")
             else file_data.png
         )
-        return HTTPResponse(body=BytesIO(file), preload_content=False,)
+        return HTTPResponse(
+            body=BytesIO(file),
+            preload_content=False,
+        )
 
     stat_response = MinioStatObject(
         settings.MINIO_STORAGE_MEDIA_BUCKET_NAME,
@@ -106,7 +122,6 @@ def minio_mock(mocker, settings):
         "0c81da684e6aaef48e8f3113e5b8769b",
         8200,
         content_type="application/pdf",
-        is_dir=False,
         metadata={"X-Amz-Meta-Testtag": "super_file"},
     )
     mocker.patch.object(Minio, "presigned_get_object")

@@ -59,7 +59,13 @@ def test_json_value_filter(db, document_factory, admin_client, value, status_cod
     ],
 )
 def test_document_search_filter(
-    db, document_factory, tag_factory, file_factory, admin_client, value, amount,
+    db,
+    document_factory,
+    tag_factory,
+    file_factory,
+    admin_client,
+    value,
+    amount,
 ):
     """
     Test document search filter.

@@ -122,7 +122,9 @@ class Category(SlugModel):
         _("category description"), null=True, blank=True, required=False
     )
     color = models.CharField(
-        max_length=18, default="#FFFFFF", validators=[color_validator],
+        max_length=18,
+        default="#FFFFFF",
+        validators=[color_validator],
     )
 
 

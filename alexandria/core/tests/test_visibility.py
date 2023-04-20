@@ -224,7 +224,13 @@ def test_union_visibility_none(db, document_factory):
 
 @pytest.mark.parametrize("requesting_user", ["anon", "user", "admin"])
 def test_own_and_admin_visibility(
-    db, document_factory, file_factory, request, requesting_user, user, admin_user,
+    db,
+    document_factory,
+    file_factory,
+    request,
+    requesting_user,
+    user,
+    admin_user,
 ):
     request.user = AnonymousUser()
     expected_count = 0

@@ -80,7 +80,7 @@ class BaseSerializer(serializers.ModelSerializer):
             "modified_at",
             "modified_by_user",
             "modified_by_group",
-            "meta",
+            # "meta", # TODO
         )
 
 
@@ -138,7 +138,9 @@ class TagSynonymGroupSerializer(BaseSerializer):
 
 class FileSerializer(BaseSerializer):
     renderings = serializers.ResourceRelatedField(
-        required=False, many=True, read_only=True,
+        required=False,
+        many=True,
+        read_only=True,
     )
 
     included_serializers = {
@@ -179,7 +181,7 @@ class FileSerializer(BaseSerializer):
     class Meta:
         model = models.File
         fields = BaseSerializer.Meta.fields + (
-            "type",
+            # TODO "type",
             "name",
             "original",
             "renderings",

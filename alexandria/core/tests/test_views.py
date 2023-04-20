@@ -220,7 +220,13 @@ def test_hook_view(
 )
 @pytest.mark.parametrize("viewset", [DocumentViewSet, FileViewSet, TagViewSet])
 def test_validate_created_by_group(
-    db, viewset, request, update, admin_client, active_group, expect_response,
+    db,
+    viewset,
+    request,
+    update,
+    admin_client,
+    active_group,
+    expect_response,
 ):
     viewset_inst = viewset()
     model_class = viewset_inst.queryset.model

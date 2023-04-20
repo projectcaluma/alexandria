@@ -101,7 +101,8 @@ class FileViewSet(
 
                 temp_file.seek(0)
                 zipf.writestr(
-                    file.name, temp_file.read(),
+                    file.name,
+                    temp_file.read(),
                 )
         file_obj.seek(0)
         return file_obj
