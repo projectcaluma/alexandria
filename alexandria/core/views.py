@@ -161,7 +161,7 @@ def hook_view(request):
             response_statuses.append(HTTP_400_BAD_REQUEST)
             continue
 
-        if file.type == models.File.THUMBNAIL:
+        if file.variant == models.File.THUMBNAIL:
             response_statuses.append(HTTP_200_OK)
             continue
 

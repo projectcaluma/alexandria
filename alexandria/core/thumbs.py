@@ -41,7 +41,7 @@ def create_thumbnail(file):
     thumb_file = File.objects.create(
         name=f"{file.name}.jpg",
         document=file.document,
-        type=File.THUMBNAIL,
+        variant=File.THUMBNAIL,
         original=file,
     )
     etag = client.put_object(path_to_preview_image, thumb_file.object_name)

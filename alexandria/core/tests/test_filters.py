@@ -36,11 +36,11 @@ from ..views import CategoryViewSet, DocumentViewSet, FileViewSet, TagViewSet
     ],
 )
 def test_json_value_filter(db, document_factory, admin_client, value, status_code):
-    doc = document_factory(meta={"foo": "bar", "baz": "bla", "int": 23})
-    document_factory(meta={"foo": "baz"})
+    doc = document_factory(metainfo={"foo": "bar", "baz": "bla", "int": 23})
+    document_factory(metainfo={"foo": "baz"})
     document_factory()
     url = reverse("document-list")
-    resp = admin_client.get(url, {"filter[meta]": value})
+    resp = admin_client.get(url, {"filter[metainfo]": value})
     assert resp.status_code == status_code
     if status_code == HTTP_200_OK:
         result = resp.json()
@@ -116,13 +116,13 @@ def test_tag_category_filter(db, document_factory, tag_factory, admin_client):
     assert sorted(returned_tags) == sorted(["blue", "green"])
 
 
-def test_tag_document_meta(db, document_factory, tag_factory, admin_client):
+def test_tag_document_metadata(db, document_factory, tag_factory, admin_client):
     blue = tag_factory(slug="blue")
     red = tag_factory(slug="red")
     green = tag_factory(slug="green")
-    doc1 = document_factory(meta={"foo": "bar"})
-    doc2 = document_factory(meta={"foo": "baz"})
-    doc3 = document_factory(meta={"foo": "blah"})
+    doc1 = document_factory(metainfo={"foo": "bar"})
+    doc2 = document_factory(metainfo={"foo": "baz"})
+    doc3 = document_factory(metainfo={"foo": "blah"})
 
     doc1.tags.add(blue)
     doc1.tags.add(red)
@@ -132,7 +132,7 @@ def test_tag_document_meta(db, document_factory, tag_factory, admin_client):
 
     url = reverse("tag-list")
     resp = admin_client.get(
-        url, {"filter[with-documents-meta]": json.dumps({"key": "foo", "value": "bar"})}
+        url, {"filter[with-documents-metainfo]": json.dumps({"key": "foo", "value": "bar"})}
     )
     assert resp.status_code == HTTP_200_OK
     result = resp.json()

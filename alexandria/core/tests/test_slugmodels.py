@@ -8,14 +8,14 @@ def test_create_tags(admin_client):
     url = reverse("tag-list")
     # create multiple to ensure PK generation works
     for name in ["foo", "bar", "baz"]:
-        payload = {"data": {"attributes": {"name": name, "slug": name}, "type": "tags"}}
+        payload = {"data": {"attributes": {"name": name, "slug": name}, "variant": "tags"}}
 
         resp = admin_client.post(url, payload)
 
         assert resp.status_code == 201
         assert resp.json() == {
             "data": {
-                "type": "tags",
+                "variant": "tags",
                 "id": name,
                 "attributes": {
                     "created-at": "2017-05-21T00:00:00Z",
@@ -24,7 +24,7 @@ def test_create_tags(admin_client):
                     "modified-at": "2017-05-21T00:00:00Z",
                     "modified-by-user": "admin",
                     "modified-by-group": "foo",
-                    "meta": {},
+                    "metainfo": {},
                     "name": name,
                     "description": {"en": "", "de": "", "fr": ""},
                 },

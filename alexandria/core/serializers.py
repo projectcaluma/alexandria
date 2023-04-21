@@ -80,7 +80,7 @@ class BaseSerializer(serializers.ModelSerializer):
             "modified_at",
             "modified_by_user",
             "modified_by_group",
-            # "meta", # TODO
+            "metainfo",
         )
 
 
@@ -165,23 +165,23 @@ class FileSerializer(BaseSerializer):
     def validate(self, *args, **kwargs):
         validated_data = super().validate(*args, **kwargs)
         if validated_data.get(
-            "type"
+            "variant"
         ) != models.File.ORIGINAL and not validated_data.get("original"):
-            f_type = validated_data.get("type")
-            raise ValidationError(f'"original" must be set for type "{f_type}".')
+            file_variant = validated_data.get("variant")
+            raise ValidationError(f'"original" must be set for variant "{file_variant}".')
 
-        if validated_data.get("type") == models.File.ORIGINAL and validated_data.get(
+        if validated_data.get("variant") == models.File.ORIGINAL and validated_data.get(
             "original"
         ):
-            f_type = validated_data.get("type")
-            raise ValidationError(f'"original" must not be set for type "{f_type}".')
+            file_variant = validated_data.get("variant")
+            raise ValidationError(f'"original" must not be set for variant "{file_variant}".')
 
         return validated_data
 
     class Meta:
         model = models.File
         fields = BaseSerializer.Meta.fields + (
-            # TODO "type",
+            "variant",
             "name",
             "original",
             "renderings",

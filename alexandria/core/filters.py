@@ -64,9 +64,9 @@ class JSONValueFilter(Filter):
 
         model = qs.model
         for field in traversals:
-            model = model._meta.get_field(field).related_model
+            model = model._metadata.get_field(field).related_model
 
-        return model._meta.get_field(actual_field).get_lookups()
+        return model._metadata.get_field(actual_field).get_lookups()
 
 
 class ActiveGroupFilter(CharFilter):
@@ -95,48 +95,48 @@ class TagsFilter(BaseInFilter):
 
 
 class CategoryFilterSet(FilterSet):
-    meta = JSONValueFilter(field_name="meta")
+    metainfo = JSONValueFilter(field_name="metainfo")
     active_group = ActiveGroupFilter()
 
     class Meta:
         model = models.Category
-        fields = ["active_group", "meta"]
+        fields = ["active_group", "metainfo"]
 
 
 class DocumentFilterSet(FilterSet):
-    meta = JSONValueFilter(field_name="meta")
+    metainfo = JSONValueFilter(field_name="metainfo")
     active_group = ActiveGroupFilter()
     tags = TagsFilter()
 
     class Meta:
         model = models.Document
-        fields = ["meta", "category", "tags"]
+        fields = ["metainfo", "category", "tags"]
 
 
 class FileFilterSet(FilterSet):
-    meta = JSONValueFilter(field_name="meta")
-    document_meta = JSONValueFilter(field_name="document__meta")
+    metainfo = JSONValueFilter(field_name="metainfo")
+    document_metadata = JSONValueFilter(field_name="document__metadata")
     active_group = ActiveGroupFilter()
     files = BaseCSVFilter(field_name="pk", lookup_expr="in")
 
     class Meta:
         model = models.File
-        fields = ["original", "renderings", "type", "meta", "files"]
+        fields = ["original", "renderings", "variant", "metainfo", "files"]
 
 
 class TagFilterSet(FilterSet):
-    meta = JSONValueFilter(field_name="meta")
+    metainfo = JSONValueFilter(field_name="metainfo")
     active_group = ActiveGroupFilter()
     with_documents_in_category = CharFilter(field_name="documents__category__slug")
-    with_documents_meta = JSONValueFilter(field_name="documents__meta")
+    with_documents_metadata = JSONValueFilter(field_name="documents__metadata")
     name = CharFilter(lookup_expr="istartswith")
 
     class Meta:
         model = models.Tag
         fields = [
-            "meta",
+            "metainfo",
             "active_group",
             "with_documents_in_category",
-            "with_documents_meta",
+            "with_documents_metadata",
             "name",
         ]
