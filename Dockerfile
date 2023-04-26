@@ -23,7 +23,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 ENV HOME=/home/alexandria
 
 ENV PYTHONUNBUFFERED=1
-ENV DJANGO_SETTINGS_MODULE alexandria.settings
+ENV DJANGO_SETTINGS_MODULE alexandria.settings.django
 ENV APP_HOME=/app
 ENV UWSGI_INI /app/uwsgi.ini
 
