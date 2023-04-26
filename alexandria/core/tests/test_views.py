@@ -28,7 +28,7 @@ def test_anonymous_writing(db, document, client, settings, user, allow_anon, met
             "rest_framework.permissions.IsAuthenticatedOrReadOnly",
         ]
 
-    data = {"data": {"variant": "documents", "attributes": {"title": "winstonsmith"}}}
+    data = {"data": {"type": "documents", "attributes": {"title": "winstonsmith"}}}
 
     url = reverse("document-list")
 
@@ -55,16 +55,22 @@ def test_anonymous_writing(db, document, client, settings, user, allow_anon, met
     ],
 )
 def test_file_validation(
-    admin_client, document_factory, file_factory, file_variant, original, status_code
+    minio_mock,
+    admin_client,
+    document_factory,
+    file_factory,
+    file_variant,
+    original,
+    status_code,
 ):
     doc = document_factory()
 
     data = {
         "data": {
-            "variant": "files",
+            "type": "files",
             "attributes": {"name": "file.pdf"},
             "relationships": {
-                "document": {"data": {"id": str(doc.pk), "variant": "documents"}},
+                "document": {"data": {"id": str(doc.pk), "type": "documents"}},
             },
         }
     }
@@ -73,7 +79,7 @@ def test_file_validation(
     if original:
         file = file_factory(document=doc, name="file2.pdf")
         data["data"]["relationships"]["original"] = {
-            "data": {"id": str(file.pk), "variant": "files"},
+            "data": {"id": str(file.pk), "type": "files"},
         }
 
     url = reverse("file-list")
@@ -221,6 +227,7 @@ def test_hook_view(
 @pytest.mark.parametrize("viewset", [DocumentViewSet, FileViewSet, TagViewSet])
 def test_validate_created_by_group(
     db,
+    minio_mock,
     viewset,
     request,
     update,
@@ -246,7 +253,7 @@ def test_validate_created_by_group(
     post_data = {
         "data": {
             "attributes": serialized_model,
-            "variant": model_class._metadata.verbose_name_plural,
+            "type": model_class._meta.verbose_name_plural,
         }
     }
     if update:
@@ -328,13 +335,13 @@ def test_document_delete_some_tags(admin_client, tag_factory, document_factory):
 
     data = {
         "data": {
-            "variant": "documents",
+            "type": "documents",
             "id": document_1.id,
             "relationships": {
                 "tags": {
                     "data": [
-                        {"id": tag_1.slug, "variant": "tags"},
-                        {"id": tag_2.slug, "variant": "tags"},
+                        {"id": tag_1.slug, "type": "tags"},
+                        {"id": tag_2.slug, "type": "tags"},
                     ]
                 }
             },

@@ -1,7 +1,8 @@
 import json
 
 from django.contrib.postgres.fields.jsonb import KeyTextTransform
-from django.db.models import Q
+from django.db.models import FloatField, Q, TextField, Value
+from django.db.models.functions import Cast
 from django_filters import BaseCSVFilter, BaseInFilter, CharFilter, Filter, FilterSet
 from django_filters.constants import EMPTY_VALUES
 from rest_framework.exceptions import ValidationError
@@ -10,6 +11,14 @@ from alexandria.core import models
 
 
 class JSONValueFilter(Filter):
+    field_type_by_lookup_expr = {
+        "exact": TextField,
+        "gt": FloatField,
+        "lt": FloatField,
+        "gte": FloatField,
+        "lte": FloatField,
+    }
+
     def filter(self, qs, value):
         if value in EMPTY_VALUES:
             return qs
@@ -41,19 +50,19 @@ class JSONValueFilter(Filter):
                     f'"{self.field_name}". Valid expressions: '
                     f'{", ".join(valid_lookups.keys())}'
                 )
-            # "contains" behaves differently on JSONFields as it does on TextFields.
+            # "contains" behaves differently on JSONFields as it does on other fields.
             # That's why we annotate the queryset with the value.
             # Some discussion about it can be found here:
             # https://code.djangoproject.com/ticket/26511
-            if isinstance(expr["value"], str):
-                qs = qs.annotate(
-                    field_val=KeyTextTransform(expr["key"], self.field_name)
+            cast_to = self.field_type_by_lookup_expr.get(lookup_expr, TextField)
+            qs = qs.annotate(
+                field_val=Cast(
+                    KeyTextTransform(expr["key"], self.field_name),
+                    output_field=cast_to(),
                 )
-                lookup = {f"field_val__{lookup_expr}": expr["value"]}
-            else:
-                lookup = {
-                    f"{self.field_name}__{expr['key']}__{lookup_expr}": expr["value"]
-                }
+            )
+            lookup = {f"field_val__{lookup_expr}": Value(expr["value"])}
+
             qs = qs.filter(**lookup)
         return qs
 
@@ -64,9 +73,9 @@ class JSONValueFilter(Filter):
 
         model = qs.model
         for field in traversals:
-            model = model._metadata.get_field(field).related_model
+            model = model._meta.get_field(field).related_model
 
-        return model._metadata.get_field(actual_field).get_lookups()
+        return model._meta.get_field(actual_field).get_lookups()
 
 
 class ActiveGroupFilter(CharFilter):
@@ -115,7 +124,7 @@ class DocumentFilterSet(FilterSet):
 
 class FileFilterSet(FilterSet):
     metainfo = JSONValueFilter(field_name="metainfo")
-    document_metadata = JSONValueFilter(field_name="document__metadata")
+    document_metainfo = JSONValueFilter(field_name="document__metainfo")
     active_group = ActiveGroupFilter()
     files = BaseCSVFilter(field_name="pk", lookup_expr="in")
 
@@ -128,7 +137,7 @@ class TagFilterSet(FilterSet):
     metainfo = JSONValueFilter(field_name="metainfo")
     active_group = ActiveGroupFilter()
     with_documents_in_category = CharFilter(field_name="documents__category__slug")
-    with_documents_metadata = JSONValueFilter(field_name="documents__metadata")
+    with_documents_metainfo = JSONValueFilter(field_name="documents__metainfo")
     name = CharFilter(lookup_expr="istartswith")
 
     class Meta:
@@ -137,6 +146,6 @@ class TagFilterSet(FilterSet):
             "metainfo",
             "active_group",
             "with_documents_in_category",
-            "with_documents_metadata",
+            "with_documents_metainfo",
             "name",
         ]

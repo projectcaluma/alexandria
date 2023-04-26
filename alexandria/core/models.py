@@ -170,8 +170,12 @@ class File(UUIDModel):
         ORIGINAL,
         THUMBNAIL,
     )
-    VARIANT_CHOICES_TUPLE = ((variant_choice, variant_choice) for variant_choice in VARIANT_CHOICES)
-    variant = models.CharField(choices=VARIANT_CHOICES_TUPLE, max_length=23, default=ORIGINAL)
+    VARIANT_CHOICES_TUPLE = (
+        (variant_choice, variant_choice) for variant_choice in VARIANT_CHOICES
+    )
+    variant = models.CharField(
+        choices=VARIANT_CHOICES_TUPLE, max_length=23, default=ORIGINAL
+    )
     original = models.ForeignKey(
         "self",
         on_delete=models.CASCADE,

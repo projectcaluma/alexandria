@@ -168,13 +168,17 @@ class FileSerializer(BaseSerializer):
             "variant"
         ) != models.File.ORIGINAL and not validated_data.get("original"):
             file_variant = validated_data.get("variant")
-            raise ValidationError(f'"original" must be set for variant "{file_variant}".')
+            raise ValidationError(
+                f'"original" must be set for variant "{file_variant}".'
+            )
 
         if validated_data.get("variant") == models.File.ORIGINAL and validated_data.get(
             "original"
         ):
             file_variant = validated_data.get("variant")
-            raise ValidationError(f'"original" must not be set for variant "{file_variant}".')
+            raise ValidationError(
+                f'"original" must not be set for variant "{file_variant}".'
+            )
 
         return validated_data
 

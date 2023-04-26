@@ -1,16 +1,16 @@
 import importlib
 import inspect
+import sys
 import time
 from io import BytesIO
-import sys
 
 import pytest
 from django.core.cache import cache
 from factory.base import FactoryMetaClass
-from pytest_factoryboy.fixture import Box, get_model_name
 from minio import Minio
 from minio.datatypes import Object as MinioStatObject
 from pytest_factoryboy import register
+from pytest_factoryboy.fixture import Box
 from rest_framework.test import APIClient
 from urllib3 import HTTPResponse
 
@@ -20,15 +20,6 @@ from alexandria.core.tests import file_data
 from alexandria.oidc_auth.models import OIDCUser
 
 
-"""
-def register_module(module):
-    for name, obj in inspect.getmembers(module):
-        if isinstance(obj, FactoryMetaClass) and not obj._meta.abstract:
-            # name needs to be compatible with
-            # `rest_framework.routers.SimpleRouter` naming for easier testing
-            base_name = obj._meta.model._meta.object_name.lower()
-            register(obj, base_name)
-"""
 def register_module(module):
     # We need to pass the locals of this file to the register method to make
     # sure they are injected on the conftest locals instead of the default

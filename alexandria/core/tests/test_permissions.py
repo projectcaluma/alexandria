@@ -71,7 +71,7 @@ def test_permission(
 
     data = {
         "data": {
-            "variant": "documents",
+            "type": "documents",
             "attributes": {"title": {"de": "", "en": "foo", "fr": ""}},
         }
     }
@@ -107,7 +107,7 @@ def test_permission_no_permissions_configured(client, reset_permission_classes):
 
     data = {
         "data": {
-            "variant": "documents",
+            "type": "documents",
             "attributes": {"title": {"de": "", "en": "foo", "fr": ""}},
         }
     }

@@ -112,7 +112,10 @@ class FileViewSet(
         if not request.query_params.get("filter[files]"):
             raise ValidationError(_('Specifying a "files" filter is mandatory!'))
 
-        queryset = self.filter_queryset(self.get_queryset())
+        try:
+            queryset = self.filter_queryset(self.get_queryset())
+        except DjangoCoreValidationError as exp:
+            raise ValidationError(*exp.messages)
 
         try:
             if not queryset:

@@ -116,7 +116,7 @@ def test_tag_category_filter(db, document_factory, tag_factory, admin_client):
     assert sorted(returned_tags) == sorted(["blue", "green"])
 
 
-def test_tag_document_metadata(db, document_factory, tag_factory, admin_client):
+def test_tag_document_metainfo(db, document_factory, tag_factory, admin_client):
     blue = tag_factory(slug="blue")
     red = tag_factory(slug="red")
     green = tag_factory(slug="green")
@@ -132,7 +132,8 @@ def test_tag_document_metadata(db, document_factory, tag_factory, admin_client):
 
     url = reverse("tag-list")
     resp = admin_client.get(
-        url, {"filter[with-documents-metainfo]": json.dumps({"key": "foo", "value": "bar"})}
+        url,
+        {"filter[with-documents-metainfo]": json.dumps({"key": "foo", "value": "bar"})},
     )
     assert resp.status_code == HTTP_200_OK
     result = resp.json()

@@ -69,8 +69,8 @@ def viewset(request):
     """
     viewset_instance = request.param()
     model = viewset_instance.queryset.model
-    factory_name = inflection.underscore(model._metadata.object_name)
-    base_name = model._metadata.object_name.lower()
+    factory_name = inflection.underscore(model._meta.object_name)
+    base_name = model._meta.object_name.lower()
 
     viewset_instance.factory_name = factory_name
     viewset_instance.base_name = base_name
