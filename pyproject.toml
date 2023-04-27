@@ -20,18 +20,18 @@ exclude = [
 
 [tool.poetry.dependencies]
 python = "^3.8.1"
-django = "~3.2.18"
-django-environ = "^0.10.0"
-django-filter = "^23.1"
+django = "~3.2"
+django-environ = ">=0.9.0,<0.11.0"
+django-filter = ">=22.1,<24.0"
 django-localized-fields = "^6.6"
-djangorestframework = "^3.14.0"
-djangorestframework-jsonapi = "~6.0.0"
+djangorestframework = "^3.13.0"
+djangorestframework-jsonapi = ">=5.0.0,<7.0.0"
 minio = "^7.1.14"
 mozilla-django-oidc = "^2.0.0"
 preview-generator = "^0.29"
-psycopg2-binary = "~2.9.6"
-requests = "^2.28.2"
-uwsgi = "^2.0.21"
+psycopg2-binary = "~2.9"
+requests = "^2.28.0"
+uwsgi = "^2.0.20"
 vtk = "^9.2.6"
 
 [tool.poetry.dev-dependencies]
