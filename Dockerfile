@@ -30,12 +30,10 @@ ENV UWSGI_INI /app/uwsgi.ini
 RUN pip install -U poetry
 
 ARG INSTALL_DEV_DEPENDENCIES=false
-COPY pyproject.toml poetry.lock $APP_HOME/
+COPY . $APP_HOME
 RUN if [ "$INSTALL_DEV_DEPENDENCIES" = "true" ]; then poetry install; else poetry install --no-dev; fi
 
 USER alexandria
-
-COPY . $APP_HOME
 
 EXPOSE 8000
 

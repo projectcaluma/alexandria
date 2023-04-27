@@ -1,6 +1,5 @@
 .cache
 CONTRIBUTING.md
-README.md
 .coverage
 .coverage.*
 docker-compose.*
