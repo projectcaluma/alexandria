@@ -1,7 +1,6 @@
 import re
 import uuid
 
-from django.contrib.postgres.fields import JSONField
 from django.core.exceptions import ImproperlyConfigured
 from django.core.validators import RegexValidator
 from django.db import models
@@ -77,7 +76,7 @@ class BaseModel(PermissionMixin, VisibilityMixin, models.Model):
     modified_by_group = models.CharField(
         _("created by group"), max_length=255, blank=True, null=True
     )
-    meta = JSONField(_("meta"), default=dict)
+    metainfo = models.JSONField(_("metainfo"), default=dict)
 
     class Meta:
         abstract = True
@@ -122,7 +121,9 @@ class Category(SlugModel):
         _("category description"), null=True, blank=True, required=False
     )
     color = models.CharField(
-        max_length=18, default="#FFFFFF", validators=[color_validator],
+        max_length=18,
+        default="#FFFFFF",
+        validators=[color_validator],
     )
 
 
@@ -165,12 +166,16 @@ class File(UUIDModel):
     ORIGINAL = "original"
     THUMBNAIL = "thumbnail"
 
-    TYPE_CHOICES = (
+    VARIANT_CHOICES = (
         ORIGINAL,
         THUMBNAIL,
     )
-    TYPE_CHOICES_TUPLE = ((type_choice, type_choice) for type_choice in TYPE_CHOICES)
-    type = models.CharField(choices=TYPE_CHOICES_TUPLE, max_length=23, default=ORIGINAL)
+    VARIANT_CHOICES_TUPLE = (
+        (variant_choice, variant_choice) for variant_choice in VARIANT_CHOICES
+    )
+    variant = models.CharField(
+        choices=VARIANT_CHOICES_TUPLE, max_length=23, default=ORIGINAL
+    )
     original = models.ForeignKey(
         "self",
         on_delete=models.CASCADE,

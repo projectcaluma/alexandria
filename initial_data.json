@@ -9,9 +9,7 @@
             "modified_at": "2020-08-04T13:24:00.704Z",
             "modified_by_user": null,
             "modified_by_group": null,
-            "meta": {
-
-            },
+            "metainfo": {},
             "name": "{\"en\": \"All involved\", \"de-ch\": \"Alle Beteiligten\",\"de\": \"Alle Beteiligten\"}",
             "description": "{\"en\": \"\"}",
             "color": "#CB68C1"
@@ -27,9 +25,7 @@
             "modified_at": "2020-08-04T13:24:00.677Z",
             "modified_by_user": null,
             "modified_by_group": null,
-            "meta": {
-
-            },
+            "metainfo": {},
             "name": "{\"en\": \"Supplements to the application\",\"de-ch\": \"Beilagen zum Gesuch\",\"de\": \"Beilagen zum Gesuch\"}",
             "description": "{\"en\": \"\"}",
             "color": "#9CDD69"
@@ -45,9 +41,7 @@
             "modified_at": "2020-08-04T13:24:00.699Z",
             "modified_by_user": null,
             "modified_by_group": null,
-            "meta": {
-
-            },
+            "metainfo": {},
             "name": "{\"en\": \"Involved Authorities\",\"de-ch\": \"Beteiligte Beh\\u00f6rden\",\"de\": \"Beteiligte Beh\\u00f6rden\"}",
             "description": "{\"en\": \"\"}",
             "color": "#8791EC"
@@ -63,9 +57,7 @@
             "modified_at": "2020-08-04T13:24:00.708Z",
             "modified_by_user": null,
             "modified_by_group": null,
-            "meta": {
-
-            },
+            "metainfo": {},
             "name": "{\"en\": \"Internal\",\"de-ch\": \"Intern\",\"de\": \"Intern\"}",
             "description": "{\"en\": \"\"}",
             "color": "#DB8B72"
@@ -81,9 +73,7 @@
             "modified_at": "2020-08-04T13:24:00.690Z",
             "modified_by_user": null,
             "modified_by_group": null,
-            "meta": {
-              "instanceid": "1"
-            },
+            "metainfo": {},
             "name": "{\"en\": \"Additional claims\",\"de-ch\": \"Nachforderungen\",\"de\": \"Nachforderungen\"}",
             "description": "{\"en\": \"\"}",
             "color": "#66CFC9"

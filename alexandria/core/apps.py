@@ -10,7 +10,7 @@ class DefaultConfig(AppConfig):
     def ready(self):
         # to avoid recursive import error, load extension classes
         # only once the app is ready
-        from .models import VisibilityMixin, PermissionMixin
+        from .models import PermissionMixin, VisibilityMixin
         from .serializers import BaseSerializer
 
         PermissionMixin.permission_classes = [

@@ -45,7 +45,7 @@ def test_anonymous_writing(db, document, client, settings, user, allow_anon, met
 
 
 @pytest.mark.parametrize(
-    "f_type,original,status_code",
+    "file_variant,original,status_code",
     [
         (File.ORIGINAL, False, HTTP_201_CREATED),
         (File.THUMBNAIL, True, HTTP_201_CREATED),
@@ -55,7 +55,13 @@ def test_anonymous_writing(db, document, client, settings, user, allow_anon, met
     ],
 )
 def test_file_validation(
-    admin_client, document_factory, file_factory, f_type, original, status_code
+    minio_mock,
+    admin_client,
+    document_factory,
+    file_factory,
+    file_variant,
+    original,
+    status_code,
 ):
     doc = document_factory()
 
@@ -68,8 +74,8 @@ def test_file_validation(
             },
         }
     }
-    if f_type:
-        data["data"]["attributes"]["type"] = f_type
+    if file_variant:
+        data["data"]["attributes"]["variant"] = file_variant
     if original:
         file = file_factory(document=doc, name="file2.pdf")
         data["data"]["relationships"]["original"] = {
@@ -141,7 +147,7 @@ def test_hook_view(
                         "size": 299758,
                         "eTag": "af1421c17294eed533ec99eb82b468fb",
                         "contentType": "application/pdf",
-                        "userMetadata": {"content-type": "application/pdf"},
+                        "userMetadata": {"content-variant": "application/pdf"},
                         "versionId": "1",
                         "sequencer": "162276DB83A9F895",
                     },
@@ -183,7 +189,7 @@ def test_hook_view(
             document=doc,
             name="test.png",
             pk="218b2504-1736-476e-9975-dc5215ef4f01",
-            type=File.THUMBNAIL,
+            variant=File.THUMBNAIL,
         )
         assert File.objects.count() == 1
 
@@ -195,9 +201,9 @@ def test_hook_view(
 
     if status_code == HTTP_201_CREATED:
         assert File.objects.count() == 2
-        assert File.objects.filter(type=File.THUMBNAIL).count() == 1
-        orig = File.objects.get(type=File.ORIGINAL)
-        thumb = File.objects.get(type=File.THUMBNAIL)
+        assert File.objects.filter(variant=File.THUMBNAIL).count() == 1
+        orig = File.objects.get(variant=File.ORIGINAL)
+        thumb = File.objects.get(variant=File.THUMBNAIL)
         assert thumb.original == orig
         assert orig.upload_status == File.COMPLETED
         assert thumb.upload_status == File.COMPLETED
@@ -220,7 +226,14 @@ def test_hook_view(
 )
 @pytest.mark.parametrize("viewset", [DocumentViewSet, FileViewSet, TagViewSet])
 def test_validate_created_by_group(
-    db, viewset, request, update, admin_client, active_group, expect_response,
+    db,
+    minio_mock,
+    viewset,
+    request,
+    update,
+    admin_client,
+    active_group,
+    expect_response,
 ):
     viewset_inst = viewset()
     model_class = viewset_inst.queryset.model

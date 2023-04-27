@@ -4,7 +4,6 @@ from ..models import Category
 
 
 def test_load_example_data(db):
-
     assert len(Category.objects.all()) == 0
 
     call_command("loaddata", "initial_data.json")

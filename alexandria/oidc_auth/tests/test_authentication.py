@@ -63,7 +63,10 @@ def test_authentication(
 
 
 def test_authentication_idp_502(
-    db, rf, requests_mock, settings,
+    db,
+    rf,
+    requests_mock,
+    settings,
 ):
     settings.OIDC_DRF_AUTH_BACKEND = (
         "alexandria.oidc_auth.authentication.AlexandriaAuthenticationBackend"
@@ -78,7 +81,10 @@ def test_authentication_idp_502(
 
 
 def test_authentication_idp_missing_claim(
-    db, rf, requests_mock, settings,
+    db,
+    rf,
+    requests_mock,
+    settings,
 ):
     settings.OIDC_DRF_AUTH_BACKEND = (
         "alexandria.oidc_auth.authentication.AlexandriaAuthenticationBackend"
@@ -93,7 +99,10 @@ def test_authentication_idp_missing_claim(
 
 
 def test_authentication_no_client(
-    db, rf, requests_mock, settings,
+    db,
+    rf,
+    requests_mock,
+    settings,
 ):
     settings.OIDC_DRF_AUTH_BACKEND = (
         "alexandria.oidc_auth.authentication.AlexandriaAuthenticationBackend"
@@ -112,7 +121,11 @@ def test_authentication_no_client(
 
 @pytest.mark.parametrize("debug", [True, False])
 def test_authentication_dev(
-    db, rf, requests_mock, settings, debug,
+    db,
+    rf,
+    requests_mock,
+    settings,
+    debug,
 ):
     settings.DEBUG = debug
 

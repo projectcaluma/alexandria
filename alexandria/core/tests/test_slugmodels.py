@@ -24,7 +24,7 @@ def test_create_tags(admin_client):
                     "modified-at": "2017-05-21T00:00:00Z",
                     "modified-by-user": "admin",
                     "modified-by-group": "foo",
-                    "meta": {},
+                    "metainfo": {},
                     "name": name,
                     "description": {"en": "", "de": "", "fr": ""},
                 },

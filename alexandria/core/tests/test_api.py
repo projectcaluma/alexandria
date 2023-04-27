@@ -11,7 +11,6 @@ from django.db.models.fields.related import ManyToManyDescriptor
 from django.test.utils import CaptureQueriesContext
 from django.urls import reverse
 from rest_framework_json_api.renderers import JSONRenderer
-from rest_framework_json_api.utils import get_included_serializers
 
 from ..views import CategoryViewSet, DocumentViewSet, FileViewSet, TagViewSet
 
@@ -82,12 +81,19 @@ def viewset(request):
 
 @pytest.fixture
 def fixture(
-    deterministic_uuids, django_db_reset_sequences, request, viewset,
+    deterministic_uuids,
+    django_db_reset_sequences,
+    request,
+    viewset,
 ):
     """Get fixture and many to many relations of given viewset."""
     fixture = request.getfixturevalue(viewset.factory_name)
 
-    included = get_included_serializers(viewset.serializer_class)
+    included = (
+        viewset.serializer_class.included_serializers
+        if hasattr(viewset.serializer_class, "included_serializers")
+        else {}
+    )
     for name in sorted(included.keys()):
         relation_type = getattr(fixture.__class__, name)
         # pytest factory boy doesn't have native ManyToMany support

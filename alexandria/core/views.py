@@ -101,7 +101,8 @@ class FileViewSet(
 
                 temp_file.seek(0)
                 zipf.writestr(
-                    file.name, temp_file.read(),
+                    file.name,
+                    temp_file.read(),
                 )
         file_obj.seek(0)
         return file_obj
@@ -111,7 +112,10 @@ class FileViewSet(
         if not request.query_params.get("filter[files]"):
             raise ValidationError(_('Specifying a "files" filter is mandatory!'))
 
-        queryset = self.filter_queryset(self.get_queryset())
+        try:
+            queryset = self.filter_queryset(self.get_queryset())
+        except DjangoCoreValidationError as exp:
+            raise ValidationError(*exp.messages)
 
         try:
             if not queryset:
@@ -160,7 +164,7 @@ def hook_view(request):
             response_statuses.append(HTTP_400_BAD_REQUEST)
             continue
 
-        if file.type == models.File.THUMBNAIL:
+        if file.variant == models.File.THUMBNAIL:
             response_statuses.append(HTTP_200_OK)
             continue
 
