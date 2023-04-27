@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "alexandria"
+name = "caluma-alexandria"
 version = "0.3.0"
 description = "Document management service"
 repository = "https://github.com/projectcaluma/alexandria"
@@ -16,6 +16,9 @@ include = ["CHANGELOG.md"]
 exclude = [
     "alexandria/conftest.py",
     "alexandria/**/tests",
+]
+packages = [
+    { include = "alexandria" }
 ]
 
 [tool.poetry.dependencies]
