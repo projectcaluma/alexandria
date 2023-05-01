@@ -1,3 +1,20 @@
+# v1.0.0
+### Feature
+* Add pypi deployment worklow ([`8c341cc`](https://github.com/projectcaluma/alexandria/commit/8c341ccf0a293d6def06abae82347a1a9a6aef98))
+* Split settings for packaging ([`7827984`](https://github.com/projectcaluma/alexandria/commit/7827984391cccac3440e8e54c01a414692910f9b))
+
+### Fix
+* Use caluma-alexandria as package name ([`9baec0d`](https://github.com/projectcaluma/alexandria/commit/9baec0dfc88abf65c19dd4f659d06e7a48f1ec12))
+* Relax version ranges ([`25fbb68`](https://github.com/projectcaluma/alexandria/commit/25fbb6833f6bebdf24fe526ea745a7d010a5ac3b))
+* Fix jsonfilter ([`551d1e2`](https://github.com/projectcaluma/alexandria/commit/551d1e2fdd3d5245df0ae3b98a4a787b0b708853))
+* Rename fields to metainfo and variant ([`4bfb7ed`](https://github.com/projectcaluma/alexandria/commit/4bfb7ed4aa149df0cdde70fe55c1f48f23687711))
+* Upgrade dependencies ([`2eacf22`](https://github.com/projectcaluma/alexandria/commit/2eacf221610e648bcd3cd82a3833a674fc1e8f00))
+* Fix default auth backend settings ([`18ef3d9`](https://github.com/projectcaluma/alexandria/commit/18ef3d94dcd52c8021aa38faba97df550e8319b2))
+
+### Breaking
+* renames meta to metainfo, type to variant ([`4bfb7ed`](https://github.com/projectcaluma/alexandria/commit/4bfb7ed4aa149df0cdde70fe55c1f48f23687711))
+* drops django 2.2 ([`2eacf22`](https://github.com/projectcaluma/alexandria/commit/2eacf221610e648bcd3cd82a3833a674fc1e8f00))
+
 # v0.3.0
 ### Feature
 * Make authentication backend configurable ([`23ebe28`](https://github.com/projectcaluma/alexandria/commit/23ebe28fda16b9f8133100554d03b0ca1541b643))
