@@ -6,6 +6,7 @@ applications integrating alexandria.
 """
 
 import os
+from warnings import warn
 
 import environ
 
@@ -53,16 +54,49 @@ if DEV_AUTH_BACKEND:
 
 
 # Extensions
+ALEXANDRIA_VISIBILITY_CLASSES = env.list(
+    "ALEXANDRIA_VISIBILITY_CLASSES", default=(["alexandria.core.visibilities.Any"])
+)
+ALEXANDRIA_PERMISSION_CLASSES = env.list(
+    "ALEXANDRIA_PERMISSION_CLASSES", default=(["alexandria.core.permissions.AllowAny"])
+)
+ALEXANDRIA_VALIDATION_CLASSES = env.list("ALEXANDRIA_VALIDATION_CLASSES", default=[])
+
 
 VISIBILITY_CLASSES = env.list(
     "VISIBILITY_CLASSES", default=default(["alexandria.core.visibilities.Any"])
 )
-
 PERMISSION_CLASSES = env.list(
     "PERMISSION_CLASSES", default=default(["alexandria.core.permissions.AllowAny"])
 )
 VALIDATION_CLASSES = env.list("VALIDATION_CLASSES", default=[])
 
+
+# Reading PERMISSION_CLASSES, VISIBILITY_CLASSES, VALIDATION_CLASSES is still supported.
+# If it's set but ALEXANDRIA_* is not, copy over the config
+if PERMISSION_CLASSES and not ALEXANDRIA_PERMISSION_CLASSES:  # pragma: no cover
+    ALEXANDRIA_PERMISSION_CLASSES = PERMISSION_CLASSES
+if VISIBILITY_CLASSES and not ALEXANDRIA_VISIBILITY_CLASSES:  # pragma: no cover
+    ALEXANDRIA_VISIBILITY_CLASSES = VISIBILITY_CLASSES
+if VALIDATION_CLASSES and not ALEXANDRIA_VALIDATION_CLASSES:  # pragma: no cover
+    ALEXANDRIA_VALIDATION_CLASSES = VALIDATION_CLASSES
+
+
+# non prefixed are deprecated, but still supported for now.
+# If they're set, notify the user.
+def _deprecate_env(name, replacement):
+    if env.str(name, default=False):  # pragma: no cover
+        warn(
+            DeprecationWarning(
+                f"The {name} setting is deprecated and will be removed "
+                f"in a future version of alexandria. Use {replacement}"
+            )
+        )
+
+
+_deprecate_env("PERMISSION_CLASSES", "ALEXANDRIA_PERMISSION_CLASSES")
+_deprecate_env("VISIBILITY_CLASSES", "ALEXANDRIA_VISIBILITY_CLASSES")
+_deprecate_env("VALIDATION_CLASSES", "ALEXANDRIA_VALIDATION_CLASSES")
 
 # Storage
 MEDIA_STORAGE_SERVICE = env.str("MEDIA_STORAGE_SERVICE", default="minio")
