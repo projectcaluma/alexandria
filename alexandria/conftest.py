@@ -5,6 +5,7 @@ import time
 from io import BytesIO
 
 import pytest
+from django.apps import apps
 from django.core.cache import cache
 from factory.base import FactoryMetaClass
 from minio import Minio
@@ -15,8 +16,6 @@ from pytest_factoryboy.fixture import Box
 from rest_framework.test import APIClient
 from urllib3 import HTTPResponse
 
-from alexandria.core.models import VisibilityMixin
-from alexandria.core.serializers import BaseSerializer
 from alexandria.core.storage_clients import Minio as MinioStorageClient
 from alexandria.core.tests import file_data
 from alexandria.oidc_auth.models import OIDCUser
@@ -78,18 +77,18 @@ def _autoclear_cache():
     cache.clear()
 
 
-@pytest.fixture
-def reset_visibilities():
-    before = VisibilityMixin.visibility_classes
-    yield
-    VisibilityMixin.visibility_classes = before
+@pytest.fixture(autouse=True)
+def reset_config_classes(settings):
+    """
+    Reset the config classes to clean state after test.
 
+    The config classes need to be reset after running tests that
+    use them. Otherwise, unrelated tests may get affected.
+    """
 
-@pytest.fixture
-def reset_validators():
-    before = BaseSerializer.validation_classes
-    yield
-    BaseSerializer.validation_classes = before
+    # First, set config to original value
+    core_config = apps.get_app_config("generic_permissions")
+    core_config.ready()
 
 
 @pytest.fixture

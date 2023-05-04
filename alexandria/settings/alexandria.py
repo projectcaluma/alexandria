@@ -63,14 +63,19 @@ ALEXANDRIA_CREATED_BY_GROUP_PROPERTY = env.str(
 
 # Extensions
 ALEXANDRIA_VISIBILITY_CLASSES = env.list(
-    "ALEXANDRIA_VISIBILITY_CLASSES",
-    default=default(["alexandria.core.visibilities.Any"], []),
+    "ALEXANDRIA_VISIBILITY_CLASSES", default=(["generic_permissions.visibilities.Any"])
 )
 ALEXANDRIA_PERMISSION_CLASSES = env.list(
     "ALEXANDRIA_PERMISSION_CLASSES",
-    default=default(["alexandria.core.permissions.AllowAny"], []),
+    default=(["generic_permissions.permissions.AllowAny"]),
 )
 ALEXANDRIA_VALIDATION_CLASSES = env.list("ALEXANDRIA_VALIDATION_CLASSES", default=[])
+
+# We use DGAP as a permission/visibility/validation handler. Copy
+# the configuration over so DGAP knows
+GENERIC_PERMISSIONS_VISIBILITY_CLASSES = ALEXANDRIA_VISIBILITY_CLASSES
+GENERIC_PERMISSIONS_PERMISSION_CLASSES = ALEXANDRIA_PERMISSION_CLASSES
+GENERIC_PERMISSIONS_VALIDATION_CLASSES = ALEXANDRIA_VALIDATION_CLASSES
 
 # Storage
 ALEXANDRIA_MEDIA_STORAGE_SERVICE = env.str(

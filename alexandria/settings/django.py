@@ -19,6 +19,7 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.auth",
     "alexandria.core.apps.DefaultConfig",
+    "generic_permissions.apps.GenericPermissionsConfig",
 ]
 
 if ENV == "dev":  # noqa

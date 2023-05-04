@@ -9,14 +9,14 @@ from django.core.exceptions import ValidationError as DjangoCoreValidationError
 from django.http import FileResponse, HttpResponse
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_http_methods
+from generic_permissions.permissions import PermissionViewMixin
+from generic_permissions.visibilities import VisibilityViewMixin
 from rest_framework.decorators import action
 from rest_framework.exceptions import NotFound, ValidationError
 from rest_framework.mixins import CreateModelMixin, ListModelMixin, RetrieveModelMixin
-from rest_framework.response import Response
 from rest_framework.status import (
     HTTP_200_OK,
     HTTP_201_CREATED,
-    HTTP_204_NO_CONTENT,
     HTTP_400_BAD_REQUEST,
     HTTP_403_FORBIDDEN,
 )
@@ -38,22 +38,6 @@ from .filters import (
 )
 from .storage_clients import client
 from .utils import create_thumbnail, get_checksum, get_file
-
-
-class PermissionViewMixin:
-    def destroy(self, request, *args, **kwargs):
-        self.queryset.model.check_permissions(request)
-        instance = self.get_object()
-        instance.check_object_permissions(request)
-        # we do not call `super()` in order to not fetch the object twice.
-        self.perform_destroy(instance)
-        return Response(status=HTTP_204_NO_CONTENT)
-
-
-class VisibilityViewMixin:
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        return queryset.model.visibility_queryset_filter(queryset, self.request)
 
 
 class CategoryViewSet(
