@@ -14,12 +14,12 @@ class DefaultConfig(AppConfig):
         from .serializers import BaseSerializer
 
         PermissionMixin.permission_classes = [
-            import_string(cls) for cls in settings.PERMISSION_CLASSES
+            import_string(cls) for cls in settings.ALEXANDRIA_PERMISSION_CLASSES
         ]
         VisibilityMixin.visibility_classes = [
-            import_string(cls) for cls in settings.VISIBILITY_CLASSES
+            import_string(cls) for cls in settings.ALEXANDRIA_VISIBILITY_CLASSES
         ]
 
         BaseSerializer.validation_classes = [
-            import_string(cls) for cls in settings.VALIDATION_CLASSES
+            import_string(cls) for cls in settings.ALEXANDRIA_VALIDATION_CLASSES
         ]
