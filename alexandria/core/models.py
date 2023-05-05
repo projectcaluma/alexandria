@@ -1,6 +1,8 @@
 import re
 import uuid
 
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ImproperlyConfigured
 from django.core.validators import RegexValidator
 from django.db import models
@@ -160,6 +162,13 @@ class Document(UUIDModel):
         related_name="documents",
     )
     tags = models.ManyToManyField(Tag, blank=True, related_name="documents")
+
+    # GenericForeignKey for usign alexandria as a package
+    content_type = models.ForeignKey(
+        ContentType, on_delete=models.CASCADE, null=True, blank=True
+    )
+    object_id = models.PositiveIntegerField(null=True, blank=True)
+    content_object = GenericForeignKey("content_type", "object_id")
 
 
 class File(UUIDModel):
