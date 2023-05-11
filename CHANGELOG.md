@@ -1,3 +1,10 @@
+# v1.1.0
+### Feature
+* Prefix config keys ([`e48dae9`](https://github.com/projectcaluma/alexandria/commit/e48dae92fd5ffbb5cda110bad057c155b1f5e53d))
+
+### Fix
+* Add missing migration ([`35fbb1e`](https://github.com/projectcaluma/alexandria/commit/35fbb1ede287bf0e249c390cddcfcb53b5a40abd))
+
 # v1.0.0
 ### Feature
 * Add pypi deployment worklow ([`8c341cc`](https://github.com/projectcaluma/alexandria/commit/8c341ccf0a293d6def06abae82347a1a9a6aef98))
