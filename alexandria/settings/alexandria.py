@@ -55,19 +55,19 @@ if DEV_AUTH_BACKEND:
 
 # Extensions
 ALEXANDRIA_VISIBILITY_CLASSES = env.list(
-    "ALEXANDRIA_VISIBILITY_CLASSES", default=(["alexandria.core.visibilities.Any"])
+    "ALEXANDRIA_VISIBILITY_CLASSES", default=(["alexandria.core.visibilities.Any"], [])
 )
 ALEXANDRIA_PERMISSION_CLASSES = env.list(
-    "ALEXANDRIA_PERMISSION_CLASSES", default=(["alexandria.core.permissions.AllowAny"])
+    "ALEXANDRIA_PERMISSION_CLASSES", default=(["alexandria.core.permissions.AllowAny"], [])
 )
 ALEXANDRIA_VALIDATION_CLASSES = env.list("ALEXANDRIA_VALIDATION_CLASSES", default=[])
 
 
 VISIBILITY_CLASSES = env.list(
-    "VISIBILITY_CLASSES", default=default(["alexandria.core.visibilities.Any"])
+    "VISIBILITY_CLASSES", default=default(["alexandria.core.visibilities.Any"], [])
 )
 PERMISSION_CLASSES = env.list(
-    "PERMISSION_CLASSES", default=default(["alexandria.core.permissions.AllowAny"])
+    "PERMISSION_CLASSES", default=default(["alexandria.core.permissions.AllowAny"], [])
 )
 VALIDATION_CLASSES = env.list("VALIDATION_CLASSES", default=[])
 
