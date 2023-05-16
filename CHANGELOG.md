@@ -1,4 +1,8 @@
-# v1.1.1
+# v1.1.2
+### Fix
+* Visibility config default ([`1275d26`](https://github.com/projectcaluma/alexandria/commit/1275d26b192818d5603bd43a91207943f4dad377))
+
+# v1.1.1 (broken, don't use!)
 ### Fix
 * Make deprecated VISIBILITY_CLASSES env var optional ([`20f4553`](https://github.com/projectcaluma/alexandria/commit/20f45538e4bc4ce789fa65b522cfdd45f2a587c3))
 
