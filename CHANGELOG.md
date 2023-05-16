@@ -1,3 +1,7 @@
+# v1.1.1
+### Fix
+* Make deprecated VISIBILITY_CLASSES env var optional ([`20f4553`](https://github.com/projectcaluma/alexandria/commit/20f45538e4bc4ce789fa65b522cfdd45f2a587c3))
+
 # v1.1.0
 ### Feature
 * Prefix config keys ([`e48dae9`](https://github.com/projectcaluma/alexandria/commit/e48dae92fd5ffbb5cda110bad057c155b1f5e53d))
