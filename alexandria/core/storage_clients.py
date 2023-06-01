@@ -1,8 +1,38 @@
 from datetime import timedelta
+from functools import wraps
+from logging import getLogger
 from pathlib import Path
 
 import minio
 from django.conf import settings
+
+log = getLogger(__name__)
+
+
+def _retry_on_missing_bucket(fn):
+    """Create missing bucket if needed (decorator).
+
+    If enabled in the settings, try to create the bucket if it
+    doesn't exist yet, then retry.
+    """
+
+    @wraps(fn)
+    def wrapper(self, *args, **kwargs):
+        try:
+            return fn(self, *args, **kwargs)
+        except minio.error.S3Error as exc:
+            if (
+                exc.code == "NoSuchBucket"
+                and settings.MINIO_STORAGE_AUTO_CREATE_MEDIA_BUCKET
+            ):
+                log.warning(
+                    f"Minio bucket '{self.bucket}' missing, trying to create it"
+                )
+                self.client.make_bucket(self.bucket)
+                return fn(self, *args, **kwargs)
+            raise
+
+    return wrapper
 
 
 class Minio:
@@ -16,37 +46,32 @@ class Minio:
         )
         self.bucket = settings.MINIO_STORAGE_MEDIA_BUCKET_NAME
 
+    @_retry_on_missing_bucket
     def download_url(self, object_name):
-        try:
-            return self.client.presigned_get_object(
-                self.bucket,
-                object_name,
-                timedelta(minutes=settings.MINIO_PRESIGNED_TTL_MINUTES),
-            )
-        except minio.error.NoSuchBucket:  # pragma: no cover
-            if settings.MINIO_STORAGE_AUTO_CREATE_MEDIA_BUCKET:
-                self.client.make_bucket(self.bucket)
-                return self.download_url(object_name)
+        return self.client.presigned_get_object(
+            self.bucket,
+            object_name,
+            timedelta(minutes=settings.MINIO_PRESIGNED_TTL_MINUTES),
+        )
 
+    @_retry_on_missing_bucket
     def upload_url(self, object_name):
-        try:
-            return self.client.presigned_put_object(
-                self.bucket,
-                object_name,
-                timedelta(minutes=settings.MINIO_PRESIGNED_TTL_MINUTES),
-            )
-        except minio.error.NoSuchBucket:  # pragma: no cover
-            if settings.MINIO_STORAGE_AUTO_CREATE_MEDIA_BUCKET:
-                self.client.make_bucket(self.bucket)
-                return self.upload_url(object_name)
+        return self.client.presigned_put_object(
+            self.bucket,
+            object_name,
+            timedelta(minutes=settings.MINIO_PRESIGNED_TTL_MINUTES),
+        )
 
+    @_retry_on_missing_bucket
     def remove_object(self, object_name):
         self.client.remove_object(self.bucket, object_name)
 
+    @_retry_on_missing_bucket
     def get_object(self, object_name):
         data = self.client.get_object(self.bucket, object_name)
         return data
 
+    @_retry_on_missing_bucket
     def put_object(self, filepath, object_name):
         filepath = Path(filepath)  # make sure we got a Path object
 
