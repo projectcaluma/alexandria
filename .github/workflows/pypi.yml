@@ -19,6 +19,12 @@ jobs:
           python-version: "3.8"
           cache: "poetry"
 
+      - name: Install apt dependencies
+        uses: awalsh128/cache-apt-pkgs-action@v1
+        with:
+          packages: libpq-dev wget build-essential zlib1g-dev libjpeg-dev python3-pythonmagick libmagic-dev inkscape xvfb poppler-utils libfile-mimeinfo-perl qpdf libimage-exiftool-perl ufraw-batch ffmpeg imagemagick libreoffice scribus
+          version: 1.0
+
       - name: Install dependencies
         run: |
           python -m pip install -U twine
