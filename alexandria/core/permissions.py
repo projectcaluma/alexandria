@@ -127,17 +127,16 @@ class IsAuthenticated(BasePermission):
     @permission_for(BaseModel)
     def base_permission(self, request):
         return not isinstance(request.user, AnonymousUser) and self.validate_group(
-            request.user.group
+            request.user, request.user.group
         )
 
     @object_permission_for(BaseModel)
     def base_object_permission(self, request, instance):
         return self.base_permission(request) and self.validate_group(
-            instance.created_by_group
+            request.user, instance.created_by_group
         )
 
-    def validate_group(self, value):
-        user = self.context["request"].user
+    def validate_group(self, user, value):
         if value and value not in user.groups:
             return False
         return True

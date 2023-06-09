@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth.models import AnonymousUser
 from django.template.defaultfilters import slugify
 from django.utils import translation
@@ -38,8 +39,9 @@ class BaseSerializer(serializers.ModelSerializer):
             validated_data = func(validated_data)
 
         user = self.context["request"].user
-        validated_data["created_by_user"] = user.username
-        validated_data["modified_by_user"] = user.username
+        username = getattr(user, settings.ALEXANDRIA_CREATED_BY_USER_PROPERTY)
+        validated_data["created_by_user"] = username
+        validated_data["modified_by_user"] = username
 
         self.Meta.model.check_permissions(self.context["request"])
         if self.instance is not None:
@@ -56,7 +58,11 @@ class BaseSerializer(serializers.ModelSerializer):
 
     def _default_group(self):
         user = self.context["request"].user
-        return user.group if not isinstance(user, AnonymousUser) else None
+        return (
+            getattr(user, settings.ALEXANDRIA_CREATED_BY_GROUP_PROPERTY)
+            if not isinstance(user, AnonymousUser)
+            else None
+        )
 
     class Meta:
         fields = (

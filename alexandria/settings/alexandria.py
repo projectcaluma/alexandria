@@ -54,6 +54,12 @@ if DEV_AUTH_BACKEND:
 ALEXANDRIA_OIDC_USER_FACTORY = env.str(
     "ALEXANDRIA_OIDC_USER_FACTORY", default="alexandria.oidc_auth.models.OIDCUser"
 )
+ALEXANDRIA_CREATED_BY_USER_PROPERTY = env.str(
+    "ALEXANDRIA_CREATED_BY_USER_PROPERTY", default="username"
+)
+ALEXANDRIA_CREATED_BY_GROUP_PROPERTY = env.str(
+    "ALEXANDRIA_CREATED_BY_GROUP_PROPERTY", default="group"
+)
 
 
 # Extensions

@@ -7,10 +7,8 @@ from django.conf import settings
 from django.core.cache import cache
 from django.core.exceptions import ImproperlyConfigured, SuspiciousOperation
 from django.utils.encoding import force_bytes
-from mozilla_django_oidc.auth import OIDCAuthenticationBackend
 from django.utils.module_loading import import_string
-
-from .models import OIDCUser
+from mozilla_django_oidc.auth import OIDCAuthenticationBackend
 
 
 class AlexandriaAuthenticationBackend(OIDCAuthenticationBackend):
