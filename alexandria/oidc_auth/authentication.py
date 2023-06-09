@@ -8,6 +8,7 @@ from django.core.cache import cache
 from django.core.exceptions import ImproperlyConfigured, SuspiciousOperation
 from django.utils.encoding import force_bytes
 from mozilla_django_oidc.auth import OIDCAuthenticationBackend
+from django.utils.module_loading import import_string
 
 from .models import OIDCUser
 
@@ -24,6 +25,10 @@ class AlexandriaAuthenticationBackend(OIDCAuthenticationBackend):
             "OIDC_BEARER_TOKEN_REVALIDATION_TIME"
         )
         self.OIDC_VERIFY_SSL = self.get_settings("OIDC_VERIFY_SSL", True)
+
+    def _oidc_user(self, *args, **kwargs):
+        factory = import_string(settings.ALEXANDRIA_OIDC_USER_FACTORY)
+        return factory(*args, **kwargs)
 
     def get_introspection(self, access_token, id_token, payload):
         """Return user details dictionary."""
@@ -69,7 +74,7 @@ class AlexandriaAuthenticationBackend(OIDCAuthenticationBackend):
         """Verify claims and return user, otherwise raise an Exception."""
 
         claims = self.get_userinfo_or_introspection(access_token)
-        user = OIDCUser(access_token, claims)
+        user = self._oidc_user(access_token, claims)
 
         return user
 
@@ -106,7 +111,7 @@ class DevelopmentAuthenticationBackend(AlexandriaAuthenticationBackend):
         }
 
     def get_or_create_user(self, access_token, id_token, payload):
-        return OIDCUser(
+        return self._oidc_user(
             access_token,
             {
                 settings.OIDC_USERNAME_CLAIM: "dev",

@@ -51,6 +51,9 @@ if DEV_AUTH_BACKEND:
     OIDC_DRF_AUTH_BACKEND = (
         "alexandria.oidc_auth.authentication.DevelopmentAuthenticationBackend"
     )
+ALEXANDRIA_OIDC_USER_FACTORY = env.str(
+    "ALEXANDRIA_OIDC_USER_FACTORY", default="alexandria.oidc_auth.models.OIDCUser"
+)
 
 
 # Extensions
