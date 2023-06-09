@@ -1,3 +1,11 @@
+# v1.2.0
+### Feature
+* Make properties for created_by configurable ([`c18dc06`](https://github.com/projectcaluma/alexandria/commit/c18dc06224fd8bf25090fc64906ac058aac8024f))
+* Let the oidc user model be configurable ([`74c673a`](https://github.com/projectcaluma/alexandria/commit/74c673aff740b2c495f36ed4ca67468f8fd140e3))
+
+### Fix
+* Extract serializer permissions ([`775f2b7`](https://github.com/projectcaluma/alexandria/commit/775f2b7f56fd822e644fea04bf96a6857e8c9609))
+* Use correct minio error ([`86ef544`](https://github.com/projectcaluma/alexandria/commit/86ef5442f2cfb3d9a094a26f071a38e258ff6a4e))
 # v1.1.2
 ### Fix
 * Visibility config default ([`1275d26`](https://github.com/projectcaluma/alexandria/commit/1275d26b192818d5603bd43a91207943f4dad377))
