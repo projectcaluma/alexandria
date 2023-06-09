@@ -52,20 +52,6 @@ class BaseSerializer(serializers.ModelSerializer):
         if self.instance:
             # can't change created_by_group on existing instances
             return self.instance.created_by_group
-        else:
-            return self._validate_group(value, "created_by_group")
-
-    def validate_modified_by_group(self, value):
-        # Modified by group is validated against the user's list of groups,
-        # with a fallback to the default group if no value is given
-        return self._validate_group(value or self._default_group(), "modified_by_group")
-
-    def _validate_group(self, value, field_name):
-        user = self.context["request"].user
-        if value and value not in user.groups:
-            raise ValidationError(
-                f"Given {field_name} '{value}' is not part of user's assigned groups"
-            )
         return value
 
     def _default_group(self):
