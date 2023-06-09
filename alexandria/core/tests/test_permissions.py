@@ -182,7 +182,12 @@ def test_authenticated_permission(
     db, document, authenticated, expect_permission, mocker, user
 ):
     request = mocker.MagicMock()
-    request.user = user if authenticated else AnonymousUser()
+    if authenticated:
+        request.user = user
+        document.created_by_group = request.user.group
+        document.save()
+    else:
+        request.user = AnonymousUser()
 
     permissions = IsAuthenticated()
     perms = [

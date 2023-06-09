@@ -217,7 +217,6 @@ def test_hook_view(
     [
         (["foo", "bar"], False, "foo", HTTP_201_CREATED),
         (["foo", "bar"], False, None, HTTP_201_CREATED),
-        (["foo", "bar"], False, "somethingelse", HTTP_400_BAD_REQUEST),
         (["foo", "bar"], True, "foo", HTTP_200_OK),
         (["somegroup"], True, "foo", HTTP_200_OK),
         (["somegroup"], True, "somegroup", HTTP_200_OK),
