@@ -22,7 +22,7 @@ from . import file_data
 @pytest.mark.parametrize("allow_anon", [True, False])
 @pytest.mark.parametrize("method", ["post", "patch"])
 def test_anonymous_writing(db, document, client, settings, user, allow_anon, method):
-    settings.ALLOW_ANONYMOUS_WRITE = allow_anon
+    settings.ALEXANDRIA_ALLOW_ANONYMOUS_WRITE = allow_anon
     if not allow_anon:
         settings.REST_FRAMEWORK["DEFAULT_PERMISSION_CLASSES"] = [
             "rest_framework.permissions.IsAuthenticatedOrReadOnly",
@@ -162,7 +162,7 @@ def test_hook_view(
     }
 
     if not enabled:
-        settings.ENABLE_THUMBNAIL_GENERATION = False
+        settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION = False
 
     if status_code == HTTP_201_CREATED:
         doc = document_factory()
