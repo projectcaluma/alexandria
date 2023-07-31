@@ -142,7 +142,7 @@ class FileViewSet(
 
 @require_http_methods(["HEAD", "POST"])
 def hook_view(request):
-    if not settings.ENABLE_THUMBNAIL_GENERATION:
+    if not settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION:
         return HttpResponse(status=HTTP_403_FORBIDDEN)
 
     if request.method == "HEAD":
@@ -153,7 +153,7 @@ def hook_view(request):
     response_statuses = []
     for record in data["Records"]:
         bucket_name = record["s3"]["bucket"]["name"]
-        if not bucket_name == settings.MINIO_STORAGE_MEDIA_BUCKET_NAME:
+        if not bucket_name == settings.ALEXANDRIA_MINIO_STORAGE_MEDIA_BUCKET_NAME:
             response_statuses.append(HTTP_200_OK)
             continue
 

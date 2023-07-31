@@ -107,7 +107,7 @@ def minio_mock(mocker, settings):
         )
 
     stat_response = MinioStatObject(
-        settings.MINIO_STORAGE_MEDIA_BUCKET_NAME,
+        settings.ALEXANDRIA_MINIO_STORAGE_MEDIA_BUCKET_NAME,
         "some-file.pdf",
         time.struct_time((2019, 4, 5, 7, 0, 49, 4, 95, 0)),
         "0c81da684e6aaef48e8f3113e5b8769b",

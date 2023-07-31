@@ -19,8 +19,9 @@ All User Interface interactions should be as simple as possible and easily under
 ### Installation
 
 **Requirements**
-* docker
-* docker-compose
+
+- docker
+- docker-compose
 
 After installing and configuring those, download [docker-compose.yml](https://raw.githubusercontent.com/projectcaluma/alexandria/master/docker-compose.yml) and run the following commands:
 
@@ -36,6 +37,7 @@ You can now access the api at [http://localhost:8000/api/v1/](http://localhost:8
 ### Example data
 
 To load a set of categories run the following command:
+
 ```bash
 make load_example_data
 ```
@@ -49,33 +51,33 @@ Different environment variable types are explained at [django-environ](https://g
 
 A list of configuration options which you need
 
-* Django configuration
-  * `SECRET_KEY`: A secret key used for cryptography. This needs to be a random string of a certain length. See [more](https://docs.djangoproject.com/en/2.1/ref/settings/#std:setting-SECRET_KEY).
-  * `ALLOWED_HOSTS`: A list of hosts/domains your service will be served from. See [more](https://docs.djangoproject.com/en/2.1/ref/settings/#allowed-hosts).
-  * `DATABASE_ENGINE`: Database backend to use. See [more](https://docs.djangoproject.com/en/2.1/ref/settings/#std:setting-DATABASE-ENGINE). (default: django.db.backends.postgresql)
-  * `DATABASE_HOST`: Host to use when connecting to database (default: localhost)
-  * `DATABASE_PORT`: Port to use when connecting to database (default: 5432)
-  * `DATABASE_NAME`: Name of database to use (default: alexandria)
-  * `DATABASE_USER`: Username to use when connecting to the database (default: alexandria)
-  * `DATABASE_PASSWORD`: Password to use when connecting to database
-* Authentication configuration
-  * `OIDC_OP_USER_ENDPOINT`: Userinfo endpoint for OIDC
-  * `OIDC_VERIFY_SSL`: Set to `false` if you want to disable verifying SSL certs. Useful for development
-  * `OIDC_DRF_AUTH_BACKEND`: Overwrite the default authentication backend with your own
-  * `ALEXANDRIA_OIDC_USER_FACTORY`: Overwrite the default user with your own
-  * `ALEXANDRIA_CREATED_BY_USER_PROPERTY`: Overwrite the default user property which is used for `..._by_user` (default: username)
-  * `ALEXANDRIA_CREATED_BY_GROUP_PROPERTY`: Overwrite the default group property which is used for `..._by_group` (default: group)
-* Authorization configurations
-  * `ALEXANDRIA_VISIBILITY_CLASSES`: Comma-separated list of classes that define visibility for all models
-  * `ALEXANDRIA_PERMISSION_CLASSES`: Comma-separated list of classes that define permissions for all models
-* Data validation configuration
-  * `ALEXANDRIA_VALIDATION_CLASSES`: Comma-separated list of classes that define [custom validations](docs/validation.md)
+- Django configuration
+  - `SECRET_KEY`: A secret key used for cryptography. This needs to be a random string of a certain length. See [more](https://docs.djangoproject.com/en/2.1/ref/settings/#std:setting-SECRET_KEY).
+  - `ALLOWED_HOSTS`: A list of hosts/domains your service will be served from. See [more](https://docs.djangoproject.com/en/2.1/ref/settings/#allowed-hosts).
+  - `DATABASE_ENGINE`: Database backend to use. See [more](https://docs.djangoproject.com/en/2.1/ref/settings/#std:setting-DATABASE-ENGINE). (default: django.db.backends.postgresql)
+  - `DATABASE_HOST`: Host to use when connecting to database (default: localhost)
+  - `DATABASE_PORT`: Port to use when connecting to database (default: 5432)
+  - `DATABASE_NAME`: Name of database to use (default: alexandria)
+  - `DATABASE_USER`: Username to use when connecting to the database (default: alexandria)
+  - `DATABASE_PASSWORD`: Password to use when connecting to database
+- Authentication configuration
+  - `OIDC_OP_USER_ENDPOINT`: Userinfo endpoint for OIDC
+  - `OIDC_VERIFY_SSL`: Set to `false` if you want to disable verifying SSL certs. Useful for development
+  - `OIDC_DRF_AUTH_BACKEND`: Overwrite the default authentication backend with your own
+  - `ALEXANDRIA_OIDC_USER_FACTORY`: Overwrite the default user with your own
+  - `ALEXANDRIA_CREATED_BY_USER_PROPERTY`: Overwrite the default user property which is used for `..._by_user` (default: username)
+  - `ALEXANDRIA_CREATED_BY_GROUP_PROPERTY`: Overwrite the default group property which is used for `..._by_group` (default: group)
+- Authorization configurations
+  - `ALEXANDRIA_VISIBILITY_CLASSES`: Comma-separated list of classes that define visibility for all models
+  - `ALEXANDRIA_PERMISSION_CLASSES`: Comma-separated list of classes that define permissions for all models
+- Data validation configuration
+  - `ALEXANDRIA_VALIDATION_CLASSES`: Comma-separated list of classes that define [custom validations](docs/validation.md)
 
 For development, you can also set the following environemnt variables to help
 you:
 
-  * `DEV_AUTH_BACKEND`: Set this to "true" to enable a fake auth backend that simulates an authenticated user. Requires `DEBUG` to be set to `True` as well.
-  * `DEBUG`: Set this to true for debugging during development. Never enable this in production, as it **will** leak information to the public if you do.
+- `ALEXANDRIA_DEV_AUTH_BACKEND`: Set this to "true" to enable a fake auth backend that simulates an authenticated user. Requires `DEBUG` to be set to `True` as well.
+- `DEBUG`: Set this to true for debugging during development. Never enable this in production, as it **will** leak information to the public if you do.
 
 ## Contributing
 

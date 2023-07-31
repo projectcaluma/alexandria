@@ -6,7 +6,6 @@ applications integrating alexandria.
 """
 
 import os
-from warnings import warn
 
 import environ
 
@@ -42,12 +41,12 @@ OIDC_OP_INTROSPECT_ENDPOINT = env.str("OIDC_OP_INTROSPECT_ENDPOINT", default=Non
 OIDC_RP_CLIENT_ID = env.str("OIDC_RP_CLIENT_ID", default=None)
 OIDC_RP_CLIENT_SECRET = env.str("OIDC_RP_CLIENT_SECRET", default=None)
 
-DEV_AUTH_BACKEND = env.bool("DEV_AUTH_BACKEND", default=False)
+ALEXANDRIA_DEV_AUTH_BACKEND = env.bool("ALEXANDRIA_DEV_AUTH_BACKEND", default=False)
 OIDC_DRF_AUTH_BACKEND = env.str(
     "OIDC_DRF_AUTH_BACKEND",
     default="alexandria.oidc_auth.authentication.AlexandriaAuthenticationBackend",
 )
-if DEV_AUTH_BACKEND:
+if ALEXANDRIA_DEV_AUTH_BACKEND:
     OIDC_DRF_AUTH_BACKEND = (
         "alexandria.oidc_auth.authentication.DevelopmentAuthenticationBackend"
     )
@@ -73,58 +72,36 @@ ALEXANDRIA_PERMISSION_CLASSES = env.list(
 )
 ALEXANDRIA_VALIDATION_CLASSES = env.list("ALEXANDRIA_VALIDATION_CLASSES", default=[])
 
-
-VISIBILITY_CLASSES = env.list(
-    "VISIBILITY_CLASSES", default=default(["alexandria.core.visibilities.Any"], [])
-)
-PERMISSION_CLASSES = env.list(
-    "PERMISSION_CLASSES", default=default(["alexandria.core.permissions.AllowAny"], [])
-)
-VALIDATION_CLASSES = env.list("VALIDATION_CLASSES", default=[])
-
-
-# Reading PERMISSION_CLASSES, VISIBILITY_CLASSES, VALIDATION_CLASSES is still supported.
-# If it's set but ALEXANDRIA_* is not, copy over the config
-if PERMISSION_CLASSES and not ALEXANDRIA_PERMISSION_CLASSES:  # pragma: no cover
-    ALEXANDRIA_PERMISSION_CLASSES = PERMISSION_CLASSES
-if VISIBILITY_CLASSES and not ALEXANDRIA_VISIBILITY_CLASSES:  # pragma: no cover
-    ALEXANDRIA_VISIBILITY_CLASSES = VISIBILITY_CLASSES
-if VALIDATION_CLASSES and not ALEXANDRIA_VALIDATION_CLASSES:  # pragma: no cover
-    ALEXANDRIA_VALIDATION_CLASSES = VALIDATION_CLASSES
-
-
-# non prefixed are deprecated, but still supported for now.
-# If they're set, notify the user.
-def _deprecate_env(name, replacement):
-    if env.str(name, default=False):  # pragma: no cover
-        warn(
-            DeprecationWarning(
-                f"The {name} setting is deprecated and will be removed "
-                f"in a future version of alexandria. Use {replacement}"
-            )
-        )
-
-
-_deprecate_env("PERMISSION_CLASSES", "ALEXANDRIA_PERMISSION_CLASSES")
-_deprecate_env("VISIBILITY_CLASSES", "ALEXANDRIA_VISIBILITY_CLASSES")
-_deprecate_env("VALIDATION_CLASSES", "ALEXANDRIA_VALIDATION_CLASSES")
-
 # Storage
-MEDIA_STORAGE_SERVICE = env.str("MEDIA_STORAGE_SERVICE", default="minio")
-MINIO_STORAGE_ENDPOINT = env.str("MINIO_STORAGE_ENDPOINT", default="minio:9000")
-MINIO_STORAGE_ACCESS_KEY = env.str("MINIO_STORAGE_ACCESS_KEY", default="minio")
-MINIO_STORAGE_SECRET_KEY = env.str("MINIO_STORAGE_SECRET_KEY", default="minio123")
-MINIO_STORAGE_USE_HTTPS = env.str("MINIO_STORAGE_USE_HTTPS", default=False)
-MINIO_STORAGE_MEDIA_BUCKET_NAME = env.str(
-    "MINIO_STORAGE_MEDIA_BUCKET_NAME", default="alexandria-media"
+ALEXANDRIA_MEDIA_STORAGE_SERVICE = env.str(
+    "ALEXANDRIA_MEDIA_STORAGE_SERVICE", default="minio"
 )
-MINIO_STORAGE_AUTO_CREATE_MEDIA_BUCKET = env.str(
-    "MINIO_STORAGE_AUTO_CREATE_MEDIA_BUCKET", default=True
+ALEXANDRIA_MINIO_STORAGE_ENDPOINT = env.str(
+    "ALEXANDRIA_MINIO_STORAGE_ENDPOINT", default="minio:9000"
 )
-MINIO_PRESIGNED_TTL_MINUTES = env.str("MINIO_PRESIGNED_TTL_MINUTES", default=15)
+ALEXANDRIA_MINIO_STORAGE_ACCESS_KEY = env.str(
+    "ALEXANDRIA_MINIO_STORAGE_ACCESS_KEY", default="minio"
+)
+ALEXANDRIA_MINIO_STORAGE_SECRET_KEY = env.str(
+    "ALEXANDRIA_MINIO_STORAGE_SECRET_KEY", default="minio123"
+)
+ALEXANDRIA_MINIO_STORAGE_USE_HTTPS = env.str(
+    "ALEXANDRIA_MINIO_STORAGE_USE_HTTPS", default=False
+)
+ALEXANDRIA_MINIO_STORAGE_MEDIA_BUCKET_NAME = env.str(
+    "ALEXANDRIA_MINIO_STORAGE_MEDIA_BUCKET_NAME", default="alexandria-media"
+)
+ALEXANDRIA_MINIO_STORAGE_AUTO_CREATE_MEDIA_BUCKET = env.str(
+    "ALEXANDRIA_MINIO_STORAGE_AUTO_CREATE_MEDIA_BUCKET", default=True
+)
+ALEXANDRIA_MINIO_PRESIGNED_TTL_MINUTES = env.str(
+    "ALEXANDRIA_MINIO_PRESIGNED_TTL_MINUTES", default=15
+)
 
 
 # Thumbnails
-ENABLE_THUMBNAIL_GENERATION = env.bool("ENABLE_THUMBNAIL_GENERATION", default=True)
-THUMBNAIL_WIDTH = env.int("THUMBNAIL_WIDTH", default=None)
-THUMBNAIL_HEIGHT = env.int("THUMBNAIL_HEIGHT", default=None)
+ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION = env.bool(
+    "ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION", default=True
+)
+ALEXANDRIA_THUMBNAIL_WIDTH = env.int("ALEXANDRIA_THUMBNAIL_WIDTH", default=None)
+ALEXANDRIA_THUMBNAIL_HEIGHT = env.int("ALEXANDRIA_THUMBNAIL_HEIGHT", default=None)

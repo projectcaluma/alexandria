@@ -26,10 +26,10 @@ def create_thumbnail(file):
     manager = PreviewManager(str(temp_dir.name))
 
     preview_kwargs = {}
-    if settings.THUMBNAIL_WIDTH:  # pragma: no cover
-        preview_kwargs["width"] = settings.THUMBNAIL_WIDTH
-    if settings.THUMBNAIL_HEIGHT:  # pragma: no cover
-        preview_kwargs["height"] = settings.THUMBNAIL_HEIGHT
+    if settings.ALEXANDRIA_THUMBNAIL_WIDTH:  # pragma: no cover
+        preview_kwargs["width"] = settings.ALEXANDRIA_THUMBNAIL_WIDTH
+    if settings.ALEXANDRIA_THUMBNAIL_HEIGHT:  # pragma: no cover
+        preview_kwargs["height"] = settings.ALEXANDRIA_THUMBNAIL_HEIGHT
 
     try:
         path_to_preview_image = manager.get_jpeg_preview(
