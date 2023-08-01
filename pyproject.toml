@@ -97,10 +97,10 @@ env = [
 [tool.semantic_release]
 version_toml = "pyproject.toml:tool.poetry.version"
 
-[coverage.run]
+[tool.coverage.run]
 source = ["."]
 
-[coverage.report]
+[tool.coverage.report]
 fail_under = 100
 exclude_lines = [
     "pragma: no cover",
