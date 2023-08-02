@@ -29,7 +29,7 @@ After installing and configuring those, download [docker-compose.yml](https://ra
 # only needs to be run once
 echo UID=$UID > .env
 
-docker-compose up -d
+docker compose up -d
 ```
 
 You can now access the api at [http://localhost:8000/api/v1/](http://localhost:8000/api/v1/).

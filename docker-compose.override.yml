@@ -17,22 +17,22 @@ services:
       [
         "/bin/sh",
         "-c",
-        "wait-for-it.sh db:5432 -- poetry run python ./manage.py migrate && poetry run python ./manage.py runserver_plus --nostatic 0.0.0.0:8000",
+        "wait-for-it db:5432 -- poetry run python ./manage.py migrate && poetry run python ./manage.py runserver_plus --nostatic 0.0.0.0:8000",
       ]
     environment:
       - ENV=dev
       - DEBUG=true
-      - MINIO_ACCESS_KEY=minio
-      - MINIO_SECRET_KEY=minio123
+      - ALEXANDRIA_MINIO_STORAGE_ACCESS_KEY=minio
+      - ALEXANDRIA_MINIO_STORAGE_SECRET_KEY=minio123
       - ALEXANDRIA_DEV_AUTH_BACKEND=true
       - ALEXANDRIA_ALLOW_ANONYMOUS_WRITE=true
   minio:
     environment:
-      - MINIO_ACCESS_KEY=minio
-      - MINIO_SECRET_KEY=minio123
+      - MINIO_ROOT_USER=minio
+      - MINIO_ROOT_PASSWORD=minio123
       - MINIO_NOTIFY_WEBHOOK_ENABLE_ALEXANDRIA=on
       - MINIO_NOTIFY_WEBHOOK_ENDPOINT_ALEXANDRIA=http://alexandria:8000/api/v1/hook
   mc:
     environment:
-      - MINIO_ACCESS_KEY=minio
-      - MINIO_SECRET_KEY=minio123
+      - MINIO_ROOT_USER=minio
+      - MINIO_ROOT_PASSWORD=minio123
