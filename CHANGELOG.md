@@ -1,3 +1,7 @@
+# v2.0.1
+### Fix
+* **settings:** Remove import in settings init file ([`3a86060`](https://github.com/projectcaluma/alexandria/commit/3a8606069ef257b8d8fa08d12e0cc46ab3d2e05c))
+
 # v2.0.0
 ### Fix
 * **docker:** Remove obsolete system dependencies ([`2e2f8a2`](https://github.com/projectcaluma/alexandria/commit/2e2f8a2081aa0603157d7df41e0981ac4824def4))
