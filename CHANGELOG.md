@@ -1,3 +1,30 @@
+# v2.0.0
+### Fix
+* **docker:** Remove obsolete system dependencies ([`2e2f8a2`](https://github.com/projectcaluma/alexandria/commit/2e2f8a2081aa0603157d7df41e0981ac4824def4))
+* **settings:** Prefix alexandria settings ([`5791f3d`](https://github.com/projectcaluma/alexandria/commit/5791f3d8fbb7cf4a9fa37917ac2b1ac2a1b71ce2))
+
+### Breaking
+* Removed image previews for RAW, VTK and scribus files. ([`2e2f8a2`](https://github.com/projectcaluma/alexandria/commit/2e2f8a2081aa0603157d7df41e0981ac4824def4))
+* All alexandria specific settings and environment variables have been renamed to include a prefix in order to avoid conflicts when using alexandria as a django app instead of a container. ([`5791f3d`](https://github.com/projectcaluma/alexandria/commit/5791f3d8fbb7cf4a9fa37917ac2b1ac2a1b71ce2))
+The following breaking changes in settings and environment variables have been made:
+
+  * `ALLOW_ANONYMOUS_WRITE` was renamed to `ALEXANDRIA_ALLOW_ANONYMOUS_WRITE`
+  * `DEV_AUTH_BACKEND` was renamed to `ALEXANDRIA_DEV_AUTH_BACKEND`
+  * `ENABLE_THUMBNAIL_GENERATION` was renamed to `ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION`
+  * `MEDIA_STORAGE_SERVICE` was renamed to `ALEXANDRIA_MEDIA_STORAGE_SERVICE`
+  * `MINIO_PRESIGNED_TTL_MINUTES` was renamed to `ALEXANDRIA_MINIO_PRESIGNED_TTL_MINUTES`
+  * `MINIO_STORAGE_ACCESS_KEY` was renamed to `ALEXANDRIA_MINIO_STORAGE_ACCESS_KEY`
+  * `MINIO_STORAGE_AUTO_CREATE_MEDIA_BUCKET` was renamed to `ALEXANDRIA_MINIO_STORAGE_AUTO_CREATE_MEDIA_BUCKET`
+  * `MINIO_STORAGE_ENDPOINT` was renamed to `ALEXANDRIA_MINIO_STORAGE_ENDPOINT`
+  * `MINIO_STORAGE_MEDIA_BUCKET_NAME` was renamed to `ALEXANDRIA_MINIO_STORAGE_MEDIA_BUCKET_NAME`
+  * `MINIO_STORAGE_SECRET_KEY` was renamed to `ALEXANDRIA_MINIO_STORAGE_SECRET_KEY`
+  * `MINIO_STORAGE_USE_HTTPS` was renamed to `ALEXANDRIA_MINIO_STORAGE_USE_HTTPS`
+  * `THUMBNAIL_HEIGHT` was renamed to `ALEXANDRIA_THUMBNAIL_HEIGHT`
+  * `THUMBNAIL_WIDTH` was renamed to `ALEXANDRIA_THUMBNAIL_WIDTH`
+  * `PERMISSION_CLASSES` has been removed in favor of already existing `ALEXANDRIA_PERMISSION_CLASSES`
+  * `VALIDATION_CLASSES` has been removed in favor of already existing `ALEXANDRIA_VALIDATION_CLASSES`
+  * `VISIBILITY_CLASSES` has been removed in favor of already existing `ALEXANDRIA_VISIBILITY_CLASSES`
+
 # v1.2.0
 ### Feature
 * Make properties for created_by configurable ([`c18dc06`](https://github.com/projectcaluma/alexandria/commit/c18dc06224fd8bf25090fc64906ac058aac8024f))
