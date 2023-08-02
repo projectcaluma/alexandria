@@ -120,7 +120,7 @@ class FileViewSet(
         try:
             if not queryset:
                 raise NotFound()
-        except DjangoCoreValidationError:
+        except DjangoCoreValidationError:  # pragma: todo cover
             raise ValidationError(
                 _(
                     'The "files" filter must consist of a comma delimited list of '

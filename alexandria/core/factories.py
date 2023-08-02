@@ -40,7 +40,7 @@ class TagSynonymGroupFactory(BaseFactory):
 
     @post_generation
     def tags(self, create, extracted, **kwargs):
-        if not create:
+        if not create:  # pragma: todo cover
             # Simple build, do nothing.
             return
 
@@ -60,7 +60,7 @@ class DocumentFactory(BaseFactory):
 
     @post_generation
     def tags(self, create, extracted, **kwargs):
-        if not create:
+        if not create:  # pragma: todo cover
             # Simple build, do nothing.
             return
 

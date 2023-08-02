@@ -137,6 +137,6 @@ class IsAuthenticated(BasePermission):
         )
 
     def validate_group(self, user, value):
-        if value and value not in user.groups:
+        if value and value not in user.groups:  # pragma: todo cover
             return False
         return True

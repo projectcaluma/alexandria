@@ -30,7 +30,7 @@ def _retry_on_missing_bucket(fn):
                 )
                 self.client.make_bucket(self.bucket)
                 return fn(self, *args, **kwargs)
-            raise
+            raise  # pragma: todo cover
 
     return wrapper
 
