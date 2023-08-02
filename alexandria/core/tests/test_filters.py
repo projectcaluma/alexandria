@@ -197,7 +197,7 @@ def test_tag_synonym_filter(  # noqa: C901
     ) -> Optional[TagSynonymGroup]:
         try:
             assert len(synonyms) > 0
-        except (TypeError, AssertionError) as e:
+        except (TypeError, AssertionError) as e:  # pragma: todo cover
             raise e
 
         if grouped:
@@ -205,7 +205,7 @@ def test_tag_synonym_filter(  # noqa: C901
                 tags=[tag_factory(slug=word) for word in synonyms]
             )
             for n in range(1, len(synonyms) + 1):
-                if not tag_group.tags:
+                if not tag_group.tags:  # pragma: todo cover
                     return
                 perm = list(combinations(tag_group.tags.all(), n))
                 for tag_set in perm:

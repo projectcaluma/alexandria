@@ -113,10 +113,7 @@ omit = [
     "*/migrations/*",
     "*/apps.py",
     "manage.py",
-    "setup.py",
-    "alexandria/settings_*.py",
     "alexandria/wsgi.py",
-    "alexandria/alexandria_metadata.py",
 ]
 show_missing = true
 
