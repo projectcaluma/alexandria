@@ -35,7 +35,6 @@ preview-generator = "^0.29"
 psycopg2-binary = "~2.9"
 requests = "^2.31.0"
 uwsgi = "^2.0.20"
-vtk = "^9.2.6"
 
 [tool.poetry.dev-dependencies]
 black = "23.7.0"
