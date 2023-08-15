@@ -77,7 +77,6 @@ A list of configuration options which you need
     - Check the docker-compose file for an example on how to set up generation with s3 hooks
   - `ALEXANDRIA_THUMBNAIL_WIDTH`: Width of generated thumbnails
   - `ALEXANDRIA_THUMBNAIL_HEIGHT`: Height of generated thumbnails
-  - `ALEXANDRIA_THUMBNAIL_GENERATE_WITHOUT_HOOK`: Set to `true` to generate thumbnails without s3 hooks
 
 For development, you can also set the following environemnt variables to help you:
 

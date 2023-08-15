@@ -162,7 +162,6 @@ def test_hook_view(
     }
 
     settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION = enabled
-    settings.ALEXANDRIA_THUMBNAIL_GENERATE_WITHOUT_HOOK = False
 
     if status_code == HTTP_201_CREATED:
         doc = document_factory()
@@ -213,18 +212,16 @@ def test_hook_view(
 
 
 @pytest.mark.parametrize(
-    "enabled,variant,status_code",
+    "variant,status_code",
     [
-        (True, File.ORIGINAL, HTTP_201_CREATED),
-        (False, File.ORIGINAL, HTTP_400_BAD_REQUEST),
-        (True, File.THUMBNAIL, HTTP_400_BAD_REQUEST),
+        (File.ORIGINAL, HTTP_201_CREATED),
+        (File.THUMBNAIL, HTTP_400_BAD_REQUEST),
     ],
 )
 def test_manual_thumbnail(
-    minio_mock, settings, admin_client, file_factory, enabled, variant, status_code
+    minio_mock, settings, admin_client, file_factory, variant, status_code
 ):
     settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION = True
-    settings.ALEXANDRIA_THUMBNAIL_GENERATE_WITHOUT_HOOK = enabled
 
     file = file_factory(variant=variant)
     data = {

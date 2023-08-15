@@ -141,16 +141,18 @@ class FileViewSet(
 
     @action(methods=["post"], detail=True, url_path="generate-thumbnail")
     def generate_thumbnail(self, request, pk=None):
+        if not settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION:
+            raise ValidationError(_("Thumbnail generation is not enabled."))
+
         file = self.get_object()
         if file.variant == models.File.THUMBNAIL:
             raise ValidationError(
                 _("File is already a thumbnail, cannot generate thumbnail.")
             )
-        elif (
-            settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION
-            and not settings.ALEXANDRIA_THUMBNAIL_GENERATE_WITHOUT_HOOK
-        ):
-            raise ValidationError(_("Manual thumbnail generation is not enabled."))
+        elif file.renderings.all().count() > 0:
+            raise ValidationError(
+                _("File already has thumbnail, cannot generate multiple thumbnails.")
+            )
 
         create_thumbnail(file)
         file.upload_status = models.File.COMPLETED
@@ -161,10 +163,7 @@ class FileViewSet(
 
 @require_http_methods(["HEAD", "POST"])
 def hook_view(request):
-    if (
-        not settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION
-        or settings.ALEXANDRIA_THUMBNAIL_GENERATE_WITHOUT_HOOK
-    ):
+    if not settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION:
         return HttpResponse(status=HTTP_403_FORBIDDEN)
 
     if request.method == "HEAD":
