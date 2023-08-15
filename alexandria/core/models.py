@@ -125,6 +125,13 @@ class Category(SlugModel):
         default="#FFFFFF",
         validators=[color_validator],
     )
+    parent = models.ForeignKey(
+        "self",
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        related_name="children",
+    )
 
 
 class TagSynonymGroup(BaseModel):

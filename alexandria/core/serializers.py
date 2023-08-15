@@ -100,9 +100,25 @@ class SlugModelSerializer(BaseSerializer):
 
 
 class CategorySerializer(SlugModelSerializer):
+    parent = serializers.ResourceRelatedField(required=False, read_only=True)
+    children = serializers.ResourceRelatedField(
+        required=False, read_only=True, many=True
+    )
+
+    included_serializers = {
+        "parent": "alexandria.core.serializers.CategorySerializer",
+        "children": "alexandria.core.serializers.CategorySerializer",
+    }
+
     class Meta:
         model = models.Category
-        fields = SlugModelSerializer.Meta.fields + ("name", "description", "color")
+        fields = SlugModelSerializer.Meta.fields + (
+            "name",
+            "description",
+            "color",
+            "parent",
+            "children",
+        )
 
 
 class TagSerializer(SlugModelSerializer):
