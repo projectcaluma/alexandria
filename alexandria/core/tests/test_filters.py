@@ -304,3 +304,22 @@ def test_tag_search(db, tag_factory, mangle, admin_client):
 
     received_ids = set([obj["id"] for obj in result["data"]])
     assert str(tags[0].pk) in received_ids
+
+
+@pytest.mark.parametrize(
+    "has_parent,expected_count", [(True, 2), (False, 1), (None, 3)]
+)
+def test_has_parent(db, admin_client, category_factory, has_parent, expected_count):
+    parent_category = category_factory()
+    category_factory.create_batch(2, parent=parent_category)
+
+    filters = {}
+    if has_parent is not None:
+        filters = {"filter[hasParent]": has_parent}
+
+    response = admin_client.get(reverse("category-list"), filters)
+    assert response.status_code == HTTP_200_OK
+    result = response.json()
+
+    received_ids = set([obj["id"] for obj in result["data"]])
+    assert len(received_ids) == expected_count
