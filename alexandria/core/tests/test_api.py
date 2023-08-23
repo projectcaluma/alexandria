@@ -128,6 +128,7 @@ def assert_response(
 ):
     value = {
         "status": response.status_code,
+        "query_count": len(query_context.captured_queries),
         "queries": [
             prefetch_query_in_normalizer(query["sql"])
             for query in query_context.captured_queries

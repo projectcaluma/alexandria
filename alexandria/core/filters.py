@@ -3,7 +3,14 @@ import json
 from django.contrib.postgres.fields.jsonb import KeyTextTransform
 from django.db.models import FloatField, Q, TextField, Value
 from django.db.models.functions import Cast
-from django_filters import BaseCSVFilter, BaseInFilter, CharFilter, Filter, FilterSet
+from django_filters import (
+    BaseCSVFilter,
+    BaseInFilter,
+    BooleanFilter,
+    CharFilter,
+    Filter,
+    FilterSet,
+)
 from django_filters.constants import EMPTY_VALUES
 from rest_framework.exceptions import ValidationError
 
@@ -106,10 +113,11 @@ class TagsFilter(BaseInFilter):
 class CategoryFilterSet(FilterSet):
     metainfo = JSONValueFilter(field_name="metainfo")
     active_group = ActiveGroupFilter()
+    has_parent = BooleanFilter(field_name="parent", lookup_expr="isnull", exclude=True)
 
     class Meta:
         model = models.Category
-        fields = ["active_group", "metainfo"]
+        fields = ["active_group", "metainfo", "has_parent"]
 
 
 class DocumentFilterSet(FilterSet):

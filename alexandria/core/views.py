@@ -20,7 +20,12 @@ from rest_framework.status import (
     HTTP_403_FORBIDDEN,
 )
 from rest_framework.viewsets import GenericViewSet
-from rest_framework_json_api import views
+from rest_framework_json_api.views import (
+    AutoPrefetchMixin,
+    ModelViewSet,
+    PreloadIncludesMixin,
+    RelatedMixin,
+)
 
 from . import models, serializers
 from .filters import CategoryFilterSet, DocumentFilterSet, FileFilterSet, TagFilterSet
@@ -28,7 +33,7 @@ from .storage_clients import client
 from .thumbs import create_thumbnail
 
 
-class PermissionViewMixin(views.ModelViewSet):
+class PermissionViewMixin:
     def destroy(self, request, *args, **kwargs):
         self.queryset.model.check_permissions(request)
         instance = self.get_object()
@@ -45,31 +50,40 @@ class VisibilityViewMixin:
 
 
 class CategoryViewSet(
-    VisibilityViewMixin, RetrieveModelMixin, ListModelMixin, GenericViewSet
+    VisibilityViewMixin,
+    AutoPrefetchMixin,
+    PreloadIncludesMixin,
+    RelatedMixin,
+    RetrieveModelMixin,
+    ListModelMixin,
+    GenericViewSet,
 ):
     serializer_class = serializers.CategorySerializer
     queryset = models.Category.objects.all()
     filterset_class = CategoryFilterSet
+    select_for_includes = {"parent": ["parent"]}
+    prefetch_for_includes = {"children": ["children"]}
 
 
-class TagSynonymGroupViewSet(
-    PermissionViewMixin, VisibilityViewMixin, views.ModelViewSet
-):
+class TagSynonymGroupViewSet(PermissionViewMixin, VisibilityViewMixin, ModelViewSet):
     serializer_class = serializers.TagSynonymGroupSerializer
     queryset = models.TagSynonymGroup.objects.all().distinct()
 
 
-class TagViewSet(PermissionViewMixin, VisibilityViewMixin, views.ModelViewSet):
+class TagViewSet(PermissionViewMixin, VisibilityViewMixin, ModelViewSet):
     serializer_class = serializers.TagSerializer
     queryset = models.Tag.objects.all().distinct()
     filterset_class = TagFilterSet
+    select_for_includes = {"tag_synonym_group": ["tag_synonym_group"]}
 
 
-class DocumentViewSet(PermissionViewMixin, VisibilityViewMixin, views.ModelViewSet):
+class DocumentViewSet(PermissionViewMixin, VisibilityViewMixin, ModelViewSet):
     serializer_class = serializers.DocumentSerializer
     queryset = models.Document.objects.all()
     filterset_class = DocumentFilterSet
     search_fields = ("title", "files__name", "tags__name", "description")
+    select_for_includes = {"category": ["category"]}
+    prefetch_for_includes = {"tags": ["tags"], "files": ["files"]}
 
     def update(self, request, *args, **kwargs):
         """Override so we can delete unused tags."""
@@ -81,6 +95,9 @@ class DocumentViewSet(PermissionViewMixin, VisibilityViewMixin, views.ModelViewS
 
 class FileViewSet(
     VisibilityViewMixin,
+    AutoPrefetchMixin,
+    PreloadIncludesMixin,
+    RelatedMixin,
     CreateModelMixin,
     RetrieveModelMixin,
     ListModelMixin,
@@ -89,6 +106,8 @@ class FileViewSet(
     serializer_class = serializers.FileSerializer
     queryset = models.File.objects.all()
     filterset_class = FileFilterSet
+    select_for_includes = {"document": ["document"], "original": ["original"]}
+    prefetch_for_includes = {"renderings": ["renderings"]}
 
     def _write_zip(self, file_obj, queryset):
         with zipfile.ZipFile(file_obj, "w", zipfile.ZIP_DEFLATED) as zipf:
