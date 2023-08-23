@@ -1,3 +1,7 @@
+# v2.2.0
+### Feature
+* **category:** Add slug filters for category list ([`23f7d7e`](https://github.com/projectcaluma/alexandria/commit/23f7d7e0bed21953e003d2ec33a1348ff2050525))
+
 # v2.1.0
 ### Feature
 * **category:** Add has_parent filter for categories ([`1ba5aa8`](https://github.com/projectcaluma/alexandria/commit/1ba5aa83f4d8545ca923a82b8464e0ee6e6fb42f))
