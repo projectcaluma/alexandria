@@ -72,9 +72,13 @@ A list of configuration options which you need
   - `ALEXANDRIA_PERMISSION_CLASSES`: Comma-separated list of classes that define permissions for all models
 - Data validation configuration
   - `ALEXANDRIA_VALIDATION_CLASSES`: Comma-separated list of classes that define [custom validations](docs/validation.md)
+- Thumbnail configuration (optional)
+  - `ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION`: Set to `false` to disable thumbnail generation
+    - Check the docker-compose file for an example on how to set up generation with s3 hooks
+  - `ALEXANDRIA_THUMBNAIL_WIDTH`: Width of generated thumbnails
+  - `ALEXANDRIA_THUMBNAIL_HEIGHT`: Height of generated thumbnails
 
-For development, you can also set the following environemnt variables to help
-you:
+For development, you can also set the following environemnt variables to help you:
 
 - `ALEXANDRIA_DEV_AUTH_BACKEND`: Set this to "true" to enable a fake auth backend that simulates an authenticated user. Requires `DEBUG` to be set to `True` as well.
 - `DEBUG`: Set this to true for debugging during development. Never enable this in production, as it **will** leak information to the public if you do.

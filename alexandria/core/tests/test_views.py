@@ -161,8 +161,7 @@ def test_hook_view(
         ],
     }
 
-    if not enabled:
-        settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION = False
+    settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION = enabled
 
     if status_code == HTTP_201_CREATED:
         doc = document_factory()
@@ -210,6 +209,57 @@ def test_hook_view(
 
     if is_thumb:
         assert File.objects.count() == 1
+
+
+@pytest.mark.parametrize(
+    "variant,enabled,existing_thumbnail,file_name,status_code",
+    [
+        (File.ORIGINAL, True, False, "foo.jpg", HTTP_201_CREATED),
+        (File.ORIGINAL, True, False, "foo.unsupported", HTTP_400_BAD_REQUEST),
+        (File.ORIGINAL, False, False, "foo.jpg", HTTP_400_BAD_REQUEST),
+        (File.ORIGINAL, True, True, "foo.jpg", HTTP_400_BAD_REQUEST),
+        (File.THUMBNAIL, True, False, "foo.jpg", HTTP_400_BAD_REQUEST),
+    ],
+)
+def test_manual_thumbnail(
+    minio_mock,
+    settings,
+    admin_client,
+    file_factory,
+    variant,
+    enabled,
+    existing_thumbnail,
+    file_name,
+    status_code,
+):
+    settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION = enabled
+
+    file = file_factory(variant=variant, name=file_name)
+
+    if existing_thumbnail:
+        file_factory(variant=File.THUMBNAIL, original=file)
+
+    data = {
+        "data": {
+            "type": "files",
+            "id": file.pk,
+        }
+    }
+    url = reverse("file-generate-thumbnail", args=[file.pk])
+
+    resp = admin_client.post(url, data)
+    assert resp.status_code == status_code
+
+    if status_code == HTTP_201_CREATED:
+        file.refresh_from_db()
+        assert File.objects.count() == 2
+        assert File.objects.filter(variant=File.THUMBNAIL).count() == 1
+        thumb = File.objects.get(variant=File.THUMBNAIL)
+        assert thumb.original == file
+        assert file.upload_status == File.COMPLETED
+        assert thumb.upload_status == File.COMPLETED
+    else:
+        assert File.objects.count() == 1 + int(existing_thumbnail)
 
 
 @pytest.mark.parametrize(

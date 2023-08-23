@@ -9,6 +9,7 @@ from django.core.cache import cache
 from factory.base import FactoryMetaClass
 from minio import Minio
 from minio.datatypes import Object as MinioStatObject
+from minio.helpers import ObjectWriteResult
 from pytest_factoryboy import register
 from pytest_factoryboy.fixture import Box
 from rest_framework.test import APIClient
@@ -126,7 +127,13 @@ def minio_mock(mocker, settings):
     mocker.patch.object(Minio, "put_object")
     Minio.get_object.side_effect = get_object_side_effect
     Minio.presigned_get_object.side_effect = presigned_get_object_side_effect
-    Minio.put_object.return_value = "af1421c17294eed533ec99eb82b468fb"
+    Minio.put_object.return_value = ObjectWriteResult(
+        bucket_name=settings.ALEXANDRIA_MINIO_STORAGE_MEDIA_BUCKET_NAME,
+        object_name="some-file.pdf",
+        version_id="",
+        etag="af1421c17294eed533ec99eb82b468fb",
+        http_headers="",
+    )
     Minio.presigned_put_object.return_value = "http://minio/upload-url"
     Minio.stat_object.return_value = stat_response
     Minio.bucket_exists.return_value = True
