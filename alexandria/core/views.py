@@ -149,12 +149,18 @@ class FileViewSet(
             raise ValidationError(
                 _("File is already a thumbnail, cannot generate thumbnail.")
             )
-        elif file.renderings.all().count() > 0:
+        elif file.renderings.all().exists():
             raise ValidationError(
                 _("File already has thumbnail, cannot generate multiple thumbnails.")
             )
 
-        create_thumbnail(file)
+        etag = create_thumbnail(file)
+
+        if not etag:
+            return Response(
+                _("Thumbnail generation failed"), status=HTTP_400_BAD_REQUEST
+            )
+
         file.upload_status = models.File.COMPLETED
         file.save()
 

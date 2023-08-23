@@ -212,18 +212,33 @@ def test_hook_view(
 
 
 @pytest.mark.parametrize(
-    "variant,status_code",
+    "variant,enabled,existing_thumbnail,file_name,status_code",
     [
-        (File.ORIGINAL, HTTP_201_CREATED),
-        (File.THUMBNAIL, HTTP_400_BAD_REQUEST),
+        (File.ORIGINAL, True, False, "foo.jpg", HTTP_201_CREATED),
+        (File.ORIGINAL, True, False, "foo.unsupported", HTTP_400_BAD_REQUEST),
+        (File.ORIGINAL, False, False, "foo.jpg", HTTP_400_BAD_REQUEST),
+        (File.ORIGINAL, True, True, "foo.jpg", HTTP_400_BAD_REQUEST),
+        (File.THUMBNAIL, True, False, "foo.jpg", HTTP_400_BAD_REQUEST),
     ],
 )
 def test_manual_thumbnail(
-    minio_mock, settings, admin_client, file_factory, variant, status_code
+    minio_mock,
+    settings,
+    admin_client,
+    file_factory,
+    variant,
+    enabled,
+    existing_thumbnail,
+    file_name,
+    status_code,
 ):
-    settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION = True
+    settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION = enabled
 
-    file = file_factory(variant=variant)
+    file = file_factory(variant=variant, name=file_name)
+
+    if existing_thumbnail:
+        file_factory(variant=File.THUMBNAIL, original=file)
+
     data = {
         "data": {
             "type": "files",
@@ -244,7 +259,7 @@ def test_manual_thumbnail(
         assert file.upload_status == File.COMPLETED
         assert thumb.upload_status == File.COMPLETED
     else:
-        assert File.objects.count() == 1
+        assert File.objects.count() == 1 + int(existing_thumbnail)
 
 
 @pytest.mark.parametrize(
