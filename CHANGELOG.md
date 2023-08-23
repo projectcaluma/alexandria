@@ -1,3 +1,13 @@
+# v2.1.0
+### Feature
+* **category:** Add has_parent filter for categories ([`1ba5aa8`](https://github.com/projectcaluma/alexandria/commit/1ba5aa83f4d8545ca923a82b8464e0ee6e6fb42f))
+* **category:** Allow nesting of categories ([`9b38fc7`](https://github.com/projectcaluma/alexandria/commit/9b38fc746a68f9de4f0c94d16d6aca91e8dcd1c5))
+* Generate thumbnails without s3 hooks ([`a96a917`](https://github.com/projectcaluma/alexandria/commit/a96a917610a380ab0b89913346a31f339f099907))
+
+### Fix
+* Add validation if a thumbnail was generated ([`665fb50`](https://github.com/projectcaluma/alexandria/commit/665fb508b7fd8607a6ff67be4fc1848f402ba5ce))
+* Remove redundant thumbnail option ([`9788962`](https://github.com/projectcaluma/alexandria/commit/9788962d3eaff84969c15e570a11c5468c619ed4))
+
 # v2.0.1
 ### Fix
 * **settings:** Remove import in settings init file ([`3a86060`](https://github.com/projectcaluma/alexandria/commit/3a8606069ef257b8d8fa08d12e0cc46ab3d2e05c))
