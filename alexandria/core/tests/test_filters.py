@@ -323,3 +323,24 @@ def test_has_parent(db, admin_client, category_factory, has_parent, expected_cou
 
     received_ids = set([obj["id"] for obj in result["data"]])
     assert len(received_ids) == expected_count
+
+
+@pytest.mark.parametrize(
+    "filters,expected_count",
+    [
+        ({"filter[slug]": "category-1"}, 1),
+        ({"filter[slug]": "category-none"}, 0),
+        ({"filter[slugs]": "category-1,category-2"}, 2),
+        ({"filter[slugs]": "category-1,category-none"}, 1),
+    ],
+)
+def test_category_slug_filters(
+    db, admin_client, category_factory, filters, expected_count
+):
+    category_factory(pk="category-1")
+    category_factory(pk="category-2")
+    category_factory(pk="category-3")
+
+    response = admin_client.get(reverse("category-list"), filters)
+    assert response.status_code == HTTP_200_OK
+    assert len(response.json()["data"]) == expected_count

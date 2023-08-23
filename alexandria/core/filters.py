@@ -17,6 +17,10 @@ from rest_framework.exceptions import ValidationError
 from alexandria.core import models
 
 
+class CharInFilter(BaseInFilter, CharFilter):
+    pass
+
+
 class JSONValueFilter(Filter):
     field_type_by_lookup_expr = {
         "exact": TextField,
@@ -114,10 +118,12 @@ class CategoryFilterSet(FilterSet):
     metainfo = JSONValueFilter(field_name="metainfo")
     active_group = ActiveGroupFilter()
     has_parent = BooleanFilter(field_name="parent", lookup_expr="isnull", exclude=True)
+    slug = CharFilter()
+    slugs = CharInFilter(field_name="slug", lookup_expr="in")
 
     class Meta:
         model = models.Category
-        fields = ["active_group", "metainfo", "has_parent"]
+        fields = ["active_group", "metainfo", "has_parent", "slug", "slugs"]
 
 
 class DocumentFilterSet(FilterSet):
