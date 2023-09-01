@@ -1,3 +1,7 @@
+# v2.2.1
+### Fix
+* **settings:** Fix wrong types of boolean settings ([`80e2564`](https://github.com/projectcaluma/alexandria/commit/80e2564ab10327f8e7339bea325c6b4cb2dffb8c))
+
 # v2.2.0
 ### Feature
 * **category:** Add slug filters for category list ([`23f7d7e`](https://github.com/projectcaluma/alexandria/commit/23f7d7e0bed21953e003d2ec33a1348ff2050525))
