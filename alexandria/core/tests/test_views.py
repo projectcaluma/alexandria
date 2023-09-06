@@ -330,11 +330,18 @@ def test_validate_created_by_group(
 def test_multi_download(admin_client, minio_mock, file_factory):
     file1 = file_factory(name="my_file1.png")
     file2 = file_factory(name="my_file2.png")
+    file3 = file_factory(name="my_file2.png")
+    file4 = file_factory(name="my_file2(1).png")
     file_factory(name="my_file3.png")  # should not be returned
 
     url = reverse("file-multi")
 
-    resp = admin_client.get(url, {"filter[files]": f"{str(file1.pk)},{str(file2.pk)}"})
+    resp = admin_client.get(
+        url,
+        {
+            "filter[files]": f"{str(file1.pk)},{str(file2.pk)},{str(file3.pk)},{str(file4.pk)}"
+        },
+    )
     assert resp.status_code == HTTP_200_OK
     assert resp.filename == "files.zip"
 
@@ -343,12 +350,16 @@ def test_multi_download(admin_client, minio_mock, file_factory):
         zip_buffer.write(c)
     zip = zipfile.ZipFile(zip_buffer)
 
-    assert len(zip.filelist) == 2
+    assert len(zip.filelist) == 4
     filelist = sorted(zip.filelist, key=lambda a: a.filename)
     assert filelist[0].filename == file1.name
     assert zip.open(file1.name).read() == file_data.png
-    assert filelist[1].filename == file2.name
+    assert filelist[1].filename == "my_file2(1).png"
     assert zip.open(file2.name).read() == file_data.png
+    assert filelist[2].filename == "my_file2(2).png"
+    assert zip.open(file3.name).read() == file_data.png
+    assert filelist[3].filename == "my_file2.png"
+    assert zip.open(file4.name).read() == file_data.png
 
 
 @pytest.mark.parametrize(
