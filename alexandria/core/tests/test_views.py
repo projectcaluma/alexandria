@@ -16,7 +16,6 @@ from alexandria.core.models import File
 
 from ..models import Tag
 from ..views import DocumentViewSet, FileViewSet, TagViewSet
-from . import file_data
 
 
 @pytest.mark.parametrize("allow_anon", [True, False])
@@ -328,11 +327,11 @@ def test_validate_created_by_group(
 
 
 def test_multi_download(admin_client, minio_mock, file_factory):
-    file1 = file_factory(name="my_file1.png")
-    file2 = file_factory(name="my_file2.png")
-    file3 = file_factory(name="my_file2.png")
-    file4 = file_factory(name="my_file2(1).png")
     file_factory(name="my_file3.png")  # should not be returned
+    file1 = file_factory(name="a_file(1)")
+    file2 = file_factory(name="a_file")
+    file3 = file_factory(name="a_file")
+    file4 = file_factory(name="b_file.png")
 
     url = reverse("file-multi")
 
@@ -352,14 +351,14 @@ def test_multi_download(admin_client, minio_mock, file_factory):
 
     assert len(zip.filelist) == 4
     filelist = sorted(zip.filelist, key=lambda a: a.filename)
-    assert filelist[0].filename == file1.name
-    assert zip.open(file1.name).read() == file_data.png
-    assert filelist[1].filename == "my_file2(1).png"
-    assert zip.open(file2.name).read() == file_data.png
-    assert filelist[2].filename == "my_file2(2).png"
-    assert zip.open(file3.name).read() == file_data.png
-    assert filelist[3].filename == "my_file2.png"
-    assert zip.open(file4.name).read() == file_data.png
+    assert filelist[0].filename == "a_file"
+    assert zip.open("a_file").read() == b"a_file"
+    assert filelist[1].filename == "a_file(1)"
+    assert zip.open("a_file(1)").read() == b"a_file(1)"
+    assert filelist[2].filename == "a_file(2)"
+    assert zip.open("a_file(2)").read() == b"a_file"
+    assert filelist[3].filename == "b_file.png"
+    assert zip.open(file4.name).read() == b"b_file.png"
 
 
 @pytest.mark.parametrize(

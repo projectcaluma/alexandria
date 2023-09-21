@@ -113,7 +113,7 @@ class FileViewSet(
     def _write_zip(self, file_obj, queryset):
         with zipfile.ZipFile(file_obj, "w", zipfile.ZIP_DEFLATED) as zipf:
             seen_names = set()
-            for file in queryset.iterator():
+            for file in queryset.order_by("-name").iterator():
                 temp_file = io.BytesIO()
                 data = client.get_object(file.object_name)
 
@@ -125,8 +125,10 @@ class FileViewSet(
                 name = file.name
                 suffixes = itertools.count(start=1)
                 while name in seen_names:
-                    base_name, extension = file.name.rsplit(".", 1)
-                    name = f"{base_name}({next(suffixes)}).{extension}"
+                    (base_name, *maybe_ext) = file.name.rsplit(".", 1)
+                    # extension is now a 0- or 1-sized list
+                    extension = f".{maybe_ext[0]}" if maybe_ext else ""
+                    name = f"{base_name}({next(suffixes)}){extension}"
                 seen_names.add(name)
 
                 zipf.writestr(
