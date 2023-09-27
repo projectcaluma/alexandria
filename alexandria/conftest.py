@@ -97,11 +97,9 @@ def minio_mock(mocker, settings):
         return f"http://minio/download-url/{object_name}"
 
     def get_object_side_effect(bucket, object_name):
-        file = (
-            file_data.unsupported
-            if object_name.endswith(".unsupported")
-            else file_data.png
-        )
+        file = object_name.split("_", 1)[1].encode()
+        if object_name.endswith(".unsupported"):
+            file = file_data.unsupported
         return HTTPResponse(
             body=BytesIO(file),
             preload_content=False,
