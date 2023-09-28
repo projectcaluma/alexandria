@@ -1,82 +1,104 @@
 [
-    {
-        "model": "alexandria_core.category",
-        "pk": "alle-beteiligten",
-        "fields": {
-            "created_at": "2020-08-04T13:24:00.704Z",
-            "created_by_user": null,
-            "created_by_group": null,
-            "modified_at": "2020-08-04T13:24:00.704Z",
-            "modified_by_user": null,
-            "modified_by_group": null,
-            "metainfo": {},
-            "name": "{\"en\": \"All involved\", \"de-ch\": \"Alle Beteiligten\",\"de\": \"Alle Beteiligten\"}",
-            "description": "{\"en\": \"\"}",
-            "color": "#CB68C1"
-        }
-    },
-    {
-        "model": "alexandria_core.category",
-        "pk": "beilagen-zum-gesuch",
-        "fields": {
-            "created_at": "2020-08-04T13:24:00.677Z",
-            "created_by_user": null,
-            "created_by_group": null,
-            "modified_at": "2020-08-04T13:24:00.677Z",
-            "modified_by_user": null,
-            "modified_by_group": null,
-            "metainfo": {},
-            "name": "{\"en\": \"Supplements to the application\",\"de-ch\": \"Beilagen zum Gesuch\",\"de\": \"Beilagen zum Gesuch\"}",
-            "description": "{\"en\": \"\"}",
-            "color": "#9CDD69"
-        }
-    },
-    {
-        "model": "alexandria_core.category",
-        "pk": "beteiligte-behörden",
-        "fields": {
-            "created_at": "2020-08-04T13:24:00.699Z",
-            "created_by_user": null,
-            "created_by_group": null,
-            "modified_at": "2020-08-04T13:24:00.699Z",
-            "modified_by_user": null,
-            "modified_by_group": null,
-            "metainfo": {},
-            "name": "{\"en\": \"Involved Authorities\",\"de-ch\": \"Beteiligte Beh\\u00f6rden\",\"de\": \"Beteiligte Beh\\u00f6rden\"}",
-            "description": "{\"en\": \"\"}",
-            "color": "#8791EC"
-        }
-    },
-    {
-        "model": "alexandria_core.category",
-        "pk": "inter",
-        "fields": {
-            "created_at": "2020-08-04T13:24:00.708Z",
-            "created_by_user": null,
-            "created_by_group": null,
-            "modified_at": "2020-08-04T13:24:00.708Z",
-            "modified_by_user": null,
-            "modified_by_group": null,
-            "metainfo": {},
-            "name": "{\"en\": \"Internal\",\"de-ch\": \"Intern\",\"de\": \"Intern\"}",
-            "description": "{\"en\": \"\"}",
-            "color": "#DB8B72"
-        }
-    },
-    {
-        "model": "alexandria_core.category",
-        "pk": "nachforderungen",
-        "fields": {
-            "created_at": "2020-08-04T13:24:00.690Z",
-            "created_by_user": null,
-            "created_by_group": null,
-            "modified_at": "2020-08-04T13:24:00.690Z",
-            "modified_by_user": null,
-            "modified_by_group": null,
-            "metainfo": {},
-            "name": "{\"en\": \"Additional claims\",\"de-ch\": \"Nachforderungen\",\"de\": \"Nachforderungen\"}",
-            "description": "{\"en\": \"\"}",
-            "color": "#66CFC9"
-        }
+  {
+    "model": "alexandria_core.category",
+    "pk": "alle-beteiligten",
+    "fields": {
+      "created_at": "2020-08-04T13:24:00.704Z",
+      "created_by_user": null,
+      "created_by_group": null,
+      "modified_at": "2020-08-04T13:24:00.704Z",
+      "modified_by_user": null,
+      "modified_by_group": null,
+      "metainfo": {},
+      "name": "{\"en\": \"All involved\"}",
+      "description": "{\"en\": \"\"}",
+      "color": "#CB68C1",
+      "parent": null
     }
+  },
+  {
+    "model": "alexandria_core.category",
+    "pk": "beilagen-zum-gesuch",
+    "fields": {
+      "created_at": "2020-08-04T13:24:00.677Z",
+      "created_by_user": null,
+      "created_by_group": null,
+      "modified_at": "2020-08-04T13:24:00.677Z",
+      "modified_by_user": null,
+      "modified_by_group": null,
+      "metainfo": {},
+      "name": "{\"en\": \"Supplements to the application\"}",
+      "description": "{\"en\": \"\"}",
+      "color": "#9CDD69",
+      "parent": null
+    }
+  },
+  {
+    "model": "alexandria_core.category",
+    "pk": "maps",
+    "fields": {
+      "created_at": "2020-08-04T13:24:00.677Z",
+      "created_by_user": null,
+      "created_by_group": null,
+      "modified_at": "2020-08-04T13:24:00.677Z",
+      "modified_by_user": null,
+      "modified_by_group": null,
+      "metainfo": {},
+      "name": "{\"en\": \"Maps\"}",
+      "description": "{\"en\": \"\"}",
+      "color": "#9CDD69",
+      "parent": "beilagen-zum-gesuch"
+    }
+  },
+  {
+    "model": "alexandria_core.category",
+    "pk": "beteiligte-behörden",
+    "fields": {
+      "created_at": "2020-08-04T13:24:00.699Z",
+      "created_by_user": null,
+      "created_by_group": null,
+      "modified_at": "2020-08-04T13:24:00.699Z",
+      "modified_by_user": null,
+      "modified_by_group": null,
+      "metainfo": {},
+      "name": "{\"en\": \"Involved Authorities\"}",
+      "description": "{\"en\": \"\"}",
+      "color": "#8791EC",
+      "parent": null
+    }
+  },
+  {
+    "model": "alexandria_core.category",
+    "pk": "internal",
+    "fields": {
+      "created_at": "2020-08-04T13:24:00.708Z",
+      "created_by_user": null,
+      "created_by_group": null,
+      "modified_at": "2020-08-04T13:24:00.708Z",
+      "modified_by_user": null,
+      "modified_by_group": null,
+      "metainfo": {},
+      "name": "{\"en\": \"Internal\"}",
+      "description": "{\"en\": \"\"}",
+      "color": "#DB8B72",
+      "parent": null
+    }
+  },
+  {
+    "model": "alexandria_core.category",
+    "pk": "nachforderungen",
+    "fields": {
+      "created_at": "2020-08-04T13:24:00.690Z",
+      "created_by_user": null,
+      "created_by_group": null,
+      "modified_at": "2020-08-04T13:24:00.690Z",
+      "modified_by_user": null,
+      "modified_by_group": null,
+      "metainfo": {},
+      "name": "{\"en\": \"Additional claims\"}",
+      "description": "{\"en\": \"\"}",
+      "color": "#66CFC9",
+      "parent": null
+    }
+  }
 ]
