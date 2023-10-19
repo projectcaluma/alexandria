@@ -130,6 +130,7 @@ class DocumentFilterSet(FilterSet):
     metainfo = JSONValueFilter(field_name="metainfo")
     active_group = ActiveGroupFilter()
     tags = TagsFilter()
+    categories = CharInFilter(field_name="category__slug", lookup_expr="in")
 
     class Meta:
         model = models.Document

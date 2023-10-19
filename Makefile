@@ -43,3 +43,7 @@ dbshell: ## Start a psql shell
 .PHONY: load_example_data
 load_example_data: ## Load a set of example data
 	@docker compose run alexandria poetry run python ./manage.py loaddata initial_data.json
+
+.PHONY: flush
+flush: ## Flush the database
+	@docker-compose exec alexandria poetry run python ./manage.py flush --no-input
