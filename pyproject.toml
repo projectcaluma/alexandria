@@ -62,7 +62,7 @@ pytest-randomly = "3.15.0"
 python-semantic-release = "7.33.3"
 requests-mock = "1.11.0"
 snapshottest = "0.6.0"
-werkzeug = "2.3.7"
+werkzeug = "3.0.0"
 
 
 [tool.isort]
