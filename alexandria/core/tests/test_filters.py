@@ -344,3 +344,46 @@ def test_category_slug_filters(
     response = admin_client.get(reverse("category-list"), filters)
     assert response.status_code == HTTP_200_OK
     assert len(response.json()["data"]) == expected_count
+
+
+@pytest.mark.parametrize(
+    "filters,expected_count",
+    [
+        ({"filter[category]": "category-1"}, 2),
+        ({"filter[category]": "category-3"}, 1),
+        ({"filter[category]": "category-1", "filter[exclude_children]": True}, 1),
+        ({"filter[categories]": "category-none"}, 0),
+        ({"filter[categories]": "category-1,category-2"}, 3),
+        (
+            {
+                "filter[categories]": "category-1,category-2",
+                "filter[exclude_children]": True,
+            },
+            2,
+        ),
+    ],
+)
+def test_document_category_filters(
+    db,
+    snapshot,
+    admin_client,
+    category_factory,
+    document_factory,
+    filters,
+    expected_count,
+):
+    c1 = category_factory(pk="category-1")
+    c2 = category_factory(pk="category-2")
+    c3 = category_factory(pk="category-3", parent=c1)
+
+    document_factory(category=c1, title="Apple")
+    document_factory(category=c2, title="Pear")
+    document_factory(category=c3, title="Melon")
+
+    response = admin_client.get(reverse("document-list"), filters)
+
+    print(response.content)
+    assert response.status_code == HTTP_200_OK
+    data = response.json()["data"]
+    assert len(data) == expected_count
+    snapshot.assert_match(sorted([doc["attributes"]["title"]["en"] for doc in data]))

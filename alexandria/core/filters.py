@@ -114,6 +114,23 @@ class TagsFilter(BaseInFilter):
         return qs
 
 
+class CategoriesFilter(Filter):
+    def filter(self, qs, value):
+        if value in EMPTY_VALUES:
+            return qs
+
+        exclude_children = self.parent.request.query_params.get(
+            "filter[exclude_children]", False
+        )
+        filters = Q()
+        for category in value.split(","):
+            filters |= Q(category_id=category)
+            if not exclude_children:
+                filters |= Q(category__parent__slug=category)
+
+        return qs.filter(filters)
+
+
 class CategoryFilterSet(FilterSet):
     metainfo = JSONValueFilter(field_name="metainfo")
     active_group = ActiveGroupFilter()
@@ -130,11 +147,14 @@ class DocumentFilterSet(FilterSet):
     metainfo = JSONValueFilter(field_name="metainfo")
     active_group = ActiveGroupFilter()
     tags = TagsFilter()
-    categories = CharInFilter(field_name="category__slug", lookup_expr="in")
+    category = CategoriesFilter()
+    categories = CategoriesFilter()
+    # exclude_children is applied in CategoriesFilter, this is needed for DjangoFilterBackend
+    exclude_children = BooleanFilter(field_name="title", method=lambda qs, __, ___: qs)
 
     class Meta:
         model = models.Document
-        fields = ["metainfo", "category", "tags"]
+        fields = ["metainfo", "tags"]
 
 
 class FileFilterSet(FilterSet):
