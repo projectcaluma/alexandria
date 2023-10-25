@@ -1,3 +1,11 @@
+# v2.3.0
+### Feature
+* Return documents from child categories ([`b992a3f`](https://github.com/projectcaluma/alexandria/commit/b992a3f1cbc045e6a4bb8eb64c822b0cb3a462e9))
+* **document:** Add categories filter ([#351](https://github.com/projectcaluma/alexandria/issues/351)) ([`a9cb293`](https://github.com/projectcaluma/alexandria/commit/a9cb293ae5211eae8688e8b15305be011bbd4a74))
+
+### Fix
+* **zip:** Append number to duplicate file names ([#337](https://github.com/projectcaluma/alexandria/issues/337)) ([`8f09c5f`](https://github.com/projectcaluma/alexandria/commit/8f09c5f0c304764a8a71afa451cbe2e9fa76d5fe))
+
 # v2.2.1
 ### Fix
 * **settings:** Fix wrong types of boolean settings ([`80e2564`](https://github.com/projectcaluma/alexandria/commit/80e2564ab10327f8e7339bea325c6b4cb2dffb8c))
