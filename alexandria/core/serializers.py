@@ -222,4 +222,5 @@ class DocumentSerializer(BaseSerializer):
             "description",
             "category",
             "tags",
+            "date",
         )

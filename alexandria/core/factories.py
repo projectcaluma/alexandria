@@ -57,6 +57,7 @@ class DocumentFactory(BaseFactory):
     title = Faker("name")
     description = Faker("text")
     category = SubFactory(CategoryFactory)
+    date = Faker("date")
 
     @post_generation
     def tags(self, create, extracted, **kwargs):
