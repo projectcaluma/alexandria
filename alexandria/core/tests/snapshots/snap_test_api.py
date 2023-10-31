@@ -61,17 +61,17 @@ Central meeting anyone remember. There today material minute ago get. Range whos
 snapshots["test_api_create[DocumentViewSet] 1"] = {
     "queries": [
         'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."metainfo", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description", "alexandria_core_category"."color", "alexandria_core_category"."parent_id" FROM "alexandria_core_category" WHERE "alexandria_core_category"."slug" = \'note-act-source\' LIMIT 21',
-        'SELECT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."metainfo", "alexandria_core_tag"."slug", "alexandria_core_tag"."name", "alexandria_core_tag"."description", "alexandria_core_tag"."tag_synonym_group_id" FROM "alexandria_core_tag" WHERE "alexandria_core_tag"."slug" = \'program-small\' LIMIT 21',
-        """INSERT INTO "alexandria_core_document" ("created_at", "created_by_user", "created_by_group", "modified_at", "modified_by_user", "modified_by_group", "metainfo", "id", "title", "description", "category_id") VALUES (\'2017-05-21T00:00:00+00:00\'::timestamptz, \'admin\', \'admin\', \'2017-05-21T00:00:00+00:00\'::timestamptz, \'admin\', \'admin\', \'{}\', \'9336ebf2-5087-d91c-818e-e6e9ec29f8c1\'::uuid, hstore(ARRAY[\'en\',\'de\',\'fr\'], ARRAY[\'Michael Edwards\',\'\',\'\']), hstore(ARRAY[\'en\',\'de\',\'fr\'], ARRAY[\'Open else look tree arm responsibility week. Environmental statement bag someone them style.
-Public these health team change. Tax final upon stay sing middle suggest.','','']), 'note-act-source')""",
+        'SELECT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."metainfo", "alexandria_core_tag"."slug", "alexandria_core_tag"."name", "alexandria_core_tag"."description", "alexandria_core_tag"."tag_synonym_group_id" FROM "alexandria_core_tag" WHERE "alexandria_core_tag"."slug" = \'small-father-should\' LIMIT 21',
+        """INSERT INTO "alexandria_core_document" ("created_at", "created_by_user", "created_by_group", "modified_at", "modified_by_user", "modified_by_group", "metainfo", "id", "title", "description", "category_id", "date") VALUES (\'2017-05-21T00:00:00+00:00\'::timestamptz, \'admin\', \'admin\', \'2017-05-21T00:00:00+00:00\'::timestamptz, \'admin\', \'admin\', \'{}\', \'9336ebf2-5087-d91c-818e-e6e9ec29f8c1\'::uuid, hstore(ARRAY[\'en\',\'de\',\'fr\'], ARRAY[\'Michael Edwards\',\'\',\'\']), hstore(ARRAY[\'en\',\'de\',\'fr\'], ARRAY[\'Open else look tree arm responsibility week. Environmental statement bag someone them style.
+Public these health team change. Tax final upon stay sing middle suggest.','','']), 'note-act-source', '2012-12-10'::date)""",
         'SELECT "alexandria_core_tag"."slug" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."slug" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" = \'9336ebf2-5087-d91c-818e-e6e9ec29f8c1\'::uuid',
-        'INSERT INTO "alexandria_core_document_tags" ("document_id", "tag_id") VALUES (\'9336ebf2-5087-d91c-818e-e6e9ec29f8c1\'::uuid, \'program-small\') ON CONFLICT DO NOTHING',
+        'INSERT INTO "alexandria_core_document_tags" ("document_id", "tag_id") VALUES (\'9336ebf2-5087-d91c-818e-e6e9ec29f8c1\'::uuid, \'small-father-should\') ON CONFLICT DO NOTHING',
         'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."upload_status" FROM "alexandria_core_file" WHERE "alexandria_core_file"."document_id" = \'9336ebf2-5087-d91c-818e-e6e9ec29f8c1\'::uuid ORDER BY "alexandria_core_file"."created_at" DESC',
         'SELECT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."metainfo", "alexandria_core_tag"."slug", "alexandria_core_tag"."name", "alexandria_core_tag"."description", "alexandria_core_tag"."tag_synonym_group_id" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."slug" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" = \'9336ebf2-5087-d91c-818e-e6e9ec29f8c1\'::uuid',
     ],
     "query_count": 7,
     "request": {
-        "CONTENT_LENGTH": "735",
+        "CONTENT_LENGTH": "761",
         "CONTENT_TYPE": "application/vnd.api+json",
         "PATH_INFO": "/api/v1/documents",
         "QUERY_STRING": "",
@@ -84,6 +84,7 @@ Public these health team change. Tax final upon stay sing middle suggest.','',''
                 "created-at": "2017-05-21T00:00:00Z",
                 "created-by-group": "admin",
                 "created-by-user": "admin",
+                "date": "2012-12-10",
                 "description": {
                     "de": "",
                     "en": """Open else look tree arm responsibility week. Environmental statement bag someone them style.
@@ -101,7 +102,7 @@ Public these health team change. Tax final upon stay sing middle suggest.""",
                 "category": {"data": {"id": "note-act-source", "type": "categories"}},
                 "files": {"data": [], "meta": {"count": 0}},
                 "tags": {
-                    "data": [{"id": "program-small", "type": "tags"}],
+                    "data": [{"id": "small-father-should", "type": "tags"}],
                     "meta": {"count": 1},
                 },
             },
@@ -114,6 +115,7 @@ Public these health team change. Tax final upon stay sing middle suggest.""",
                 "created-at": "2017-05-21T00:00:00Z",
                 "created-by-group": "admin",
                 "created-by-user": "admin",
+                "date": "2012-12-10",
                 "description": {
                     "de": "",
                     "en": """Open else look tree arm responsibility week. Environmental statement bag someone them style.
@@ -131,7 +133,7 @@ Public these health team change. Tax final upon stay sing middle suggest.""",
                 "category": {"data": {"id": "note-act-source", "type": "categories"}},
                 "files": {"data": [], "meta": {"count": 0}},
                 "tags": {
-                    "data": [{"id": "program-small", "type": "tags"}],
+                    "data": [{"id": "small-father-should", "type": "tags"}],
                     "meta": {"count": 1},
                 },
             },
@@ -143,13 +145,13 @@ Public these health team change. Tax final upon stay sing middle suggest.""",
 
 snapshots["test_api_create[FileViewSet] 1"] = {
     "queries": [
-        'SELECT "alexandria_core_document"."created_at", "alexandria_core_document"."created_by_user", "alexandria_core_document"."created_by_group", "alexandria_core_document"."modified_at", "alexandria_core_document"."modified_by_user", "alexandria_core_document"."modified_by_group", "alexandria_core_document"."metainfo", "alexandria_core_document"."id", "alexandria_core_document"."title", "alexandria_core_document"."description", "alexandria_core_document"."category_id" FROM "alexandria_core_document" WHERE "alexandria_core_document"."id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid LIMIT 21',
-        'INSERT INTO "alexandria_core_file" ("created_at", "created_by_user", "created_by_group", "modified_at", "modified_by_user", "modified_by_group", "metainfo", "id", "variant", "original_id", "name", "document_id", "upload_status") VALUES (\'2017-05-21T00:00:00+00:00\'::timestamptz, \'admin\', \'admin\', \'2017-05-21T00:00:00+00:00\'::timestamptz, \'admin\', \'admin\', \'{}\', \'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad\'::uuid, \'original\', NULL, \'Diane Butler\', \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid, \'undefined\')',
+        'SELECT "alexandria_core_document"."created_at", "alexandria_core_document"."created_by_user", "alexandria_core_document"."created_by_group", "alexandria_core_document"."modified_at", "alexandria_core_document"."modified_by_user", "alexandria_core_document"."modified_by_group", "alexandria_core_document"."metainfo", "alexandria_core_document"."id", "alexandria_core_document"."title", "alexandria_core_document"."description", "alexandria_core_document"."category_id", "alexandria_core_document"."date" FROM "alexandria_core_document" WHERE "alexandria_core_document"."id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid LIMIT 21',
+        'INSERT INTO "alexandria_core_file" ("created_at", "created_by_user", "created_by_group", "modified_at", "modified_by_user", "modified_by_group", "metainfo", "id", "variant", "original_id", "name", "document_id", "upload_status") VALUES (\'2017-05-21T00:00:00+00:00\'::timestamptz, \'admin\', \'admin\', \'2017-05-21T00:00:00+00:00\'::timestamptz, \'admin\', \'admin\', \'{}\', \'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad\'::uuid, \'original\', NULL, \'Monica Hill\', \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid, \'undefined\')',
         'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."upload_status" FROM "alexandria_core_file" WHERE "alexandria_core_file"."original_id" = \'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad\'::uuid ORDER BY "alexandria_core_file"."created_at" DESC',
     ],
     "query_count": 3,
     "request": {
-        "CONTENT_LENGTH": "631",
+        "CONTENT_LENGTH": "629",
         "CONTENT_TYPE": "application/vnd.api+json",
         "PATH_INFO": "/api/v1/files",
         "QUERY_STRING": "",
@@ -162,12 +164,12 @@ snapshots["test_api_create[FileViewSet] 1"] = {
                 "created-at": "2017-05-21T00:00:00Z",
                 "created-by-group": "admin",
                 "created-by-user": "admin",
-                "download-url": "http://minio/download-url/9336ebf2-5087-d91c-818e-e6e9ec29f8c1_Diane Butler",
+                "download-url": "http://minio/download-url/9336ebf2-5087-d91c-818e-e6e9ec29f8c1_Monica Hill",
                 "metainfo": {},
                 "modified-at": "2017-05-21T00:00:00Z",
                 "modified-by-group": "admin",
                 "modified-by-user": "admin",
-                "name": "Diane Butler",
+                "name": "Monica Hill",
                 "upload-status": "undefined",
                 "upload-url": "",
                 "variant": "original",
@@ -192,12 +194,12 @@ snapshots["test_api_create[FileViewSet] 1"] = {
                 "created-at": "2017-05-21T00:00:00Z",
                 "created-by-group": "admin",
                 "created-by-user": "admin",
-                "download-url": "http://minio/download-url/f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad_Diane Butler",
+                "download-url": "http://minio/download-url/f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad_Monica Hill",
                 "metainfo": {},
                 "modified-at": "2017-05-21T00:00:00Z",
                 "modified-by-group": "admin",
                 "modified-by-user": "admin",
-                "name": "Diane Butler",
+                "name": "Monica Hill",
                 "upload-status": "undefined",
                 "upload-url": "http://minio/upload-url",
                 "variant": "original",
@@ -297,7 +299,7 @@ snapshots["test_api_destroy[CategoryViewSet] 1"] = {
 
 snapshots["test_api_destroy[DocumentViewSet] 1"] = {
     "queries": [
-        'SELECT "alexandria_core_document"."created_at", "alexandria_core_document"."created_by_user", "alexandria_core_document"."created_by_group", "alexandria_core_document"."modified_at", "alexandria_core_document"."modified_by_user", "alexandria_core_document"."modified_by_group", "alexandria_core_document"."metainfo", "alexandria_core_document"."id", "alexandria_core_document"."title", "alexandria_core_document"."description", "alexandria_core_document"."category_id" FROM "alexandria_core_document" WHERE "alexandria_core_document"."id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid LIMIT 21',
+        'SELECT "alexandria_core_document"."created_at", "alexandria_core_document"."created_by_user", "alexandria_core_document"."created_by_group", "alexandria_core_document"."modified_at", "alexandria_core_document"."modified_by_user", "alexandria_core_document"."modified_by_group", "alexandria_core_document"."metainfo", "alexandria_core_document"."id", "alexandria_core_document"."title", "alexandria_core_document"."description", "alexandria_core_document"."category_id", "alexandria_core_document"."date" FROM "alexandria_core_document" WHERE "alexandria_core_document"."id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid LIMIT 21',
         'SELECT "alexandria_core_file"."id" FROM "alexandria_core_file" WHERE "alexandria_core_file"."document_id" IN (\'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid) ORDER BY "alexandria_core_file"."created_at" DESC',
         'DELETE FROM "alexandria_core_document_tags" WHERE "alexandria_core_document_tags"."document_id" IN (\'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid)',
         'DELETE FROM "alexandria_core_document" WHERE "alexandria_core_document"."id" IN (\'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid)',
@@ -389,7 +391,7 @@ Central meeting anyone remember. There today material minute ago get. Range whos
 
 snapshots["test_api_detail[DocumentViewSet] 1"] = {
     "queries": [
-        'SELECT "alexandria_core_document"."created_at", "alexandria_core_document"."created_by_user", "alexandria_core_document"."created_by_group", "alexandria_core_document"."modified_at", "alexandria_core_document"."modified_by_user", "alexandria_core_document"."modified_by_group", "alexandria_core_document"."metainfo", "alexandria_core_document"."id", "alexandria_core_document"."title", "alexandria_core_document"."description", "alexandria_core_document"."category_id", "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."metainfo", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description", "alexandria_core_category"."color", "alexandria_core_category"."parent_id" FROM "alexandria_core_document" LEFT OUTER JOIN "alexandria_core_category" ON ("alexandria_core_document"."category_id" = "alexandria_core_category"."slug") WHERE "alexandria_core_document"."id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid LIMIT 21',
+        'SELECT "alexandria_core_document"."created_at", "alexandria_core_document"."created_by_user", "alexandria_core_document"."created_by_group", "alexandria_core_document"."modified_at", "alexandria_core_document"."modified_by_user", "alexandria_core_document"."modified_by_group", "alexandria_core_document"."metainfo", "alexandria_core_document"."id", "alexandria_core_document"."title", "alexandria_core_document"."description", "alexandria_core_document"."category_id", "alexandria_core_document"."date", "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."metainfo", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description", "alexandria_core_category"."color", "alexandria_core_category"."parent_id" FROM "alexandria_core_document" LEFT OUTER JOIN "alexandria_core_category" ON ("alexandria_core_document"."category_id" = "alexandria_core_category"."slug") WHERE "alexandria_core_document"."id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid LIMIT 21',
         'SELECT ("alexandria_core_document_tags"."document_id") AS "_prefetch_related_val_document_id", "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."metainfo", "alexandria_core_tag"."slug", "alexandria_core_tag"."name", "alexandria_core_tag"."description", "alexandria_core_tag"."tag_synonym_group_id" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."slug" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" IN (\'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid)',
         'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."upload_status" FROM "alexandria_core_file" WHERE "alexandria_core_file"."document_id" IN (\'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid) ORDER BY "alexandria_core_file"."created_at" DESC',
         'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."metainfo", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description", "alexandria_core_category"."color", "alexandria_core_category"."parent_id" FROM "alexandria_core_category" WHERE "alexandria_core_category"."parent_id" = \'note-act-source\'',
@@ -409,6 +411,7 @@ snapshots["test_api_detail[DocumentViewSet] 1"] = {
                 "created-at": "2017-05-21T00:00:00Z",
                 "created-by-group": "admin",
                 "created-by-user": "admin",
+                "date": "2012-12-10",
                 "description": {
                     "de": "",
                     "en": """Open else look tree arm responsibility week. Environmental statement bag someone them style.
@@ -426,7 +429,7 @@ Public these health team change. Tax final upon stay sing middle suggest.""",
                 "category": {"data": {"id": "note-act-source", "type": "categories"}},
                 "files": {"data": [], "meta": {"count": 0}},
                 "tags": {
-                    "data": [{"id": "program-small", "type": "tags"}],
+                    "data": [{"id": "small-father-should", "type": "tags"}],
                     "meta": {"count": 1},
                 },
             },
@@ -465,17 +468,17 @@ Central meeting anyone remember. There today material minute ago get. Range whos
                     "created-by-user": "admin",
                     "description": {
                         "de": "",
-                        "en": """Sound discover Mrs once long. Well treatment radio with Mr letter eye. Society street hair local kind debate line simple.
-Treat better note everybody party. Miss south speak industry.""",
+                        "en": """Discover Mrs once. Record well treatment radio with Mr letter.
+Way society street. Move enter them his half long.""",
                         "fr": "",
                     },
                     "metainfo": {},
                     "modified-at": "2017-05-21T00:00:00Z",
                     "modified-by-group": "admin",
                     "modified-by-user": "admin",
-                    "name": "Denise Horton",
+                    "name": "Michael Chambers",
                 },
-                "id": "program-small",
+                "id": "small-father-should",
                 "relationships": {"tag-synonym-group": {"data": None}},
                 "type": "tags",
             },
@@ -486,7 +489,7 @@ Treat better note everybody party. Miss south speak industry.""",
 
 snapshots["test_api_detail[FileViewSet] 1"] = {
     "queries": [
-        'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."upload_status", T2."created_at", T2."created_by_user", T2."created_by_group", T2."modified_at", T2."modified_by_user", T2."modified_by_group", T2."metainfo", T2."id", T2."variant", T2."original_id", T2."name", T2."document_id", T2."upload_status", "alexandria_core_document"."created_at", "alexandria_core_document"."created_by_user", "alexandria_core_document"."created_by_group", "alexandria_core_document"."modified_at", "alexandria_core_document"."modified_by_user", "alexandria_core_document"."modified_by_group", "alexandria_core_document"."metainfo", "alexandria_core_document"."id", "alexandria_core_document"."title", "alexandria_core_document"."description", "alexandria_core_document"."category_id" FROM "alexandria_core_file" LEFT OUTER JOIN "alexandria_core_file" T2 ON ("alexandria_core_file"."original_id" = T2."id") INNER JOIN "alexandria_core_document" ON ("alexandria_core_file"."document_id" = "alexandria_core_document"."id") WHERE "alexandria_core_file"."id" = \'9336ebf2-5087-d91c-818e-e6e9ec29f8c1\'::uuid LIMIT 21',
+        'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."upload_status", T2."created_at", T2."created_by_user", T2."created_by_group", T2."modified_at", T2."modified_by_user", T2."modified_by_group", T2."metainfo", T2."id", T2."variant", T2."original_id", T2."name", T2."document_id", T2."upload_status", "alexandria_core_document"."created_at", "alexandria_core_document"."created_by_user", "alexandria_core_document"."created_by_group", "alexandria_core_document"."modified_at", "alexandria_core_document"."modified_by_user", "alexandria_core_document"."modified_by_group", "alexandria_core_document"."metainfo", "alexandria_core_document"."id", "alexandria_core_document"."title", "alexandria_core_document"."description", "alexandria_core_document"."category_id", "alexandria_core_document"."date" FROM "alexandria_core_file" LEFT OUTER JOIN "alexandria_core_file" T2 ON ("alexandria_core_file"."original_id" = T2."id") INNER JOIN "alexandria_core_document" ON ("alexandria_core_file"."document_id" = "alexandria_core_document"."id") WHERE "alexandria_core_file"."id" = \'9336ebf2-5087-d91c-818e-e6e9ec29f8c1\'::uuid LIMIT 21',
         'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."upload_status" FROM "alexandria_core_file" WHERE "alexandria_core_file"."original_id" IN (\'9336ebf2-5087-d91c-818e-e6e9ec29f8c1\'::uuid) ORDER BY "alexandria_core_file"."created_at" DESC',
         'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."upload_status" FROM "alexandria_core_file" WHERE "alexandria_core_file"."document_id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid ORDER BY "alexandria_core_file"."created_at" DESC',
         'SELECT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."metainfo", "alexandria_core_tag"."slug", "alexandria_core_tag"."name", "alexandria_core_tag"."description", "alexandria_core_tag"."tag_synonym_group_id" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."slug" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid',
@@ -506,12 +509,12 @@ snapshots["test_api_detail[FileViewSet] 1"] = {
                 "created-at": "2017-05-21T00:00:00Z",
                 "created-by-group": "admin",
                 "created-by-user": "admin",
-                "download-url": "http://minio/download-url/9336ebf2-5087-d91c-818e-e6e9ec29f8c1_Diane Butler",
+                "download-url": "http://minio/download-url/9336ebf2-5087-d91c-818e-e6e9ec29f8c1_Monica Hill",
                 "metainfo": {},
                 "modified-at": "2017-05-21T00:00:00Z",
                 "modified-by-group": "admin",
                 "modified-by-user": "admin",
-                "name": "Diane Butler",
+                "name": "Monica Hill",
                 "upload-status": "undefined",
                 "upload-url": "",
                 "variant": "original",
@@ -535,6 +538,7 @@ snapshots["test_api_detail[FileViewSet] 1"] = {
                     "created-at": "2017-05-21T00:00:00Z",
                     "created-by-group": "admin",
                     "created-by-user": "admin",
+                    "date": "2012-12-10",
                     "description": {
                         "de": "",
                         "en": """Open else look tree arm responsibility week. Environmental statement bag someone them style.
@@ -706,12 +710,12 @@ Partner area media increase meeting article. Success provide beyond seek officer
 
 snapshots["test_api_list[DocumentViewSet] 1"] = {
     "queries": [
-        'SELECT "alexandria_core_document"."created_at", "alexandria_core_document"."created_by_user", "alexandria_core_document"."created_by_group", "alexandria_core_document"."modified_at", "alexandria_core_document"."modified_by_user", "alexandria_core_document"."modified_by_group", "alexandria_core_document"."metainfo", "alexandria_core_document"."id", "alexandria_core_document"."title", "alexandria_core_document"."description", "alexandria_core_document"."category_id", "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."metainfo", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description", "alexandria_core_category"."color", "alexandria_core_category"."parent_id" FROM "alexandria_core_document" LEFT OUTER JOIN "alexandria_core_category" ON ("alexandria_core_document"."category_id" = "alexandria_core_category"."slug")',
+        'SELECT "alexandria_core_document"."created_at", "alexandria_core_document"."created_by_user", "alexandria_core_document"."created_by_group", "alexandria_core_document"."modified_at", "alexandria_core_document"."modified_by_user", "alexandria_core_document"."modified_by_group", "alexandria_core_document"."metainfo", "alexandria_core_document"."id", "alexandria_core_document"."title", "alexandria_core_document"."description", "alexandria_core_document"."category_id", "alexandria_core_document"."date", "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."metainfo", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description", "alexandria_core_category"."color", "alexandria_core_category"."parent_id" FROM "alexandria_core_document" LEFT OUTER JOIN "alexandria_core_category" ON ("alexandria_core_document"."category_id" = "alexandria_core_category"."slug")',
         'SELECT ("alexandria_core_document_tags"."document_id") AS "_prefetch_related_val_document_id", "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."metainfo", "alexandria_core_tag"."slug", "alexandria_core_tag"."name", "alexandria_core_tag"."description", "alexandria_core_tag"."tag_synonym_group_id" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."slug" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" IN (\'9336ebf2-5087-d91c-818e-e6e9ec29f8c1\'::uuid, \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid, \'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad\'::uuid)',
         'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."upload_status" FROM "alexandria_core_file" WHERE "alexandria_core_file"."document_id" IN (\'9336ebf2-5087-d91c-818e-e6e9ec29f8c1\'::uuid, \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid, \'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad\'::uuid) ORDER BY "alexandria_core_file"."created_at" DESC',
         'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."metainfo", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description", "alexandria_core_category"."color", "alexandria_core_category"."parent_id" FROM "alexandria_core_category" WHERE "alexandria_core_category"."parent_id" = \'note-act-source\'',
         'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."metainfo", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description", "alexandria_core_category"."color", "alexandria_core_category"."parent_id" FROM "alexandria_core_category" WHERE "alexandria_core_category"."parent_id" = \'right-professor\'',
-        'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."metainfo", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description", "alexandria_core_category"."color", "alexandria_core_category"."parent_id" FROM "alexandria_core_category" WHERE "alexandria_core_category"."parent_id" = \'father-especially\'',
+        'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."metainfo", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description", "alexandria_core_category"."color", "alexandria_core_category"."parent_id" FROM "alexandria_core_category" WHERE "alexandria_core_category"."parent_id" = \'moment-poor\'',
     ],
     "query_count": 6,
     "request": {
@@ -729,6 +733,7 @@ snapshots["test_api_list[DocumentViewSet] 1"] = {
                     "created-at": "2017-05-21T00:00:00Z",
                     "created-by-group": "admin",
                     "created-by-user": "admin",
+                    "date": "2012-12-10",
                     "description": {
                         "de": "",
                         "en": """Open else look tree arm responsibility week. Environmental statement bag someone them style.
@@ -748,7 +753,7 @@ Public these health team change. Tax final upon stay sing middle suggest.""",
                     },
                     "files": {"data": [], "meta": {"count": 0}},
                     "tags": {
-                        "data": [{"id": "program-small", "type": "tags"}],
+                        "data": [{"id": "small-father-should", "type": "tags"}],
                         "meta": {"count": 1},
                     },
                 },
@@ -759,6 +764,7 @@ Public these health team change. Tax final upon stay sing middle suggest.""",
                     "created-at": "2017-05-21T00:00:00Z",
                     "created-by-group": "admin",
                     "created-by-user": "admin",
+                    "date": "1989-06-05",
                     "description": {
                         "de": "",
                         "en": """Bank arm serious live by itself. Project find white continue none president. Idea eye plan third program.
@@ -786,22 +792,22 @@ Son success provide beyond. Officer player possible issue ahead suffer.""",
                     "created-at": "2017-05-21T00:00:00Z",
                     "created-by-group": "admin",
                     "created-by-user": "admin",
+                    "date": "1975-01-07",
                     "description": {
                         "de": "",
-                        "en": "Visit all truth change. Republican agency season worry take value eye sell. He consumer same season natural think Mr.",
+                        "en": """Cell series star. Agency season worry take value eye sell.
+Human less power relate fine religious. Loss increase firm friend ability. Their office though television return main.""",
                         "fr": "",
                     },
                     "metainfo": {},
                     "modified-at": "2017-05-21T00:00:00Z",
                     "modified-by-group": "admin",
                     "modified-by-user": "admin",
-                    "title": {"de": "", "en": "Donna Whitney", "fr": ""},
+                    "title": {"de": "", "en": "Julia Blair", "fr": ""},
                 },
                 "id": "f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad",
                 "relationships": {
-                    "category": {
-                        "data": {"id": "father-especially", "type": "categories"}
-                    },
+                    "category": {"data": {"id": "moment-poor", "type": "categories"}},
                     "files": {"data": [], "meta": {"count": 0}},
                     "tags": {"data": [], "meta": {"count": 0}},
                 },
@@ -811,22 +817,23 @@ Son success provide beyond. Officer player possible issue ahead suffer.""",
         "included": [
             {
                 "attributes": {
-                    "color": "#c62a1f",
+                    "color": "#eaf254",
                     "created-at": "2017-05-21T00:00:00Z",
                     "created-by-group": "admin",
                     "created-by-user": "admin",
                     "description": {
                         "de": "",
-                        "en": "Major talk late yes. Again affect ok window church everyone final. Participant call strategy life such system artist. Raise gun second base hear human high word.",
+                        "en": """Window relate raise gun. Base hear human high word. Boy per news traditional article.
+Pressure dog sell maybe kitchen. Impact wide yourself win reflect purpose important.""",
                         "fr": "",
                     },
                     "metainfo": {},
                     "modified-at": "2017-05-21T00:00:00Z",
                     "modified-by-group": "admin",
                     "modified-by-user": "admin",
-                    "name": {"de": "", "en": "Bryan Fields", "fr": ""},
+                    "name": {"de": "", "en": "Ronnie Mcdonald", "fr": ""},
                 },
-                "id": "father-especially",
+                "id": "moment-poor",
                 "relationships": {
                     "children": {"data": [], "meta": {"count": 0}},
                     "parent": {"data": None},
@@ -890,17 +897,17 @@ Culture create risk against capital factor find able. For brother weight upon.""
                     "created-by-user": "admin",
                     "description": {
                         "de": "",
-                        "en": """Sound discover Mrs once long. Well treatment radio with Mr letter eye. Society street hair local kind debate line simple.
-Treat better note everybody party. Miss south speak industry.""",
+                        "en": """Discover Mrs once. Record well treatment radio with Mr letter.
+Way society street. Move enter them his half long.""",
                         "fr": "",
                     },
                     "metainfo": {},
                     "modified-at": "2017-05-21T00:00:00Z",
                     "modified-by-group": "admin",
                     "modified-by-user": "admin",
-                    "name": "Denise Horton",
+                    "name": "Michael Chambers",
                 },
-                "id": "program-small",
+                "id": "small-father-should",
                 "relationships": {"tag-synonym-group": {"data": None}},
                 "type": "tags",
             },
@@ -911,7 +918,7 @@ Treat better note everybody party. Miss south speak industry.""",
 
 snapshots["test_api_list[FileViewSet] 1"] = {
     "queries": [
-        'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."upload_status", T2."created_at", T2."created_by_user", T2."created_by_group", T2."modified_at", T2."modified_by_user", T2."modified_by_group", T2."metainfo", T2."id", T2."variant", T2."original_id", T2."name", T2."document_id", T2."upload_status", "alexandria_core_document"."created_at", "alexandria_core_document"."created_by_user", "alexandria_core_document"."created_by_group", "alexandria_core_document"."modified_at", "alexandria_core_document"."modified_by_user", "alexandria_core_document"."modified_by_group", "alexandria_core_document"."metainfo", "alexandria_core_document"."id", "alexandria_core_document"."title", "alexandria_core_document"."description", "alexandria_core_document"."category_id" FROM "alexandria_core_file" LEFT OUTER JOIN "alexandria_core_file" T2 ON ("alexandria_core_file"."original_id" = T2."id") INNER JOIN "alexandria_core_document" ON ("alexandria_core_file"."document_id" = "alexandria_core_document"."id") ORDER BY "alexandria_core_file"."created_at" DESC',
+        'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."upload_status", T2."created_at", T2."created_by_user", T2."created_by_group", T2."modified_at", T2."modified_by_user", T2."modified_by_group", T2."metainfo", T2."id", T2."variant", T2."original_id", T2."name", T2."document_id", T2."upload_status", "alexandria_core_document"."created_at", "alexandria_core_document"."created_by_user", "alexandria_core_document"."created_by_group", "alexandria_core_document"."modified_at", "alexandria_core_document"."modified_by_user", "alexandria_core_document"."modified_by_group", "alexandria_core_document"."metainfo", "alexandria_core_document"."id", "alexandria_core_document"."title", "alexandria_core_document"."description", "alexandria_core_document"."category_id", "alexandria_core_document"."date" FROM "alexandria_core_file" LEFT OUTER JOIN "alexandria_core_file" T2 ON ("alexandria_core_file"."original_id" = T2."id") INNER JOIN "alexandria_core_document" ON ("alexandria_core_file"."document_id" = "alexandria_core_document"."id") ORDER BY "alexandria_core_file"."created_at" DESC',
         'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."upload_status" FROM "alexandria_core_file" WHERE "alexandria_core_file"."original_id" IN (\'9336ebf2-5087-d91c-818e-e6e9ec29f8c1\'::uuid, \'dad3a37a-a9d5-0688-b515-7698acfd7aee\'::uuid, \'ea416ed0-759d-46a8-de58-f63a59077499\'::uuid) ORDER BY "alexandria_core_file"."created_at" DESC',
         'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."upload_status" FROM "alexandria_core_file" WHERE "alexandria_core_file"."document_id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid ORDER BY "alexandria_core_file"."created_at" DESC',
         'SELECT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."metainfo", "alexandria_core_tag"."slug", "alexandria_core_tag"."name", "alexandria_core_tag"."description", "alexandria_core_tag"."tag_synonym_group_id" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."slug" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid',
@@ -936,12 +943,12 @@ snapshots["test_api_list[FileViewSet] 1"] = {
                     "created-at": "2017-05-21T00:00:00Z",
                     "created-by-group": "admin",
                     "created-by-user": "admin",
-                    "download-url": "http://minio/download-url/9336ebf2-5087-d91c-818e-e6e9ec29f8c1_Diane Butler",
+                    "download-url": "http://minio/download-url/9336ebf2-5087-d91c-818e-e6e9ec29f8c1_Monica Hill",
                     "metainfo": {},
                     "modified-at": "2017-05-21T00:00:00Z",
                     "modified-by-group": "admin",
                     "modified-by-user": "admin",
-                    "name": "Diane Butler",
+                    "name": "Monica Hill",
                     "upload-status": "undefined",
                     "upload-url": "",
                     "variant": "original",
@@ -992,12 +999,12 @@ snapshots["test_api_list[FileViewSet] 1"] = {
                     "created-at": "2017-05-21T00:00:00Z",
                     "created-by-group": "admin",
                     "created-by-user": "admin",
-                    "download-url": "http://minio/download-url/dad3a37a-a9d5-0688-b515-7698acfd7aee_Donna Whitney",
+                    "download-url": "http://minio/download-url/dad3a37a-a9d5-0688-b515-7698acfd7aee_Julia Blair",
                     "metainfo": {},
                     "modified-at": "2017-05-21T00:00:00Z",
                     "modified-by-group": "admin",
                     "modified-by-user": "admin",
-                    "name": "Donna Whitney",
+                    "name": "Julia Blair",
                     "upload-status": "undefined",
                     "upload-url": "",
                     "variant": "original",
@@ -1022,6 +1029,7 @@ snapshots["test_api_list[FileViewSet] 1"] = {
                     "created-at": "2017-05-21T00:00:00Z",
                     "created-by-group": "admin",
                     "created-by-user": "admin",
+                    "date": "2012-12-10",
                     "description": {
                         "de": "",
                         "en": """Open else look tree arm responsibility week. Environmental statement bag someone them style.
@@ -1057,6 +1065,7 @@ Public these health team change. Tax final upon stay sing middle suggest.""",
                     "created-at": "2017-05-21T00:00:00Z",
                     "created-by-group": "admin",
                     "created-by-user": "admin",
+                    "date": "1989-06-05",
                     "description": {
                         "de": "",
                         "en": """Serious live by. Run then project find white continue.
@@ -1092,17 +1101,18 @@ Effort partner area media increase meeting. Son success provide beyond. Officer 
                     "created-at": "2017-05-21T00:00:00Z",
                     "created-by-group": "admin",
                     "created-by-user": "admin",
+                    "date": "1992-06-22",
                     "description": {
                         "de": "",
-                        "en": """Truth change ok officer.
-Worry take value eye sell them he. Less power relate fine. Where loss increase firm friend ability sing.""",
+                        "en": """Republican agency season worry take value eye sell. He consumer same season natural think Mr.
+Tree seem within never whose five hold. Though television return main will military.""",
                         "fr": "",
                     },
                     "metainfo": {},
                     "modified-at": "2017-05-21T00:00:00Z",
                     "modified-by-group": "admin",
                     "modified-by-user": "admin",
-                    "title": {"de": "", "en": "Michael Jackson", "fr": ""},
+                    "title": {"de": "", "en": "Teresa Johnson", "fr": ""},
                 },
                 "id": "fb0e22c7-9ac7-5679-e988-1e6ba183b354",
                 "relationships": {
@@ -1263,11 +1273,11 @@ Central meeting anyone remember. There today material minute ago get. Range whos
 
 snapshots["test_api_patch[DocumentViewSet] 1"] = {
     "queries": [
-        'SELECT "alexandria_core_document"."created_at", "alexandria_core_document"."created_by_user", "alexandria_core_document"."created_by_group", "alexandria_core_document"."modified_at", "alexandria_core_document"."modified_by_user", "alexandria_core_document"."modified_by_group", "alexandria_core_document"."metainfo", "alexandria_core_document"."id", "alexandria_core_document"."title", "alexandria_core_document"."description", "alexandria_core_document"."category_id" FROM "alexandria_core_document" WHERE "alexandria_core_document"."id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid LIMIT 21',
+        'SELECT "alexandria_core_document"."created_at", "alexandria_core_document"."created_by_user", "alexandria_core_document"."created_by_group", "alexandria_core_document"."modified_at", "alexandria_core_document"."modified_by_user", "alexandria_core_document"."modified_by_group", "alexandria_core_document"."metainfo", "alexandria_core_document"."id", "alexandria_core_document"."title", "alexandria_core_document"."description", "alexandria_core_document"."category_id", "alexandria_core_document"."date" FROM "alexandria_core_document" WHERE "alexandria_core_document"."id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid LIMIT 21',
         'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."metainfo", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description", "alexandria_core_category"."color", "alexandria_core_category"."parent_id" FROM "alexandria_core_category" WHERE "alexandria_core_category"."slug" = \'note-act-source\' LIMIT 21',
-        'SELECT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."metainfo", "alexandria_core_tag"."slug", "alexandria_core_tag"."name", "alexandria_core_tag"."description", "alexandria_core_tag"."tag_synonym_group_id" FROM "alexandria_core_tag" WHERE "alexandria_core_tag"."slug" = \'program-small\' LIMIT 21',
+        'SELECT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."metainfo", "alexandria_core_tag"."slug", "alexandria_core_tag"."name", "alexandria_core_tag"."description", "alexandria_core_tag"."tag_synonym_group_id" FROM "alexandria_core_tag" WHERE "alexandria_core_tag"."slug" = \'small-father-should\' LIMIT 21',
         """UPDATE "alexandria_core_document" SET "created_at" = \'2017-05-21T00:00:00+00:00\'::timestamptz, "created_by_user" = \'admin\', "created_by_group" = \'admin\', "modified_at" = \'2017-05-21T00:00:00+00:00\'::timestamptz, "modified_by_user" = \'admin\', "modified_by_group" = \'admin\', "metainfo" = \'{}\', "title" = hstore(ARRAY[\'en\',\'de\',\'fr\'], ARRAY[\'Michael Edwards\',\'\',\'\']), "description" = hstore(ARRAY[\'en\',\'de\',\'fr\'], ARRAY[\'Open else look tree arm responsibility week. Environmental statement bag someone them style.
-Public these health team change. Tax final upon stay sing middle suggest.\',\'\',\'\']), "category_id" = \'note-act-source\' WHERE "alexandria_core_document"."id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid""",
+Public these health team change. Tax final upon stay sing middle suggest.\',\'\',\'\']), "category_id" = \'note-act-source\', "date" = \'2012-12-10\'::date WHERE "alexandria_core_document"."id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid""",
         'SELECT "alexandria_core_tag"."slug" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."slug" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid',
         'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."upload_status" FROM "alexandria_core_file" WHERE "alexandria_core_file"."document_id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid ORDER BY "alexandria_core_file"."created_at" DESC',
         'SELECT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."metainfo", "alexandria_core_tag"."slug", "alexandria_core_tag"."name", "alexandria_core_tag"."description", "alexandria_core_tag"."tag_synonym_group_id" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."slug" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid',
@@ -1275,7 +1285,7 @@ Public these health team change. Tax final upon stay sing middle suggest.\',\'\'
     ],
     "query_count": 8,
     "request": {
-        "CONTENT_LENGTH": "735",
+        "CONTENT_LENGTH": "761",
         "CONTENT_TYPE": "application/vnd.api+json",
         "PATH_INFO": "/api/v1/documents/9dd4e461-268c-8034-f5c8-564e155c67a6",
         "QUERY_STRING": "",
@@ -1288,6 +1298,7 @@ Public these health team change. Tax final upon stay sing middle suggest.\',\'\'
                 "created-at": "2017-05-21T00:00:00Z",
                 "created-by-group": "admin",
                 "created-by-user": "admin",
+                "date": "2012-12-10",
                 "description": {
                     "de": "",
                     "en": """Open else look tree arm responsibility week. Environmental statement bag someone them style.
@@ -1305,7 +1316,7 @@ Public these health team change. Tax final upon stay sing middle suggest.""",
                 "category": {"data": {"id": "note-act-source", "type": "categories"}},
                 "files": {"data": [], "meta": {"count": 0}},
                 "tags": {
-                    "data": [{"id": "program-small", "type": "tags"}],
+                    "data": [{"id": "small-father-should", "type": "tags"}],
                     "meta": {"count": 1},
                 },
             },
@@ -1318,6 +1329,7 @@ Public these health team change. Tax final upon stay sing middle suggest.""",
                 "created-at": "2017-05-21T00:00:00Z",
                 "created-by-group": "admin",
                 "created-by-user": "admin",
+                "date": "2012-12-10",
                 "description": {
                     "de": "",
                     "en": """Open else look tree arm responsibility week. Environmental statement bag someone them style.
@@ -1335,7 +1347,7 @@ Public these health team change. Tax final upon stay sing middle suggest.""",
                 "category": {"data": {"id": "note-act-source", "type": "categories"}},
                 "files": {"data": [], "meta": {"count": 0}},
                 "tags": {
-                    "data": [{"id": "program-small", "type": "tags"}],
+                    "data": [{"id": "small-father-should", "type": "tags"}],
                     "meta": {"count": 1},
                 },
             },
@@ -1349,7 +1361,7 @@ snapshots["test_api_patch[FileViewSet] 1"] = {
     "queries": [],
     "query_count": 0,
     "request": {
-        "CONTENT_LENGTH": "631",
+        "CONTENT_LENGTH": "629",
         "CONTENT_TYPE": "application/vnd.api+json",
         "PATH_INFO": "/api/v1/files/9336ebf2-5087-d91c-818e-e6e9ec29f8c1",
         "QUERY_STRING": "",
@@ -1362,12 +1374,12 @@ snapshots["test_api_patch[FileViewSet] 1"] = {
                 "created-at": "2017-05-21T00:00:00Z",
                 "created-by-group": "admin",
                 "created-by-user": "admin",
-                "download-url": "http://minio/download-url/9336ebf2-5087-d91c-818e-e6e9ec29f8c1_Diane Butler",
+                "download-url": "http://minio/download-url/9336ebf2-5087-d91c-818e-e6e9ec29f8c1_Monica Hill",
                 "metainfo": {},
                 "modified-at": "2017-05-21T00:00:00Z",
                 "modified-by-group": "admin",
                 "modified-by-user": "admin",
-                "name": "Diane Butler",
+                "name": "Monica Hill",
                 "upload-status": "undefined",
                 "upload-url": "",
                 "variant": "original",

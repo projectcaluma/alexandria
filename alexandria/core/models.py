@@ -167,6 +167,7 @@ class Document(UUIDModel):
         related_name="documents",
     )
     tags = models.ManyToManyField(Tag, blank=True, related_name="documents")
+    date = models.DateField(blank=True, null=True)
 
 
 class File(UUIDModel):
