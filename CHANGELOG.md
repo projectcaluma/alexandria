@@ -1,3 +1,7 @@
+# v2.4.0
+### Feature
+* **document:** Add manual document date field ([`4a4fcbe`](https://github.com/projectcaluma/alexandria/commit/4a4fcbe5cfb09a5665f378ab4e7d7ad203655dad))
+
 # v2.3.0
 ### Feature
 * Return documents from child categories ([`b992a3f`](https://github.com/projectcaluma/alexandria/commit/b992a3f1cbc045e6a4bb8eb64c822b0cb3a462e9))
