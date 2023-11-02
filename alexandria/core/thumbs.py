@@ -3,6 +3,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from uuid import uuid4
 
+import requests
 from django.conf import settings
 from preview_generator.exception import UnsupportedMimeType
 from preview_generator.manager import PreviewManager
@@ -44,11 +45,14 @@ def create_thumbnail(file):
         variant=File.THUMBNAIL,
         original=file,
     )
-    result = client.put_object(path_to_preview_image, thumb_file.object_name)
 
-    thumb_file.upload_status = File.COMPLETED if result.etag else File.ERROR
+    upload_url = client.upload_url(thumb_file.object_name)
+    with Path(path_to_preview_image).open("br") as f:
+        result = requests.put(upload_url, data=f.read())
+
+    thumb_file.upload_status = File.COMPLETED if result.ok else File.ERROR
     thumb_file.save()
 
     temp_dir.cleanup()
 
-    return result.etag
+    return result.ok
