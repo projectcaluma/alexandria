@@ -1,7 +1,6 @@
 from datetime import timedelta
 from functools import wraps
 from logging import getLogger
-from pathlib import Path
 
 import minio
 from django.conf import settings
@@ -20,7 +19,7 @@ def _retry_on_missing_bucket(fn):
     def wrapper(self, *args, **kwargs):
         try:
             return fn(self, *args, **kwargs)
-        except minio.error.S3Error as exc:
+        except minio.error.S3Error as exc:  # pragma: todo cover
             if (
                 exc.code == "NoSuchBucket"
                 and settings.ALEXANDRIA_MINIO_STORAGE_AUTO_CREATE_MEDIA_BUCKET
@@ -30,7 +29,7 @@ def _retry_on_missing_bucket(fn):
                 )
                 self.client.make_bucket(self.bucket)
                 return fn(self, *args, **kwargs)
-            raise  # pragma: todo cover
+            raise
 
     return wrapper
 
@@ -70,16 +69,6 @@ class Minio:
     def get_object(self, object_name):
         data = self.client.get_object(self.bucket, object_name)
         return data
-
-    @_retry_on_missing_bucket
-    def put_object(self, filepath, object_name):
-        filepath = Path(filepath)  # make sure we got a Path object
-
-        with filepath.open("rb") as file_data:
-            file_stat = filepath.stat()
-            return self.client.put_object(
-                self.bucket, object_name, file_data, file_stat.st_size
-            )
 
 
 if settings.ALEXANDRIA_MEDIA_STORAGE_SERVICE == "minio":

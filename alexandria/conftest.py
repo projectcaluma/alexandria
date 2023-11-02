@@ -17,6 +17,7 @@ from urllib3 import HTTPResponse
 
 from alexandria.core.models import VisibilityMixin
 from alexandria.core.serializers import BaseSerializer
+from alexandria.core.storage_clients import Minio as MinioStorageClient
 from alexandria.core.tests import file_data
 from alexandria.oidc_auth.models import OIDCUser
 
@@ -138,3 +139,10 @@ def minio_mock(mocker, settings):
     Minio.stat_object.return_value = stat_response
     Minio.bucket_exists.return_value = True
     return Minio
+
+
+@pytest.fixture
+def mock_s3storage(minio_mock, requests_mock):
+    minio = MinioStorageClient()
+    mock = requests_mock.put(minio.upload_url("the-object"), status_code=201)
+    return mock

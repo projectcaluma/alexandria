@@ -103,6 +103,7 @@ def test_file_validation(
 def test_hook_view(
     admin_client,
     minio_mock,
+    mock_s3storage,
     document_factory,
     settings,
     enabled,
@@ -223,6 +224,7 @@ def test_hook_view(
 )
 def test_manual_thumbnail(
     minio_mock,
+    mock_s3storage,
     settings,
     admin_client,
     file_factory,
