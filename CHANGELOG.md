@@ -1,3 +1,7 @@
+# v2.5.0
+### Feature
+* **thumbnails:** Upload thumbnails using upload url ([`aa03128`](https://github.com/projectcaluma/alexandria/commit/aa031285ae6e64adc6f5de6d14f9e8b850ab9d7b))
+
 # v2.4.0
 ### Feature
 * **document:** Add manual document date field ([`4a4fcbe`](https://github.com/projectcaluma/alexandria/commit/4a4fcbe5cfb09a5665f378ab4e7d7ad203655dad))
