@@ -1,3 +1,7 @@
+# v2.5.1
+### Fix
+* **thumbs**: set content-type ([`bb77127`](https://github.com/projectcaluma/alexandria/commit/bb771277c0e72543a54100062be92d46e23448e9))
+
 # v2.5.0
 ### Feature
 * **thumbnails:** Upload thumbnails using upload url ([`aa03128`](https://github.com/projectcaluma/alexandria/commit/aa031285ae6e64adc6f5de6d14f9e8b850ab9d7b))
