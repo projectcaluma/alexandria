@@ -48,7 +48,9 @@ def create_thumbnail(file):
 
     upload_url = client.upload_url(thumb_file.object_name)
     with Path(path_to_preview_image).open("br") as f:
-        result = requests.put(upload_url, data=f.read())
+        result = requests.put(
+            upload_url, headers={"Content-Type": "image/jpeg"}, data=f.read()
+        )
 
     thumb_file.upload_status = File.COMPLETED if result.ok else File.ERROR
     thumb_file.save()
