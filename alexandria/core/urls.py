@@ -9,6 +9,7 @@ r.register(r"categories", views.CategoryViewSet)
 r.register(r"documents", views.DocumentViewSet)
 r.register(r"files", views.FileViewSet)
 r.register(r"tags", views.TagViewSet)
+r.register(r"marks", views.MarkViewSet)
 r.register(r"tagsynonymgroups", views.TagSynonymGroupViewSet)
 
 urlpatterns = r.urls

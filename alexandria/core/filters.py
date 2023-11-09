@@ -147,6 +147,7 @@ class DocumentFilterSet(FilterSet):
     metainfo = JSONValueFilter(field_name="metainfo")
     active_group = ActiveGroupFilter()
     tags = TagsFilter()
+    marks = CharInFilter()
     category = CategoriesFilter()
     categories = CategoriesFilter()
     # exclude_children is applied in CategoriesFilter, this is needed for DjangoFilterBackend
@@ -177,6 +178,24 @@ class TagFilterSet(FilterSet):
 
     class Meta:
         model = models.Tag
+        fields = [
+            "metainfo",
+            "active_group",
+            "with_documents_in_category",
+            "with_documents_metainfo",
+            "name",
+        ]
+
+
+class MarkFilterSet(FilterSet):
+    metainfo = JSONValueFilter(field_name="metainfo")
+    active_group = ActiveGroupFilter()
+    with_documents_in_category = CharFilter(field_name="documents__category__slug")
+    with_documents_metainfo = JSONValueFilter(field_name="documents__metainfo")
+    name = CharFilter(lookup_expr="istartswith")
+
+    class Meta:
+        model = models.Mark
         fields = [
             "metainfo",
             "active_group",

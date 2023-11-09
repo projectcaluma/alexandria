@@ -152,6 +152,13 @@ class Tag(SlugModel):
     )
 
 
+class Mark(SlugModel):
+    name = LocalizedTextField(_("Mark name"), blank=False, null=False, max_length=100)
+    description = LocalizedTextField(
+        _("Mark description"), null=True, blank=True, required=False
+    )
+
+
 class Document(UUIDModel):
     title = LocalizedCharField(
         _("document title"), blank=True, null=True, required=False
@@ -167,6 +174,7 @@ class Document(UUIDModel):
         related_name="documents",
     )
     tags = models.ManyToManyField(Tag, blank=True, related_name="documents")
+    marks = models.ManyToManyField(Mark, blank=True, related_name="documents")
     date = models.DateField(blank=True, null=True)
 
 

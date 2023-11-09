@@ -29,7 +29,13 @@ from rest_framework_json_api.views import (
 )
 
 from . import models, serializers
-from .filters import CategoryFilterSet, DocumentFilterSet, FileFilterSet, TagFilterSet
+from .filters import (
+    CategoryFilterSet,
+    DocumentFilterSet,
+    FileFilterSet,
+    MarkFilterSet,
+    TagFilterSet,
+)
 from .storage_clients import client
 from .utils import create_thumbnail, get_checksum, get_file
 
@@ -75,7 +81,14 @@ class TagViewSet(PermissionViewMixin, VisibilityViewMixin, ModelViewSet):
     serializer_class = serializers.TagSerializer
     queryset = models.Tag.objects.all().distinct()
     filterset_class = TagFilterSet
+    search_fields = ("title", "description")
     select_for_includes = {"tag_synonym_group": ["tag_synonym_group"]}
+
+
+class MarkViewSet(PermissionViewMixin, VisibilityViewMixin, ModelViewSet):
+    serializer_class = serializers.MarkSerializer
+    queryset = models.Mark.objects.all().distinct()
+    filterset_class = MarkFilterSet
 
 
 class DocumentViewSet(PermissionViewMixin, VisibilityViewMixin, ModelViewSet):
