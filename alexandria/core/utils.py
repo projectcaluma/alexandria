@@ -1,3 +1,4 @@
+import hashlib
 import os
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -13,7 +14,7 @@ from alexandria.core.models import File
 from .storage_clients import client
 
 
-def create_thumbnail(file):
+def get_file(file):
     # TODO: this should be run by a task queue
     data = client.get_object(file.object_name)
 
@@ -24,6 +25,10 @@ def create_thumbnail(file):
         for d in data.stream(32 * 1024):
             f.write(d)
 
+    return temp_dir, temp_filepath
+
+
+def create_thumbnail(file, temp_dir, temp_filepath):
     manager = PreviewManager(str(temp_dir.name))
 
     preview_kwargs = {}
@@ -55,6 +60,11 @@ def create_thumbnail(file):
     thumb_file.upload_status = File.COMPLETED if result.ok else File.ERROR
     thumb_file.save()
 
-    temp_dir.cleanup()
-
     return result.ok
+
+
+def get_checksum(temp_filepath):
+    with open(temp_filepath, "rb") as f:
+        checksum = hashlib.sha256(f.read()).hexdigest()
+
+        return f"sha256:{checksum}"

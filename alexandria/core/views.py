@@ -31,7 +31,7 @@ from rest_framework_json_api.views import (
 from . import models, serializers
 from .filters import CategoryFilterSet, DocumentFilterSet, FileFilterSet, TagFilterSet
 from .storage_clients import client
-from .thumbs import create_thumbnail
+from .utils import create_thumbnail, get_checksum, get_file
 
 
 class PermissionViewMixin:
@@ -185,7 +185,8 @@ class FileViewSet(
                 _("File already has thumbnail, cannot generate multiple thumbnails.")
             )
 
-        etag = create_thumbnail(file)
+        temp_dir, temp_filepath = get_file(file)
+        etag = create_thumbnail(file, temp_dir, temp_filepath)
 
         if not etag:
             return Response(
@@ -199,8 +200,11 @@ class FileViewSet(
 
 
 @require_http_methods(["HEAD", "POST"])
-def hook_view(request):
-    if not settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION:
+def hook_view(request):  # noqa: C901
+    if (
+        not settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION
+        and not settings.ALEXANDRIA_ENABLE_CHECKSUM
+    ):
         return HttpResponse(status=HTTP_403_FORBIDDEN)
 
     if request.method == "HEAD":
@@ -226,13 +230,25 @@ def hook_view(request):
             response_statuses.append(HTTP_200_OK)
             continue
 
+        temp_dir, temp_filepath = get_file(file)
+
         file.upload_status = models.File.COMPLETED
+        update_fields = ["upload_status"]
+
+        if settings.ALEXANDRIA_ENABLE_CHECKSUM:
+            file.checksum = get_checksum(temp_filepath)
+            update_fields.append("checksum")
+
         file.save()
 
-        created = create_thumbnail(file)
-        if created is False:
-            response_statuses.append(HTTP_200_OK)
-            continue
+        if settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION:
+            created = create_thumbnail(file, temp_dir, temp_filepath)
+
+            if created is False:
+                response_statuses.append(HTTP_200_OK)
+                continue
+
+        temp_dir.cleanup()
 
         response_statuses.append(HTTP_201_CREATED)
 
