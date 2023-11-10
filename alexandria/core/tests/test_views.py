@@ -161,6 +161,7 @@ def test_hook_view(
         ],
     }
 
+    settings.ALEXANDRIA_ENABLE_CHECKSUM = False
     settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION = enabled
 
     if status_code == HTTP_201_CREATED:
@@ -233,6 +234,7 @@ def test_manual_thumbnail(
     file_name,
     status_code,
 ):
+    settings.ALEXANDRIA_ENABLE_CHECKSUM = False
     settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION = enabled
 
     file = file_factory(variant=variant, name=file_name)
@@ -416,3 +418,83 @@ def test_document_delete_some_tags(admin_client, tag_factory, document_factory):
     assert set(Tag.objects.all().values_list("slug", flat=True)) == set(
         [tag_1.slug, tag_2.slug, tag_3.slug]
     )
+
+
+@pytest.mark.parametrize(
+    "enabled,status_code", [(True, HTTP_201_CREATED), (False, HTTP_403_FORBIDDEN)]
+)
+def test_checksum(
+    admin_client,
+    minio_mock,
+    mock_s3storage,
+    document_factory,
+    settings,
+    enabled,
+    status_code,
+):
+    data = {
+        "EventName": "s3:ObjectCreated:Put",
+        "Key": "alexandria-media/218b2504-1736-476e-9975-dc5215ef4f01_test.png",
+        "Records": [
+            {
+                "eventVersion": "2.0",
+                "eventSource": "minio:s3",
+                "awsRegion": "",
+                "eventTime": "2020-07-17T06:38:23.221Z",
+                "eventName": "s3:ObjectCreated:Put",
+                "userIdentity": {"principalId": "minio"},
+                "requestParameters": {
+                    "accessKey": "minio",
+                    "region": "",
+                    "sourceIPAddress": "172.20.0.1",
+                },
+                "responseElements": {
+                    "x-amz-request-id": "162276DB8350E531",
+                    "x-minio-deployment-id": "5db7c8da-79cb-4d3a-8d40-189b51ca7aa6",
+                    "x-minio-origin-endpoint": "http://172.20.0.2:9000",
+                },
+                "s3": {
+                    "s3SchemaVersion": "1.0",
+                    "configurationId": "Config",
+                    "bucket": {
+                        "name": "alexandria-media",
+                        "ownerIdentity": {"principalId": "minio"},
+                        "arn": "arn:aws:s3:::alexandria-media",
+                    },
+                    "object": {
+                        "key": "218b2504-1736-476e-9975-dc5215ef4f01_test.png",
+                        "size": 299758,
+                        "eTag": "af1421c17294eed533ec99eb82b468fb",
+                        "contentType": "application/pdf",
+                        "userMetadata": {"content-variant": "application/pdf"},
+                        "versionId": "1",
+                        "sequencer": "162276DB83A9F895",
+                    },
+                },
+                "source": {
+                    "host": "172.20.0.1",
+                    "port": "",
+                    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) QtWebEngine/5.15.0 Chrome/80.0.3987.163 Safari/537.36",
+                },
+            }
+        ],
+    }
+
+    settings.ALEXANDRIA_ENABLE_CHECKSUM = enabled
+    settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION = False
+
+    document = document_factory()
+    file = File.objects.create(
+        document=document, name="test.png", pk="218b2504-1736-476e-9975-dc5215ef4f01"
+    )
+
+    resp = admin_client.post(reverse("hook"), data=data)
+    assert resp.status_code == status_code
+
+    if status_code == HTTP_201_CREATED:
+        file.refresh_from_db()
+
+        assert (
+            file.checksum
+            == "sha256:778caf7d8d81a7ff8041003ef01afe00a85750d15086a3cb267fd8d23d8dd285"
+        )

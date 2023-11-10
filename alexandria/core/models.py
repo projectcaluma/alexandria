@@ -195,6 +195,7 @@ class File(UUIDModel):
     document = models.ForeignKey(
         Document, on_delete=models.CASCADE, related_name="files"
     )
+    checksum = models.CharField(_("checksum"), max_length=255, null=True, blank=True)
 
     UNDEFINED = "undefined"
     COMPLETED = "completed"

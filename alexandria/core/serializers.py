@@ -201,6 +201,7 @@ class FileSerializer(BaseSerializer):
             "download_url",
             "upload_url",
             "upload_status",
+            "checksum",
         )
 
 
