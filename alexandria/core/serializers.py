@@ -121,6 +121,14 @@ class CategorySerializer(SlugModelSerializer):
         )
 
 
+class TagSynonymGroupSerializer(BaseSerializer):
+    tags = serializers.ResourceRelatedField(required=False, read_only=True, many=True)
+
+    class Meta:
+        model = models.TagSynonymGroup
+        fields = BaseSerializer.Meta.fields + ("tags",)
+
+
 class TagSerializer(SlugModelSerializer):
     included_serializers = {
         "tag_synonym_group": "alexandria.core.serializers.TagSynonymGroupSerializer"
@@ -136,12 +144,14 @@ class TagSerializer(SlugModelSerializer):
         slug_source_field = "name"
 
 
-class TagSynonymGroupSerializer(BaseSerializer):
-    tags = serializers.ResourceRelatedField(required=False, read_only=True, many=True)
-
+class MarkSerializer(SlugModelSerializer):
     class Meta:
-        model = models.TagSynonymGroup
-        fields = BaseSerializer.Meta.fields + ("tags",)
+        model = models.Mark
+        fields = SlugModelSerializer.Meta.fields + (
+            "name",
+            "description",
+        )
+        slug_source_field = "name"
 
 
 class FileSerializer(BaseSerializer):
@@ -212,6 +222,7 @@ class DocumentSerializer(BaseSerializer):
     included_serializers = {
         "category": CategorySerializer,
         "tags": TagSerializer,
+        "marks": MarkSerializer,
         "files": FileSerializer,
     }
 
@@ -221,7 +232,8 @@ class DocumentSerializer(BaseSerializer):
             "files",
             "title",
             "description",
+            "date",
             "category",
             "tags",
-            "date",
+            "marks",
         )

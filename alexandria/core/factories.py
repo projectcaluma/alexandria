@@ -25,15 +25,6 @@ class CategoryFactory(BaseFactory):
         model = models.Category
 
 
-class TagFactory(BaseFactory):
-    slug = Faker("slug")
-    name = Faker("name")
-    description = Faker("text")
-
-    class Meta:
-        model = models.Tag
-
-
 class TagSynonymGroupFactory(BaseFactory):
     class Meta:
         model = models.TagSynonymGroup
@@ -48,6 +39,24 @@ class TagSynonymGroupFactory(BaseFactory):
             # A list of tags were passed in, use them
             for tag in extracted:
                 self.tags.add(tag)
+
+
+class TagFactory(BaseFactory):
+    slug = Faker("slug")
+    name = Faker("name")
+    description = Faker("text")
+
+    class Meta:
+        model = models.Tag
+
+
+class MarkFactory(BaseFactory):
+    slug = Faker("slug")
+    name = Faker("name")
+    description = Faker("text")
+
+    class Meta:
+        model = models.Mark
 
 
 class DocumentFactory(BaseFactory):
@@ -70,6 +79,15 @@ class DocumentFactory(BaseFactory):
             for tag in extracted:
                 self.tags.add(tag)
 
+    @post_generation
+    def marks(self, create, extracted, **kwargs):  # pragma: todo cover
+        if not create:
+            return
+
+        if extracted:
+            for mark in extracted:
+                self.marks.add(mark)
+
 
 class FileFactory(BaseFactory):
     name = Faker("name")
@@ -85,3 +103,11 @@ class DocumentTagsFactory(DjangoModelFactory):
 
     class Meta:
         model = models.Document.tags.through
+
+
+class DocumentMarksFactory(DjangoModelFactory):
+    document = SubFactory(DocumentFactory)
+    mark = SubFactory(MarkFactory)
+
+    class Meta:
+        model = models.Document.marks.through
