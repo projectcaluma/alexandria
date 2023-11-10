@@ -44,8 +44,11 @@ make load_example_data
 
 ### Configuration
 
-Document Merge Service is a [12factor app](https://12factor.net/) which means that configuration is stored in environment variables.
+Alexandria is a [12factor app](https://12factor.net/) which means that configuration is stored in environment variables.
 Different environment variable types are explained at [django-environ](https://github.com/joke2k/django-environ#supported-types).
+
+Additional authorization and validation of the models is handled by [DGAP](https://github.com/adfinis/django-generic-api-permissions/?tab=readme-ov-file#usage---for-people-deploying-a-dgap-equipped-app).
+
 
 #### Common
 
@@ -68,10 +71,10 @@ A list of configuration options which you need
   - `ALEXANDRIA_CREATED_BY_USER_PROPERTY`: Overwrite the default user property which is used for `..._by_user` (default: username)
   - `ALEXANDRIA_CREATED_BY_GROUP_PROPERTY`: Overwrite the default group property which is used for `..._by_group` (default: group)
 - Authorization configurations
-  - `ALEXANDRIA_VISIBILITY_CLASSES`: Comma-separated list of classes that define visibility for all models
-  - `ALEXANDRIA_PERMISSION_CLASSES`: Comma-separated list of classes that define permissions for all models
+  - `ALEXANDRIA_VISIBILITY_CLASSES`: Comma-separated list of [DGAP](https://github.com/adfinis/django-generic-api-permissions/?tab=readme-ov-file#visibilities) classes that define visibility for all models
+  - `ALEXANDRIA_PERMISSION_CLASSES`: Comma-separated list of [DGAP](https://github.com/adfinis/django-generic-api-permissions/?tab=readme-ov-file#permissions) classes that define permissions for all models
 - Data validation configuration
-  - `ALEXANDRIA_VALIDATION_CLASSES`: Comma-separated list of classes that define [custom validations](docs/validation.md)
+  - `ALEXANDRIA_VALIDATION_CLASSES`: Comma-separated list of [DGAP](https://github.com/adfinis/django-generic-api-permissions/?tab=readme-ov-file#data-validation) classes that define custom validations
 - Thumbnail configuration (optional)
   - `ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION`: Set to `false` to disable thumbnail generation
     - Check the docker-compose file for an example on how to set up generation with s3 hooks
