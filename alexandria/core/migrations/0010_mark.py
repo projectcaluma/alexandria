@@ -76,11 +76,7 @@ class Migration(migrations.Migration):
             options={
                 "abstract": False,
             },
-            bases=(
-                alexandria.core.models.PermissionMixin,
-                alexandria.core.models.VisibilityMixin,
-                models.Model,
-            ),
+            bases=(models.Model,),
         ),
         migrations.AddField(
             model_name="document",

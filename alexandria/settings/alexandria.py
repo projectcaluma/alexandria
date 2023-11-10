@@ -63,11 +63,12 @@ ALEXANDRIA_CREATED_BY_GROUP_PROPERTY = env.str(
 
 # Extensions
 ALEXANDRIA_VISIBILITY_CLASSES = env.list(
-    "ALEXANDRIA_VISIBILITY_CLASSES", default=(["generic_permissions.visibilities.Any"])
+    "ALEXANDRIA_VISIBILITY_CLASSES",
+    default=default(["generic_permissions.visibilities.Any"], []),
 )
 ALEXANDRIA_PERMISSION_CLASSES = env.list(
     "ALEXANDRIA_PERMISSION_CLASSES",
-    default=(["generic_permissions.permissions.AllowAny"]),
+    default=default(["generic_permissions.permissions.AllowAny"], []),
 )
 ALEXANDRIA_VALIDATION_CLASSES = env.list("ALEXANDRIA_VALIDATION_CLASSES", default=[])
 

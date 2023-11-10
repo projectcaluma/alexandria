@@ -6,7 +6,7 @@ from generic_permissions.visibilities import filter_queryset_for
 from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND
 
 from alexandria.core.models import Document
-from alexandria.oidc_auth.authentication import OIDCUser
+from alexandria.oidc_auth.models import OIDCUser
 
 
 @pytest.mark.parametrize("detail", [True, False])
