@@ -1,3 +1,7 @@
+# v2.6.0
+### Feature
+* **file:** Write checksum of file in hook view ([`0011c81`](https://github.com/projectcaluma/alexandria/commit/0011c81afa499c29fccce7d79b8b3ec48c5bbf56))
+
 # v2.5.1
 ### Fix
 * **thumbs**: set content-type ([`bb77127`](https://github.com/projectcaluma/alexandria/commit/bb771277c0e72543a54100062be92d46e23448e9))
