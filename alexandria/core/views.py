@@ -81,7 +81,7 @@ class TagViewSet(PermissionViewMixin, VisibilityViewMixin, ModelViewSet):
     serializer_class = serializers.TagSerializer
     queryset = models.Tag.objects.all().distinct()
     filterset_class = TagFilterSet
-    search_fields = ("title", "description")
+    search_fields = ("name", "description")
     select_for_includes = {"tag_synonym_group": ["tag_synonym_group"]}
 
 
