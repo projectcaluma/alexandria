@@ -1,3 +1,8 @@
+# 2.7.0
+### Feature
+* **tags:** Add new filters, fix search ([`0962045`](https://github.com/projectcaluma/alexandria/commit/09620453e15ee04bf1eb97b41c689fde831d4a4d))
+* Add mark model ([#382](https://github.com/projectcaluma/alexandria/issues/382)) ([`a9da2fd`](https://github.com/projectcaluma/alexandria/commit/a9da2fdc36d97d3d7d23b5d870c14b1fab0a4d83))
+
 # v2.6.0
 ### Feature
 * **file:** Write checksum of file in hook view ([`0011c81`](https://github.com/projectcaluma/alexandria/commit/0011c81afa499c29fccce7d79b8b3ec48c5bbf56))
