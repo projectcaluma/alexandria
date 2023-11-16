@@ -123,10 +123,11 @@ class CategoriesFilter(Filter):
             "filter[exclude_children]", False
         )
         filters = Q()
+
         for category in value.split(","):
-            filters |= Q(category_id=category)
+            filters |= Q(**{f"{self.field_name}_id": category})
             if not exclude_children:
-                filters |= Q(category__parent__slug=category)
+                filters |= Q(**{f"{self.field_name}__parent__slug": category})
 
         return qs.filter(filters)
 
@@ -149,7 +150,7 @@ class DocumentFilterSet(FilterSet):
     tags = TagsFilter()
     marks = CharInFilter()
     category = CategoriesFilter()
-    categories = CategoriesFilter()
+    categories = CategoriesFilter(field_name="category")
     # exclude_children is applied in CategoriesFilter, this is needed for DjangoFilterBackend
     exclude_children = BooleanFilter(field_name="title", method=lambda qs, __, ___: qs)
 
@@ -172,9 +173,12 @@ class FileFilterSet(FilterSet):
 class TagFilterSet(FilterSet):
     metainfo = JSONValueFilter(field_name="metainfo")
     active_group = ActiveGroupFilter()
-    with_documents_in_category = CharFilter(field_name="documents__category__slug")
+    with_documents_in_category = CategoriesFilter(field_name="documents__category")
     with_documents_metainfo = JSONValueFilter(field_name="documents__metainfo")
     name = CharFilter(lookup_expr="istartswith")
+    name_exact = CharFilter(field_name="name", lookup_expr="exact")
+    # exclude_children is applied in CategoriesFilter, this is needed for DjangoFilterBackend
+    exclude_children = BooleanFilter(field_name="name", method=lambda qs, __, ___: qs)
 
     class Meta:
         model = models.Tag
