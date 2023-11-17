@@ -1,12 +1,10 @@
 import re
 import uuid
 
-from django.core.exceptions import ImproperlyConfigured
 from django.core.validators import RegexValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from localized_fields.fields import LocalizedCharField, LocalizedTextField
-from rest_framework import exceptions
 
 from .storage_clients import client
 
@@ -23,45 +21,7 @@ def make_uuid():
     return uuid.uuid4()
 
 
-class VisibilityMixin:
-    visibility_classes = None
-
-    @classmethod
-    def visibility_queryset_filter(cls, queryset, request, **kwargs):
-        if cls.visibility_classes is None:
-            raise ImproperlyConfigured(
-                "check that app `alexandria.core.apps.DefaultConfig` is part of your `INSTALLED_APPS`."
-            )
-
-        for visibility_class in cls.visibility_classes:
-            queryset = visibility_class().filter_queryset(cls, queryset, request)
-
-        return queryset
-
-
-class PermissionMixin:
-    permission_classes = None
-
-    @classmethod
-    def check_permissions(cls, request, **kwargs):
-        if cls.permission_classes is None:
-            raise ImproperlyConfigured(
-                "check that app `alexandria.core.apps.DefaultConfig` is part of your `INSTALLED_APPS`."
-            )
-
-        for permission_class in cls.permission_classes:
-            if not permission_class().has_permission(cls, request):
-                raise exceptions.PermissionDenied()
-
-    def check_object_permissions(self, request):
-        for permission_class in self.permission_classes:
-            if not permission_class().has_object_permission(
-                self.__class__, request, self
-            ):
-                raise exceptions.PermissionDenied()
-
-
-class BaseModel(PermissionMixin, VisibilityMixin, models.Model):
+class BaseModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     created_by_user = models.CharField(
         _("created by user"), max_length=150, blank=True, null=True

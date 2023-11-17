@@ -100,11 +100,7 @@ class Migration(migrations.Migration):
                 ),
             ],
             options={"abstract": False},
-            bases=(
-                alexandria.core.models.PermissionMixin,
-                alexandria.core.models.VisibilityMixin,
-                models.Model,
-            ),
+            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name="Document",
@@ -192,11 +188,7 @@ class Migration(migrations.Migration):
                 ),
             ],
             options={"abstract": False},
-            bases=(
-                alexandria.core.models.PermissionMixin,
-                alexandria.core.models.VisibilityMixin,
-                models.Model,
-            ),
+            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name="Tag",
@@ -266,11 +258,7 @@ class Migration(migrations.Migration):
                 ),
             ],
             options={"abstract": False},
-            bases=(
-                alexandria.core.models.PermissionMixin,
-                alexandria.core.models.VisibilityMixin,
-                models.Model,
-            ),
+            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name="File",
@@ -357,11 +345,7 @@ class Migration(migrations.Migration):
                 ),
             ],
             options={"ordering": ["-created_at"]},
-            bases=(
-                alexandria.core.models.PermissionMixin,
-                alexandria.core.models.VisibilityMixin,
-                models.Model,
-            ),
+            bases=(models.Model,),
         ),
         migrations.AddField(
             model_name="document",

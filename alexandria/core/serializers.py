@@ -2,28 +2,15 @@ from django.conf import settings
 from django.contrib.auth.models import AnonymousUser
 from django.template.defaultfilters import slugify
 from django.utils import translation
+from generic_permissions.validation import ValidatorMixin
 from rest_framework.exceptions import ValidationError
 from rest_framework_json_api import serializers
 
 from . import models
 
 
-class BaseSerializer(serializers.ModelSerializer):
+class BaseSerializer(ValidatorMixin, serializers.ModelSerializer):
     created_at = serializers.DateTimeField(read_only=True)
-
-    validation_classes = []
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        self._custom_validators = []
-
-        validators = [cls(self) for cls in self.validation_classes]
-        for validator in validators:
-            for method_name in [m for m in dir(validator) if not m.startswith("_")]:
-                method = getattr(validator, method_name)
-                if getattr(method, "_validate_model", None) == self.Meta.model:
-                    self._custom_validators.append(method)
 
     def is_valid(self, *args, **kwargs):
         # Prime data so the validators are called (and default values filled
@@ -35,17 +22,10 @@ class BaseSerializer(serializers.ModelSerializer):
     def validate(self, *args, **kwargs):
         validated_data = super().validate(*args, **kwargs)
 
-        for func in self._custom_validators:
-            validated_data = func(validated_data)
-
         user = self.context["request"].user
         username = getattr(user, settings.ALEXANDRIA_CREATED_BY_USER_PROPERTY)
         validated_data["created_by_user"] = username
         validated_data["modified_by_user"] = username
-
-        self.Meta.model.check_permissions(self.context["request"])
-        if self.instance is not None:
-            self.instance.check_object_permissions(self.context["request"])
 
         return validated_data
 
