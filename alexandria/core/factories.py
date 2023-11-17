@@ -42,7 +42,6 @@ class TagSynonymGroupFactory(BaseFactory):
 
 
 class TagFactory(BaseFactory):
-    slug = Faker("slug")
     name = Faker("name")
     description = Faker("text")
 

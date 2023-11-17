@@ -403,8 +403,8 @@ def test_document_delete_some_tags(admin_client, tag_factory, document_factory):
             "relationships": {
                 "tags": {
                     "data": [
-                        {"id": tag_1.slug, "type": "tags"},
-                        {"id": tag_2.slug, "type": "tags"},
+                        {"id": tag_1.pk, "type": "tags"},
+                        {"id": tag_2.pk, "type": "tags"},
                     ]
                 }
             },
@@ -415,8 +415,8 @@ def test_document_delete_some_tags(admin_client, tag_factory, document_factory):
 
     assert response.status_code == HTTP_200_OK
     assert Tag.objects.all().count() == 3
-    assert set(Tag.objects.all().values_list("slug", flat=True)) == set(
-        [tag_1.slug, tag_2.slug, tag_3.slug]
+    assert set(Tag.objects.all().values_list("pk", flat=True)) == set(
+        [tag_1.pk, tag_2.pk, tag_3.pk]
     )
 
 
