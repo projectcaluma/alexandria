@@ -1,23 +1,17 @@
 import importlib
 import inspect
+import shutil
 import sys
-import time
-from io import BytesIO
+from pathlib import Path
 
 import pytest
 from django.apps import apps
 from django.core.cache import cache
 from factory.base import FactoryMetaClass
-from minio import Minio
-from minio.datatypes import Object as MinioStatObject
-from minio.helpers import ObjectWriteResult
 from pytest_factoryboy import register
 from pytest_factoryboy.fixture import Box
 from rest_framework.test import APIClient
-from urllib3 import HTTPResponse
 
-from alexandria.core.storage_clients import Minio as MinioStorageClient
-from alexandria.core.tests import file_data
 from alexandria.oidc_auth.models import OIDCUser
 
 
@@ -33,6 +27,22 @@ def register_module(module):
 
 
 register_module(importlib.import_module(".core.factories", "alexandria"))
+
+
+@pytest.fixture(autouse=True)
+def _default_file_storage_backend(settings):
+    settings.DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
+    settings.ALEXANDRIA_ENABLE_AT_REST_ENCRYPTION = False
+    settings.AWS_STORAGE_ENABLE_SSEC = False
+
+
+@pytest.fixture(autouse=True)
+def _make_clean_media_dir(settings):
+    test_media_root = Path(settings.MEDIA_ROOT) / "test"
+    test_media_root.mkdir(parents=True, exist_ok=True)
+    settings.MEDIA_ROOT = str(test_media_root)
+    pytest.yield_fixture
+    shutil.rmtree(test_media_root)
 
 
 @pytest.fixture
@@ -89,57 +99,3 @@ def reset_config_classes(settings):
     # First, set config to original value
     core_config = apps.get_app_config("generic_permissions")
     core_config.ready()
-
-
-@pytest.fixture
-def minio_mock(mocker, settings):
-    def presigned_get_object_side_effect(bucket, object_name, expires):
-        return f"http://minio/download-url/{object_name}"
-
-    def get_object_side_effect(bucket, object_name):
-        file = object_name.split("_", 1)[1].encode()
-        if object_name.endswith(".unsupported"):
-            file = file_data.unsupported
-        return HTTPResponse(
-            body=BytesIO(file),
-            preload_content=False,
-        )
-
-    stat_response = MinioStatObject(
-        settings.ALEXANDRIA_MINIO_STORAGE_MEDIA_BUCKET_NAME,
-        "some-file.pdf",
-        time.struct_time((2019, 4, 5, 7, 0, 49, 4, 95, 0)),
-        "0c81da684e6aaef48e8f3113e5b8769b",
-        8200,
-        content_type="application/pdf",
-        metadata={"X-Amz-Meta-Testtag": "super_file"},
-    )
-    mocker.patch.object(Minio, "presigned_get_object")
-    mocker.patch.object(Minio, "presigned_put_object")
-    mocker.patch.object(Minio, "stat_object")
-    mocker.patch.object(Minio, "bucket_exists")
-    mocker.patch.object(Minio, "make_bucket")
-    mocker.patch.object(Minio, "remove_object")
-    mocker.patch.object(Minio, "copy_object")
-    mocker.patch.object(Minio, "get_object")
-    mocker.patch.object(Minio, "put_object")
-    Minio.get_object.side_effect = get_object_side_effect
-    Minio.presigned_get_object.side_effect = presigned_get_object_side_effect
-    Minio.put_object.return_value = ObjectWriteResult(
-        bucket_name=settings.ALEXANDRIA_MINIO_STORAGE_MEDIA_BUCKET_NAME,
-        object_name="some-file.pdf",
-        version_id="",
-        etag="af1421c17294eed533ec99eb82b468fb",
-        http_headers="",
-    )
-    Minio.presigned_put_object.return_value = "http://minio/upload-url"
-    Minio.stat_object.return_value = stat_response
-    Minio.bucket_exists.return_value = True
-    return Minio
-
-
-@pytest.fixture
-def mock_s3storage(minio_mock, requests_mock):
-    minio = MinioStorageClient()
-    mock = requests_mock.put(minio.upload_url("the-object"), status_code=201)
-    return mock

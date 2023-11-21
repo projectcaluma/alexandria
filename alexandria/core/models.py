@@ -3,10 +3,15 @@ import uuid
 
 from django.core.validators import RegexValidator
 from django.db import models
+from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
 from localized_fields.fields import LocalizedCharField, LocalizedTextField
 
-from .storage_clients import client
+from alexandria.storages.fields import DynamicStorageFileField
+
+
+def upload_file_content_to(instance, _):
+    return f"{instance.pk}_{instance.name}"
 
 
 def make_uuid():
@@ -153,18 +158,20 @@ class Document(UUIDModel):
 
 
 class File(UUIDModel):
-    ORIGINAL = "original"
-    THUMBNAIL = "thumbnail"
+    class EncryptionStatus(models.TextChoices):
+        NOT_ENCRYPTED = "none", "No at-rest enryption"
+        SSEC_GLOBAL_KEY = "ssec-global", "SSE-C global key encryption (AES256)"
+        # NOTE: per object encryption is not implemented yet
+        SSEC_OBJECT_KEY = "ssec-object", "SSE-C per object encryption (AES256)"
 
-    VARIANT_CHOICES = (
-        ORIGINAL,
-        THUMBNAIL,
-    )
-    VARIANT_CHOICES_TUPLE = (
-        (variant_choice, variant_choice) for variant_choice in VARIANT_CHOICES
-    )
+        __empty__ = "Encryption status not set"
+
+    class Variant(models.TextChoices):
+        ORIGINAL = "original", "original"
+        THUMBNAIL = "thumbnail", "thumbnail"
+
     variant = models.CharField(
-        choices=VARIANT_CHOICES_TUPLE, max_length=23, default=ORIGINAL
+        choices=Variant.choices, max_length=23, default=Variant.ORIGINAL
     )
     original = models.ForeignKey(
         "self",
@@ -178,45 +185,21 @@ class File(UUIDModel):
         Document, on_delete=models.CASCADE, related_name="files"
     )
     checksum = models.CharField(_("checksum"), max_length=255, null=True, blank=True)
-
-    UNDEFINED = "undefined"
-    COMPLETED = "completed"
-    ERROR = "error"
-
-    STATUS_CHOICES = (
-        UNDEFINED,
-        COMPLETED,
-        ERROR,
+    encryption_status = models.CharField(
+        choices=EncryptionStatus.choices,
+        max_length=12,
+        default=None,
+        null=True,
+        blank=True,
     )
-    UPLOAD_STATUS_TUPLE = tuple(
-        [(status_choice, status_choice) for status_choice in STATUS_CHOICES]
-    )
-    upload_status = models.CharField(
-        choices=UPLOAD_STATUS_TUPLE, max_length=32, default=UNDEFINED
-    )
+    content = DynamicStorageFileField(upload_to=upload_file_content_to)
 
     class Meta:
         ordering = ["-created_at"]
 
-    def delete(self, *args, **kwargs):
-        super().delete(*args, **kwargs)
-        client.remove_object(self.object_name)
 
-    @property
-    def object_name(self):
-        return f"{self.pk}_{self.name}"
+@receiver(models.signals.post_delete, sender=File)
+def auto_delete_file_on_delete(sender, instance, **kwargs):
+    """Delete file from filesystem when `File` object is deleted."""
 
-    @property
-    def upload_url(self):
-        return client.upload_url(self.object_name)
-
-    @property
-    def download_url(self):
-        return client.download_url(self.object_name)
-
-    def clone(self):
-        source_name = self.object_name
-        self.pk = None
-        self.save()
-        client.copy_object(source_name, self.object_name)
-        return self
+    instance.content.delete(save=False)

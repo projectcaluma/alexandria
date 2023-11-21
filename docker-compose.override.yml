@@ -5,14 +5,26 @@ services:
       - POSTGRES_PASSWORD=alexandria
     ports:
       - "5432:5432"
+  media-files:
+    image: alpine
+    restart: "no"
+    volumes:
+       - uploads:/media/uploads
+    entrypoint: |
+      /bin/sh -c "chown -R ${UID}:${UID} /media"
   alexandria:
     build:
       context: .
       args:
         INSTALL_DEV_DEPENDENCIES: "true"
     user: "${UID:?Set UID env variable to your user id}"
+    tty: true
+    stdin_open: true
     volumes:
       - ./:/app
+      - uploads:/media
+    depends_on:
+     - media-files
     command:
       [
         "/bin/sh",
@@ -22,17 +34,25 @@ services:
     environment:
       - ENV=dev
       - DEBUG=true
-      - ALEXANDRIA_MINIO_STORAGE_ACCESS_KEY=minio
-      - ALEXANDRIA_MINIO_STORAGE_SECRET_KEY=minio123
+      - DEFAULT_FILE_STORAGE:${DEFAULT_FILE_STORAGE:-alexandria.storages.backends.s3.S3Storage}
+      - AWS_S3_ACCESS_KEY_ID=${AWS_S3_ACCESS_KEY_ID:-minio}
+      - AWS_S3_SECRET_ACCESS_KEY=${AWS_S3_SECRET_ACCESS_KEY:-minio123}
+      - AWS_S3_ENDPOINT_URL=${AWS_S3_ENDPOINT_URL:-http://minio:9000}
+      - AWS_S3_USE_SSL=${AWS_S3_USE_SSL:-false}
+      - AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME:-alexandria-media}
+      - AWS_STORAGE_ENABLE_SSEC=${AWS_STORAGE_ENABLE_SSEC:-false}
       - ALEXANDRIA_DEV_AUTH_BACKEND=true
       - ALEXANDRIA_ALLOW_ANONYMOUS_WRITE=true
+      - ALEXANDRIA_ENABLE_AT_REST_ENCRYPTION=${ALEXANDRIA_ENABLE_AT_REST_ENCRYPTION:-false}
   minio:
     environment:
       - MINIO_ROOT_USER=minio
       - MINIO_ROOT_PASSWORD=minio123
       - MINIO_NOTIFY_WEBHOOK_ENABLE_ALEXANDRIA=on
-      - MINIO_NOTIFY_WEBHOOK_ENDPOINT_ALEXANDRIA=http://alexandria:8000/api/v1/hook
   mc:
     environment:
       - MINIO_ROOT_USER=minio
       - MINIO_ROOT_PASSWORD=minio123
+
+volumes:
+  uploads:

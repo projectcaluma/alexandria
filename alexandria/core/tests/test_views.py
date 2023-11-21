@@ -3,7 +3,10 @@ import uuid
 import zipfile
 
 import pytest
+from django.db.models import Count, Q
 from django.urls import reverse
+from factory.django import django_files
+from PIL import Image
 from rest_framework.status import (
     HTTP_200_OK,
     HTTP_201_CREATED,
@@ -13,8 +16,9 @@ from rest_framework.status import (
 )
 
 from alexandria.core.models import File
+from alexandria.core.tests import file_data
 
-from ..models import Tag
+from ..models import Document, Tag
 from ..views import DocumentViewSet, FileViewSet, TagViewSet
 
 
@@ -44,225 +48,106 @@ def test_anonymous_writing(db, document, client, settings, user, allow_anon, met
 
 
 @pytest.mark.parametrize(
-    "file_variant,original,status_code",
+    "file_variant,enable_thumbnails,existing_thumbnail,file_type,original,status_code",
     [
-        (File.ORIGINAL, False, HTTP_201_CREATED),
-        (File.THUMBNAIL, True, HTTP_201_CREATED),
-        (File.THUMBNAIL, False, HTTP_400_BAD_REQUEST),
-        (File.ORIGINAL, True, HTTP_400_BAD_REQUEST),
-        (None, False, HTTP_400_BAD_REQUEST),
+        (File.Variant.ORIGINAL, True, False, "png", False, HTTP_201_CREATED),
+        # Original cannot also relate to another original
+        (File.Variant.ORIGINAL, True, False, "png", True, HTTP_400_BAD_REQUEST),
+        (File.Variant.THUMBNAIL, True, False, "png", True, HTTP_201_CREATED),
+        # thumbnail requires original
+        (File.Variant.THUMBNAIL, True, True, "png", False, HTTP_400_BAD_REQUEST),
+        (File.Variant.THUMBNAIL, True, True, "png800", True, HTTP_201_CREATED),
+        # Variant is required
+        (None, True, True, "png", False, HTTP_400_BAD_REQUEST),
+        (File.Variant.ORIGINAL, True, True, "unsupported", False, HTTP_400_BAD_REQUEST),
+        (
+            File.Variant.THUMBNAIL,
+            True,
+            False,
+            "unsupported",
+            True,
+            HTTP_400_BAD_REQUEST,
+        ),
     ],
 )
-def test_file_validation(
-    minio_mock,
+def test_file_upload(
     admin_client,
     document_factory,
     file_factory,
     file_variant,
+    existing_thumbnail,
+    enable_thumbnails,
+    file_type,
     original,
     status_code,
+    settings,
 ):
+    settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION = enable_thumbnails
     doc = document_factory()
-
     data = {
-        "data": {
-            "type": "files",
-            "attributes": {"name": "file.pdf"},
-            "relationships": {
-                "document": {"data": {"id": str(doc.pk), "type": "documents"}},
-            },
-        }
+        "name": "file.png",
+        "document": str(doc.pk),
+        "content": io.BytesIO(getattr(file_data, file_type)),
     }
     if file_variant:
-        data["data"]["attributes"]["variant"] = file_variant
+        data["variant"] = file_variant
     if original:
-        file = file_factory(document=doc, name="file2.pdf")
-        data["data"]["relationships"]["original"] = {
-            "data": {"id": str(file.pk), "type": "files"},
-        }
-
+        file_ = file_factory(document=doc, variant=File.Variant.ORIGINAL)
+        data["original"] = str(file_.pk)
+        if existing_thumbnail:
+            thumb = file_factory(
+                document=doc, variant=File.Variant.THUMBNAIL, original=file_
+            )
     url = reverse("file-list")
+    resp = admin_client.post(url, data=data, format="multipart")
 
-    resp = admin_client.post(url, data=data)
     assert resp.status_code == status_code
+    doc.refresh_from_db()
+
+    if status_code < HTTP_400_BAD_REQUEST:
+        assert doc.files.filter(name="file.png", variant=file_variant).exists()
+    # No document should have more than one original or thumbnail
+    assert (
+        not Document.objects.annotate(
+            thumb_cnt=Count(
+                "files", filter=Q(**{"files__variant": File.Variant.THUMBNAIL})
+            )
+        )
+        .filter(thumb_cnt__gt=1)
+        .exists()
+    )
+    # check that no thumbnails are larger than configured aka uploaded thumbnails are
+    # in fact resized:
+    for thumb in File.objects.filter(variant=File.Variant.THUMBNAIL).iterator():
+        width, height = Image.open(thumb.content.file).size
+        assert not any(
+            [
+                width > (settings.ALEXANDRIA_THUMBNAIL_WIDTH or 256),
+                height > (settings.ALEXANDRIA_THUMBNAIL_HEIGHT or 256),
+            ]
+        )
 
 
-@pytest.mark.parametrize(
-    "enabled,method,correct_bucket,supported_mime,is_thumb,status_code",
-    [
-        (True, "head", True, True, False, HTTP_200_OK),
-        (True, "post", True, True, False, HTTP_201_CREATED),
-        (True, "post", True, False, False, HTTP_200_OK),
-        (True, "post", True, True, False, HTTP_400_BAD_REQUEST),
-        (True, "post", False, True, False, HTTP_200_OK),
-        (True, "post", True, True, True, HTTP_200_OK),
-        (False, "post", True, True, False, HTTP_403_FORBIDDEN),
-    ],
-)
-def test_hook_view(
-    admin_client,
-    minio_mock,
-    mock_s3storage,
-    document_factory,
-    settings,
-    enabled,
-    method,
-    correct_bucket,
-    supported_mime,
-    is_thumb,
-    status_code,
-):
-    url = reverse("hook")
+def test_at_rest_encryption(admin_client, settings, document, mocker):
+    mocker.patch("storages.backends.s3.S3Storage.save", return_value="file-name")
+    storage_file = mocker.MagicMock()
+    storage_file.file = django_files.temp.tempfile.SpooledTemporaryFile("rb")
+    mocker.patch(
+        "storages.backends.s3.S3Storage.open",
+        return_value=storage_file,
+    )
+    settings.ALEXANDRIA_ENABLE_AT_REST_ENCRYPTION = True
+    settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION = False
+    settings.ALEXANDRIA_ENCRYPTION_METHOD = File.EncryptionStatus.SSEC_GLOBAL_KEY
+    settings.DEFAULT_FILE_STORAGE = "storages.backends.s3.S3Storage"
     data = {
-        "EventName": "s3:ObjectCreated:Put",
-        "Key": "alexandria-media/218b2504-1736-476e-9975-dc5215ef4f01_test.png",
-        "Records": [
-            {
-                "eventVersion": "2.0",
-                "eventSource": "minio:s3",
-                "awsRegion": "",
-                "eventTime": "2020-07-17T06:38:23.221Z",
-                "eventName": "s3:ObjectCreated:Put",
-                "userIdentity": {"principalId": "minio"},
-                "requestParameters": {
-                    "accessKey": "minio",
-                    "region": "",
-                    "sourceIPAddress": "172.20.0.1",
-                },
-                "responseElements": {
-                    "x-amz-request-id": "162276DB8350E531",
-                    "x-minio-deployment-id": "5db7c8da-79cb-4d3a-8d40-189b51ca7aa6",
-                    "x-minio-origin-endpoint": "http://172.20.0.2:9000",
-                },
-                "s3": {
-                    "s3SchemaVersion": "1.0",
-                    "configurationId": "Config",
-                    "bucket": {
-                        "name": "alexandria-media",
-                        "ownerIdentity": {"principalId": "minio"},
-                        "arn": "arn:aws:s3:::alexandria-media",
-                    },
-                    "object": {
-                        "key": "218b2504-1736-476e-9975-dc5215ef4f01_test.png",
-                        "size": 299758,
-                        "eTag": "af1421c17294eed533ec99eb82b468fb",
-                        "contentType": "application/pdf",
-                        "userMetadata": {"content-variant": "application/pdf"},
-                        "versionId": "1",
-                        "sequencer": "162276DB83A9F895",
-                    },
-                },
-                "source": {
-                    "host": "172.20.0.1",
-                    "port": "",
-                    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) QtWebEngine/5.15.0 Chrome/80.0.3987.163 Safari/537.36",
-                },
-            }
-        ],
+        "name": "file.png",
+        "document": str(document.pk),
+        "content": io.BytesIO(file_data.png),
+        "variant": File.Variant.ORIGINAL,
     }
-
-    settings.ALEXANDRIA_ENABLE_CHECKSUM = False
-    settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION = enabled
-
-    if status_code == HTTP_201_CREATED:
-        doc = document_factory()
-        File.objects.create(
-            document=doc, name="test.png", pk="218b2504-1736-476e-9975-dc5215ef4f01"
-        )
-        assert File.objects.count() == 1
-
-    if not supported_mime:
-        doc = document_factory()
-        File.objects.create(
-            document=doc,
-            name="test.unsupported",
-            pk="218b2504-1736-476e-9975-dc5215ef4f01",
-        )
-        assert File.objects.count() == 1
-        data["Records"][0]["s3"]["object"][
-            "name"
-        ] = "218b2504-1736-476e-9975-dc5215ef4f01_test.unsupported"
-
-    if is_thumb:
-        doc = document_factory()
-        File.objects.create(
-            document=doc,
-            name="test.png",
-            pk="218b2504-1736-476e-9975-dc5215ef4f01",
-            variant=File.THUMBNAIL,
-        )
-        assert File.objects.count() == 1
-
-    if not correct_bucket:
-        data["Records"][0]["s3"]["bucket"]["name"] = "wrong-bucket"
-
-    resp = getattr(admin_client, method)(url, data=data if method == "post" else None)
-    assert resp.status_code == status_code
-
-    if status_code == HTTP_201_CREATED:
-        assert File.objects.count() == 2
-        assert File.objects.filter(variant=File.THUMBNAIL).count() == 1
-        orig = File.objects.get(variant=File.ORIGINAL)
-        thumb = File.objects.get(variant=File.THUMBNAIL)
-        assert thumb.original == orig
-        assert orig.upload_status == File.COMPLETED
-        assert thumb.upload_status == File.COMPLETED
-
-    if is_thumb:
-        assert File.objects.count() == 1
-
-
-@pytest.mark.parametrize(
-    "variant,enabled,existing_thumbnail,file_name,status_code",
-    [
-        (File.ORIGINAL, True, False, "foo.jpg", HTTP_201_CREATED),
-        (File.ORIGINAL, True, False, "foo.unsupported", HTTP_400_BAD_REQUEST),
-        (File.ORIGINAL, False, False, "foo.jpg", HTTP_400_BAD_REQUEST),
-        (File.ORIGINAL, True, True, "foo.jpg", HTTP_400_BAD_REQUEST),
-        (File.THUMBNAIL, True, False, "foo.jpg", HTTP_400_BAD_REQUEST),
-    ],
-)
-def test_manual_thumbnail(
-    minio_mock,
-    mock_s3storage,
-    settings,
-    admin_client,
-    file_factory,
-    variant,
-    enabled,
-    existing_thumbnail,
-    file_name,
-    status_code,
-):
-    settings.ALEXANDRIA_ENABLE_CHECKSUM = False
-    settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION = enabled
-
-    file = file_factory(variant=variant, name=file_name)
-
-    if existing_thumbnail:
-        file_factory(variant=File.THUMBNAIL, original=file)
-
-    data = {
-        "data": {
-            "type": "files",
-            "id": file.pk,
-        }
-    }
-    url = reverse("file-generate-thumbnail", args=[file.pk])
-
-    resp = admin_client.post(url, data)
-    assert resp.status_code == status_code
-
-    if status_code == HTTP_201_CREATED:
-        file.refresh_from_db()
-        assert File.objects.count() == 2
-        assert File.objects.filter(variant=File.THUMBNAIL).count() == 1
-        thumb = File.objects.get(variant=File.THUMBNAIL)
-        assert thumb.original == file
-        assert file.upload_status == File.COMPLETED
-        assert thumb.upload_status == File.COMPLETED
-    else:
-        assert File.objects.count() == 1 + int(existing_thumbnail)
+    response = admin_client.post(reverse("file-list"), data=data, format="multipart")
+    assert response.status_code == HTTP_201_CREATED
 
 
 @pytest.mark.parametrize(
@@ -279,7 +164,7 @@ def test_manual_thumbnail(
 @pytest.mark.parametrize("viewset", [DocumentViewSet, FileViewSet, TagViewSet])
 def test_validate_created_by_group(
     db,
-    minio_mock,
+    settings,
     viewset,
     request,
     update,
@@ -316,6 +201,16 @@ def test_validate_created_by_group(
         # not test it on POST
         return
 
+    if viewset == FileViewSet and not update:
+        del post_data["data"]
+        for key in ["variant", "name", "original"]:
+            post_data[key] = serialized_model[key]
+        if post_data["original"] is None:
+            del post_data["original"]
+
+        post_data["content"] = io.BytesIO(b"datadatatatat")
+        post_data["document"] = serialized_model["document"]["id"]
+
     if update:
         request_meth = admin_client.patch
         url = reverse(f"{model_name}-detail", args=[model.pk])
@@ -326,11 +221,15 @@ def test_validate_created_by_group(
         request_meth = admin_client.post
         url = reverse(f"{model_name}-list")
 
-    response = request_meth(url, post_data)
+    response = (
+        request_meth(url, post_data, format="multipart")
+        if viewset == FileViewSet
+        else request_meth(url, post_data)
+    )
     assert response.status_code == expect_response
 
 
-def test_multi_download(admin_client, minio_mock, file_factory):
+def test_multi_download(admin_client, file_factory):
     file_factory(name="my_file3.png")  # should not be returned
     file1 = file_factory(name="a_file(1)")
     file2 = file_factory(name="a_file")
@@ -356,13 +255,13 @@ def test_multi_download(admin_client, minio_mock, file_factory):
     assert len(zip.filelist) == 4
     filelist = sorted(zip.filelist, key=lambda a: a.filename)
     assert filelist[0].filename == "a_file"
-    assert zip.open("a_file").read() == b"a_file"
+    assert zip.open("a_file").read() == file2.content.file.read()
     assert filelist[1].filename == "a_file(1)"
-    assert zip.open("a_file(1)").read() == b"a_file(1)"
+    assert zip.open("a_file(1)").read() == file1.content.file.read()
     assert filelist[2].filename == "a_file(2)"
-    assert zip.open("a_file(2)").read() == b"a_file"
+    assert zip.open("a_file(2)").read() == file3.content.file.read()
     assert filelist[3].filename == "b_file.png"
-    assert zip.open(file4.name).read() == b"b_file.png"
+    assert zip.open(file4.name).read() == file4.content.file.read()
 
 
 @pytest.mark.parametrize(
@@ -420,81 +319,7 @@ def test_document_delete_some_tags(admin_client, tag_factory, document_factory):
     )
 
 
-@pytest.mark.parametrize(
-    "enabled,status_code", [(True, HTTP_201_CREATED), (False, HTTP_403_FORBIDDEN)]
-)
-def test_checksum(
-    admin_client,
-    minio_mock,
-    mock_s3storage,
-    document_factory,
-    settings,
-    enabled,
-    status_code,
-):
-    data = {
-        "EventName": "s3:ObjectCreated:Put",
-        "Key": "alexandria-media/218b2504-1736-476e-9975-dc5215ef4f01_test.png",
-        "Records": [
-            {
-                "eventVersion": "2.0",
-                "eventSource": "minio:s3",
-                "awsRegion": "",
-                "eventTime": "2020-07-17T06:38:23.221Z",
-                "eventName": "s3:ObjectCreated:Put",
-                "userIdentity": {"principalId": "minio"},
-                "requestParameters": {
-                    "accessKey": "minio",
-                    "region": "",
-                    "sourceIPAddress": "172.20.0.1",
-                },
-                "responseElements": {
-                    "x-amz-request-id": "162276DB8350E531",
-                    "x-minio-deployment-id": "5db7c8da-79cb-4d3a-8d40-189b51ca7aa6",
-                    "x-minio-origin-endpoint": "http://172.20.0.2:9000",
-                },
-                "s3": {
-                    "s3SchemaVersion": "1.0",
-                    "configurationId": "Config",
-                    "bucket": {
-                        "name": "alexandria-media",
-                        "ownerIdentity": {"principalId": "minio"},
-                        "arn": "arn:aws:s3:::alexandria-media",
-                    },
-                    "object": {
-                        "key": "218b2504-1736-476e-9975-dc5215ef4f01_test.png",
-                        "size": 299758,
-                        "eTag": "af1421c17294eed533ec99eb82b468fb",
-                        "contentType": "application/pdf",
-                        "userMetadata": {"content-variant": "application/pdf"},
-                        "versionId": "1",
-                        "sequencer": "162276DB83A9F895",
-                    },
-                },
-                "source": {
-                    "host": "172.20.0.1",
-                    "port": "",
-                    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) QtWebEngine/5.15.0 Chrome/80.0.3987.163 Safari/537.36",
-                },
-            }
-        ],
-    }
-
-    settings.ALEXANDRIA_ENABLE_CHECKSUM = enabled
-    settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION = False
-
-    document = document_factory()
-    file = File.objects.create(
-        document=document, name="test.png", pk="218b2504-1736-476e-9975-dc5215ef4f01"
-    )
-
-    resp = admin_client.post(reverse("hook"), data=data)
-    assert resp.status_code == status_code
-
-    if status_code == HTTP_201_CREATED:
-        file.refresh_from_db()
-
-        assert (
-            file.checksum
-            == "sha256:778caf7d8d81a7ff8041003ef01afe00a85750d15086a3cb267fd8d23d8dd285"
-        )
+def test_download_file(admin_client, file):
+    url = reverse("file-download", args=[file.pk])
+    result = admin_client.get(url)
+    assert result.status_code == HTTP_200_OK

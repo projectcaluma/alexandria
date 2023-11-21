@@ -83,6 +83,10 @@ USE_TZ = True
 
 LOCALIZED_FIELDS_EXPERIMENTAL = True
 
+# Don't clutter workdir with uploaded stuff when developing
+MEDIA_ROOT = env.str("DJANGO_MEDIA_ROOT", default="/media/uploads")
+
+
 REST_FRAMEWORK = {
     "EXCEPTION_HANDLER": "rest_framework_json_api.exceptions.exception_handler",
     "DEFAULT_PAGINATION_CLASS": "rest_framework_json_api.pagination.JsonApiPageNumberPagination",
@@ -114,6 +118,7 @@ REST_FRAMEWORK = {
     "TEST_REQUEST_RENDERER_CLASSES": (
         "rest_framework_json_api.renderers.JSONRenderer",
         "rest_framework.renderers.JSONRenderer",
+        "rest_framework.renderers.MultiPartRenderer",
     ),
     "TEST_REQUEST_DEFAULT_FORMAT": "vnd.api+json",
 }

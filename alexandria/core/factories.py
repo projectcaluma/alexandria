@@ -1,5 +1,8 @@
+import factory
 from factory import Faker, SubFactory, post_generation
 from factory.django import DjangoModelFactory
+
+from alexandria.core.tests import file_data
 
 from . import models
 
@@ -92,6 +95,24 @@ class DocumentFactory(BaseFactory):
 class FileFactory(BaseFactory):
     name = Faker("name")
     document = SubFactory(DocumentFactory)
+    variant = models.File.Variant.ORIGINAL
+    content = factory.Maybe(
+        factory.LazyAttribute(lambda o: o.variant == models.File.Variant.THUMBNAIL),
+        yes_declaration=factory.django.ImageField(
+            filename="thumb_preview.jpg", width=256, height=256, format="JPEG"
+        ),
+        no_declaration=factory.django.FileField(
+            filename="the_file.png", data=file_data.png
+        ),
+    )
+    original = factory.Maybe(
+        factory.LazyAttribute(lambda o: o.variant == models.File.Variant.THUMBNAIL),
+        SubFactory(
+            "alexandria.core.factories.FileFactory",
+            variant=models.File.Variant.ORIGINAL,
+            document=factory.SelfAttribute("..document"),
+        ),
+    )
 
     class Meta:
         model = models.File

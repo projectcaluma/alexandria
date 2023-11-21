@@ -82,6 +82,33 @@ A list of configuration options which you need
   - `ALEXANDRIA_THUMBNAIL_HEIGHT`: Height of generated thumbnails
   - `ALEXANDRIA_ENABLE_CHECKSUM`: Set to `false` to disable file checksums. Checksums are calculated after upload to allow later verification (not implemented in Alexandria)
 
+- Storage configuration
+
+  Storage backends are configured globally. The storable object bears information on the encryption status allowing the ORM appropriate data handling data.
+
+  - `FILE_STORAGE_BACKEND`: Set the backend for file uploads. `django-storages` is available (default: `django.core.files.storage.FileSystemStorage`)
+
+  Encryption:
+  - `ALEXANDRIA_ENABLE_AT_REST_ENCRYPTION`: Set to `true` to enable at-rest encryption of files (does nothing by itself unless `ALEXANDRIA_ENCRYPTRION_METHOD` is set to a supported method)
+  - `ALEXANDRIA_ENCRYPTION_METHOD`: Define encryption method that is applied to uploaded objects. Available values depend on storage backend's capabilities (default: `None`)
+    - available methods
+      - None: no at-rest encryption
+      - `ssec-global`: encrypt all files with the same key (requires: `FILE_STORAGE_BACKEND`: `alexandria.storages.s3.S3Storage)
+
+  Supported backends:
+  - `FileSystemStorage`: files are stored to the `MEDIA_ROOT` directory
+  - `S3Storage`: files are uploaded to the S3 object storage configured accordingly
+
+    required configuations:
+      - `AWS_S3_ACCESS_KEY_ID`: identity
+      - `AWS_S3_SECRET_ACCESS_KEY`: password to authorize identity
+      - `AWS_S3_ENDPOINT_URL`: the url of the service
+      - `AWS_S3_USE_SSL`
+      - `AWS_STORAGE_BUCKET_NAME`: the bucket name of the storage to access objects in path notation (not subdomain)
+      - `AWS_STORAGE_ENABLE_SSEC`: toggle serverside encryption with customer owned key. If enabled the `ALEXANDRIA_ENCRYPTION_METHOD`: `ssec-global` will be employed.
+
+    The development setup features a minio service.
+
 For development, you can also set the following environemnt variables to help you:
 
 - `ALEXANDRIA_DEV_AUTH_BACKEND`: Set this to "true" to enable a fake auth backend that simulates an authenticated user. Requires `DEBUG` to be set to `True` as well.
