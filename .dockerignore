@@ -6,6 +6,7 @@ docker-compose.*
 Dockerfile
 .dockerignore
 .env
+.venv
 .git
 *.pyc
 __pycache__

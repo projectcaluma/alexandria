@@ -47,3 +47,9 @@ load_example_data: ## Load a set of example data
 .PHONY: flush
 flush: ## Flush the database
 	@docker-compose exec alexandria poetry run python ./manage.py flush --no-input
+
+.PHONE: init-dev-env
+init-dev-env: ## Reinstall poetry after build and set premissions right
+	@docker compose run --rm alexandria poetry install
+	@sudo chown -R "${UID}:${GID}" .
+	@if [ ! -L .venv ]; then ln -s .home/.cache/pypoetry/virtualenvs/venv .venv; fi

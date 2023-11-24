@@ -23,6 +23,7 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
+.home/
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -70,3 +71,7 @@ target/
 
 # Editor swap files
 *.swp
+
+
+# IDE and virtualenv sharing
+.home/
