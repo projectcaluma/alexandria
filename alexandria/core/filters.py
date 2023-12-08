@@ -176,7 +176,7 @@ class TagFilterSet(FilterSet):
     with_documents_in_category = CategoriesFilter(field_name="documents__category")
     with_documents_metainfo = JSONValueFilter(field_name="documents__metainfo")
     name = CharFilter(lookup_expr="istartswith")
-    name_exact = CharFilter(field_name="name", lookup_expr="exact")
+    name_exact = CharFilter(field_name="name", lookup_expr="iexact")
     # exclude_children is applied in CategoriesFilter, this is needed for DjangoFilterBackend
     exclude_children = BooleanFilter(field_name="name", method=lambda qs, __, ___: qs)
 
