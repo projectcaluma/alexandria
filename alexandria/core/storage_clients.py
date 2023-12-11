@@ -4,6 +4,7 @@ from logging import getLogger
 
 import minio
 from django.conf import settings
+from minio.commonconfig import CopySource
 
 log = getLogger(__name__)
 
@@ -69,6 +70,11 @@ class Minio:
     def get_object(self, object_name):
         data = self.client.get_object(self.bucket, object_name)
         return data
+
+    def copy_object(self, source_name, target_name):
+        self.client.copy_object(
+            self.bucket, target_name, CopySource(self.bucket, source_name)
+        )
 
 
 if settings.ALEXANDRIA_MEDIA_STORAGE_SERVICE == "minio":

@@ -177,6 +177,20 @@ class Document(UUIDModel):
     marks = models.ManyToManyField(Mark, blank=True, related_name="documents")
     date = models.DateField(blank=True, null=True)
 
+    def clone(self):
+        latest_original = (
+            self.files.filter(variant="original").order_by("-created_at").first()
+        )
+        self.pk = None
+        self.save()
+
+        # no need to clone the thumbnail, it will be auto-created
+        new_original = latest_original.clone()
+        new_original.document = self
+        new_original.save()
+
+        return self
+
 
 class File(UUIDModel):
     ORIGINAL = "original"
@@ -239,3 +253,10 @@ class File(UUIDModel):
     @property
     def download_url(self):
         return client.download_url(self.object_name)
+
+    def clone(self):
+        source_name = self.object_name
+        self.pk = None
+        self.save()
+        client.copy_object(source_name, self.object_name)
+        return self

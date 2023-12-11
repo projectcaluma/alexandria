@@ -28,6 +28,13 @@ bash: ## Shell into the backend
 shell_plus: ## Run shell_plus
 	@docker compose run alexandria poetry run python ./manage.py shell_plus
 
+.PHONY: debug-alexandria
+debug-alexandria: ## start a api container with service ports for debugging
+	@docker compose stop alexandria
+	@echo "Run 'poetry run python manage.py runserver 0:8000' to start the debugging server"
+	@docker compose run --user root --use-aliases --service-ports alexandria bash
+
+
 .PHONY: makemigrations
 makemigrations: ## Make django migrations
 	@docker compose run alexandria poetry run python ./manage.py makemigrations
