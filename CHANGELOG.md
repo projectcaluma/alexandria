@@ -1,3 +1,11 @@
+# 2.8.0
+### Feature
+* **document:** Add a method to clone documents ([`ebefcbd`](https://github.com/projectcaluma/alexandria/commit/ebefcbd0cb9af6ae251d69e5527d1b185c03c280))
+* Use dgap instead of custom visibilities and permissions ([#289](https://github.com/projectcaluma/alexandria/issues/289)) ([`2a92203`](https://github.com/projectcaluma/alexandria/commit/2a92203ed90f1858f6ba5af6c13a22a0014d0ba4))
+
+### Fix
+* **filter:** Change to iexact for name search ([`282ed95`](https://github.com/projectcaluma/alexandria/commit/282ed9500b916f14e23d73f5ec4045a1d945d5ce))
+
 # 2.7.0
 ### Feature
 * **tags:** Add new filters, fix search ([`0962045`](https://github.com/projectcaluma/alexandria/commit/09620453e15ee04bf1eb97b41c689fde831d4a4d))
