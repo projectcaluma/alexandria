@@ -7,6 +7,7 @@ from django.db.models import Count, Q
 from django.urls import reverse
 from factory.django import django_files
 from PIL import Image
+from preview_generator.manager import PreviewManager
 from rest_framework.status import (
     HTTP_200_OK,
     HTTP_201_CREATED,
@@ -47,6 +48,7 @@ def test_anonymous_writing(db, document, client, settings, user, allow_anon, met
     )
 
 
+@pytest.mark.parametrize("enable_checksum", (True, False))
 @pytest.mark.parametrize(
     "file_variant,enable_thumbnails,existing_thumbnail,file_type,original,status_code",
     [
@@ -73,16 +75,19 @@ def test_anonymous_writing(db, document, client, settings, user, allow_anon, met
 def test_file_upload(
     admin_client,
     document_factory,
+    tmp_path,
     file_factory,
     file_variant,
     existing_thumbnail,
     enable_thumbnails,
+    enable_checksum,
     file_type,
     original,
     status_code,
     settings,
 ):
     settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION = enable_thumbnails
+    settings.ALEXANDRIA_ENABLE_CHECKSUM = enable_checksum
     doc = document_factory()
     data = {
         "name": "file.png",
@@ -126,6 +131,30 @@ def test_file_upload(
                 height > (settings.ALEXANDRIA_THUMBNAIL_HEIGHT or 256),
             ]
         )
+
+    if enable_checksum and status_code < HTTP_400_BAD_REQUEST:
+        if file_variant == File.Variant.THUMBNAIL:
+            # the thumbnail checksum will not necessarily be calculated from the
+            # uploaded file but from the rezised version.
+            # To emulate this behaviour we first need to store the uploaded file
+            # because PreviewManager does not accept in-memory byte streams
+            uploaded = tmp_path / f"uploaded.{file_type}"
+            with uploaded.open("wb") as f:
+                f.write(getattr(file_data, file_type))
+            manager = PreviewManager(tmp_path)
+            preview_path = manager.get_jpeg_preview(str(uploaded))
+            with open(preview_path, "rb") as f:
+                checksum = File.make_checksum(f.read())
+                assert (
+                    doc.files.filter(variant=File.Variant.THUMBNAIL).first().checksum
+                    == checksum
+                )
+        elif file_variant == File.Variant.ORIGINAL:
+            assert doc.files.filter(
+                variant=File.Variant.ORIGINAL
+            ).first().checksum == File.make_checksum(getattr(file_data, file_type))
+        else:
+            pass
 
 
 def test_at_rest_encryption(admin_client, settings, document, mocker):

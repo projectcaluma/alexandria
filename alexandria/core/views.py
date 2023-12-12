@@ -167,8 +167,6 @@ class FileViewSet(
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        if settings.ALEXANDRIA_ENABLE_CHECKSUM:
-            serializer.validated_data
         if settings.ALEXANDRIA_ENABLE_AT_REST_ENCRYPTION:
             serializer.validated_data[
                 "encryption_status"

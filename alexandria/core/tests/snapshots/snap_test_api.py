@@ -157,8 +157,8 @@ Public these health team change. Tax final upon stay sing middle suggest.""",
 snapshots["test_api_create[FileViewSet] 1"] = {
     "queries": [
         'SELECT "alexandria_core_document"."created_at", "alexandria_core_document"."created_by_user", "alexandria_core_document"."created_by_group", "alexandria_core_document"."modified_at", "alexandria_core_document"."modified_by_user", "alexandria_core_document"."modified_by_group", "alexandria_core_document"."metainfo", "alexandria_core_document"."id", "alexandria_core_document"."title", "alexandria_core_document"."description", "alexandria_core_document"."category_id", "alexandria_core_document"."date" FROM "alexandria_core_document" WHERE "alexandria_core_document"."id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid LIMIT 21',
-        'INSERT INTO "alexandria_core_file" ("created_at", "created_by_user", "created_by_group", "modified_at", "modified_by_user", "modified_by_group", "metainfo", "id", "variant", "original_id", "name", "document_id", "checksum", "encryption_status", "content") VALUES (\'2017-05-21T00:00:00+00:00\'::timestamptz, \'admin\', \'admin\', \'2017-05-21T00:00:00+00:00\'::timestamptz, \'admin\', \'admin\', \'{}\', \'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad\'::uuid, \'original\', NULL, \'Jason Lopez\', \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid, NULL, NULL, \'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad_Jason_Lopez\')',
-        'INSERT INTO "alexandria_core_file" ("created_at", "created_by_user", "created_by_group", "modified_at", "modified_by_user", "modified_by_group", "metainfo", "id", "variant", "original_id", "name", "document_id", "checksum", "encryption_status", "content") VALUES (\'2017-05-21T00:00:00+00:00\'::timestamptz, NULL, NULL, \'2017-05-21T00:00:00+00:00\'::timestamptz, NULL, NULL, \'{}\', \'ea416ed0-759d-46a8-de58-f63a59077499\'::uuid, \'thumbnail\', \'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad\'::uuid, \'Jason Lopez_preview.jpg\', \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid, NULL, NULL, \'ea416ed0-759d-46a8-de58-f63a59077499_Jason_Lopez_preview.jpg\')',
+        'INSERT INTO "alexandria_core_file" ("created_at", "created_by_user", "created_by_group", "modified_at", "modified_by_user", "modified_by_group", "metainfo", "id", "variant", "original_id", "name", "document_id", "checksum", "encryption_status", "content") VALUES (\'2017-05-21T00:00:00+00:00\'::timestamptz, \'admin\', \'admin\', \'2017-05-21T00:00:00+00:00\'::timestamptz, \'admin\', \'admin\', \'{}\', \'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad\'::uuid, \'original\', NULL, \'Jason Lopez\', \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid, \'sha256:945db0f84bf4ec45cf1c4835cb61848210d64c3867f5a3d78f55ca18e4a98879\', NULL, \'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad_Jason_Lopez\')',
+        'INSERT INTO "alexandria_core_file" ("created_at", "created_by_user", "created_by_group", "modified_at", "modified_by_user", "modified_by_group", "metainfo", "id", "variant", "original_id", "name", "document_id", "checksum", "encryption_status", "content") VALUES (\'2017-05-21T00:00:00+00:00\'::timestamptz, NULL, NULL, \'2017-05-21T00:00:00+00:00\'::timestamptz, NULL, NULL, \'{}\', \'ea416ed0-759d-46a8-de58-f63a59077499\'::uuid, \'thumbnail\', \'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad\'::uuid, \'Jason Lopez_preview.jpg\', \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid, \'sha256:0b5121c3edeb9ac0ac4d2f2cfa34773e43b68017bba0dfc859bdfdeae4392cc2\', NULL, \'ea416ed0-759d-46a8-de58-f63a59077499_Jason_Lopez_preview.jpg\')',
         'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."checksum", "alexandria_core_file"."encryption_status", "alexandria_core_file"."content" FROM "alexandria_core_file" WHERE "alexandria_core_file"."original_id" = \'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad\'::uuid ORDER BY "alexandria_core_file"."created_at" DESC',
     ],
     "query_count": 4,
@@ -179,7 +179,7 @@ snapshots["test_api_create[FileViewSet] 1"] = {
     "response": {
         "data": {
             "attributes": {
-                "checksum": None,
+                "checksum": "sha256:945db0f84bf4ec45cf1c4835cb61848210d64c3867f5a3d78f55ca18e4a98879",
                 "created-at": "2017-05-21T00:00:00Z",
                 "created-by-group": "admin",
                 "created-by-user": "admin",
@@ -527,7 +527,7 @@ snapshots["test_api_detail[FileViewSet] 1"] = {
     "response": {
         "data": {
             "attributes": {
-                "checksum": None,
+                "checksum": "sha256:6e94c5bf30f49e56597aa0cddc0ec3953fe0f9d8cfc71d32b96bcde0372a1bd9",
                 "content": GenericRepr("<_io.BytesIO object at 0x100000000>"),
                 "created-at": "2017-05-21T00:00:00Z",
                 "created-by-group": "admin",
@@ -990,7 +990,7 @@ snapshots["test_api_list[FileViewSet] 1"] = {
         "data": [
             {
                 "attributes": {
-                    "checksum": None,
+                    "checksum": "sha256:6e94c5bf30f49e56597aa0cddc0ec3953fe0f9d8cfc71d32b96bcde0372a1bd9",
                     "created-at": "2017-05-21T00:00:00Z",
                     "created-by-group": "admin",
                     "created-by-user": "admin",
@@ -1016,7 +1016,7 @@ snapshots["test_api_list[FileViewSet] 1"] = {
             },
             {
                 "attributes": {
-                    "checksum": None,
+                    "checksum": "sha256:6e94c5bf30f49e56597aa0cddc0ec3953fe0f9d8cfc71d32b96bcde0372a1bd9",
                     "created-at": "2017-05-21T00:00:00Z",
                     "created-by-group": "admin",
                     "created-by-user": "admin",
@@ -1042,7 +1042,7 @@ snapshots["test_api_list[FileViewSet] 1"] = {
             },
             {
                 "attributes": {
-                    "checksum": None,
+                    "checksum": "sha256:6e94c5bf30f49e56597aa0cddc0ec3953fe0f9d8cfc71d32b96bcde0372a1bd9",
                     "created-at": "2017-05-21T00:00:00Z",
                     "created-by-group": "admin",
                     "created-by-user": "admin",

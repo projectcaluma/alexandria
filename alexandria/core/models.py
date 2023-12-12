@@ -1,6 +1,8 @@
+import hashlib
 import re
 import uuid
 
+from django.conf import settings
 from django.core.validators import RegexValidator
 from django.db import models
 from django.dispatch import receiver
@@ -193,6 +195,20 @@ class File(UUIDModel):
         blank=True,
     )
     content = DynamicStorageFileField(upload_to=upload_file_content_to)
+
+    @staticmethod
+    def make_checksum(bytes_: bytes) -> str:
+        return f"sha256:{hashlib.sha256(bytes_).hexdigest()}"
+
+    def set_checksum(self):
+        self.checksum = self.make_checksum(self.content.file.file.read())
+
+    def save(
+        self, force_insert=False, force_update=False, using=None, update_fields=None
+    ):
+        if settings.ALEXANDRIA_ENABLE_CHECKSUM:
+            self.set_checksum()
+        return super().save(force_insert, force_update, using, update_fields)
 
     class Meta:
         ordering = ["-created_at"]

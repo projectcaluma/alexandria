@@ -1,4 +1,3 @@
-import hashlib
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 
@@ -45,10 +44,3 @@ def create_thumbnail(file_: File):
         )
 
     return thumb_file
-
-
-def get_checksum(temp_filepath):
-    with open(temp_filepath, "rb") as f:
-        checksum = hashlib.sha256(f.read()).hexdigest()
-
-        return f"sha256:{checksum}"
