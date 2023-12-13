@@ -1,9 +1,12 @@
-# 2.8.0
+# 2.9.0
 ### Feature
 * **document:** Add a method to clone documents ([`ebefcbd`](https://github.com/projectcaluma/alexandria/commit/ebefcbd0cb9af6ae251d69e5527d1b185c03c280))
 
 ### Fix
 * **filter:** Change to iexact for name search ([`282ed95`](https://github.com/projectcaluma/alexandria/commit/282ed9500b916f14e23d73f5ec4045a1d945d5ce))
+
+# 2.8.0
+This release accidentially contained a breaking change, please don't use it!
 
 # 2.7.0
 ### Feature
