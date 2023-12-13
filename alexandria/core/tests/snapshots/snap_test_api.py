@@ -7,57 +7,6 @@ from snapshottest import Snapshot
 
 snapshots = Snapshot()
 
-snapshots["test_api_create[CategoryViewSet] 1"] = {
-    "queries": [],
-    "query_count": 0,
-    "request": {
-        "CONTENT_LENGTH": "646",
-        "CONTENT_TYPE": "application/vnd.api+json",
-        "PATH_INFO": "/api/v1/categories",
-        "QUERY_STRING": "",
-        "REQUEST_METHOD": "POST",
-        "SERVER_PORT": "80",
-    },
-    "request_payload": {
-        "data": {
-            "attributes": {
-                "color": "#093f87",
-                "created-at": "2017-05-21T00:00:00Z",
-                "created-by-group": "admin",
-                "created-by-user": "admin",
-                "description": {
-                    "de": "",
-                    "en": """Far bit among again. Station story first. Team suggest traditional boy above.
-Central meeting anyone remember. There today material minute ago get. Range whose scientist draw free property consider.""",
-                    "fr": "",
-                },
-                "metainfo": {},
-                "modified-at": "2017-05-21T00:00:00Z",
-                "modified-by-group": "admin",
-                "modified-by-user": "admin",
-                "name": {"de": "", "en": "Erin Scott", "fr": ""},
-            },
-            "id": "note-act-source",
-            "relationships": {
-                "children": {"data": [], "meta": {"count": 0}},
-                "parent": {"data": None},
-            },
-            "type": "categories",
-        }
-    },
-    "response": {
-        "errors": [
-            {
-                "code": "method_not_allowed",
-                "detail": 'Method "POST" not allowed.',
-                "source": {"pointer": "/data"},
-                "status": "405",
-            }
-        ]
-    },
-    "status": 405,
-}
-
 snapshots["test_api_create[DocumentViewSet] 1"] = {
     "queries": [
         'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."metainfo", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description", "alexandria_core_category"."color", "alexandria_core_category"."parent_id" FROM "alexandria_core_category" WHERE "alexandria_core_category"."slug" = \'note-act-source\' LIMIT 21',
@@ -363,19 +312,6 @@ Argue move appear catch toward help wind. Material minute ago get.""",
     "status": 201,
 }
 
-snapshots["test_api_destroy[CategoryViewSet] 1"] = {
-    "queries": [],
-    "query_count": 0,
-    "request": {
-        "PATH_INFO": "/api/v1/categories/note-act-source",
-        "QUERY_STRING": "",
-        "REQUEST_METHOD": "DELETE",
-        "SERVER_PORT": "80",
-    },
-    "request_payload": None,
-    "status": 405,
-}
-
 snapshots["test_api_destroy[DocumentViewSet] 1"] = {
     "queries": [
         'SELECT "alexandria_core_document"."created_at", "alexandria_core_document"."created_by_user", "alexandria_core_document"."created_by_group", "alexandria_core_document"."modified_at", "alexandria_core_document"."modified_by_user", "alexandria_core_document"."modified_by_group", "alexandria_core_document"."metainfo", "alexandria_core_document"."id", "alexandria_core_document"."title", "alexandria_core_document"."description", "alexandria_core_document"."category_id", "alexandria_core_document"."date" FROM "alexandria_core_document" WHERE "alexandria_core_document"."id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid LIMIT 21',
@@ -396,8 +332,12 @@ snapshots["test_api_destroy[DocumentViewSet] 1"] = {
 }
 
 snapshots["test_api_destroy[FileViewSet] 1"] = {
-    "queries": [],
-    "query_count": 0,
+    "queries": [
+        'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."checksum", "alexandria_core_file"."upload_status" FROM "alexandria_core_file" WHERE "alexandria_core_file"."id" = \'9336ebf2-5087-d91c-818e-e6e9ec29f8c1\'::uuid LIMIT 21',
+        'SELECT "alexandria_core_file"."id" FROM "alexandria_core_file" WHERE "alexandria_core_file"."original_id" IN (\'9336ebf2-5087-d91c-818e-e6e9ec29f8c1\'::uuid) ORDER BY "alexandria_core_file"."created_at" DESC',
+        'DELETE FROM "alexandria_core_file" WHERE "alexandria_core_file"."id" IN (\'9336ebf2-5087-d91c-818e-e6e9ec29f8c1\'::uuid)',
+    ],
+    "query_count": 3,
     "request": {
         "PATH_INFO": "/api/v1/files/9336ebf2-5087-d91c-818e-e6e9ec29f8c1",
         "QUERY_STRING": "",
@@ -405,7 +345,7 @@ snapshots["test_api_destroy[FileViewSet] 1"] = {
         "SERVER_PORT": "80",
     },
     "request_payload": None,
-    "status": 405,
+    "status": 204,
 }
 
 snapshots["test_api_destroy[MarkViewSet] 1"] = {

@@ -188,10 +188,14 @@ def test_api_create(fixture, admin_client, viewset, snapshot, minio_mock):
     data = renderer.render(serializer_data, renderer_context=context)
     fixture.delete()  # avoid constraint issues
 
-    with CaptureQueriesContext(connection) as context:
-        response = admin_client.post(url, data=json.loads(data))
+    if viewset.base_name in ["category"]:
+        with pytest.raises(NotImplementedError):
+            response = admin_client.post(url, data=json.loads(data))
+    else:
+        with CaptureQueriesContext(connection) as context:
+            response = admin_client.post(url, data=json.loads(data))
 
-    assert_response(response, context, snapshot, request_payload=data)
+        assert_response(response, context, snapshot, request_payload=data)
 
 
 @pytest.mark.freeze_time("2017-05-21")
@@ -213,7 +217,11 @@ def test_api_patch(fixture, admin_client, viewset, snapshot, minio_mock):
 def test_api_destroy(fixture, admin_client, snapshot, viewset, minio_mock):
     url = reverse("{0}-detail".format(viewset.base_name), args=[fixture.pk])
 
-    with CaptureQueriesContext(connection) as context:
-        response = admin_client.delete(url)
+    if viewset.base_name in ["category"]:
+        with pytest.raises(NotImplementedError):
+            response = admin_client.delete(url)
+    else:
+        with CaptureQueriesContext(connection) as context:
+            response = admin_client.delete(url)
 
-    assert_response(response, context, snapshot, include_json=False)
+        assert_response(response, context, snapshot, include_json=False)

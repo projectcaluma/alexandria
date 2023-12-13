@@ -13,7 +13,12 @@ from generic_permissions.permissions import PermissionViewMixin
 from generic_permissions.visibilities import VisibilityViewMixin
 from rest_framework.decorators import action
 from rest_framework.exceptions import NotFound, ValidationError
-from rest_framework.mixins import CreateModelMixin, ListModelMixin, RetrieveModelMixin
+from rest_framework.mixins import (
+    CreateModelMixin,
+    DestroyModelMixin,
+    ListModelMixin,
+    RetrieveModelMixin,
+)
 from rest_framework.response import Response
 from rest_framework.status import (
     HTTP_200_OK,
@@ -42,6 +47,7 @@ from .utils import create_thumbnail, get_checksum, get_file
 
 
 class CategoryViewSet(
+    PermissionViewMixin,
     VisibilityViewMixin,
     AutoPrefetchMixin,
     PreloadIncludesMixin,
@@ -55,6 +61,14 @@ class CategoryViewSet(
     filterset_class = CategoryFilterSet
     select_for_includes = {"parent": ["parent"]}
     prefetch_for_includes = {"children": ["children"]}
+
+    def perform_destroy(self, instance):
+        # needed for DGAP
+        raise NotImplementedError(_("Deleting categories over API is not supported."))
+
+    def create(self, request, *args, **kwargs):
+        # needed for DGAP
+        raise NotImplementedError(_("Creating categories over API is not supported."))
 
 
 class TagSynonymGroupViewSet(PermissionViewMixin, VisibilityViewMixin, ModelViewSet):
@@ -93,12 +107,14 @@ class DocumentViewSet(PermissionViewMixin, VisibilityViewMixin, ModelViewSet):
 
 
 class FileViewSet(
+    PermissionViewMixin,
     VisibilityViewMixin,
     AutoPrefetchMixin,
     PreloadIncludesMixin,
     RelatedMixin,
     CreateModelMixin,
     RetrieveModelMixin,
+    DestroyModelMixin,
     ListModelMixin,
     GenericViewSet,
 ):
