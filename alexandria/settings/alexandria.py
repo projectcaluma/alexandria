@@ -90,6 +90,11 @@ ALEXANDRIA_ENABLE_AT_REST_ENCRYPTION = env.str(
 ALEXANDRIA_ENCRYPTION_METHOD = env.str(
     "ALEXANDRIA_ENCRYPTION_METHOD", default="ssec-global"
 )
+# Number of seconds a signed download url expires
+ALEXANDRIA_DOWNLOAD_URL_LIFETIME = env.int(
+    "ALEXANDRIA_DOWNLOAD_URL_LIFETIME", default=300
+)
+
 # S3 / boto3 storage client specific configurations
 # -------------------------------------------------
 #

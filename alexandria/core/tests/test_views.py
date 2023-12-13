@@ -5,6 +5,7 @@ import zipfile
 import pytest
 from django.db.models import Count, Q
 from django.urls import reverse
+from django.utils import timezone
 from factory.django import django_files
 from PIL import Image
 from preview_generator.manager import PreviewManager
@@ -18,6 +19,7 @@ from rest_framework.status import (
 
 from alexandria.core.models import File
 from alexandria.core.tests import file_data
+from alexandria.core.tests.test_permissions import TIMESTAMP
 
 from ..models import Document, Tag
 from ..views import DocumentViewSet, FileViewSet, TagViewSet
@@ -348,7 +350,37 @@ def test_document_delete_some_tags(admin_client, tag_factory, document_factory):
     )
 
 
-def test_download_file(admin_client, file):
-    url = reverse("file-download", args=[file.pk])
+@pytest.mark.parametrize(
+    "presigned, expected_status", [(True, HTTP_200_OK), (False, HTTP_403_FORBIDDEN)]
+)
+def test_download_file(admin_client, file, presigned, expected_status):
+    if not presigned:
+        url = reverse("file-download", args=[file.pk])
+    else:
+        response = admin_client.get(reverse("file-detail", args=(file.pk,)))
+        url = response.json()["data"]["attributes"]["download-url"]
     result = admin_client.get(url)
-    assert result.status_code == HTTP_200_OK
+    assert result.status_code == expected_status
+
+
+@pytest.mark.freeze_time(TIMESTAMP, as_arg=True)
+def test_presigned_url_expired(admin_client, client, file, freezer, settings):
+    response = admin_client.get(reverse("file-detail", args=(file.pk,)))
+    url = response.json()["data"]["attributes"]["download-url"]
+    freezer.tick(
+        delta=timezone.timedelta(seconds=settings.ALEXANDRIA_DOWNLOAD_URL_LIFETIME + 5)
+    )
+    response = client.get(url)
+    assert response.status_code == HTTP_403_FORBIDDEN
+
+
+def test_presigned_url_tempered_signature(admin_client, client, file):
+    response = admin_client.get(reverse("file-detail", args=(file.pk,)))
+    url = response.json()["data"]["attributes"]["download-url"]
+    without_params, params = url.split("?")
+    expiry, signature = params.split("&")
+    key, val = expiry.split("=")
+    val = str(float(val) + 1000)
+    url = f"{without_params}?{signature}&{key}={val}"
+    response = client.get(url)
+    assert response.status_code == HTTP_403_FORBIDDEN

@@ -7,10 +7,11 @@ from django.conf import settings
 from django.core.exceptions import ValidationError as DjangoCoreValidationError
 from django.http import FileResponse
 from django.utils.translation import gettext as _
-from generic_permissions.permissions import PermissionViewMixin
+from generic_permissions.permissions import AllowAny, PermissionViewMixin
 from generic_permissions.visibilities import VisibilityViewMixin
-from rest_framework.decorators import action
-from rest_framework.exceptions import NotFound, ValidationError
+from rest_framework.decorators import action, permission_classes
+from rest_framework.exceptions import NotFound, PermissionDenied, ValidationError
+from rest_framework.generics import get_object_or_404
 from rest_framework.mixins import (
     CreateModelMixin,
     DestroyModelMixin,
@@ -20,6 +21,7 @@ from rest_framework.mixins import (
 from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED
 from rest_framework.viewsets import GenericViewSet
+from rest_framework_json_api.serializers import timezone
 from rest_framework_json_api.views import (
     AutoPrefetchMixin,
     ModelViewSet,
@@ -108,6 +110,11 @@ class FileViewSet(
     select_for_includes = {"document": ["document"], "original": ["original"]}
     prefetch_for_includes = {"renderings": ["renderings"]}
 
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context.update({"view": self, "request": self.request})
+        return context
+
     def _write_zip(self, file_obj, queryset):
         with zipfile.ZipFile(file_obj, "w", zipfile.ZIP_DEFLATED) as zipf:
             seen_names = set()
@@ -195,9 +202,32 @@ class FileViewSet(
 
         return Response(serializer.data, status=HTTP_201_CREATED, headers=headers)
 
+    @permission_classes([AllowAny])
     @action(methods=["get"], detail=True)
-    def download(self, request, *args, **kwargs):
-        obj = self.get_object()
-        return FileResponse(
-            obj.content.file.file, as_attachment=False, filename=obj.name
-        )
+    def download(self, request, pk=None):
+        if token_sig := request.query_params.get("signature"):
+            now = timezone.now()
+            expires = float(request.query_params.get("expires"))
+            serializer_class = self.get_serializer_class()
+            host, expires, signature = serializer_class.make_signature_components(
+                pk, request, expires
+            )
+            # get expires and signature from params
+            # check if timezone.now() < expires
+            #
+            # use expires url-path, timestamp and SECRET_KEY to calculate signature
+            # compare signature from params with calculated signature
+            #
+            if now.timestamp() > expires:
+                raise PermissionDenied("Download URL expired.")
+            try:
+                assert token_sig == signature
+            except AssertionError:
+                raise PermissionDenied("Invalid signature.")
+            queryset = self.get_queryset()
+            filter_kwargs = {"pk": pk}
+            obj = get_object_or_404(queryset, **filter_kwargs)
+            return FileResponse(
+                obj.content.file.file, as_attachment=False, filename=obj.name
+            )
+        raise PermissionDenied("For downloading a file use the presigned download URL.")
