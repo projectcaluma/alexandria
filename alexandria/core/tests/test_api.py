@@ -12,12 +12,13 @@ from django.test.utils import CaptureQueriesContext
 from django.urls import reverse
 from rest_framework_json_api.renderers import JSONRenderer
 
-from ..views import CategoryViewSet, DocumentViewSet, FileViewSet, TagViewSet
-
-# @pytest.fixture(params=["admin_client", "authenticated_client"])
-# def api_client(db, request):
-#     client = request.getfixturevalue(request.param)
-#     return client
+from ..views import (
+    CategoryViewSet,
+    DocumentViewSet,
+    FileViewSet,
+    MarkViewSet,
+    TagViewSet,
+)
 
 
 @pytest.fixture()
@@ -56,6 +57,7 @@ def deterministic_uuids(mocker):
         DocumentViewSet,
         FileViewSet,
         TagViewSet,
+        MarkViewSet,
     ]
 )
 def viewset(request):

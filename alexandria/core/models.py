@@ -98,7 +98,7 @@ class TagSynonymGroup(BaseModel):
     pass
 
 
-class Tag(SlugModel):
+class Tag(UUIDModel):
     name = models.CharField(_("tag name"), blank=False, null=False, max_length=100)
     description = LocalizedTextField(
         _("tag description"), null=True, blank=True, required=False

@@ -109,19 +109,18 @@ class TagSynonymGroupSerializer(BaseSerializer):
         fields = BaseSerializer.Meta.fields + ("tags",)
 
 
-class TagSerializer(SlugModelSerializer):
+class TagSerializer(BaseSerializer):
     included_serializers = {
         "tag_synonym_group": "alexandria.core.serializers.TagSynonymGroupSerializer"
     }
 
     class Meta:
         model = models.Tag
-        fields = SlugModelSerializer.Meta.fields + (
+        fields = BaseSerializer.Meta.fields + (
             "name",
             "description",
             "tag_synonym_group",
         )
-        slug_source_field = "name"
 
 
 class MarkSerializer(SlugModelSerializer):
