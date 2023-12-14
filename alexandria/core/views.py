@@ -5,14 +5,16 @@ import zipfile
 from tempfile import NamedTemporaryFile
 
 from django.conf import settings
-from django.core.exceptions import ValidationError as DjangoCoreValidationError
+from django.core.exceptions import (
+    ObjectDoesNotExist,
+    ValidationError as DjangoCoreValidationError,
+)
 from django.http import FileResponse
 from django.utils.translation import gettext as _
 from generic_permissions.permissions import AllowAny, PermissionViewMixin
 from generic_permissions.visibilities import VisibilityViewMixin
 from rest_framework.decorators import action, permission_classes
 from rest_framework.exceptions import NotFound, PermissionDenied, ValidationError
-from rest_framework.generics import get_object_or_404
 from rest_framework.mixins import (
     CreateModelMixin,
     DestroyModelMixin,
@@ -22,7 +24,6 @@ from rest_framework.mixins import (
 from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED
 from rest_framework.viewsets import GenericViewSet
-from rest_framework_json_api.serializers import timezone
 from rest_framework_json_api.views import (
     AutoPrefetchMixin,
     ModelViewSet,
@@ -38,6 +39,7 @@ from .filters import (
     MarkFilterSet,
     TagFilterSet,
 )
+from .presign_urls import verify_signed_components
 from .utils import create_thumbnail
 
 log = logging.getLogger(__name__)
@@ -212,27 +214,23 @@ class FileViewSet(
     @action(methods=["get"], detail=True)
     def download(self, request, pk=None):
         if token_sig := request.query_params.get("signature"):
-            now = timezone.now()
-            expires = int(request.query_params.get("expires"))
-            serializer_class = self.get_serializer_class()
-            host, expires, signature = serializer_class.make_signature_components(
-                pk, request, expires
-            )
-            # get expires and signature from params
-            # check if timezone.now() < expires
-            #
-            # use expires url-path, timestamp and SECRET_KEY to calculate signature
-            # compare signature from params with calculated signature
-            #
-            if int(now.timestamp()) > expires:
-                raise PermissionDenied("Download URL expired.")
             try:
-                assert token_sig == signature
+                verify_signed_components(
+                    pk,
+                    request.get_host(),
+                    expires=int(request.query_params.get("expires")),
+                    scheme=request.META.get("wsgi.url_scheme", "http"),
+                    token_sig=token_sig,
+                )
+            except TimeoutError:
+                raise PermissionDenied("Download URL expired.")
             except AssertionError:
                 raise PermissionDenied("Invalid signature.")
-            queryset = self.get_queryset()
-            filter_kwargs = {"pk": pk}
-            obj = get_object_or_404(queryset, **filter_kwargs)
+            try:
+                obj = models.File.objects.get(pk=pk)
+            except ObjectDoesNotExist:
+                raise NotFound()
+
             return FileResponse(
                 obj.content.file.file, as_attachment=False, filename=obj.name
             )

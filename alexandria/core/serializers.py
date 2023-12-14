@@ -1,18 +1,13 @@
-from typing import Optional, Tuple
-
 from django.conf import settings
 from django.contrib.auth.models import AnonymousUser
 from django.template.defaultfilters import slugify
-from django.utils import timezone, translation
-from django.utils.http import urlsafe_base64_encode
+from django.utils import translation
 from generic_permissions.validation import ValidatorMixin
-from preview_generator.manager import hashlib
 from rest_framework.exceptions import ValidationError
-from rest_framework.request import Request
 from rest_framework_json_api import serializers
-from rest_framework_json_api.relations import reverse
 
 from . import models
+from .presign_urls import make_signature_components
 
 
 class BaseSerializer(ValidatorMixin, serializers.ModelSerializer):
@@ -162,40 +157,14 @@ class FileSerializer(BaseSerializer):
         if "request" in self.context and self.context["request"].method == "POST":
             self.new = True
 
-    @staticmethod
-    def make_signature_components(
-        pk: str, request: Request, expires: Optional[int] = None
-    ) -> Tuple[str, int, str]:
-        """Make the components used to sign and verify the download_url.
-
-        If `expires` is provided the components are called for the verification step.
-
-        Otherwise expiry is calculated and returned
-        """
-        if not expires:
-            expires = int(
-                (
-                    timezone.now()
-                    + timezone.timedelta(
-                        seconds=settings.ALEXANDRIA_DOWNLOAD_URL_LIFETIME
-                    )
-                ).timestamp()
-            )
-        download_path = reverse("file-download", args=[pk])
-        host = f"{request.META.get('wsgi.url_scheme', 'http')}://{request.get_host()}"
-        url = f"{host.strip('/')}{download_path}"
-        token = f"{url}{expires}{settings.SECRET_KEY}"
-        hash = hashlib.shake_256(token.encode())
-        # Django's base64 encoder strips padding and ascii-decodes the output
-        signature = urlsafe_base64_encode(hash.digest(32))
-        return url, expires, signature
-
     def get_download_url(self, instance):
         request = self.context.get("request")
         if not request:
             return None
-        url, expires, signature = self.make_signature_components(
-            str(instance.pk), request
+        url, expires, signature = make_signature_components(
+            str(instance.pk),
+            request.get_host(),
+            scheme=request.META.get("wsgi.url_scheme", "http"),
         )
         return f"{url}?expires={expires}&signature={signature}"
 

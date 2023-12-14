@@ -4,7 +4,6 @@ from __future__ import unicode_literals
 
 from snapshottest import Snapshot
 
-
 snapshots = Snapshot()
 
 snapshots["test_document_category_filters[filters0-2] 1"] = ["Apple", "Melon"]
