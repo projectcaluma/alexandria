@@ -10,11 +10,11 @@ from alexandria.storages.backends.s3 import SsecGlobalS3Storage
 class DynamicStorageFieldFile(FieldFile):
     def __init__(self, instance, field, name):
         super().__init__(instance, field, name)
-        if (
-            settings.ALEXANDRIA_ENABLE_AT_REST_ENCRYPTION
-            and instance.encryption_status == instance.EncryptionStatus.SSEC_GLOBAL_KEY
-        ):
-            self.storage = SsecGlobalS3Storage()
+        if settings.ALEXANDRIA_ENABLE_AT_REST_ENCRYPTION:
+            from alexandria.core.models import File
+
+            if instance.encryption_status == File.EncryptionStatus.SSEC_GLOBAL_KEY:
+                self.storage = SsecGlobalS3Storage()
 
 
 class DynamicStorageFileField(models.FileField):
@@ -25,12 +25,14 @@ class DynamicStorageFileField(models.FileField):
         DefaultStorage = get_storage_class()
         self.storage = DefaultStorage()
         if settings.ALEXANDRIA_ENABLE_AT_REST_ENCRYPTION:
+            from alexandria.core.models import File
+
             if (
                 method := settings.ALEXANDRIA_ENCRYPTION_METHOD
-            ) not in instance.EncryptionStatus.values:
+            ) not in File.EncryptionStatus.values:
                 msg = (
                     f"ALEXANDRIA_ENCRYPTION_METHOD must be one of "
-                    f"{instance.EncryptionStatus.values}. {method} is not valid"
+                    f"{File.EncryptionStatus.values}. {method} is not valid"
                 )
                 raise ImproperlyConfigured(msg)
             if not isinstance(self.storage, S3Storage):
@@ -40,7 +42,7 @@ class DynamicStorageFileField(models.FileField):
                 )
                 raise ImproperlyConfigured(msg)
             storage = SsecGlobalS3Storage()
-            if instance.encryption_status == instance.EncryptionStatus.SSEC_GLOBAL_KEY:
+            if instance.encryption_status == File.EncryptionStatus.SSEC_GLOBAL_KEY:
                 self.storage = storage
         _file = super().pre_save(instance, add)
         return _file
