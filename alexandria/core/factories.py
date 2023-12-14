@@ -93,7 +93,26 @@ class DocumentFactory(BaseFactory):
 
 
 class FileFactory(BaseFactory):
-    name = Faker("name")
+    """Factory for File.
+
+    Usage:
+    If you want a nice set of Document, File with thumbnails:
+
+    `thumb = FileFactory(variant=File.Variant.THUMBNAIL)`
+
+    for multiple versions:
+    `thumb_v2 = FileFactory(variant=File.Variant.THUMBNAIL, document=thumb.document)`
+
+
+    """
+
+    name = factory.Maybe(
+        factory.LazyAttribute(lambda o: o.variant == models.File.Variant.ORIGINAL),
+        yes_declaration=factory.Sequence(lambda n: "Version #%i" % ((int(n) + 1) / 2)),
+        no_declaration=factory.LazyAttribute(
+            lambda o: f"{o.original.name}_preview.jpg"
+        ),
+    )
     document = SubFactory(DocumentFactory)
     variant = models.File.Variant.ORIGINAL
     content = factory.Maybe(

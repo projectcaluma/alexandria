@@ -151,10 +151,10 @@ class Document(UUIDModel):
         self.pk = None
         self.save()
 
-        # no need to clone the thumbnail, it will be auto-created
-        new_original = latest_original.clone()
-        new_original.document = self
-        new_original.save()
+        # TODO: decide on how to deal with thumbnail creation
+        latest_original.pk = None
+        latest_original.document = self
+        latest_original.save()
 
         return self
 
