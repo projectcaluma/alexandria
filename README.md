@@ -84,7 +84,7 @@ A list of configuration options which you need
 
 - Storage configuration
 
-  Storage backends are configured globally. The storable object bears information on the encryption status allowing the ORM appropriate data handling data.
+  Storage backends are configured globally. The storable object bears information on the encryption status allowing the ORM appropriate handling of the data.
 
   - `FILE_STORAGE_BACKEND`: Set the backend for file uploads. `django-storages` is available (default: `django.core.files.storage.FileSystemStorage`)
 
@@ -107,7 +107,7 @@ A list of configuration options which you need
       - `AWS_STORAGE_BUCKET_NAME`: the bucket name of the storage to access objects in path notation (not subdomain)
       - `AWS_STORAGE_ENABLE_SSEC`: toggle serverside encryption with customer owned key. If enabled the `ALEXANDRIA_ENCRYPTION_METHOD`: `ssec-global` will be employed.
 
-    The development setup features a minio service.
+    The development setup features a minio service, implementing the S3 protocol.
 
 For development, you can also set the following environemnt variables to help you:
 

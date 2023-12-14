@@ -173,10 +173,14 @@ class FileSerializer(BaseSerializer):
         Otherwise expiry is calculated and returned
         """
         if not expires:
-            expires = (
-                timezone.now()
-                + timezone.timedelta(seconds=settings.ALEXANDRIA_DOWNLOAD_URL_LIFETIME)
-            ).timestamp()
+            expires = int(
+                (
+                    timezone.now()
+                    + timezone.timedelta(
+                        seconds=settings.ALEXANDRIA_DOWNLOAD_URL_LIFETIME
+                    )
+                ).timestamp()
+            )
         download_path = reverse("file-download", args=[pk])
         host = f"{request.META.get('wsgi.url_scheme', 'http')}://{request.get_host()}"
         url = f"{host.strip('/')}{download_path}"

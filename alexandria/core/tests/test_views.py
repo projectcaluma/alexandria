@@ -63,7 +63,7 @@ def test_anonymous_writing(db, document, client, settings, user, allow_anon, met
         (File.Variant.THUMBNAIL, True, True, "png800", True, HTTP_201_CREATED),
         # Variant is required
         (None, True, True, "png", False, HTTP_400_BAD_REQUEST),
-        (File.Variant.ORIGINAL, True, True, "unsupported", False, HTTP_400_BAD_REQUEST),
+        (File.Variant.ORIGINAL, True, True, "unsupported", False, HTTP_201_CREATED),
         (
             File.Variant.THUMBNAIL,
             True,
@@ -380,7 +380,7 @@ def test_presigned_url_tempered_signature(admin_client, client, file):
     without_params, params = url.split("?")
     expiry, signature = params.split("&")
     key, val = expiry.split("=")
-    val = str(float(val) + 1000)
+    val = str(int(val) + 1000)
     url = f"{without_params}?{signature}&{key}={val}"
     response = client.get(url)
     assert response.status_code == HTTP_403_FORBIDDEN

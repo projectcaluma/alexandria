@@ -1,5 +1,6 @@
 import io
 import itertools
+import logging
 import zipfile
 from tempfile import NamedTemporaryFile
 
@@ -38,6 +39,8 @@ from .filters import (
     TagFilterSet,
 )
 from .utils import create_thumbnail
+
+log = logging.getLogger(__name__)
 
 
 class CategoryViewSet(
@@ -186,7 +189,11 @@ class FileViewSet(
             try:
                 create_thumbnail(obj)
             except DjangoCoreValidationError as e:
-                raise ValidationError(*e.messages)
+                log.error(
+                    "Object {obj} created successfully. Thumbnail creation failed. Error: {error}".format(
+                        obj=obj, error=e.messages
+                    )
+                )
         if obj.variant == models.File.Variant.THUMBNAIL:
             try:
                 # coerce the uploaded file to a thumbnail
@@ -199,7 +206,6 @@ class FileViewSet(
             # if the original already had a thumbnail remove that
             self.queryset.filter(original=obj.original).exclude(pk=obj.pk).delete()
         headers = self.get_success_headers(serializer.data)
-
         return Response(serializer.data, status=HTTP_201_CREATED, headers=headers)
 
     @permission_classes([AllowAny])
@@ -207,7 +213,7 @@ class FileViewSet(
     def download(self, request, pk=None):
         if token_sig := request.query_params.get("signature"):
             now = timezone.now()
-            expires = float(request.query_params.get("expires"))
+            expires = int(request.query_params.get("expires"))
             serializer_class = self.get_serializer_class()
             host, expires, signature = serializer_class.make_signature_components(
                 pk, request, expires
@@ -218,7 +224,7 @@ class FileViewSet(
             # use expires url-path, timestamp and SECRET_KEY to calculate signature
             # compare signature from params with calculated signature
             #
-            if now.timestamp() > expires:
+            if int(now.timestamp()) > expires:
                 raise PermissionDenied("Download URL expired.")
             try:
                 assert token_sig == signature

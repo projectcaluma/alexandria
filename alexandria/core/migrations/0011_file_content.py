@@ -16,9 +16,9 @@ def migrate_file_references(apps, schema_editor):
     and bucket before accessing the file.
     """
     File = apps.get_model("alexandria_core", "File")
-    for _file in File.objects.iterator():
-        _file.content.name = alexandria.core.models.upload_file_content_to(_file, None)
-        _file.save()
+    for file in File.objects.iterator():
+        file.content.name = alexandria.core.models.upload_file_content_to(file, None)
+        file.save()
 
 
 class Migration(migrations.Migration):
