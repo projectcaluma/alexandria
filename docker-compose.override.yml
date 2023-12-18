@@ -12,6 +12,7 @@ services:
         INSTALL_DEV_DEPENDENCIES: "true"
     user: "${UID:?Set UID env variable to your user id}"
     volumes:
+      - home:/home/alexandria
       - ./:/app
     command:
       [
@@ -19,6 +20,8 @@ services:
         "-c",
         "wait-for-it db:5432 -- poetry run python ./manage.py migrate && poetry run python ./manage.py runserver_plus --nostatic 0.0.0.0:8000",
       ]
+    tty: true
+    stdin_open: true
     environment:
       - ENV=dev
       - DEBUG=true
@@ -27,6 +30,8 @@ services:
       - ALEXANDRIA_DEV_AUTH_BACKEND=true
       - ALEXANDRIA_ALLOW_ANONYMOUS_WRITE=true
   minio:
+    ports:
+      - "9000:9000"
     environment:
       - MINIO_ROOT_USER=minio
       - MINIO_ROOT_PASSWORD=minio123
@@ -36,3 +41,12 @@ services:
     environment:
       - MINIO_ROOT_USER=minio
       - MINIO_ROOT_PASSWORD=minio123
+
+volumes:
+  home:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: .home
+  uploads:

@@ -38,6 +38,10 @@ RUN pip install -U poetry
 
 ARG INSTALL_DEV_DEPENDENCIES=false
 COPY pyproject.toml poetry.lock $APP_HOME/
+ENV VIRTUAL_ENV="$HOME/.cache/pypoetry/virtualenvs/venv"
+ENV PATH="$VIRTUAL_ENV/bin:$PATH" 
+RUN python -m venv $VIRTUAL_ENV
+RUN poetry install
 RUN if [ "$INSTALL_DEV_DEPENDENCIES" = "true" ]; then poetry install; else poetry install --without dev; fi
 
 USER alexandria
