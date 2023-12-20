@@ -383,7 +383,6 @@ def test_document_category_filters(
 
     response = admin_client.get(reverse("document-list"), filters)
 
-    print(response.content)
     assert response.status_code == HTTP_200_OK
     data = response.json()["data"]
     assert len(data) == expected_count

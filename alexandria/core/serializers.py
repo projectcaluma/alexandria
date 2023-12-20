@@ -3,13 +3,21 @@ from django.contrib.auth.models import AnonymousUser
 from django.template.defaultfilters import slugify
 from django.utils import translation
 from generic_permissions.validation import ValidatorMixin
+from generic_permissions.visibilities import (
+    VisibilityResourceRelatedField,
+    VisibilitySerializerMixin,
+)
 from rest_framework.exceptions import ValidationError
 from rest_framework_json_api import serializers
 
 from . import models
 
 
-class BaseSerializer(ValidatorMixin, serializers.ModelSerializer):
+class BaseSerializer(
+    ValidatorMixin, VisibilitySerializerMixin, serializers.ModelSerializer
+):
+    serializer_related_field = VisibilityResourceRelatedField
+
     created_at = serializers.DateTimeField(read_only=True)
 
     def is_valid(self, *args, **kwargs):
