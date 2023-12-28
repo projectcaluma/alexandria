@@ -498,3 +498,36 @@ def test_checksum(
             file.checksum
             == "sha256:778caf7d8d81a7ff8041003ef01afe00a85750d15086a3cb267fd8d23d8dd285"
         )
+
+
+@pytest.mark.parametrize(
+    "field,value",
+    [
+        ("created_at", "test"),
+        ("created_by_user", "test"),
+        ("created_by_group", "test"),
+    ],
+)
+def test_base_read_only(admin_client, document_factory, field, value):
+    document = document_factory()
+
+    url = reverse("document-detail", args=[document.pk])
+
+    data = {
+        "data": {
+            "type": "documents",
+            "id": document.pk,
+            "attributes": {
+                field: value,
+            },
+        }
+    }
+
+    response = admin_client.patch(url, data=data)
+
+    result = response.json()
+    assert result["data"]["attributes"][field.replace("_", "-")] != value
+    assert result["data"]["attributes"][field.replace("_", "-")] is not None
+
+    document.refresh_from_db()
+    assert getattr(document, field) != value

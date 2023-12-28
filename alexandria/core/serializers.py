@@ -22,12 +22,16 @@ class BaseSerializer(ValidatorMixin, serializers.ModelSerializer):
     def validate(self, *args, **kwargs):
         validated_data = super().validate(*args, **kwargs)
 
-        user = self.context["request"].user
-        username = getattr(user, settings.ALEXANDRIA_CREATED_BY_USER_PROPERTY)
-        validated_data["created_by_user"] = username
-        validated_data["modified_by_user"] = username
+        validated_data["modified_by_user"] = self._default_group()
 
         return validated_data
+
+    def validate_created_by_user(self, value):
+        # Created by user can be set on creation, then must remain constant
+        if self.instance:
+            # can't change created_by_user on existing instances
+            return self.instance.created_by_user
+        return value
 
     def validate_created_by_group(self, value):
         # Created by group can be set on creation, then must remain constant
