@@ -22,7 +22,9 @@ class BaseSerializer(ValidatorMixin, serializers.ModelSerializer):
     def validate(self, *args, **kwargs):
         validated_data = super().validate(*args, **kwargs)
 
-        validated_data["modified_by_user"] = self._default_group()
+        user = self.context["request"].user
+        username = getattr(user, settings.ALEXANDRIA_CREATED_BY_USER_PROPERTY)
+        validated_data["modified_by_user"] = username
 
         return validated_data
 
