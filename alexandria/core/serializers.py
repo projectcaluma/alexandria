@@ -40,7 +40,6 @@ class BaseSerializer(serializers.ModelSerializer):
 
         user = self.context["request"].user
         username = getattr(user, settings.ALEXANDRIA_CREATED_BY_USER_PROPERTY)
-        validated_data["created_by_user"] = username
         validated_data["modified_by_user"] = username
 
         self.Meta.model.check_permissions(self.context["request"])
@@ -48,6 +47,13 @@ class BaseSerializer(serializers.ModelSerializer):
             self.instance.check_object_permissions(self.context["request"])
 
         return validated_data
+
+    def validate_created_by_user(self, value):
+        # Created by user can be set on creation, then must remain constant
+        if self.instance:
+            # can't change created_by_user on existing instances
+            return self.instance.created_by_user
+        return value
 
     def validate_created_by_group(self, value):
         # Created by group can be set on creation, then must remain constant
