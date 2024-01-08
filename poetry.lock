@@ -579,17 +579,17 @@ Django = ">=3.2"
 
 [[package]]
 name = "django-generic-api-permissions"
-version = "0.2.0"
+version = "0.3.0"
 description = "Generic API permissions and visibilities for Django"
 optional = false
-python-versions = ">=3.5"
+python-versions = ">=3.8"
 files = [
-    {file = "django-generic-api-permissions-0.2.0.tar.gz", hash = "sha256:0503bd7533039d541509041cee2b7691e946686e7fa4fad341cf7b6438ca7ee2"},
-    {file = "django_generic_api_permissions-0.2.0-py3-none-any.whl", hash = "sha256:60167bf51ca2753cbf38d3fe5032a61ef83198d5347706386a6aa7e27346d062"},
+    {file = "django-generic-api-permissions-0.3.0.tar.gz", hash = "sha256:50c801868bad23b55e30733ff7459563b5893f3944111ea8e3bc691124cbdbce"},
+    {file = "django_generic_api_permissions-0.3.0-py3-none-any.whl", hash = "sha256:8fbe99f0dd0571704fe604767a090d012c42a662d283f512ed23fb876a5e49ed"},
 ]
 
 [package.dependencies]
-django = ">=2.2"
+django = ">=3.2"
 
 [[package]]
 name = "django-localized-fields"
@@ -2491,4 +2491,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8.1"
-content-hash = "b5d4e9c9819274a8dac177050551dfd6fa5a7ea79c2983e367ddac442363ee4d"
+content-hash = "2083382432014842449c6aea8bf93b923a1c3dd27f172bd456d682f9be056d44"
