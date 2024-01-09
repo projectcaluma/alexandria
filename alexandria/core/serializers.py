@@ -23,8 +23,16 @@ class BaseSerializer(
     def is_valid(self, *args, **kwargs):
         # Prime data so the validators are called (and default values filled
         # if client didn't pass them.)
-        self.initial_data.setdefault("created_by_group", self._default_group())
-        self.initial_data.setdefault("modified_by_group", self._default_group())
+        group = self._default_user_attribute(
+            settings.ALEXANDRIA_CREATED_BY_GROUP_PROPERTY
+        )
+        user = self._default_user_attribute(
+            settings.ALEXANDRIA_CREATED_BY_USER_PROPERTY
+        )
+        self.initial_data.setdefault("created_by_group", group)
+        self.initial_data.setdefault("modified_by_group", group)
+        self.initial_data.setdefault("created_by_user", user)
+        self.initial_data.setdefault("modified_by_user", user)
         return super().is_valid(*args, **kwargs)
 
     def validate(self, *args, **kwargs):
@@ -50,13 +58,9 @@ class BaseSerializer(
             return self.instance.created_by_group
         return value
 
-    def _default_group(self):
+    def _default_user_attribute(self, attribute):
         user = self.context["request"].user
-        return (
-            getattr(user, settings.ALEXANDRIA_CREATED_BY_GROUP_PROPERTY)
-            if not isinstance(user, AnonymousUser)
-            else None
-        )
+        return getattr(user, attribute) if not isinstance(user, AnonymousUser) else None
 
     class Meta:
         fields = (
