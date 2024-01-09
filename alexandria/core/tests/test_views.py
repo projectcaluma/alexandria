@@ -34,7 +34,9 @@ def test_anonymous_writing(db, document, client, settings, user, allow_anon, met
             "rest_framework.permissions.IsAuthenticatedOrReadOnly",
         ]
 
-    data = {"data": {"type": "documents", "attributes": {"title": "winstonsmith"}}}
+    data = {
+        "data": {"type": "documents", "attributes": {"title": {"en": "winstonsmith"}}}
+    }
 
     url = reverse("document-list")
 
@@ -44,7 +46,7 @@ def test_anonymous_writing(db, document, client, settings, user, allow_anon, met
 
     resp = getattr(client, method)(url, data=data)
     assert (
-        resp.status_code == HTTP_201_CREATED or HTTP_200_OK
+        resp.status_code in {HTTP_201_CREATED, HTTP_200_OK}
         if allow_anon
         else HTTP_403_FORBIDDEN
     )
@@ -181,38 +183,42 @@ def test_at_rest_encryption(admin_client, settings, document, mocker):
     assert response.status_code == HTTP_201_CREATED
 
 
+@pytest.mark.parametrize("attribute", ["user", "group"])
 @pytest.mark.parametrize(
-    "admin_groups, update, active_group, expect_response",
+    "admin_groups, update, active_attribute, expect_response",
     [
         (["foo", "bar"], False, "foo", HTTP_201_CREATED),
         (["foo", "bar"], False, None, HTTP_201_CREATED),
         (["foo", "bar"], True, "foo", HTTP_200_OK),
-        (["somegroup"], True, "foo", HTTP_200_OK),
-        (["somegroup"], True, "somegroup", HTTP_200_OK),
-        (["foobar"], True, "somegroup", HTTP_200_OK),
+        (["Apple"], True, "foo", HTTP_200_OK),
+        (["Apple"], True, "Apple", HTTP_200_OK),
+        (["foobar"], True, "Apple", HTTP_200_OK),
     ],
 )
 @pytest.mark.parametrize("viewset", [DocumentViewSet, FileViewSet, TagViewSet])
-def test_validate_created_by_group(
+def test_validate_created_by(
     db,
     settings,
+    attribute,
     viewset,
     request,
     update,
     admin_client,
-    active_group,
+    admin_user,
+    admin_groups,
+    active_attribute,
     expect_response,
 ):
     viewset_inst = viewset()
     model_class = viewset_inst.queryset.model
     model_name = model_class.__name__.lower()
     model = request.getfixturevalue(f"{model_name}_factory").create(
-        created_by_group="somegroup"
+        **{f"created_by_{attribute}": "Apple"}
     )
     serializer = viewset_inst.serializer_class()
     serialized_model = serializer.to_representation(model)
-    serialized_model["created_by_group"] = active_group
-    del serialized_model["modified_by_group"]
+    serialized_model[f"created_by_{attribute}"] = active_attribute
+    del serialized_model[f"modified_by_{attribute}"]
 
     if not update:
         # delete model in the DB so we can then create it via API
@@ -245,9 +251,9 @@ def test_validate_created_by_group(
     if update:
         request_meth = admin_client.patch
         url = reverse(f"{model_name}-detail", args=[model.pk])
-        # updates are not allowed to change created_by_group
+        # updates are not allowed to change created_by_group/ created_by_user
         model.refresh_from_db()
-        assert model.created_by_group == "somegroup"
+        assert getattr(model, f"created_by_{attribute}") == "Apple"
     else:
         request_meth = admin_client.post
         url = reverse(f"{model_name}-list")
@@ -258,6 +264,11 @@ def test_validate_created_by_group(
         else request_meth(url, post_data)
     )
     assert response.status_code == expect_response
+    modified_by = response.json()["data"]["attributes"][f"modified-by-{attribute}"]
+    if attribute == "user":
+        assert modified_by == admin_user.username
+    else:
+        assert modified_by == admin_groups[0]
 
 
 @pytest.mark.parametrize(
