@@ -1,3 +1,30 @@
+# 3.0.0-beta.1
+### Feature
+* Change tag primariy key to uuid ([`0284115`](https://github.com/projectcaluma/alexandria/commit/0284115171214b92fc206ecdb1a81e0421b4d383))
+* Use dgap instead of custom visibilities and permissions ([#289](https://github.com/projectcaluma/alexandria/issues/289)) ([`2a92203`](https://github.com/projectcaluma/alexandria/commit/2a92203ed90f1858f6ba5af6c13a22a0014d0ba4))
+
+### Fix
+* Regression in modified_by_user ([`ed70dd0`](https://github.com/projectcaluma/alexandria/commit/ed70dd0d5a5391fe14c89d1116326da784d695d9))
+* Set default created by user ([`f8aafd7`](https://github.com/projectcaluma/alexandria/commit/f8aafd7e7777aa8ea5f970159e4ac0d82ae9d5ee))
+
+### Breaking
+* this changes the primariy key for Tag to uuid the tag filter now also filters by the new uuid ([`0284115`](https://github.com/projectcaluma/alexandria/commit/0284115171214b92fc206ecdb1a81e0421b4d383))
+* This removes the custom permission system for DGAP. ([`2a92203`](https://github.com/projectcaluma/alexandria/commit/2a92203ed90f1858f6ba5af6c13a22a0014d0ba4))
+
+# 2.9.1
+### Fix
+* Dont overwrite created by ([`7923265`](https://github.com/projectcaluma/alexandria/commit/792326593b0bffc161417706853c4c97f91819ca))
+
+# 2.9.0
+### Feature
+* **document:** Add a method to clone documents ([`ebefcbd`](https://github.com/projectcaluma/alexandria/commit/ebefcbd0cb9af6ae251d69e5527d1b185c03c280))
+
+### Fix
+* **filter:** Change to iexact for name search ([`282ed95`](https://github.com/projectcaluma/alexandria/commit/282ed9500b916f14e23d73f5ec4045a1d945d5ce))
+
+# 2.8.0
+This release accidentially contained a breaking change, please don't use it!
+
 # 2.7.0
 ### Feature
 * **tags:** Add new filters, fix search ([`0962045`](https://github.com/projectcaluma/alexandria/commit/09620453e15ee04bf1eb97b41c689fde831d4a4d))

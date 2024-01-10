@@ -108,7 +108,7 @@ class TagsFilter(BaseInFilter):
         # including each tag's synonyms
         for tag in value:
             synonyms = models.Tag.objects.filter(
-                Q(pk=tag) | Q(tag_synonym_group__tags=tag)
+                Q(id=tag) | Q(tag_synonym_group__tags__id=tag)
             )
             qs = qs.filter(tags__in=synonyms)
         return qs
@@ -183,11 +183,10 @@ class TagFilterSet(FilterSet):
     class Meta:
         model = models.Tag
         fields = [
-            "metainfo",
-            "active_group",
-            "with_documents_in_category",
-            "with_documents_metainfo",
-            "name",
+            "created_by_user",
+            "created_by_group",
+            "modified_by_user",
+            "modified_by_group",
         ]
 
 

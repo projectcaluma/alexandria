@@ -333,8 +333,8 @@ def test_document_delete_some_tags(admin_client, tag_factory, document_factory):
             "relationships": {
                 "tags": {
                     "data": [
-                        {"id": tag_1.slug, "type": "tags"},
-                        {"id": tag_2.slug, "type": "tags"},
+                        {"id": tag_1.pk, "type": "tags"},
+                        {"id": tag_2.pk, "type": "tags"},
                     ]
                 }
             },
@@ -345,8 +345,8 @@ def test_document_delete_some_tags(admin_client, tag_factory, document_factory):
 
     assert response.status_code == HTTP_200_OK
     assert Tag.objects.all().count() == 3
-    assert set(Tag.objects.all().values_list("slug", flat=True)) == set(
-        [tag_1.slug, tag_2.slug, tag_3.slug]
+    assert set(Tag.objects.all().values_list("pk", flat=True)) == set(
+        [tag_1.pk, tag_2.pk, tag_3.pk]
     )
 
 
@@ -384,3 +384,36 @@ def test_presigned_url_tempered_signature(admin_client, client, file):
     url = f"{without_params}?{signature}&{key}={val}"
     response = client.get(url)
     assert response.status_code == HTTP_403_FORBIDDEN
+
+
+@pytest.mark.parametrize(
+    "field,value",
+    [
+        ("created_at", "test"),
+        ("created_by_user", "test"),
+        ("created_by_group", "test"),
+    ],
+)
+def test_base_read_only(admin_client, document_factory, field, value):
+    document = document_factory()
+
+    url = reverse("document-detail", args=[document.pk])
+
+    data = {
+        "data": {
+            "type": "documents",
+            "id": document.pk,
+            "attributes": {
+                field: value,
+            },
+        }
+    }
+
+    response = admin_client.patch(url, data=data)
+
+    result = response.json()
+    assert result["data"]["attributes"][field.replace("_", "-")] != value
+    assert result["data"]["attributes"][field.replace("_", "-")] is not None
+
+    document.refresh_from_db()
+    assert getattr(document, field) != value

@@ -46,6 +46,7 @@ log = logging.getLogger(__name__)
 
 
 class CategoryViewSet(
+    PermissionViewMixin,
     VisibilityViewMixin,
     AutoPrefetchMixin,
     PreloadIncludesMixin,
@@ -59,6 +60,14 @@ class CategoryViewSet(
     filterset_class = CategoryFilterSet
     select_for_includes = {"parent": ["parent"]}
     prefetch_for_includes = {"children": ["children"]}
+
+    def perform_destroy(self, instance):
+        # needed for DGAP
+        raise NotImplementedError(_("Deleting categories over API is not supported."))
+
+    def create(self, request, *args, **kwargs):
+        # needed for DGAP
+        raise NotImplementedError(_("Creating categories over API is not supported."))
 
 
 class TagSynonymGroupViewSet(PermissionViewMixin, VisibilityViewMixin, ModelViewSet):
@@ -97,6 +106,7 @@ class DocumentViewSet(PermissionViewMixin, VisibilityViewMixin, ModelViewSet):
 
 
 class FileViewSet(
+    PermissionViewMixin,
     VisibilityViewMixin,
     PermissionViewMixin,
     AutoPrefetchMixin,
@@ -104,6 +114,7 @@ class FileViewSet(
     RelatedMixin,
     CreateModelMixin,
     RetrieveModelMixin,
+    DestroyModelMixin,
     ListModelMixin,
     DestroyModelMixin,
     GenericViewSet,

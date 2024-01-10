@@ -13,12 +13,13 @@ from django.test.utils import CaptureQueriesContext
 from django.urls import reverse
 from rest_framework_json_api.renderers import JSONRenderer
 
-from ..views import CategoryViewSet, DocumentViewSet, FileViewSet, TagViewSet
-
-# @pytest.fixture(params=["admin_client", "authenticated_client"])
-# def api_client(db, request):
-#     client = request.getfixturevalue(request.param)
-#     return client
+from ..views import (
+    CategoryViewSet,
+    DocumentViewSet,
+    FileViewSet,
+    MarkViewSet,
+    TagViewSet,
+)
 
 
 @pytest.fixture()
@@ -57,6 +58,7 @@ def deterministic_uuids(mocker):
         DocumentViewSet,
         FileViewSet,
         TagViewSet,
+        MarkViewSet,
     ]
 )
 def viewset(request):
@@ -202,10 +204,14 @@ def test_api_create(fixture, admin_client, viewset, snapshot):
         }
         opts = {"format": "multipart"}
 
-    with CaptureQueriesContext(connection) as context:
-        response = admin_client.post(url, data=data, **opts)
+    if viewset.base_name in ["category"]:
+        with pytest.raises(NotImplementedError):
+            response = admin_client.post(url, data=json.loads(data))
+    else:
+        with CaptureQueriesContext(connection) as context:
+            response = admin_client.post(url, data=data, **opts)
 
-    assert_response(response, context, snapshot, request_payload=data)
+        assert_response(response, context, snapshot, request_payload=data)
 
 
 @pytest.mark.freeze_time("2017-05-21")
@@ -227,7 +233,11 @@ def test_api_patch(fixture, admin_client, viewset, snapshot):
 def test_api_destroy(fixture, admin_client, snapshot, viewset):
     url = reverse("{0}-detail".format(viewset.base_name), args=[fixture.pk])
 
-    with CaptureQueriesContext(connection) as context:
-        response = admin_client.delete(url)
+    if viewset.base_name in ["category"]:
+        with pytest.raises(NotImplementedError):
+            response = admin_client.delete(url)
+    else:
+        with CaptureQueriesContext(connection) as context:
+            response = admin_client.delete(url)
 
-    assert_response(response, context, snapshot, include_json=False)
+        assert_response(response, context, snapshot, include_json=False)

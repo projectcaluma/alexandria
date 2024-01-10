@@ -3,6 +3,10 @@ from django.contrib.auth.models import AnonymousUser
 from django.template.defaultfilters import slugify
 from django.utils import translation
 from generic_permissions.validation import ValidatorMixin
+from generic_permissions.visibilities import (
+    VisibilityResourceRelatedField,
+    VisibilitySerializerMixin,
+)
 from rest_framework.exceptions import ValidationError
 from rest_framework_json_api import serializers
 
@@ -10,14 +14,26 @@ from . import models
 from .presign_urls import make_signature_components
 
 
-class BaseSerializer(ValidatorMixin, serializers.ModelSerializer):
+class BaseSerializer(
+    ValidatorMixin, VisibilitySerializerMixin, serializers.ModelSerializer
+):
+    serializer_related_field = VisibilityResourceRelatedField
+
     created_at = serializers.DateTimeField(read_only=True)
 
     def is_valid(self, *args, **kwargs):
         # Prime data so the validators are called (and default values filled
         # if client didn't pass them.)
-        self.initial_data.setdefault("created_by_group", self._default_group())
-        self.initial_data.setdefault("modified_by_group", self._default_group())
+        group = self._default_user_attribute(
+            settings.ALEXANDRIA_CREATED_BY_GROUP_PROPERTY
+        )
+        user = self._default_user_attribute(
+            settings.ALEXANDRIA_CREATED_BY_USER_PROPERTY
+        )
+        self.initial_data.setdefault("created_by_group", group)
+        self.initial_data.setdefault("modified_by_group", group)
+        self.initial_data.setdefault("created_by_user", user)
+        self.initial_data.setdefault("modified_by_user", user)
         return super().is_valid(*args, **kwargs)
 
     def validate(self, *args, **kwargs):
@@ -25,10 +41,16 @@ class BaseSerializer(ValidatorMixin, serializers.ModelSerializer):
 
         user = self.context["request"].user
         username = getattr(user, settings.ALEXANDRIA_CREATED_BY_USER_PROPERTY)
-        validated_data["created_by_user"] = username
         validated_data["modified_by_user"] = username
 
         return validated_data
+
+    def validate_created_by_user(self, value):
+        # Created by user can be set on creation, then must remain constant
+        if self.instance:
+            # can't change created_by_user on existing instances
+            return self.instance.created_by_user
+        return value
 
     def validate_created_by_group(self, value):
         # Created by group can be set on creation, then must remain constant
@@ -37,13 +59,9 @@ class BaseSerializer(ValidatorMixin, serializers.ModelSerializer):
             return self.instance.created_by_group
         return value
 
-    def _default_group(self):
+    def _default_user_attribute(self, attribute):
         user = self.context["request"].user
-        return (
-            getattr(user, settings.ALEXANDRIA_CREATED_BY_GROUP_PROPERTY)
-            if not isinstance(user, AnonymousUser)
-            else None
-        )
+        return getattr(user, attribute) if not isinstance(user, AnonymousUser) else None
 
     class Meta:
         fields = (
@@ -110,19 +128,18 @@ class TagSynonymGroupSerializer(BaseSerializer):
         fields = BaseSerializer.Meta.fields + ("tags",)
 
 
-class TagSerializer(SlugModelSerializer):
+class TagSerializer(BaseSerializer):
     included_serializers = {
         "tag_synonym_group": "alexandria.core.serializers.TagSynonymGroupSerializer"
     }
 
     class Meta:
         model = models.Tag
-        fields = SlugModelSerializer.Meta.fields + (
+        fields = BaseSerializer.Meta.fields + (
             "name",
             "description",
             "tag_synonym_group",
         )
-        slug_source_field = "name"
 
 
 class MarkSerializer(SlugModelSerializer):

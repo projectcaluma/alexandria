@@ -92,9 +92,9 @@ def test_document_search_filter(
 
 
 def test_tag_category_filter(db, document_factory, tag_factory, admin_client):
-    blue = tag_factory(slug="blue")
-    red = tag_factory(slug="red")
-    green = tag_factory(slug="green")
+    blue = tag_factory(name="blue")
+    red = tag_factory(name="red")
+    green = tag_factory(name="green")
     doc1 = document_factory(category__slug="cat1")
     doc1.tags.add(blue)
     doc2 = document_factory(category_id="cat1")
@@ -112,14 +112,14 @@ def test_tag_category_filter(db, document_factory, tag_factory, admin_client):
     result = resp.json()
     assert len(result["data"]) == 2
 
-    returned_tags = [tag["id"] for tag in result["data"]]
+    returned_tags = [tag["attributes"]["name"] for tag in result["data"]]
     assert sorted(returned_tags) == sorted(["blue", "green"])
 
 
 def test_tag_document_metainfo(db, document_factory, tag_factory, admin_client):
-    blue = tag_factory(slug="blue")
-    red = tag_factory(slug="red")
-    green = tag_factory(slug="green")
+    blue = tag_factory(name="blue")
+    red = tag_factory(name="red")
+    green = tag_factory(name="green")
     doc1 = document_factory(metainfo={"foo": "bar"})
     doc2 = document_factory(metainfo={"foo": "baz"})
     doc3 = document_factory(metainfo={"foo": "blah"})
@@ -139,7 +139,7 @@ def test_tag_document_metainfo(db, document_factory, tag_factory, admin_client):
     result = resp.json()
     assert len(result["data"]) == 2
 
-    returned_tags = [tag["id"] for tag in result["data"]]
+    returned_tags = [tag["attributes"]["name"] for tag in result["data"]]
     assert sorted(returned_tags) == ["blue", "red"]
 
 
@@ -149,16 +149,16 @@ def test_tag_document_metainfo(db, document_factory, tag_factory, admin_client):
         ("blue", ["doc1"]),
         ("green", ["doc1", "doc2"]),
         ("green,red", ["doc2"]),
-        ("pink,green", ["doc1"]),
+        ("pink,green", ["doc1", "doc2"]),
     ],
 )
 def test_tag_filter(
     db, document_factory, tag_factory, tag_filter, expect_documents, admin_client
 ):
-    blue = tag_factory(slug="blue")
-    red = tag_factory(slug="red")
-    green = tag_factory(slug="green")
-    pink = tag_factory(slug="pink")
+    blue = tag_factory(name="blue")
+    red = tag_factory(name="red")
+    green = tag_factory(name="green")
+    pink = tag_factory(name="pink")
     doc1 = document_factory()
     doc1.tags.add(blue)
     doc1.tags.add(green)
@@ -169,8 +169,9 @@ def test_tag_filter(
 
     documents = {"doc1": doc1, "doc2": doc2}
 
+    filter = [Tag.objects.get(name=tag).pk for tag in tag_filter.split(",")]
     url = reverse("document-list")
-    resp = admin_client.get(url, {"filter[tags]": tag_filter})
+    resp = admin_client.get(url, {"filter[tags]": filter})
     assert resp.status_code == HTTP_200_OK
     result = resp.json()
     received_ids = set([obj["id"] for obj in result["data"]])
@@ -202,7 +203,7 @@ def test_tag_synonym_filter(  # noqa: C901
 
         if grouped:
             tag_group = tag_synonym_group_factory(
-                tags=[tag_factory(slug=word) for word in synonyms]
+                tags=[tag_factory(name=word) for word in synonyms]
             )
             for n in range(1, len(synonyms) + 1):
                 if not tag_group.tags:  # pragma: todo cover
@@ -213,7 +214,7 @@ def test_tag_synonym_filter(  # noqa: C901
             return tag_group
         else:
             for color in synonyms:
-                document_factory(tags=[tag_factory(slug=color)])
+                document_factory(tags=[tag_factory(name=color)])
 
     for key, value in groups.items():
         groups[key] = create_tagged_docs(tagged_group[key])
@@ -222,7 +223,7 @@ def test_tag_synonym_filter(  # noqa: C901
 
     key = list(groups.keys())[0]
     tag_sets_base = [
-        doc.tags.all().values_list("slug", flat=True)
+        doc.tags.all().values_list("id", flat=True)
         for doc in Document.objects.filter(tags__tag_synonym_group=groups[key])
     ]
 
@@ -239,11 +240,11 @@ def test_tag_synonym_filter(  # noqa: C901
         ) == set([obj["id"] for obj in result["data"]])
 
     for tag in ungrouped:
-        resp = admin_client.get(url, {"filter[tags]": [tag]})
+        resp = admin_client.get(url, {"filter[tags]": [Tag.objects.get(name=tag).id]})
         assert resp.status_code == HTTP_200_OK
         result = resp.json()
         assert set(
-            [str(doc.id) for doc in Tag.objects.get(slug=tag).documents.all()]
+            [str(doc.id) for doc in Tag.objects.get(name=tag).documents.all()]
         ) == set([obj["id"] for obj in result["data"]])
 
 
@@ -382,7 +383,6 @@ def test_document_category_filters(
 
     response = admin_client.get(reverse("document-list"), filters)
 
-    print(response.content)
     assert response.status_code == HTTP_200_OK
     data = response.json()["data"]
     assert len(data) == expected_count
