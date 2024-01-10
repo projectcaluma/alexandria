@@ -260,6 +260,39 @@ def test_validate_created_by_group(
     assert response.status_code == expect_response
 
 
+@pytest.mark.parametrize(
+    "field,value",
+    [
+        ("created_at", "test"),
+        ("created_by_user", "test"),
+        ("created_by_group", "test"),
+    ],
+)
+def test_created_validation(admin_client, document_factory, field, value):
+    document = document_factory()
+
+    url = reverse("document-detail", args=[document.pk])
+
+    data = {
+        "data": {
+            "type": "documents",
+            "id": document.pk,
+            "attributes": {
+                field: value,
+            },
+        }
+    }
+
+    response = admin_client.patch(url, data=data)
+
+    result = response.json()
+    assert result["data"]["attributes"][field.replace("_", "-")] != value
+    assert result["data"]["attributes"][field.replace("_", "-")] is not None
+
+    document.refresh_from_db()
+    assert getattr(document, field) != value
+
+
 def test_multi_download(admin_client, file_factory):
     file_factory(name="my_file3.png")  # should not be returned
     file1 = file_factory(name="a_file(1)")
@@ -384,36 +417,3 @@ def test_presigned_url_tempered_signature(admin_client, client, file):
     url = f"{without_params}?{signature}&{key}={val}"
     response = client.get(url)
     assert response.status_code == HTTP_403_FORBIDDEN
-
-
-@pytest.mark.parametrize(
-    "field,value",
-    [
-        ("created_at", "test"),
-        ("created_by_user", "test"),
-        ("created_by_group", "test"),
-    ],
-)
-def test_base_read_only(admin_client, document_factory, field, value):
-    document = document_factory()
-
-    url = reverse("document-detail", args=[document.pk])
-
-    data = {
-        "data": {
-            "type": "documents",
-            "id": document.pk,
-            "attributes": {
-                field: value,
-            },
-        }
-    }
-
-    response = admin_client.patch(url, data=data)
-
-    result = response.json()
-    assert result["data"]["attributes"][field.replace("_", "-")] != value
-    assert result["data"]["attributes"][field.replace("_", "-")] is not None
-
-    document.refresh_from_db()
-    assert getattr(document, field) != value

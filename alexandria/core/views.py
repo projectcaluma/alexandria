@@ -108,13 +108,11 @@ class DocumentViewSet(PermissionViewMixin, VisibilityViewMixin, ModelViewSet):
 class FileViewSet(
     PermissionViewMixin,
     VisibilityViewMixin,
-    PermissionViewMixin,
     AutoPrefetchMixin,
     PreloadIncludesMixin,
     RelatedMixin,
     CreateModelMixin,
     RetrieveModelMixin,
-    DestroyModelMixin,
     ListModelMixin,
     DestroyModelMixin,
     GenericViewSet,

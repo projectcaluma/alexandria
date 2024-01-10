@@ -23,7 +23,7 @@ def migrate_file_references(apps, schema_editor):
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("alexandria_core", "0010_mark"),
+        ("alexandria_core", "0012_tag_uuid_schema"),
     ]
 
     operations = [

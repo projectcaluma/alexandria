@@ -206,7 +206,7 @@ def test_api_create(fixture, admin_client, viewset, snapshot):
 
     if viewset.base_name in ["category"]:
         with pytest.raises(NotImplementedError):
-            response = admin_client.post(url, data=json.loads(data))
+            response = admin_client.post(url, data=data)
     else:
         with CaptureQueriesContext(connection) as context:
             response = admin_client.post(url, data=data, **opts)
