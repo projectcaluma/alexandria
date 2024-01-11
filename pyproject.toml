@@ -33,6 +33,7 @@ uwsgi = "^2.0.20"
 django-generic-api-permissions = "^0.4.2"
 django-storages = { extras = ['s3'], version = "^1.14.2" }
 boto3 = "^1.29.7"
+tqdm = "^4.66.1"
 
 [tool.poetry.group.dev.dependencies]
 black = "23.12.1"
