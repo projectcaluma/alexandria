@@ -197,6 +197,16 @@ class FileSerializer(BaseSerializer):
 
         return validated_data
 
+    def create(self, validated_data):
+        created = super().create(validated_data)
+
+        # Update document's modified when a file is created.
+        created.document.modified_by_user = created.modified_by_user
+        created.document.modified_by_group = created.modified_by_group
+        created.document.save()
+
+        return created
+
     class Meta:
         model = models.File
         fields = BaseSerializer.Meta.fields + (
