@@ -1,3 +1,7 @@
+# 3.0.0-beta.2
+### Feature
+* **document:** Update modfied data when creating new file ([`0b9dd76`](https://github.com/projectcaluma/alexandria/commit/0b9dd76be012cb71ce25a634cd4d004968d7a152))
+
 # 3.0.0-beta.1
 ### Feature
 * Change tag primariy key to uuid ([`0284115`](https://github.com/projectcaluma/alexandria/commit/0284115171214b92fc206ecdb1a81e0421b4d383))
