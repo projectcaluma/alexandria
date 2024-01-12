@@ -56,12 +56,105 @@ Public these health team change. Tax final upon stay sing middle suggest.''',
                     'fr': ''
                 }
             },
-            'id': '9dd4e461-268c-8034-f5c8-564e155c67a6',
-            'relationships': {
-                'category': {
-                    'data': {
-                        'id': 'note-act-source',
-                        'type': 'categories'
+            "id": "9dd4e461-268c-8034-f5c8-564e155c67a6",
+            "relationships": {
+                "category": {"data": {"id": "note-act-source", "type": "categories"}},
+                "files": {"data": [], "meta": {"count": 0}},
+                "marks": {
+                    "data": [{"id": "father-should-keep", "type": "marks"}],
+                    "meta": {"count": 1},
+                },
+                "tags": {
+                    "data": [
+                        {"id": "9336ebf2-5087-d91c-818e-e6e9ec29f8c1", "type": "tags"}
+                    ],
+                    "meta": {"count": 1},
+                },
+            },
+            "type": "documents",
+        }
+    },
+    "response": {
+        "data": {
+            "attributes": {
+                "created-at": "2017-05-21T00:00:00Z",
+                "created-by-group": "admin",
+                "created-by-user": "admin",
+                "date": "1999-11-26",
+                "description": {
+                    "de": "",
+                    "en": """Open else look tree arm responsibility week. Environmental statement bag someone them style.
+Public these health team change. Tax final upon stay sing middle suggest.""",
+                    "fr": "",
+                },
+                "metainfo": {},
+                "modified-at": "2017-05-21T00:00:00Z",
+                "modified-by-group": "admin",
+                "modified-by-user": "admin",
+                "title": {"de": "", "en": "Michael Edwards", "fr": ""},
+            },
+            "id": "f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad",
+            "relationships": {
+                "category": {"data": {"id": "note-act-source", "type": "categories"}},
+                "files": {"data": [], "meta": {"count": 0}},
+                "marks": {
+                    "data": [{"id": "father-should-keep", "type": "marks"}],
+                    "meta": {"count": 1},
+                },
+                "tags": {
+                    "data": [
+                        {"id": "9336ebf2-5087-d91c-818e-e6e9ec29f8c1", "type": "tags"}
+                    ],
+                    "meta": {"count": 1},
+                },
+            },
+            "type": "documents",
+        }
+    },
+    "status": 201,
+}
+
+snapshots["test_api_create[FileViewSet] 1"] = {
+    "queries": [
+        'SELECT "alexandria_core_document"."created_at", "alexandria_core_document"."created_by_user", "alexandria_core_document"."created_by_group", "alexandria_core_document"."modified_at", "alexandria_core_document"."modified_by_user", "alexandria_core_document"."modified_by_group", "alexandria_core_document"."metainfo", "alexandria_core_document"."id", "alexandria_core_document"."title", "alexandria_core_document"."description", "alexandria_core_document"."category_id", "alexandria_core_document"."date" FROM "alexandria_core_document" WHERE "alexandria_core_document"."id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid LIMIT 21',
+        'INSERT INTO "alexandria_core_file" ("created_at", "created_by_user", "created_by_group", "modified_at", "modified_by_user", "modified_by_group", "metainfo", "id", "variant", "original_id", "name", "document_id", "checksum", "upload_status") VALUES (\'2017-05-21T00:00:00+00:00\'::timestamptz, \'admin\', \'admin\', \'2017-05-21T00:00:00+00:00\'::timestamptz, \'admin\', \'admin\', \'{}\', \'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad\'::uuid, \'original\', NULL, \'Jason Lopez\', \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid, NULL, \'undefined\')',
+        """UPDATE "alexandria_core_document" SET "created_at" = \'2017-05-21T00:00:00+00:00\'::timestamptz, "created_by_user" = \'admin\', "created_by_group" = \'admin\', "modified_at" = \'2017-05-21T00:00:00+00:00\'::timestamptz, "modified_by_user" = \'admin\', "modified_by_group" = \'admin\', "metainfo" = \'{}\', "title" = hstore(ARRAY[\'en\',\'de\',\'fr\'], ARRAY[\'Michael Edwards\',\'\',\'\']), "description" = hstore(ARRAY[\'en\',\'de\',\'fr\'], ARRAY[\'Open else look tree arm responsibility week. Environmental statement bag someone them style.
+Public these health team change. Tax final upon stay sing middle suggest.\',\'\',\'\']), "category_id" = \'note-act-source\', "date" = \'1999-11-26\'::date WHERE "alexandria_core_document"."id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid""",
+        'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."checksum", "alexandria_core_file"."upload_status" FROM "alexandria_core_file" WHERE "alexandria_core_file"."original_id" = \'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad\'::uuid ORDER BY "alexandria_core_file"."created_at" DESC',
+        'SELECT (1) AS "a" FROM "alexandria_core_document" WHERE ("alexandria_core_document"."id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid AND "alexandria_core_document"."id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid) LIMIT 1',
+    ],
+    "query_count": 5,
+    "request": {
+        "CONTENT_LENGTH": "645",
+        "CONTENT_TYPE": "application/vnd.api+json",
+        "PATH_INFO": "/api/v1/files",
+        "QUERY_STRING": "",
+        "REQUEST_METHOD": "POST",
+        "SERVER_PORT": "80",
+    },
+    "request_payload": {
+        "data": {
+            "attributes": {
+                "checksum": None,
+                "created-at": "2017-05-21T00:00:00Z",
+                "created-by-group": "admin",
+                "created-by-user": "admin",
+                "download-url": "http://minio/download-url/9336ebf2-5087-d91c-818e-e6e9ec29f8c1_Jason Lopez",
+                "metainfo": {},
+                "modified-at": "2017-05-21T00:00:00Z",
+                "modified-by-group": "admin",
+                "modified-by-user": "admin",
+                "name": "Jason Lopez",
+                "upload-status": "undefined",
+                "upload-url": "",
+                "variant": "original",
+            },
+            "id": "9336ebf2-5087-d91c-818e-e6e9ec29f8c1",
+            "relationships": {
+                "document": {
+                    "data": {
+                        "id": "9dd4e461-268c-8034-f5c8-564e155c67a6",
+                        "type": "documents",
                     }
                 },
                 'files': {
