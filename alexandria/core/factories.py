@@ -107,7 +107,7 @@ class FileFactory(BaseFactory):
 
     name = factory.Maybe(
         factory.LazyAttribute(lambda o: o.variant == models.File.Variant.ORIGINAL),
-        yes_declaration=factory.Sequence(lambda n: "Version #%i" % ((int(n) + 1) / 2)),
+        yes_declaration=Faker("name"),
         no_declaration=factory.LazyAttribute(
             lambda o: f"{o.original.name}_preview.jpg"
         ),

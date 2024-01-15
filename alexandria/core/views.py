@@ -5,10 +5,7 @@ import zipfile
 from tempfile import NamedTemporaryFile
 
 from django.conf import settings
-from django.core.exceptions import (
-    ObjectDoesNotExist,
-    ValidationError as DjangoCoreValidationError,
-)
+from django.core.exceptions import ValidationError as DjangoCoreValidationError
 from django.http import FileResponse
 from django.utils.translation import gettext as _
 from generic_permissions.permissions import AllowAny, PermissionViewMixin
@@ -223,22 +220,14 @@ class FileViewSet(
     @action(methods=["get"], detail=True)
     def download(self, request, pk=None):
         if token_sig := request.query_params.get("signature"):
-            try:
-                verify_signed_components(
-                    pk,
-                    request.get_host(),
-                    expires=int(request.query_params.get("expires")),
-                    scheme=request.META.get("wsgi.url_scheme", "http"),
-                    token_sig=token_sig,
-                )
-            except TimeoutError:
-                raise PermissionDenied("Download URL expired.")
-            except AssertionError:
-                raise PermissionDenied("Invalid signature.")
-            try:
-                obj = models.File.objects.get(pk=pk)
-            except ObjectDoesNotExist:
-                raise NotFound()
+            verify_signed_components(
+                pk,
+                request.get_host(),
+                expires=int(request.query_params.get("expires")),
+                scheme=request.META.get("wsgi.url_scheme", "http"),
+                token_sig=token_sig,
+            )
+            obj = models.File.objects.get(pk=pk)
 
             return FileResponse(
                 obj.content.file.file, as_attachment=False, filename=obj.name

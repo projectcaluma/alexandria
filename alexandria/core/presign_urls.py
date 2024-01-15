@@ -4,6 +4,7 @@ from typing import Optional, Tuple
 from django.conf import settings
 from django.utils import timezone
 from django.utils.http import urlsafe_base64_encode
+from rest_framework.exceptions import ValidationError
 from rest_framework_json_api.relations import reverse
 
 
@@ -45,10 +46,8 @@ def verify_signed_components(pk, hostname, expires, scheme, token_sig):
     host, expires, signature = make_signature_components(pk, hostname, expires, scheme)
 
     if int(now.timestamp()) > expires:
-        raise TimeoutError()
-    try:
-        assert token_sig == signature
-    except AssertionError:
-        raise
+        raise ValidationError("Download URL expired.")
+    if not token_sig == signature:
+        raise ValidationError("Invalid signature.")
 
     return True

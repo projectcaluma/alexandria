@@ -384,7 +384,8 @@ def test_document_delete_some_tags(admin_client, tag_factory, document_factory):
 
 
 @pytest.mark.parametrize(
-    "presigned, expected_status", [(True, HTTP_200_OK), (False, HTTP_403_FORBIDDEN)]
+    "presigned, expected_status",
+    [(True, HTTP_200_OK), (False, HTTP_403_FORBIDDEN)],
 )
 def test_download_file(admin_client, file, presigned, expected_status):
     if not presigned:
@@ -392,6 +393,7 @@ def test_download_file(admin_client, file, presigned, expected_status):
     else:
         response = admin_client.get(reverse("file-detail", args=(file.pk,)))
         url = response.json()["data"]["attributes"]["download-url"]
+
     result = admin_client.get(url)
     assert result.status_code == expected_status
 
@@ -404,7 +406,7 @@ def test_presigned_url_expired(admin_client, client, file, freezer, settings):
         delta=timezone.timedelta(seconds=settings.ALEXANDRIA_DOWNLOAD_URL_LIFETIME + 5)
     )
     response = client.get(url)
-    assert response.status_code == HTTP_403_FORBIDDEN
+    assert response.status_code == HTTP_400_BAD_REQUEST
 
 
 def test_presigned_url_tempered_signature(admin_client, client, file):
@@ -416,4 +418,15 @@ def test_presigned_url_tempered_signature(admin_client, client, file):
     val = str(int(val) + 1000)
     url = f"{without_params}?{signature}&{key}={val}"
     response = client.get(url)
-    assert response.status_code == HTTP_403_FORBIDDEN
+    assert response.status_code == HTTP_400_BAD_REQUEST
+
+
+def test_presigned_url_different_file(admin_client, file, file_factory):
+    response = admin_client.get(reverse("file-detail", args=(file.pk,)))
+    url = response.json()["data"]["attributes"]["download-url"]
+
+    other_file = file_factory()
+    url = url.replace(str(file.pk), str(other_file.pk))
+
+    response = admin_client.get(url)
+    assert response.status_code == HTTP_400_BAD_REQUEST

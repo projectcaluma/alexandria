@@ -135,6 +135,8 @@ AWS_S3_SECRET_ACCESS_KEY = env.str("AWS_S3_SECRET_ACCESS_KEY", default="minio123
 AWS_S3_ENDPOINT_URL = env.str("AWS_S3_ENDPOINT_URL", default="http://minio:9000")
 # SSL is turned off for the dev environment. Don't do that in production
 AWS_S3_USE_SSL = env.bool("AWS_S3_USE_SSL", default=False)
+# SSL certificate verification is turned off for the dev environment. Don't do that in production
+AWS_S3_VERIFY = env.bool("AWS_S3_VERIFY", default=False)
 AWS_STORAGE_BUCKET_NAME = env.str("AWS_STORAGE_BUCKET_NAME", default="alexandria-media")
 # Object parameter translate to specific headers and values in put and get requests
 AWS_S3_OBJECT_PARAMETERS = {}

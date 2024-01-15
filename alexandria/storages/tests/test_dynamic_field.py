@@ -38,6 +38,10 @@ def test_dynamic_storage_select_global_ssec(
             "alexandria.storages.backends.s3.S3Storage",
         ),
         (
+            File.EncryptionStatus.NOT_ENCRYPTED.value,
+            "alexandria.storages.backends.s3.S3Storage",
+        ),
+        (
             File.EncryptionStatus.SSEC_GLOBAL_KEY.value,
             "django.core.files.storage.FileSystemStorage",
         ),

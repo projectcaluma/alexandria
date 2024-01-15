@@ -49,7 +49,6 @@ Different environment variable types are explained at [django-environ](https://g
 
 Additional authorization and validation of the models is handled by [DGAP](https://github.com/adfinis/django-generic-api-permissions/?tab=readme-ov-file#usage---for-people-deploying-a-dgap-equipped-app).
 
-
 #### Common
 
 A list of configuration options which you need
@@ -76,6 +75,7 @@ A list of configuration options which you need
 - Data validation configuration
   - `ALEXANDRIA_VALIDATION_CLASSES`: Comma-separated list of [DGAP](https://github.com/adfinis/django-generic-api-permissions/?tab=readme-ov-file#data-validation) classes that define custom validations
 - Thumbnail configuration (optional)
+
   - `ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION`: Set to `false` to disable thumbnail generation
     - Check the docker-compose file for an example on how to set up generation with s3 hooks
   - `ALEXANDRIA_THUMBNAIL_WIDTH`: Width of generated thumbnails
@@ -89,25 +89,27 @@ A list of configuration options which you need
   - `FILE_STORAGE_BACKEND`: Set the backend for file uploads. `django-storages` is available (default: `django.core.files.storage.FileSystemStorage`)
 
   Encryption:
-  - `ALEXANDRIA_ENABLE_AT_REST_ENCRYPTION`: Set to `true` to enable at-rest encryption of files (does nothing by itself unless `ALEXANDRIA_ENCRYPTRION_METHOD` is set to a supported method)
+
+  - `ALEXANDRIA_ENABLE_AT_REST_ENCRYPTION`: Set to `true` to enable at-rest encryption of files (enabling this causes an error unless `ALEXANDRIA_ENCRYPTRION_METHOD` is set to a supported method)
   - `ALEXANDRIA_ENCRYPTION_METHOD`: Define encryption method that is applied to uploaded objects. Available values depend on storage backend's capabilities (default: `None`)
     - available methods
       - None: no at-rest encryption
       - `ssec-global`: encrypt all files with the same key (requires: `FILE_STORAGE_BACKEND`: `alexandria.storages.s3.S3Storage)
 
   Supported backends:
+
   - `FileSystemStorage`: files are stored to the `MEDIA_ROOT` directory
   - `S3Storage`: files are uploaded to the S3 object storage configured accordingly
 
     required configuations:
-      - `AWS_S3_ACCESS_KEY_ID`: identity
-      - `AWS_S3_SECRET_ACCESS_KEY`: password to authorize identity
-      - `AWS_S3_ENDPOINT_URL`: the url of the service
-      - `AWS_S3_USE_SSL`
-      - `AWS_STORAGE_BUCKET_NAME`: the bucket name of the storage to access objects in path notation (not subdomain)
-      - `AWS_STORAGE_ENABLE_SSEC`: toggle serverside encryption with customer owned key. If enabled the `ALEXANDRIA_ENCRYPTION_METHOD`: `ssec-global` will be employed.
+
+    - `AWS_S3_ACCESS_KEY_ID`: identity
+    - `AWS_S3_SECRET_ACCESS_KEY`: password to authorize identity
+    - `AWS_S3_ENDPOINT_URL`: the url of the service
+    - `AWS_STORAGE_BUCKET_NAME`: the bucket name of the storage to access objects in path notation (not subdomain)
 
     The development setup features a minio service, implementing the S3 protocol.
+    To use SSE-C in development make sure to generate a certificate for the minio container and set `AWS_S3_VERIFY` to `false`.
 
 For development, you can also set the following environemnt variables to help you:
 
