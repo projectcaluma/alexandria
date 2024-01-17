@@ -1,70 +1,46 @@
-import hashlib
-import os
 from pathlib import Path
-from tempfile import TemporaryDirectory
-from uuid import uuid4
+from tempfile import NamedTemporaryFile
 
-import requests
 from django.conf import settings
+from django.core.exceptions import ValidationError
+from django.db.models.fields.files import ImageFile
 from preview_generator.exception import UnsupportedMimeType
 from preview_generator.manager import PreviewManager
 
 from alexandria.core.models import File
 
-from .storage_clients import client
 
+def create_thumbnail(file_: File):
+    with NamedTemporaryFile() as tmp:
+        temp_file = Path(tmp.name)
+        manager = PreviewManager(str(temp_file.parent))
+        with temp_file.open("wb") as f:
+            f.write(file_.content.file.file.read())
+        preview_kwargs = {}
+        if settings.ALEXANDRIA_THUMBNAIL_WIDTH:  # pragma: no cover
+            preview_kwargs["width"] = settings.ALEXANDRIA_THUMBNAIL_WIDTH
+        if settings.ALEXANDRIA_THUMBNAIL_HEIGHT:  # pragma: no cover
+            preview_kwargs["height"] = settings.ALEXANDRIA_THUMBNAIL_HEIGHT
+        try:
+            path_to_preview_image = Path(
+                manager.get_jpeg_preview(str(temp_file), **preview_kwargs)
+            )
+        except UnsupportedMimeType:
+            msg = f"Unsupported MimeType for file {file_.name}"
+            raise ValidationError(msg)
 
-def get_file(file):
-    # TODO: this should be run by a task queue
-    data = client.get_object(file.object_name)
-
-    temp_dir = TemporaryDirectory()
-    temp_filepath = Path(os.path.join(temp_dir.name, str(uuid4())))
-
-    with temp_filepath.open("wb") as f:
-        for d in data.stream(32 * 1024):
-            f.write(d)
-
-    return temp_dir, temp_filepath
-
-
-def create_thumbnail(file, temp_dir, temp_filepath):
-    manager = PreviewManager(str(temp_dir.name))
-
-    preview_kwargs = {}
-    if settings.ALEXANDRIA_THUMBNAIL_WIDTH:  # pragma: no cover
-        preview_kwargs["width"] = settings.ALEXANDRIA_THUMBNAIL_WIDTH
-    if settings.ALEXANDRIA_THUMBNAIL_HEIGHT:  # pragma: no cover
-        preview_kwargs["height"] = settings.ALEXANDRIA_THUMBNAIL_HEIGHT
-
-    try:
-        path_to_preview_image = manager.get_jpeg_preview(
-            str(temp_filepath), **preview_kwargs
-        )
-    except UnsupportedMimeType:
-        temp_filepath.unlink()
-        return False
-    thumb_file = File.objects.create(
-        name=f"{file.name}.jpg",
-        document=file.document,
-        variant=File.THUMBNAIL,
-        original=file,
-    )
-
-    upload_url = client.upload_url(thumb_file.object_name)
-    with Path(path_to_preview_image).open("br") as f:
-        result = requests.put(
-            upload_url, headers={"Content-Type": "image/jpeg"}, data=f.read()
+    with path_to_preview_image.open("rb") as thumb:
+        if file_.variant == File.Variant.THUMBNAIL:
+            file_.content = ImageFile(thumb)
+            file_.save()
+            return file_
+        thumb_file = File.objects.create(
+            name=f"{file_.name}_preview.jpg",
+            document=file_.document,
+            variant=File.Variant.THUMBNAIL.value,
+            original=file_,
+            encryption_status=file_.encryption_status,
+            content=ImageFile(thumb),
         )
 
-    thumb_file.upload_status = File.COMPLETED if result.ok else File.ERROR
-    thumb_file.save()
-
-    return result.ok
-
-
-def get_checksum(temp_filepath):
-    with open(temp_filepath, "rb") as f:
-        checksum = hashlib.sha256(f.read()).hexdigest()
-
-        return f"sha256:{checksum}"
+    return thumb_file

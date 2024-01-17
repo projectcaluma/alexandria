@@ -4,7 +4,6 @@ This settings module only contains alexandria specific settings.
 It's imported by the main alexandria settings and is intended to also be used by third party
 applications integrating alexandria.
 """
-
 import os
 
 import environ
@@ -79,31 +78,73 @@ GENERIC_PERMISSIONS_PERMISSION_CLASSES = ALEXANDRIA_PERMISSION_CLASSES
 GENERIC_PERMISSIONS_VALIDATION_CLASSES = ALEXANDRIA_VALIDATION_CLASSES
 
 # Storage
-ALEXANDRIA_MEDIA_STORAGE_SERVICE = env.str(
-    "ALEXANDRIA_MEDIA_STORAGE_SERVICE", default="minio"
+#
+# The default storage is the file system. This is mostly for development and
+# testing environments.
+DEFAULT_FILE_STORAGE = env.str(
+    "DEFAULT_FILE_STORAGE", default="alexandria.storages.backends.s3.S3Storage"
 )
-ALEXANDRIA_MINIO_STORAGE_ENDPOINT = env.str(
-    "ALEXANDRIA_MINIO_STORAGE_ENDPOINT", default="minio:9000"
+ALEXANDRIA_ENABLE_AT_REST_ENCRYPTION = env.str(
+    "ALEXANDRIA_ENABLE_AT_REST_ENCRYPTION", default=False
 )
-ALEXANDRIA_MINIO_STORAGE_ACCESS_KEY = env.str(
-    "ALEXANDRIA_MINIO_STORAGE_ACCESS_KEY", default="minio"
+ALEXANDRIA_ENCRYPTION_METHOD = env.str(
+    "ALEXANDRIA_ENCRYPTION_METHOD", default="ssec-global"
 )
-ALEXANDRIA_MINIO_STORAGE_SECRET_KEY = env.str(
-    "ALEXANDRIA_MINIO_STORAGE_SECRET_KEY", default="minio123"
-)
-ALEXANDRIA_MINIO_STORAGE_USE_HTTPS = env.bool(
-    "ALEXANDRIA_MINIO_STORAGE_USE_HTTPS", default=False
-)
-ALEXANDRIA_MINIO_STORAGE_MEDIA_BUCKET_NAME = env.str(
-    "ALEXANDRIA_MINIO_STORAGE_MEDIA_BUCKET_NAME", default="alexandria-media"
-)
-ALEXANDRIA_MINIO_STORAGE_AUTO_CREATE_MEDIA_BUCKET = env.bool(
-    "ALEXANDRIA_MINIO_STORAGE_AUTO_CREATE_MEDIA_BUCKET", default=True
-)
-ALEXANDRIA_MINIO_PRESIGNED_TTL_MINUTES = env.str(
-    "ALEXANDRIA_MINIO_PRESIGNED_TTL_MINUTES", default=15
+# Number of seconds a signed download url expires
+ALEXANDRIA_DOWNLOAD_URL_LIFETIME = env.int(
+    "ALEXANDRIA_DOWNLOAD_URL_LIFETIME", default=300
 )
 
+# S3 / boto3 storage client specific configurations
+# -------------------------------------------------
+#
+# Boto3 is the AWS SDK for Python including Simple Storage Service (S3) or more
+# generically simple object storate (SOS)
+#
+# Documentation and available VARIABLES for configuration:
+# django-storages: https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html
+# boto3: https://boto3.amazonaws.com/v1/documentation/api/latest/index.html#boto3-documentation
+#
+# S3 compatible services like Amazon S3, Minio or Exoscale
+#
+# In order to make use an S3 storage backe set `FILE_STORAGE_BACKEND` to one of
+#  - storages.backends.s3.S3Storage
+#  - storages.backends.s3boto3.S3Boto3Storage
+# For your convenience alexandria provides:
+#  - alexandria.storages.backends.s3.S3Storage
+#
+# At rest encryption
+# ------------------
+# S3 supports serverside encryption (SSE) methods. They differ by who owns the  keys
+# and the algorhythms used.
+#
+# SSE-C
+# -----
+# serverside encryption with customer managed key
+#
+# Every object is encrypted with a SHA256 32bit key.
+#
+# `ssec-global`: every object is encrypted with the same key
+# `seec-object`: every object is encryption with a key derived from a shared secret and
+#                a unique object specific property.
+#
+# Identity to access the storage service
+AWS_S3_ACCESS_KEY_ID = env.str("AWS_S3_ACCESS_KEY_ID", default="minio")
+# SECRET to authenticate with the storage service
+AWS_S3_SECRET_ACCESS_KEY = env.str("AWS_S3_SECRET_ACCESS_KEY", default="minio123")
+AWS_S3_ENDPOINT_URL = env.str("AWS_S3_ENDPOINT_URL", default="http://minio:9000")
+# SSL is turned off for the dev environment. Don't do that in production
+AWS_S3_USE_SSL = env.bool("AWS_S3_USE_SSL", default=False)
+# SSL certificate verification is turned off for the dev environment. Don't do that in production
+AWS_S3_VERIFY = env.bool("AWS_S3_VERIFY", default=False)
+AWS_STORAGE_BUCKET_NAME = env.str("AWS_STORAGE_BUCKET_NAME", default="alexandria-media")
+# Object parameter translate to specific headers and values in put and get requests
+AWS_S3_OBJECT_PARAMETERS = {}
+# Shared secret for at-rest encryption of objects
+# NOTE: required to be 32 bytes long
+AWS_S3_STORAGE_SSEC_SECRET = env.str(
+    "AWS_S3_STORAGE_SSEC_SECRET", default="".join(["x" for _ in range(32)])
+)
 
 # Thumbnails
 ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION = env.bool(

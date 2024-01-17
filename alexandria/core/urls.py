@@ -1,4 +1,3 @@
-from django.urls import path
 from rest_framework.routers import SimpleRouter
 
 from . import views
@@ -13,5 +12,3 @@ r.register(r"marks", views.MarkViewSet)
 r.register(r"tagsynonymgroups", views.TagSynonymGroupViewSet)
 
 urlpatterns = r.urls
-
-urlpatterns.append(path("hook", views.hook_view, name="hook"))

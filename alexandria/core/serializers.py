@@ -11,6 +11,7 @@ from rest_framework.exceptions import ValidationError
 from rest_framework_json_api import serializers
 
 from . import models
+from .presign_urls import make_signature_components
 
 
 class BaseSerializer(
@@ -164,6 +165,8 @@ class FileSerializer(BaseSerializer):
         "renderings": "alexandria.core.serializers.FileSerializer",
     }
 
+    download_url = serializers.SerializerMethodField()
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # We only want to provide an upload_url on creation of a file.
@@ -171,31 +174,68 @@ class FileSerializer(BaseSerializer):
         if "request" in self.context and self.context["request"].method == "POST":
             self.new = True
 
-    download_url = serializers.CharField(read_only=True)
-    upload_url = serializers.SerializerMethodField()
-
-    def get_upload_url(self, obj):
-        return obj.upload_url if self.new else ""
+    def get_download_url(self, instance):
+        request = self.context.get("request")
+        if not request:
+            return None
+        url, expires, signature = make_signature_components(
+            str(instance.pk),
+            request.get_host(),
+            scheme=request.META.get("wsgi.url_scheme", "http"),
+        )
+        return f"{url}?expires={expires}&signature={signature}"
 
     def validate(self, *args, **kwargs):
+        """Validate the data.
+
+        Validation can be extended by adding ValidatorClass to the
+        `validator_classes` attribute of the FileViewSet.
+        """
         validated_data = super().validate(*args, **kwargs)
         if validated_data.get(
             "variant"
-        ) != models.File.ORIGINAL and not validated_data.get("original"):
+        ) != models.File.Variant.ORIGINAL and not validated_data.get("original"):
             file_variant = validated_data.get("variant")
             raise ValidationError(
                 f'"original" must be set for variant "{file_variant}".'
             )
 
-        if validated_data.get("variant") == models.File.ORIGINAL and validated_data.get(
-            "original"
-        ):
-            file_variant = validated_data.get("variant")
+        if (
+            variant := validated_data.get("variant")
+        ) == models.File.Variant.ORIGINAL and validated_data.get("original"):
             raise ValidationError(
-                f'"original" must not be set for variant "{file_variant}".'
+                f'"original" must not be set for variant "{variant}".'
             )
 
         return validated_data
+
+    def _prepare_multipart(self):
+        """Massage multipart data into jsonapi-compatible form."""
+
+        # Depending on incoming data, the parser converts the request into
+        # a dict or an immutable QueryDict. In the latter case, we cannot
+        # modify the dict anymore to accomodate the multipart -> jsonapi
+        # conversion as needed, thus we need to unlock it.
+        # As nothing bad comes from just leaving it "mutable", we don't
+        # bother cleaning it up after.
+        if hasattr(self.initial_data, "_mutable"):
+            self.initial_data._mutable = True
+
+        if not isinstance(self.initial_data.get("document"), dict):
+            self.initial_data["document"] = {
+                "type": "documents",
+                "id": self.initial_data["document"],
+            }
+
+        if (original := self.initial_data.get("original")) and not isinstance(
+            original, dict
+        ):
+            self.initial_data["original"] = {"type": "files", "id": original}
+
+    def is_valid(self, *args, raise_exception=False, **kwargs):
+        if self.context["request"].content_type.startswith("multipart/"):
+            self._prepare_multipart()
+        return super().is_valid(*args, raise_exception=raise_exception, **kwargs)
 
     def create(self, validated_data):
         created = super().create(validated_data)
@@ -215,11 +255,11 @@ class FileSerializer(BaseSerializer):
             "original",
             "renderings",
             "document",
-            "download_url",
-            "upload_url",
-            "upload_status",
             "checksum",
+            "content",
+            "download_url",
         )
+        extra_kwargs = {"content": {"write_only": True}}
 
 
 class DocumentSerializer(BaseSerializer):

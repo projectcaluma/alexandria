@@ -35,7 +35,6 @@ def test_tag_pk_migration(migrator):
 
     assert Tag.objects.count() == 3
 
-    # new_state = migrator.apply_tested_migration(("alexandria_core", "0011_tag_uuid"))
     new_state = migrator.apply_tested_migration(
         ("alexandria_core", "0012_tag_uuid_schema")
     )
@@ -63,3 +62,23 @@ def test_tag_pk_migration(migrator):
 
     for tag in tags:
         assert is_valid_uuid(tag.id)
+
+
+@pytest.mark.django_db()
+def test_0013_file_content(migrator):
+    old_state = migrator.apply_initial_migration(
+        ("alexandria_core", "0012_tag_uuid_schema")
+    )
+
+    OldFile = old_state.apps.get_model("alexandria_core", "file")
+    OldDocument = old_state.apps.get_model("alexandria_core", "document")
+    doc = OldDocument.objects.create()
+    OldFile.objects.create(name="existing_file", document=doc)
+
+    new_state = migrator.apply_tested_migration(
+        ("alexandria_core", "0013_file_content")
+    )
+
+    NewFile = new_state.apps.get_model("alexandria_core", "file")
+    _file = NewFile.objects.first()
+    assert _file.name in _file.content.url

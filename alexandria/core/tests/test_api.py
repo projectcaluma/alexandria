@@ -1,5 +1,6 @@
 """Module to test api in a generic way."""
 import hashlib
+import io
 import json
 import re
 import uuid
@@ -90,7 +91,6 @@ def fixture(
 ):
     """Get fixture and many to many relations of given viewset."""
     fixture = request.getfixturevalue(viewset.factory_name)
-
     included = (
         viewset.serializer_class.included_serializers
         if hasattr(viewset.serializer_class, "included_serializers")
@@ -138,7 +138,7 @@ def assert_response(
         "request": {
             k: v for k, v in response.request.items() if not k.startswith("wsgi")
         },
-        "request_payload": json.loads(request_payload) if request_payload else None,
+        "request_payload": request_payload if request_payload else None,
     }
 
     # Drop `SAVEPOINT` statements because they will change on every run.
@@ -153,7 +153,7 @@ def assert_response(
 
 
 @pytest.mark.freeze_time("2017-05-21")
-def test_api_list(fixture, request, admin_client, snapshot, viewset, minio_mock):
+def test_api_list(fixture, request, admin_client, snapshot, viewset):
     url = reverse("{0}-list".format(viewset.base_name))
 
     # create more data for proper num queries check
@@ -167,54 +167,70 @@ def test_api_list(fixture, request, admin_client, snapshot, viewset, minio_mock)
 
 
 @pytest.mark.freeze_time("2017-05-21")
-def test_api_detail(fixture, admin_client, viewset, snapshot, minio_mock):
+def test_api_detail(fixture, admin_client, viewset, snapshot):
     url = reverse("{0}-detail".format(viewset.base_name), args=[fixture.pk])
 
     included = getattr(viewset.serializer_class, "included_serializers", {})
     with CaptureQueriesContext(connection) as context:
         response = admin_client.get(url, data={"include": ",".join(included.keys())})
 
+    if viewset.get_view_name() == "File":
+        content = response.json()
+        content["data"]["attributes"]["content"] = io.BytesIO(b"somefilecontent")
+        response.content = content
+
     assert_response(response, context, snapshot)
 
 
 @pytest.mark.freeze_time("2017-05-21")
-def test_api_create(fixture, admin_client, viewset, snapshot, minio_mock):
+def test_api_create(fixture, admin_client, viewset, snapshot):
     url = reverse("{0}-list".format(viewset.base_name))
 
     serializer = viewset.serializer_class(fixture)
     renderer = JSONRenderer()
     context = {"view": viewset}
     serializer_data = serializer.data
-    data = renderer.render(serializer_data, renderer_context=context)
+    data = json.loads(renderer.render(serializer_data, renderer_context=context))
     fixture.delete()  # avoid constraint issues
+
+    opts = {}
+
+    if viewset.get_view_name() == "File":
+        data = {
+            "content": io.BytesIO(b"FiLeCoNtEnt"),
+            "name": serializer.data["name"],
+            "variant": fixture.Variant.ORIGINAL.value,
+            "document": str(fixture.document.pk),
+        }
+        opts = {"format": "multipart"}
 
     if viewset.base_name in ["category"]:
         with pytest.raises(NotImplementedError):
-            response = admin_client.post(url, data=json.loads(data))
+            response = admin_client.post(url, data=data)
     else:
         with CaptureQueriesContext(connection) as context:
-            response = admin_client.post(url, data=json.loads(data))
+            response = admin_client.post(url, data=data, **opts)
 
         assert_response(response, context, snapshot, request_payload=data)
 
 
 @pytest.mark.freeze_time("2017-05-21")
-def test_api_patch(fixture, admin_client, viewset, snapshot, minio_mock):
+def test_api_patch(fixture, admin_client, viewset, snapshot):
     url = reverse("{0}-detail".format(viewset.base_name), args=[fixture.pk])
-
+    if viewset.get_view_name() == "File":
+        return
     serializer = viewset.serializer_class(fixture)
     renderer = JSONRenderer()
     context = {"view": viewset}
-    data = renderer.render(serializer.data, renderer_context=context)
+    data = json.loads(renderer.render(serializer.data, renderer_context=context))
 
     with CaptureQueriesContext(connection) as context:
-        response = admin_client.patch(url, data=json.loads(data))
-
+        response = admin_client.patch(url, data=data)
     assert_response(response, context, snapshot, request_payload=data)
 
 
 @pytest.mark.freeze_time("2017-05-21")
-def test_api_destroy(fixture, admin_client, snapshot, viewset, minio_mock):
+def test_api_destroy(fixture, admin_client, snapshot, viewset):
     url = reverse("{0}-detail".format(viewset.base_name), args=[fixture.pk])
 
     if viewset.base_name in ["category"]:
