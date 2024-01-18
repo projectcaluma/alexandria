@@ -1,3 +1,12 @@
+# 3.0.0-beta.3
+### Feature
+* **storage:** use Django's storage backend for object storage 
+* Add command to encrypt existing files ([`ac4a910`](https://github.com/projectcaluma/alexandria/commit/ac4a91022d011385931b37f8f6798cf2c8bf60bc))
+* **files:** Add signed download_url to file ([`922f55a`](https://github.com/projectcaluma/alexandria/commit/922f55a67299aa42a94ef539ac0949ba375901b6))
+
+### Fix
+* **document:** Adjust cloning for use with storage backends ([`26c4331`](https://github.com/projectcaluma/alexandria/commit/26c4331648945772ad697bbce8b3a6140c5de43a))
+
 # 3.0.0-beta.2
 ### Feature
 * **document:** Update modfied data when creating new file ([`0b9dd76`](https://github.com/projectcaluma/alexandria/commit/0b9dd76be012cb71ce25a634cd4d004968d7a152))
