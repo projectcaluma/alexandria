@@ -1,3 +1,7 @@
+# 3.0.0-beta.4
+### Fix
+* Fix factory import ([#424](https://github.com/projectcaluma/alexandria/issues/424)) ([`c9e4165`](https://github.com/projectcaluma/alexandria/commit/c9e4165020c25511cea1209a66037448e51defa6))
+
 # 3.0.0-beta.3
 ### Feature
 * **storage:** use Django's storage backend for object storage 
