@@ -17,8 +17,8 @@ from rest_framework.status import (
     HTTP_404_NOT_FOUND,
 )
 
+from alexandria.core.factories import FileData
 from alexandria.core.models import File
-from alexandria.core.tests import file_data
 from alexandria.core.tests.test_permissions import TIMESTAMP
 
 from ..models import Document, Tag
@@ -94,7 +94,7 @@ def test_file_upload(
     data = {
         "name": "file.png",
         "document": str(doc.pk),
-        "content": io.BytesIO(getattr(file_data, file_type)),
+        "content": io.BytesIO(getattr(FileData, file_type)),
     }
     if file_variant:
         data["variant"] = file_variant
@@ -142,7 +142,7 @@ def test_file_upload(
             # because PreviewManager does not accept in-memory byte streams
             uploaded = tmp_path / f"uploaded.{file_type}"
             with uploaded.open("wb") as f:
-                f.write(getattr(file_data, file_type))
+                f.write(getattr(FileData, file_type))
             manager = PreviewManager(tmp_path)
             preview_path = manager.get_jpeg_preview(str(uploaded))
             with open(preview_path, "rb") as f:
@@ -154,7 +154,7 @@ def test_file_upload(
         elif file_variant == File.Variant.ORIGINAL:
             assert doc.files.filter(
                 variant=File.Variant.ORIGINAL
-            ).first().checksum == File.make_checksum(getattr(file_data, file_type))
+            ).first().checksum == File.make_checksum(getattr(FileData, file_type))
         else:
             pass
 
@@ -174,7 +174,7 @@ def test_at_rest_encryption(admin_client, settings, document, mocker):
     data = {
         "name": "file.png",
         "document": str(document.pk),
-        "content": io.BytesIO(file_data.png),
+        "content": io.BytesIO(FileData.png),
         "variant": File.Variant.ORIGINAL,
     }
     response = admin_client.post(reverse("file-list"), data=data, format="multipart")
