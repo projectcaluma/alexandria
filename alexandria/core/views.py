@@ -183,6 +183,8 @@ class FileViewSet(
             return response
 
     def create(self, request, *args, **kwargs):
+        # invoke dgap permission check
+        self._check_permissions(request)
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         if settings.ALEXANDRIA_ENABLE_AT_REST_ENCRYPTION:
