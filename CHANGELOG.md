@@ -1,3 +1,9 @@
+# 3.0.0-beta.5
+### Fix
+* **tests:** Fix broken tests ([#415](https://github.com/projectcaluma/alexandria/issues/415)) ([`0bd0cab`](https://github.com/projectcaluma/alexandria/commit/0bd0cab60b1733fd5479affb8dc7ecdec57524ac))
+* **file:** Add missing create permission check ([#427](https://github.com/projectcaluma/alexandria/issues/427)) ([`34a57c1`](https://github.com/projectcaluma/alexandria/commit/34a57c1001be5d574676d77d5dab22ab7338db99))
+* Remove modified at update for file creation ([#425](https://github.com/projectcaluma/alexandria/issues/425)) ([`86cfbf2`](https://github.com/projectcaluma/alexandria/commit/86cfbf2245f54e2126cc51329110a744a2752a4d))
+
 # 3.0.0-beta.4
 ### Fix
 * Fix factory import ([#424](https://github.com/projectcaluma/alexandria/issues/424)) ([`c9e4165`](https://github.com/projectcaluma/alexandria/commit/c9e4165020c25511cea1209a66037448e51defa6))
