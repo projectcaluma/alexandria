@@ -35,7 +35,9 @@ class Migration(migrations.Migration):
             model_name="file",
             name="content",
             field=alexandria.storages.fields.DynamicStorageFileField(
-                default="", upload_to=alexandria.core.models.upload_file_content_to
+                default="",
+                upload_to=alexandria.core.models.upload_file_content_to,
+                max_length=300,
             ),
             preserve_default=False,
         ),
