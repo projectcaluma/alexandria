@@ -64,6 +64,7 @@ python-semantic-release = "7.33.3"
 requests-mock = "1.11.0"
 snapshottest = "0.6.0"
 werkzeug = "3.0.1"
+psutil = "^5.9.8"
 
 [tool.isort]
 skip = ["migrations", "snapshots"]
@@ -105,7 +106,7 @@ exclude_lines = [
     "def __unicode__",
     "def __repr__",
 ]
-omit = ["*/migrations/*", "*/apps.py", "manage.py", "alexandria/wsgi.py"]
+omit = ["*/migrations/*", "*/apps.py", "manage.py", "alexandria/wsgi.py", "generate_missing_thumbnails.py"]
 show_missing = true
 
 [build-system]
