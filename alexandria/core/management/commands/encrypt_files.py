@@ -1,7 +1,6 @@
 from django.conf import settings
 from django.core.files.storage import get_storage_class
 from django.core.management.base import BaseCommand
-from django.db import transaction
 from django.db.models import Q
 from tqdm import tqdm
 
@@ -19,10 +18,6 @@ if not settings.AWS_S3_VERIFY:
 class Command(BaseCommand):
     help = "Swaps plain text file content to encrypted content"
 
-    def add_arguments(self, parser):
-        parser.add_argument("--dry", dest="dry", action="store_true", default=False)
-
-    @transaction.atomic
     def handle(self, *args, **options):
         if (
             not settings.ALEXANDRIA_ENABLE_AT_REST_ENCRYPTION
@@ -38,7 +33,7 @@ class Command(BaseCommand):
         checksum = settings.ALEXANDRIA_ENABLE_CHECKSUM
         settings.ALEXANDRIA_ENABLE_CHECKSUM = False
 
-        sid = transaction.savepoint()
+        missing_files = []
 
         # flip between default and encrypted storage to have the correct parameters in the requests
         DefaultStorage = get_storage_class()
@@ -50,19 +45,23 @@ class Command(BaseCommand):
         ):
             # get original file content
             file.content.storage = DefaultStorage()
-            content = file.content.open()
+            try:
+                content = file.content.open()
+            except FileNotFoundError:  # pragma: no cover
+                missing_files.append(file.pk)
+                continue
 
-            if not options["dry"]:
-                # overwrite with encrypted content
-                file.content.storage = SsecGlobalS3Storage()
-                file.content.save(file.content.name, content)
+            # overwrite with encrypted content
+            file.content.storage = SsecGlobalS3Storage()
+            file.content.save(file.content.name, content)
 
             # set encryption status
             file.encryption_status = settings.ALEXANDRIA_ENCRYPTION_METHOD
             file.save()
 
         settings.ALEXANDRIA_ENABLE_CHECKSUM = checksum
-        if options["dry"]:  # pragma: no cover
-            transaction.savepoint_rollback(sid)
-        else:
-            transaction.savepoint_commit(sid)
+        self.stdout.write(
+            self.style.WARNING(
+                f"For these files models exists, but were not found on storage:\n{missing_files}"
+            )
+        )
