@@ -44,6 +44,11 @@ def _make_clean_media_dir(settings):
     shutil.rmtree(test_media_root)
 
 
+@pytest.fixture(autouse=True)
+def mock_clamd(mocker):
+    mocker.patch("django_clamd.validators.validate_file_infection", return_value=None)
+
+
 @pytest.fixture
 def admin_groups():
     return ["admin"]

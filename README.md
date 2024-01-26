@@ -111,6 +111,13 @@ A list of configuration options which you need
     The development setup features a minio service, implementing the S3 protocol.
     To use SSE-C in development make sure to generate a certificate for the minio container and set `ALEXANDRIA_S3_VERIFY` to `false`.
 
+- ClamAV
+- `ALEXANDRIA_CLAMD_ENABLED`: Set this to `True` to enable ClamAV (virus scanner).
+- `ALEXANDRIA_CLAMD_SOCKET`: ClamAV socket
+- `ALEXANDRIA_CLAMD_USE_TCP`: Use TCP to connect to ClamAV service
+- `ALEXANDRIA_CLAMD_TCP_SOCKET`: ClamAV service socket
+- `ALEXANDRIA_CLAMD_TCP_ADDR`: ClamAV service address
+
 For development, you can also set the following environemnt variables to help you:
 
 - `ALEXANDRIA_DEV_AUTH_BACKEND`: Set this to "true" to enable a fake auth backend that simulates an authenticated user. Requires `DEBUG` to be set to `True` as well.
