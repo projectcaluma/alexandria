@@ -16,6 +16,7 @@ INSTALLED_APPS = [
     "django.contrib.postgres",
     "localized_fields",
     "psqlextra",
+    "django_clamd",
     "django.contrib.contenttypes",
     "django.contrib.auth",
     "alexandria.core.apps.DefaultConfig",

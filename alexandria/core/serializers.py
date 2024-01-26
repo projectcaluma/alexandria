@@ -2,6 +2,7 @@ from django.conf import settings
 from django.contrib.auth.models import AnonymousUser
 from django.template.defaultfilters import slugify
 from django.utils import translation
+from django_clamd.validators import validate_file_infection
 from generic_permissions.validation import ValidatorMixin
 from generic_permissions.visibilities import (
     VisibilityResourceRelatedField,
@@ -230,6 +231,10 @@ class FileSerializer(BaseSerializer):
         if self.context["request"].content_type.startswith("multipart/"):
             self._prepare_multipart()
         return super().is_valid(*args, raise_exception=raise_exception, **kwargs)
+
+    def validate_content(self, value):
+        validate_file_infection(value)
+        return value
 
     class Meta:
         model = models.File
