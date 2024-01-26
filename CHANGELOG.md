@@ -1,3 +1,9 @@
+# 3.0.0-beta.6
+### Fix
+* Remove dry from encryption command ([`a3a7238`](https://github.com/projectcaluma/alexandria/commit/a3a72389450c547acaf6888055242fb8abf23fda))
+* Minor cleanups, disable encryption in local setup ([`033da5e`](https://github.com/projectcaluma/alexandria/commit/033da5e2edf2033124b597850784abb085caf947))
+* **model:** Max length of file field ([`7d4b0c9`](https://github.com/projectcaluma/alexandria/commit/7d4b0c9061276a03ba3d08019ab212eb95334fe3))
+
 # 3.0.0-beta.5
 ### Fix
 * **tests:** Fix broken tests ([#415](https://github.com/projectcaluma/alexandria/issues/415)) ([`0bd0cab`](https://github.com/projectcaluma/alexandria/commit/0bd0cab60b1733fd5479affb8dc7ecdec57524ac))
