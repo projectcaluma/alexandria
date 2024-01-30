@@ -14,11 +14,11 @@ def test_dynamic_storage_select_global_ssec(
     db, settings, file_factory, method, secret, raises, mocker
 ):
     # set s3 compatible storage backend
-    settings.DEFAULT_FILE_STORAGE = "alexandria.storages.backends.s3.S3Storage"
+    settings.ALEXANDRIA_FILE_STORAGE = "alexandria.storages.backends.s3.S3Storage"
     settings.ALEXANDRIA_ENABLE_AT_REST_ENCRYPTION = True
 
     settings.ALEXANDRIA_ENCRYPTION_METHOD = method
-    settings.AWS_S3_STORAGE_SSEC_SECRET = secret
+    settings.ALEXANDRIA_S3_STORAGE_SSEC_SECRET = secret
 
     mocker.patch("storages.backends.s3.S3Storage.save")
     SsecGlobalS3Storage.save.return_value = "name-of-the-file"
@@ -49,7 +49,7 @@ def test_dynamic_storage_select_global_ssec(
 )
 def test_backend_configurations(db, settings, file_factory, method, storage_backend):
     settings.ALEXANDRIA_ENABLE_AT_REST_ENCRYPTION = True
-    settings.DEFAULT_FILE_STORAGE = storage_backend
+    settings.ALEXANDRIA_FILE_STORAGE = storage_backend
     settings.ALEXANDRIA_ENCRYPTION_METHOD = method
     with pytest.raises(ImproperlyConfigured):
         file_factory()

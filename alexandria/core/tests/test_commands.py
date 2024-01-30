@@ -15,7 +15,7 @@ def test_encrypt_files(db, settings, mocker, file_factory):
 
     settings.ALEXANDRIA_ENABLE_AT_REST_ENCRYPTION = True
     settings.ALEXANDRIA_ENCRYPTION_METHOD = File.EncryptionStatus.SSEC_GLOBAL_KEY.value
-    settings.DEFAULT_FILE_STORAGE = "alexandria.storages.backends.s3.S3Storage"
+    settings.ALEXANDRIA_FILE_STORAGE = "alexandria.storages.backends.s3.S3Storage"
 
     mocker.patch("storages.backends.s3.S3Storage.save")
     mocker.patch("storages.backends.s3.S3Storage.open")

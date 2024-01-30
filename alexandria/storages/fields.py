@@ -10,8 +10,7 @@ from alexandria.storages.backends.s3 import SsecGlobalS3Storage
 class DynamicStorageFieldFile(FieldFile):
     def __init__(self, instance, field, name):
         super().__init__(instance, field, name)
-        DefaultStorage = get_storage_class()
-        self.storage = DefaultStorage()
+        self.storage = get_storage_class(settings.ALEXANDRIA_FILE_STORAGE)()
         if settings.ALEXANDRIA_ENABLE_AT_REST_ENCRYPTION:
             from alexandria.core.models import File
 
@@ -24,8 +23,7 @@ class DynamicStorageFileField(models.FileField):
 
     def pre_save(self, instance, add):
         # set storage to default storage class to prevent reusing the last selection
-        DefaultStorage = get_storage_class()
-        self.storage = DefaultStorage()
+        self.storage = get_storage_class(settings.ALEXANDRIA_FILE_STORAGE)()
         if settings.ALEXANDRIA_ENABLE_AT_REST_ENCRYPTION:
             from alexandria.core.models import File
 
@@ -43,7 +41,7 @@ class DynamicStorageFileField(models.FileField):
             if not isinstance(self.storage, S3Storage):
                 msg = (
                     "At-rest object encryption is currently only available for S3 compatible storage backends. "
-                    "Set `DEFAULT_FILE_STORAGE` to `alexandria.storages.s3.S3Storage`."
+                    "Set `ALEXANDRIA_FILE_STORAGE` to `alexandria.storages.s3.S3Storage`."
                 )
                 raise ImproperlyConfigured(msg)
             storage = SsecGlobalS3Storage()

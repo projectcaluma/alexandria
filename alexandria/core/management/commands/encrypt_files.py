@@ -9,7 +9,7 @@ from alexandria.storages.backends.s3 import SsecGlobalS3Storage
 
 # This is needed to disable the warning about not verifying the SSL certificate.
 # It spams the output otherwise.
-if not settings.AWS_S3_VERIFY:
+if not settings.ALEXANDRIA_S3_VERIFY:
     import urllib3
 
     urllib3.disable_warnings()
@@ -36,7 +36,7 @@ class Command(BaseCommand):
         missing_files = []
 
         # flip between default and encrypted storage to have the correct parameters in the requests
-        DefaultStorage = get_storage_class()
+        Storage = get_storage_class(settings.ALEXANDRIA_FILE_STORAGE)
         for file in tqdm(
             File.objects.filter(
                 Q(encryption_status=File.EncryptionStatus.NOT_ENCRYPTED)
@@ -44,7 +44,7 @@ class Command(BaseCommand):
             ),
         ):
             # get original file content
-            file.content.storage = DefaultStorage()
+            file.content.storage = Storage()
             try:
                 content = file.content.open()
             except FileNotFoundError:  # pragma: no cover
