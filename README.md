@@ -86,7 +86,7 @@ A list of configuration options which you need
 
   Storage backends are configured globally. The storable object bears information on the encryption status allowing the ORM appropriate handling of the data.
 
-  - `FILE_STORAGE_BACKEND`: Set the backend for file uploads. `django-storages` is available (default: `django.core.files.storage.FileSystemStorage`)
+  - `ALEXANDRIA_FILE_STORAGE`: Set the backend for file uploads. `django-storages` is available (default: `alexandria.storages.backends.s3.S3Storage`)
 
   Encryption:
 
@@ -94,7 +94,7 @@ A list of configuration options which you need
   - `ALEXANDRIA_ENCRYPTION_METHOD`: Define encryption method that is applied to uploaded objects. Available values depend on storage backend's capabilities (default: `None`)
     - available methods
       - None: no at-rest encryption
-      - `ssec-global`: encrypt all files with the same key (requires: `FILE_STORAGE_BACKEND`: `alexandria.storages.s3.S3Storage)
+      - `ssec-global`: encrypt all files with the same key (requires: `ALEXANDRIA_FILE_STORAGE`: `alexandria.storages.backends.s3.S3Storage`)
 
   Supported backends:
 
@@ -103,13 +103,13 @@ A list of configuration options which you need
 
     required configuations:
 
-    - `AWS_S3_ACCESS_KEY_ID`: identity
-    - `AWS_S3_SECRET_ACCESS_KEY`: password to authorize identity
-    - `AWS_S3_ENDPOINT_URL`: the url of the service
-    - `AWS_STORAGE_BUCKET_NAME`: the bucket name of the storage to access objects in path notation (not subdomain)
+    - `ALEXANDRIA_S3_ACCESS_KEY`: identity
+    - `ALEXANDRIA_S3_SECRET_KEY`: password to authorize identity
+    - `ALEXANDRIA_S3_ENDPOINT_URL`: the url of the service
+    - `ALEXANDRIA_S3_BUCKET_NAME`: the bucket name of the storage to access objects in path notation (not subdomain)
 
     The development setup features a minio service, implementing the S3 protocol.
-    To use SSE-C in development make sure to generate a certificate for the minio container and set `AWS_S3_VERIFY` to `false`.
+    To use SSE-C in development make sure to generate a certificate for the minio container and set `ALEXANDRIA_S3_VERIFY` to `false`.
 
 For development, you can also set the following environemnt variables to help you:
 

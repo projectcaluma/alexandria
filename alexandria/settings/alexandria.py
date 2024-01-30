@@ -81,8 +81,8 @@ GENERIC_PERMISSIONS_VALIDATION_CLASSES = ALEXANDRIA_VALIDATION_CLASSES
 #
 # The default storage is the file system. This is mostly for development and
 # testing environments.
-DEFAULT_FILE_STORAGE = env.str(
-    "DEFAULT_FILE_STORAGE", default="alexandria.storages.backends.s3.S3Storage"
+ALEXANDRIA_FILE_STORAGE = env.str(
+    "ALEXANDRIA_FILE_STORAGE", default="alexandria.storages.backends.s3.S3Storage"
 )
 ALEXANDRIA_ENABLE_AT_REST_ENCRYPTION = env.bool(
     "ALEXANDRIA_ENABLE_AT_REST_ENCRYPTION", default=False
@@ -107,7 +107,7 @@ ALEXANDRIA_DOWNLOAD_URL_LIFETIME = env.int(
 #
 # S3 compatible services like Amazon S3, Minio or Exoscale
 #
-# In order to make use an S3 storage backe set `FILE_STORAGE_BACKEND` to one of
+# In order to make use an S3 storage backend set `ALEXANDRIA_FILE_STORAGE` to one of
 #  - storages.backends.s3.S3Storage
 #  - storages.backends.s3boto3.S3Boto3Storage
 # For your convenience alexandria provides:
@@ -129,21 +129,25 @@ ALEXANDRIA_DOWNLOAD_URL_LIFETIME = env.int(
 #                a unique object specific property.
 #
 # Identity to access the storage service
-AWS_S3_ACCESS_KEY_ID = env.str("AWS_S3_ACCESS_KEY_ID", default="minio")
+ALEXANDRIA_S3_ACCESS_KEY = env.str("ALEXANDRIA_S3_ACCESS_KEY", default="minio")
 # SECRET to authenticate with the storage service
-AWS_S3_SECRET_ACCESS_KEY = env.str("AWS_S3_SECRET_ACCESS_KEY", default="minio123")
-AWS_S3_ENDPOINT_URL = env.str("AWS_S3_ENDPOINT_URL", default="http://minio:9000")
+ALEXANDRIA_S3_SECRET_KEY = env.str("ALEXANDRIA_S3_SECRET_KEY", default="minio123")
+ALEXANDRIA_S3_ENDPOINT_URL = env.str(
+    "ALEXANDRIA_S3_ENDPOINT_URL", default="http://minio:9000"
+)
 # SSL is turned off for the dev environment. Don't do that in production
-AWS_S3_USE_SSL = env.bool("AWS_S3_USE_SSL", default=False)
+ALEXANDRIA_S3_USE_SSL = env.bool("ALEXANDRIA_S3_USE_SSL", default=False)
 # SSL certificate verification is turned off for the dev environment. Don't do that in production
-AWS_S3_VERIFY = env.bool("AWS_S3_VERIFY", default=False)
-AWS_STORAGE_BUCKET_NAME = env.str("AWS_STORAGE_BUCKET_NAME", default="alexandria-media")
+ALEXANDRIA_S3_VERIFY = env.bool("ALEXANDRIA_S3_VERIFY", default=False)
+ALEXANDRIA_S3_BUCKET_NAME = env.str(
+    "ALEXANDRIA_S3_BUCKET_NAME", default="alexandria-media"
+)
 # Object parameter translate to specific headers and values in put and get requests
-AWS_S3_OBJECT_PARAMETERS = {}
+ALEXANDRIA_S3_OBJECT_PARAMETERS = {}
 # Shared secret for at-rest encryption of objects
 # NOTE: required to be 32 bytes long
-AWS_S3_STORAGE_SSEC_SECRET = env.str(
-    "AWS_S3_STORAGE_SSEC_SECRET", default="".join(["x" for _ in range(32)])
+ALEXANDRIA_S3_STORAGE_SSEC_SECRET = env.str(
+    "ALEXANDRIA_S3_STORAGE_SSEC_SECRET", default="".join(["x" for _ in range(32)])
 )
 
 # Thumbnails

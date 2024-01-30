@@ -172,7 +172,7 @@ def test_at_rest_encryption(admin_client, settings, document, mocker):
     settings.ALEXANDRIA_ENABLE_AT_REST_ENCRYPTION = True
     settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION = False
     settings.ALEXANDRIA_ENCRYPTION_METHOD = File.EncryptionStatus.SSEC_GLOBAL_KEY
-    settings.DEFAULT_FILE_STORAGE = "storages.backends.s3.S3Storage"
+    settings.ALEXANDRIA_FILE_STORAGE = "storages.backends.s3.S3Storage"
     data = {
         "name": "file.png",
         "document": str(document.pk),

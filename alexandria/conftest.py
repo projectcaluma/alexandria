@@ -31,7 +31,7 @@ register_module(importlib.import_module(".core.factories", "alexandria"))
 
 @pytest.fixture(autouse=True)
 def _default_file_storage_backend(settings):
-    settings.DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
+    settings.ALEXANDRIA_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
     settings.ALEXANDRIA_ENABLE_AT_REST_ENCRYPTION = False
 
 
