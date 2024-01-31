@@ -1,3 +1,10 @@
+# 3.0.0-beta.7
+### Feature
+* **storage:** Don't use django default storage configuration ([`1c124fd`](https://github.com/projectcaluma/alexandria/commit/1c124fdc31cdc936beed2b553d7c06558b7a7180))
+
+### Breaking
+* Instead of overwriting `DEFAULT_FILE_STORAGE` in the host app, Alexandria now uses a separate setting `ALEXANDRIA_FILE_STORAGE` to configure the used file storage backend. ([`1c124fd`](https://github.com/projectcaluma/alexandria/commit/1c124fdc31cdc936beed2b553d7c06558b7a7180))
+
 # 3.0.0-beta.6
 ### Fix
 * Remove dry from encryption command ([`a3a7238`](https://github.com/projectcaluma/alexandria/commit/a3a72389450c547acaf6888055242fb8abf23fda))
