@@ -70,3 +70,6 @@ target/
 
 # Editor swap files
 *.swp
+
+# Helm
+deploy/charts/*/charts/

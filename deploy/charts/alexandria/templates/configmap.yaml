@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "alexandria.fullname" . }}
+  labels:
+    {{- include "alexandria.labels" . | nindent 4 }}
+data:
+  # Django
+  ENV: {{ .Values.alexandria.env | quote }}
+  ALLOWED_HOSTS: {{ .Values.alexandria.allowedHosts | quote }}
+  ALLOW_ANONYMOUS_WRITE: {{ .Values.alexandria.allowAnonymousWrite | quote }}
+  LANGUAGES: {{ join "," .Values.alexandria.languages | quote}}
+  VISIBILITY_CLASSES: {{ .Values.alexandria.visibilityClasses | quote }}
+  PERMISSION_CLASSES: {{ .Values.alexandria.permissionClasses | quote }}
+  # DB
+  {{- if .Values.postgresql.enabled }}
+  DATABASE_USER: {{ .Values.postgresql.auth.username | quote }}
+  DATABASE_NAME: {{ .Values.postgresql.auth.database | quote }}
+  {{- else }}
+  DATABASE_USER: {{ .Values.alexandria.postgresql.username | quote }}
+  DATABASE_NAME: {{ .Values.alexandria.postgresql.database | quote }}
+  {{- end }}
+  {{- if and .Values.postgresql.enabled .Values.alexandria.postgresql.existingHost }}
+  {{ fail "postgresql.enabled and alexandria.postgresql.existingHost are mutually exclusive, please pick one" }}
+  {{- end }}
+  {{- if .Values.postgresql.enabled }}
+  DATABASE_HOST: {{ template "alexandria.fullname" . }}-postgresql
+  {{- else if .Values.alexandria.postgresql.existingHost }}
+  DATABASE_HOST: {{ .Values.alexandria.postgresql.existingHost | quote }}
+  {{- else }}
+  {{ fail "neither postgresql.enabled or alexandria.postgresql.existingHost are set, please pick one" }}
+  {{- end }}
+  # S3
+  {{- if and .Values.minio.enabled .Values.alexandria.s3.existingHost }}
+  {{ fail "minio.enabled and alexandria.s3.existingUrl are mutually exclusive, please pick one" }}
+  {{- end }}
+  {{- if .Values.minio.enabled }}
+  ALEXANDRIA_S3_ENDPOINT_URL: http://{{ template "alexandria.fullname" . }}-minio:9000
+  {{- else if .Values.alexandria.s3.existingUrl }}
+  ALEXANDRIA_S3_ENDPOINT_URL: {{ .Values.alexandria.s3.existingUrl | quote }}
+  {{- else }}
+  {{ fail "neither minio.enabled or alexandria.s3.existingHost are set, please pick one" }}
+  {{- end }}

@@ -67,3 +67,13 @@ poetry install
 poetry run pre-commit install --hook=pre-commit
 poetry run pre-commit install --hook=commit-msg
 ```
+
+### Helm Chart testing
+
+You can spin up an instance of alexandria locally with ease. Out of the box this deploys the
+latest `dev` tag from ghcr.io.
+
+```bash
+helm dep build deploy/charts/alexandria
+helm install alexandria -f deploy/charts/alexandria/ci/default-values.yaml alexandria deploy/charts/alexandria
+```
