@@ -158,3 +158,5 @@ def parse_admins(admins):
 
 
 ADMINS = parse_admins(env.list("ADMINS", default=[]))
+
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
