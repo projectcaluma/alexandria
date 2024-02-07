@@ -386,4 +386,4 @@ def test_document_category_filters(
     assert response.status_code == HTTP_200_OK
     data = response.json()["data"]
     assert len(data) == expected_count
-    snapshot.assert_match(sorted([doc["attributes"]["title"]["en"] for doc in data]))
+    assert sorted([doc["attributes"]["title"]["en"] for doc in data]) == snapshot

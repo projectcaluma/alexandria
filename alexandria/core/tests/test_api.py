@@ -1,4 +1,5 @@
 """Module to test api in a generic way."""
+
 import hashlib
 import io
 import json
@@ -149,7 +150,7 @@ def assert_response(
     if include_json:
         value["response"] = response.json()
 
-    snapshot.assert_match(value)
+    assert value == snapshot
 
 
 @pytest.mark.freeze_time("2017-05-21")
