@@ -4,6 +4,7 @@ This settings module only contains alexandria specific settings.
 It's imported by the main alexandria settings and is intended to also be used by third party
 applications integrating alexandria.
 """
+
 import os
 
 import environ

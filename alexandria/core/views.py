@@ -188,9 +188,9 @@ class FileViewSet(
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         if settings.ALEXANDRIA_ENABLE_AT_REST_ENCRYPTION:
-            serializer.validated_data[
-                "encryption_status"
-            ] = settings.ALEXANDRIA_ENCRYPTION_METHOD
+            serializer.validated_data["encryption_status"] = (
+                settings.ALEXANDRIA_ENCRYPTION_METHOD
+            )
         obj = serializer.save()
         if (
             settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION
