@@ -207,6 +207,9 @@ class FileSerializer(BaseSerializer):
                 f'"original" must not be set for variant "{variant}".'
             )
 
+        validated_data["mime_type"] = validated_data["content"].content_type
+        validated_data["size"] = validated_data["content"].size
+
         return validated_data
 
     def _prepare_multipart(self):
@@ -248,6 +251,12 @@ class FileSerializer(BaseSerializer):
             "checksum",
             "content",
             "download_url",
+            "mime_type",
+            "size",
+        )
+        read_only_fields = (
+            "mime_type",
+            "size",
         )
         extra_kwargs = {"content": {"write_only": True}}
 

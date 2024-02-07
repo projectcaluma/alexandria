@@ -195,6 +195,8 @@ class File(UUIDModel):
         blank=True,
     )
     content = DynamicStorageFileField(upload_to=upload_file_content_to, max_length=300)
+    mime_type = models.CharField(max_length=255)
+    size = models.IntegerField()
 
     @staticmethod
     def make_checksum(bytes_: bytes) -> str:

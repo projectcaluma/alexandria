@@ -34,13 +34,16 @@ def create_thumbnail(file_: File):
             file_.content = ImageFile(thumb)
             file_.save()
             return file_
+        file = ImageFile(thumb)
         thumb_file = File.objects.create(
             name=f"{file_.name}_preview.jpg",
             document=file_.document,
             variant=File.Variant.THUMBNAIL.value,
             original=file_,
             encryption_status=file_.encryption_status,
-            content=ImageFile(thumb),
+            content=file,
+            mime_type="image/jpeg",
+            size=file.size,
         )
 
     return thumb_file

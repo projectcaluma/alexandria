@@ -160,6 +160,8 @@ class FileFactory(BaseFactory):
             document=factory.SelfAttribute("..document"),
         ),
     )
+    mime_type = Faker("mime_type")
+    size = Faker("pyint")
 
     class Meta:
         model = models.File
