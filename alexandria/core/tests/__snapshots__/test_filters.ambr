@@ -1,0 +1,34 @@
+# serializer version: 1
+# name: test_document_category_filters[filters0-2]
+  list([
+    'Apple',
+    'Melon',
+  ])
+# ---
+# name: test_document_category_filters[filters1-1]
+  list([
+    'Melon',
+  ])
+# ---
+# name: test_document_category_filters[filters2-1]
+  list([
+    'Apple',
+  ])
+# ---
+# name: test_document_category_filters[filters3-0]
+  list([
+  ])
+# ---
+# name: test_document_category_filters[filters4-3]
+  list([
+    'Apple',
+    'Melon',
+    'Pear',
+  ])
+# ---
+# name: test_document_category_filters[filters5-2]
+  list([
+    'Apple',
+    'Pear',
+  ])
+# ---
