@@ -1,3 +1,7 @@
+# 3.0.0-beta.8
+### Feature
+* **file:** Add mime type and size on file model ([`026f30d`](https://github.com/projectcaluma/alexandria/commit/026f30d47f2726d7c1314745755c019d3a93b6b0))
+
 # 3.0.0-beta.7
 ### Feature
 * **storage:** Don't use django default storage configuration ([`1c124fd`](https://github.com/projectcaluma/alexandria/commit/1c124fdc31cdc936beed2b553d7c06558b7a7180))
