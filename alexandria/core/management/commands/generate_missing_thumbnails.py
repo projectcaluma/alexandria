@@ -3,7 +3,6 @@ from psutil import virtual_memory
 from tqdm import tqdm
 
 from alexandria.core.models import File
-from alexandria.core.utils import create_thumbnail
 
 
 class Command(BaseCommand):
@@ -13,7 +12,7 @@ class Command(BaseCommand):
         for file in tqdm(
             File.objects.filter(variant="original", renderings__isnull=True)
         ):
-            create_thumbnail(file)
+            file.create_thumbnail()
             if virtual_memory().available < 300000000:
                 print("about to run out of memory, stopping")
                 break

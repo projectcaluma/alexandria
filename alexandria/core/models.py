@@ -1,15 +1,25 @@
 import hashlib
+import logging
 import re
 import uuid
+from pathlib import Path
+from tempfile import NamedTemporaryFile
 
 from django.conf import settings
+from django.core.exceptions import ValidationError as DjangoCoreValidationError
+from django.core.files import File as DjangoFile
 from django.core.validators import RegexValidator
-from django.db import models
+from django.db import models, transaction
+from django.db.models.fields.files import ImageFile
 from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
 from localized_fields.fields import LocalizedCharField, LocalizedTextField
+from preview_generator.exception import UnsupportedMimeType
+from preview_generator.manager import PreviewManager
 
 from alexandria.storages.fields import DynamicStorageFileField
+
+log = logging.getLogger(__name__)
 
 
 def upload_file_content_to(instance, _):
@@ -144,17 +154,33 @@ class Document(UUIDModel):
     marks = models.ManyToManyField(Mark, blank=True, related_name="documents")
     date = models.DateField(blank=True, null=True)
 
+    def get_latest_original(self):
+        return self.files.filter(variant=File.Variant.ORIGINAL).latest("created_at")
+
+    @transaction.atomic()
     def clone(self):
-        latest_original = (
-            self.files.filter(variant="original").order_by("-created_at").first()
-        )
+        latest_original = self.get_latest_original()
         self.pk = None
         self.save()
 
-        # TODO: decide on how to deal with thumbnail creation
-        latest_original.pk = None
-        latest_original.document = self
-        latest_original.save()
+        with NamedTemporaryFile() as tmp:
+            temp_file = Path(tmp.name)
+            with temp_file.open("w+b") as file:
+                file.write(latest_original.content.file.file.read())
+
+                latest_original.content = DjangoFile(file)
+                latest_original.pk = None
+                latest_original.document = self
+                latest_original.save()
+
+        try:
+            latest_original.create_thumbnail()
+        except DjangoCoreValidationError as e:
+            log.error(
+                "Object {obj} created successfully. Thumbnail creation failed. Error: {error}".format(
+                    obj=latest_original, error=e.messages
+                )
+            )
 
         return self
 
@@ -211,6 +237,47 @@ class File(UUIDModel):
         if settings.ALEXANDRIA_ENABLE_CHECKSUM:
             self.set_checksum()
         return super().save(force_insert, force_update, using, update_fields)
+
+    def create_thumbnail(self):
+        if not settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION:
+            return
+
+        with NamedTemporaryFile() as tmp:
+            temp_file = Path(tmp.name)
+            manager = PreviewManager(str(temp_file.parent))
+            with temp_file.open("wb") as f:
+                f.write(self.content.file.file.read())
+            preview_kwargs = {}
+            if settings.ALEXANDRIA_THUMBNAIL_WIDTH:  # pragma: no cover
+                preview_kwargs["width"] = settings.ALEXANDRIA_THUMBNAIL_WIDTH
+            if settings.ALEXANDRIA_THUMBNAIL_HEIGHT:  # pragma: no cover
+                preview_kwargs["height"] = settings.ALEXANDRIA_THUMBNAIL_HEIGHT
+            try:
+                path_to_preview_image = Path(
+                    manager.get_jpeg_preview(str(temp_file), **preview_kwargs)
+                )
+            except UnsupportedMimeType:
+                msg = f"Unsupported MimeType for file {self.name}"
+                raise DjangoCoreValidationError(msg)
+
+        with path_to_preview_image.open("rb") as thumb:
+            if self.variant == File.Variant.THUMBNAIL:
+                self.content = ImageFile(thumb)
+                self.save()
+                return self
+            file = ImageFile(thumb)
+            thumb_file = File.objects.create(
+                name=f"{self.name}_preview.jpg",
+                document=self.document,
+                variant=File.Variant.THUMBNAIL.value,
+                original=self,
+                encryption_status=self.encryption_status,
+                content=file,
+                mime_type="image/jpeg",
+                size=file.size,
+            )
+
+        return thumb_file
 
     class Meta:
         ordering = ["-created_at"]

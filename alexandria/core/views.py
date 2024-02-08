@@ -37,7 +37,6 @@ from .filters import (
     TagFilterSet,
 )
 from .presign_urls import verify_signed_components
-from .utils import create_thumbnail
 
 log = logging.getLogger(__name__)
 
@@ -192,12 +191,9 @@ class FileViewSet(
                 settings.ALEXANDRIA_ENCRYPTION_METHOD
             )
         obj = serializer.save()
-        if (
-            settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION
-            and obj.variant == models.File.Variant.ORIGINAL
-        ):
+        if obj.variant == models.File.Variant.ORIGINAL:
             try:
-                create_thumbnail(obj)
+                obj.create_thumbnail()
             except DjangoCoreValidationError as e:
                 log.error(
                     "Object {obj} created successfully. Thumbnail creation failed. Error: {error}".format(
@@ -207,7 +203,7 @@ class FileViewSet(
         if obj.variant == models.File.Variant.THUMBNAIL:
             try:
                 # coerce the uploaded file to a thumbnail
-                create_thumbnail(obj)
+                obj.create_thumbnail()
             except DjangoCoreValidationError as e:
                 # remove the uploaded file on failure to avoid
                 # collsions
