@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     "django.contrib.auth",
     "alexandria.core.apps.DefaultConfig",
     "generic_permissions.apps.GenericPermissionsConfig",
+    "manabi_migrations",
 ]
 
 if ENV == "dev":  # noqa

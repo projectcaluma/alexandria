@@ -124,6 +124,15 @@ Enable conversion of docx/odt files to pdf directly in alexandria.
   - `ALEXANDRIA_DMS_URL`: URL where the document merge service is running
 
 
+- WebDAV
+- `ALEXANDRIA_USE_MANABI`: Set to `true` to enable WebDAV via Manabi
+- `MANABI_SHARED_KEY`: Can be generated with:
+   ```py
+   import manabi
+   manabi.keygen()
+   ```
+
+
 For development, you can also set the following environemnt variables to help you:
 
 - `ALEXANDRIA_DEV_AUTH_BACKEND`: Set this to "true" to enable a fake auth backend that simulates an authenticated user. Requires `DEBUG` to be set to `True` as well.
