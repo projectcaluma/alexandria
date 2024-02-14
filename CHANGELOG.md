@@ -1,3 +1,7 @@
+# 3.0.0-beta.9
+### Fix
+* **document:** Fix clone method on document ([`fbac20b`](https://github.com/projectcaluma/alexandria/commit/fbac20b5c86bc97ae3f8b74da071f27f3e0612ea))
+
 # 3.0.0-beta.8
 ### Feature
 * **file:** Add mime type and size on file model ([`026f30d`](https://github.com/projectcaluma/alexandria/commit/026f30d47f2726d7c1314745755c019d3a93b6b0))
