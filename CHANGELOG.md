@@ -1,3 +1,7 @@
+# 3.0.0-beta.10
+### Feature
+* **file:** Add method to generate a download url for a file ([`d28664e`](https://github.com/projectcaluma/alexandria/commit/d28664e82ed0253ca3cffad6a8d6d53af95e89a2))
+
 # 3.0.0-beta.9
 ### Fix
 * **document:** Fix clone method on document ([`fbac20b`](https://github.com/projectcaluma/alexandria/commit/fbac20b5c86bc97ae3f8b74da071f27f3e0612ea))
