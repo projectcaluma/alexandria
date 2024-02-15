@@ -11,7 +11,6 @@ from rest_framework.exceptions import ValidationError
 from rest_framework_json_api import serializers
 
 from . import models
-from .presign_urls import make_signature_components
 
 
 class BaseSerializer(
@@ -175,15 +174,7 @@ class FileSerializer(BaseSerializer):
             self.new = True
 
     def get_download_url(self, instance):
-        request = self.context.get("request")
-        if not request:
-            return None
-        url, expires, signature = make_signature_components(
-            str(instance.pk),
-            request.get_host(),
-            scheme=request.META.get("wsgi.url_scheme", "http"),
-        )
-        return f"{url}?expires={expires}&signature={signature}"
+        return instance.get_download_url(self.context.get("request"))
 
     def validate(self, *args, **kwargs):
         """Validate the data.

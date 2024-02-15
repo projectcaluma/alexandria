@@ -17,6 +17,7 @@ from localized_fields.fields import LocalizedCharField, LocalizedTextField
 from preview_generator.exception import UnsupportedMimeType
 from preview_generator.manager import PreviewManager
 
+from alexandria.core.presign_urls import make_signature_components
 from alexandria.storages.fields import DynamicStorageFileField
 
 log = logging.getLogger(__name__)
@@ -278,6 +279,18 @@ class File(UUIDModel):
             )
 
         return thumb_file
+
+    def get_download_url(self, request):
+        if not request:
+            return None
+
+        url, expires, signature = make_signature_components(
+            str(self.pk),
+            request.get_host(),
+            scheme=request.META.get("wsgi.url_scheme", "http"),
+        )
+
+        return f"{url}?expires={expires}&signature={signature}"
 
     class Meta:
         ordering = ["-created_at"]
