@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "caluma-alexandria"
-version = "3.0.0-beta.10"
+version = "3.0.0-beta.11"
 description = "Document management service"
 repository = "https://github.com/projectcaluma/alexandria"
 authors = ["Caluma <info@caluma.io>"]
@@ -107,7 +107,13 @@ exclude_lines = [
     "def __unicode__",
     "def __repr__",
 ]
-omit = ["*/migrations/*", "*/apps.py", "manage.py", "alexandria/wsgi.py", "generate_missing_thumbnails.py"]
+omit = [
+    "*/migrations/*",
+    "*/apps.py",
+    "manage.py",
+    "alexandria/wsgi.py",
+    "generate_missing_thumbnails.py",
+]
 show_missing = true
 
 [build-system]

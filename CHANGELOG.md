@@ -1,3 +1,7 @@
+# 3.0.0-beta.11
+### Feature
+* **security:** Add ClamAV integration ([`fe314ca`](https://github.com/projectcaluma/alexandria/commit/fe314ca80433de1c866c40fa8673cbb7eee90a80))
+
 # 3.0.0-beta.10
 ### Feature
 * **file:** Add method to generate a download url for a file ([`d28664e`](https://github.com/projectcaluma/alexandria/commit/d28664e82ed0253ca3cffad6a8d6d53af95e89a2))
