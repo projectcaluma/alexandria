@@ -4,14 +4,22 @@ import logging
 import zipfile
 from tempfile import NamedTemporaryFile
 
+import requests
 from django.conf import settings
 from django.core.exceptions import ValidationError as DjangoCoreValidationError
+from django.core.files.base import ContentFile
 from django.http import FileResponse
 from django.utils.translation import gettext as _
 from generic_permissions.permissions import AllowAny, PermissionViewMixin
 from generic_permissions.visibilities import VisibilityViewMixin
+from rest_framework.authentication import get_authorization_header
 from rest_framework.decorators import action, permission_classes
-from rest_framework.exceptions import NotFound, PermissionDenied, ValidationError
+from rest_framework.exceptions import (
+    AuthenticationFailed,
+    NotFound,
+    PermissionDenied,
+    ValidationError,
+)
 from rest_framework.mixins import (
     CreateModelMixin,
     DestroyModelMixin,
@@ -19,7 +27,7 @@ from rest_framework.mixins import (
     RetrieveModelMixin,
 )
 from rest_framework.response import Response
-from rest_framework.status import HTTP_201_CREATED
+from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_401_UNAUTHORIZED
 from rest_framework.viewsets import GenericViewSet
 from rest_framework_json_api.views import (
     AutoPrefetchMixin,
@@ -99,6 +107,44 @@ class DocumentViewSet(PermissionViewMixin, VisibilityViewMixin, ModelViewSet):
         models.Tag.objects.all().filter(documents__pk__isnull=True).delete()
 
         return response
+
+    @action(methods=["get"], detail=True)
+    def convert(self, request, pk=None):
+        if not settings.ALEXANDRIA_ENABLE_PDF_CONVERSION:
+            raise ValidationError(_("PDF conversion is not enabled."))
+
+        document = self.get_object()
+        file = document.get_latest_original()
+
+        response = requests.post(
+            settings.ALEXANDRIA_DMS_URL + "/convert",
+            data={"target_format": "pdf"},
+            headers={"authorization": get_authorization_header(request)},
+            files={"file": file.content},
+        )
+
+        if response.status_code == HTTP_401_UNAUTHORIZED:
+            raise AuthenticationFailed(_("Token has expired."))
+
+        response.raise_for_status()
+
+        converted_document = models.Document.objects.create(
+            title={k: v + ".pdf" for k, v in document.title.items()},
+            description=document.description,
+            category=document.category,
+            date=document.date,
+        )
+        file_name = file.name + ".pdf"
+        converted_file = models.File.objects.create(
+            document=converted_document,
+            name=file_name,
+            content=ContentFile(response.content, file_name),
+            mime_type="application/pdf",
+            size=len(response.content),
+        )
+        converted_file.create_thumbnail()
+
+        return Response(status=HTTP_200_OK)
 
 
 class FileViewSet(
