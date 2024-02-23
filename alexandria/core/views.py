@@ -125,7 +125,7 @@ class DocumentViewSet(PermissionViewMixin, VisibilityViewMixin, ModelViewSet):
         )
 
         if response.status_code == HTTP_401_UNAUTHORIZED:
-            raise AuthenticationFailed(response.text)
+            raise AuthenticationFailed(response.json().get("detail"))
 
         response.raise_for_status()
 
@@ -160,12 +160,9 @@ class DocumentViewSet(PermissionViewMixin, VisibilityViewMixin, ModelViewSet):
         )
         converted_file.create_thumbnail()
 
-        return FileResponse(
-            converted_file.content.file.file,
-            as_attachment=False,
-            filename=converted_file.name,
-            status=HTTP_201_CREATED,
-        )
+        serializer = self.get_serializer(converted_document)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=HTTP_201_CREATED, headers=headers)
 
 
 class FileViewSet(

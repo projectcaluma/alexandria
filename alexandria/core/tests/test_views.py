@@ -482,7 +482,7 @@ def test_convert_document_not_enabled(
     assert response.status_code == HTTP_400_BAD_REQUEST
 
 
-def test_convert_document_token_expired(
+def test_convert_document_dms_401(
     admin_client, document_factory, file_factory, settings, mocker
 ):
     settings.ALEXANDRIA_ENABLE_PDF_CONVERSION = True
@@ -491,7 +491,7 @@ def test_convert_document_token_expired(
 
     response = mocker.Mock()
     response.status_code = HTTP_401_UNAUTHORIZED
-    response.text = "no token"
+    response.json.return_value = {"detail": "no token"}
     mocker.patch("requests.post", return_value=response)
     url = reverse("document-convert", args=[document.pk])
     response = admin_client.post(url)
