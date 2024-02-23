@@ -2,6 +2,7 @@ import io
 import itertools
 import logging
 import zipfile
+from os.path import splitext
 from tempfile import NamedTemporaryFile
 
 import requests
@@ -27,7 +28,7 @@ from rest_framework.mixins import (
     RetrieveModelMixin,
 )
 from rest_framework.response import Response
-from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_401_UNAUTHORIZED
+from rest_framework.status import HTTP_201_CREATED, HTTP_401_UNAUTHORIZED
 from rest_framework.viewsets import GenericViewSet
 from rest_framework_json_api.views import (
     AutoPrefetchMixin,
@@ -108,7 +109,7 @@ class DocumentViewSet(PermissionViewMixin, VisibilityViewMixin, ModelViewSet):
 
         return response
 
-    @action(methods=["get"], detail=True)
+    @action(methods=["post"], detail=True)
     def convert(self, request, pk=None):
         if not settings.ALEXANDRIA_ENABLE_PDF_CONVERSION:
             raise ValidationError(_("PDF conversion is not enabled."))
@@ -124,27 +125,47 @@ class DocumentViewSet(PermissionViewMixin, VisibilityViewMixin, ModelViewSet):
         )
 
         if response.status_code == HTTP_401_UNAUTHORIZED:
-            raise AuthenticationFailed(_("Token has expired."))
+            raise AuthenticationFailed(response.text)
 
         response.raise_for_status()
 
+        username = serializers.default_user_attribute(
+            request.user, settings.ALEXANDRIA_CREATED_BY_USER_PROPERTY
+        )
+        group = serializers.default_user_attribute(
+            request.user, settings.ALEXANDRIA_CREATED_BY_GROUP_PROPERTY
+        )
+
         converted_document = models.Document.objects.create(
-            title={k: v + ".pdf" for k, v in document.title.items()},
+            title={k: f"{ splitext(v)[0]}.pdf" for k, v in document.title.items()},
             description=document.description,
             category=document.category,
             date=document.date,
+            created_by_user=username,
+            created_by_group=group,
+            modified_by_user=username,
+            modified_by_group=group,
         )
-        file_name = file.name + ".pdf"
+        file_name = f"{splitext(file.name)[0]}.pdf"
         converted_file = models.File.objects.create(
             document=converted_document,
             name=file_name,
             content=ContentFile(response.content, file_name),
             mime_type="application/pdf",
             size=len(response.content),
+            created_by_user=username,
+            created_by_group=group,
+            modified_by_user=username,
+            modified_by_group=group,
         )
         converted_file.create_thumbnail()
 
-        return Response(status=HTTP_200_OK)
+        return FileResponse(
+            converted_file.content.file.file,
+            as_attachment=False,
+            filename=converted_file.name,
+            status=HTTP_201_CREATED,
+        )
 
 
 class FileViewSet(

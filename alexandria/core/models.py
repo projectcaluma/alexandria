@@ -49,10 +49,10 @@ class BaseModel(models.Model):
     )
     modified_at = models.DateTimeField(auto_now=True, db_index=True)
     modified_by_user = models.CharField(
-        _("created by user"), max_length=150, blank=True, null=True
+        _("modified by user"), max_length=150, blank=True, null=True
     )
     modified_by_group = models.CharField(
-        _("created by group"), max_length=255, blank=True, null=True
+        _("modified by group"), max_length=255, blank=True, null=True
     )
     metainfo = models.JSONField(_("metainfo"), default=dict)
 

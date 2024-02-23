@@ -14,6 +14,10 @@ from rest_framework_json_api import serializers
 from . import models
 
 
+def default_user_attribute(user, attribute):
+    return getattr(user, attribute) if not isinstance(user, AnonymousUser) else None
+
+
 class BaseSerializer(
     ValidatorMixin, VisibilitySerializerMixin, serializers.ModelSerializer
 ):
@@ -24,11 +28,11 @@ class BaseSerializer(
     def is_valid(self, *args, **kwargs):
         # Prime data so the validators are called (and default values filled
         # if client didn't pass them.)
-        group = self._default_user_attribute(
-            settings.ALEXANDRIA_CREATED_BY_GROUP_PROPERTY
+        group = default_user_attribute(
+            self.context["request"].user, settings.ALEXANDRIA_CREATED_BY_GROUP_PROPERTY
         )
-        user = self._default_user_attribute(
-            settings.ALEXANDRIA_CREATED_BY_USER_PROPERTY
+        user = default_user_attribute(
+            self.context["request"].user, settings.ALEXANDRIA_CREATED_BY_USER_PROPERTY
         )
         self.initial_data.setdefault("created_by_group", group)
         self.initial_data.setdefault("modified_by_group", group)
@@ -58,10 +62,6 @@ class BaseSerializer(
             # can't change created_by_group on existing instances
             return self.instance.created_by_group
         return value
-
-    def _default_user_attribute(self, attribute):
-        user = self.context["request"].user
-        return getattr(user, attribute) if not isinstance(user, AnonymousUser) else None
 
     class Meta:
         fields = (

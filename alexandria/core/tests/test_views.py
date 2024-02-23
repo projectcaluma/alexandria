@@ -449,16 +449,16 @@ def test_convert_document(
 ):
     settings.ALEXANDRIA_ENABLE_PDF_CONVERSION = True
     document = document_factory()
-    file_factory(document=document, name="foo")
+    file_factory(document=document, name="foo.docx")
 
     response = mocker.Mock()
     response.status_code = HTTP_200_OK
     response.content = b"pdfdata"
     mocker.patch("requests.post", return_value=response)
     url = reverse("document-convert", args=[document.pk])
-    response = admin_client.get(url)
+    response = admin_client.post(url)
 
-    assert response.status_code == HTTP_200_OK
+    assert response.status_code == HTTP_201_CREATED
 
     assert Document.objects.all().count() == 2
     assert File.objects.all().count() == 3
@@ -477,7 +477,7 @@ def test_convert_document_not_enabled(
     response.content = b"pdfdata"
     mocker.patch("requests.post", return_value=response)
     url = reverse("document-convert", args=[document.pk])
-    response = admin_client.get(url)
+    response = admin_client.post(url)
 
     assert response.status_code == HTTP_400_BAD_REQUEST
 
@@ -491,9 +491,9 @@ def test_convert_document_token_expired(
 
     response = mocker.Mock()
     response.status_code = HTTP_401_UNAUTHORIZED
-    response.content = b"pdfdata"
+    response.text = "no token"
     mocker.patch("requests.post", return_value=response)
     url = reverse("document-convert", args=[document.pk])
-    response = admin_client.get(url)
+    response = admin_client.post(url)
 
     assert response.status_code == HTTP_401_UNAUTHORIZED
