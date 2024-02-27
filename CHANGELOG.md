@@ -1,3 +1,11 @@
+# 3.0.0-beta.12
+### Feature
+* Add optional dms integration ([`38ecbec`](https://github.com/projectcaluma/alexandria/commit/38ecbec4e2c5cb088be4a74abd81b3cadbeb1ea5))
+
+### Fix
+* **dms:** Return json document after conversion ([`357bae9`](https://github.com/projectcaluma/alexandria/commit/357bae96e433a128622edcc0bc6754d5520d3c81))
+* **dms:** Improve dms integreation ([`4bbf1c3`](https://github.com/projectcaluma/alexandria/commit/4bbf1c3aaec78a48138400cf3cf252defd6e61ec))
+
 # 3.0.0-beta.11
 ### Feature
 * **security:** Add ClamAV integration ([`fe314ca`](https://github.com/projectcaluma/alexandria/commit/fe314ca80433de1c866c40fa8673cbb7eee90a80))
