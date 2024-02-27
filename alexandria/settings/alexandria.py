@@ -167,3 +167,9 @@ CLAMD_USE_TCP = env.bool("ALEXANDRIA_CLAMD_USE_TCP", default=True)
 CLAMD_TCP_SOCKET = env.str("ALEXANDRIA_CLAMD_TCP_SOCKET", default=3310)
 CLAMD_TCP_ADDR = env.str("ALEXANDRIA_CLAMD_TCP_ADDR", default="localhost")
 CLAMD_ENABLED = env.bool("ALEXANDRIA_CLAMD_ENABLED", default=False)
+
+# Document merge service
+ALEXANDRIA_ENABLE_PDF_CONVERSION = env.bool(
+    "ALEXANDRIA_ENABLE_PDF_CONVERSION", default=False
+)
+ALEXANDRIA_DMS_URL = env.str("ALEXANDRIA_DMS_URL", default="http://dms:8000/api/v1")

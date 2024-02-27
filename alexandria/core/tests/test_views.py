@@ -13,6 +13,7 @@ from rest_framework.status import (
     HTTP_200_OK,
     HTTP_201_CREATED,
     HTTP_400_BAD_REQUEST,
+    HTTP_401_UNAUTHORIZED,
     HTTP_403_FORBIDDEN,
     HTTP_404_NOT_FOUND,
 )
@@ -441,3 +442,58 @@ def test_presigned_url_different_file(admin_client, file, file_factory):
 
     response = admin_client.get(url)
     assert response.status_code == HTTP_400_BAD_REQUEST
+
+
+def test_convert_document(
+    admin_client, document_factory, file_factory, settings, mocker
+):
+    settings.ALEXANDRIA_ENABLE_PDF_CONVERSION = True
+    document = document_factory()
+    file_factory(document=document, name="foo.docx")
+
+    response = mocker.Mock()
+    response.status_code = HTTP_200_OK
+    response.content = b"pdfdata"
+    mocker.patch("requests.post", return_value=response)
+    url = reverse("document-convert", args=[document.pk])
+    response = admin_client.post(url)
+
+    assert response.status_code == HTTP_201_CREATED
+
+    assert Document.objects.all().count() == 2
+    assert File.objects.all().count() == 3
+    assert File.objects.filter(name="foo.pdf", variant=File.Variant.ORIGINAL).exists()
+
+
+def test_convert_document_not_enabled(
+    admin_client, document_factory, file_factory, settings, mocker
+):
+    settings.ALEXANDRIA_ENABLE_PDF_CONVERSION = False
+    document = document_factory()
+    file_factory(document=document, name="foo")
+
+    response = mocker.Mock()
+    response.status_code = HTTP_200_OK
+    response.content = b"pdfdata"
+    mocker.patch("requests.post", return_value=response)
+    url = reverse("document-convert", args=[document.pk])
+    response = admin_client.post(url)
+
+    assert response.status_code == HTTP_400_BAD_REQUEST
+
+
+def test_convert_document_dms_401(
+    admin_client, document_factory, file_factory, settings, mocker
+):
+    settings.ALEXANDRIA_ENABLE_PDF_CONVERSION = True
+    document = document_factory()
+    file_factory(document=document, name="foo")
+
+    response = mocker.Mock()
+    response.status_code = HTTP_401_UNAUTHORIZED
+    response.json.return_value = {"detail": "no token"}
+    mocker.patch("requests.post", return_value=response)
+    url = reverse("document-convert", args=[document.pk])
+    response = admin_client.post(url)
+
+    assert response.status_code == HTTP_401_UNAUTHORIZED

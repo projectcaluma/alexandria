@@ -26,6 +26,21 @@ services:
       # https://docs.djangoproject.com/en/2.1/ref/settings/#password
       # same as postgres password above
       # - DATABASE_PASSWORD=
+  dms:
+    image: ghcr.io/adfinis/document-merge-service:6.4.4
+    depends_on:
+      - db
+    environment:
+      - DATABASE_ENGINE=django.db.backends.postgresql
+      - DATABASE_HOST=db
+      - DATABASE_PORT=5432
+      - DATABASE_NAME=alexandria
+      - DATABASE_USER=alexandria
+      - DATABASE_PASSWORD=alexandria
+      - ALLOWED_HOSTS=dms
+      - OIDC_BEARER_TOKEN_REVALIDATION_TIME=300
+      - SECRET_KEY=aaa
+      - DOCXTEMPLATE_JINJA_EXTENSIONS=
   minio:
     image: minio/minio:RELEASE.2023-11-06T22-26-08Z
     volumes:

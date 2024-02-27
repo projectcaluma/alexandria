@@ -2,16 +2,25 @@ import io
 import itertools
 import logging
 import zipfile
+from os.path import splitext
 from tempfile import NamedTemporaryFile
 
+import requests
 from django.conf import settings
 from django.core.exceptions import ValidationError as DjangoCoreValidationError
+from django.core.files.base import ContentFile
 from django.http import FileResponse
 from django.utils.translation import gettext as _
 from generic_permissions.permissions import AllowAny, PermissionViewMixin
 from generic_permissions.visibilities import VisibilityViewMixin
+from rest_framework.authentication import get_authorization_header
 from rest_framework.decorators import action, permission_classes
-from rest_framework.exceptions import NotFound, PermissionDenied, ValidationError
+from rest_framework.exceptions import (
+    AuthenticationFailed,
+    NotFound,
+    PermissionDenied,
+    ValidationError,
+)
 from rest_framework.mixins import (
     CreateModelMixin,
     DestroyModelMixin,
@@ -19,7 +28,7 @@ from rest_framework.mixins import (
     RetrieveModelMixin,
 )
 from rest_framework.response import Response
-from rest_framework.status import HTTP_201_CREATED
+from rest_framework.status import HTTP_201_CREATED, HTTP_401_UNAUTHORIZED
 from rest_framework.viewsets import GenericViewSet
 from rest_framework_json_api.views import (
     AutoPrefetchMixin,
@@ -99,6 +108,61 @@ class DocumentViewSet(PermissionViewMixin, VisibilityViewMixin, ModelViewSet):
         models.Tag.objects.all().filter(documents__pk__isnull=True).delete()
 
         return response
+
+    @action(methods=["post"], detail=True)
+    def convert(self, request, pk=None):
+        if not settings.ALEXANDRIA_ENABLE_PDF_CONVERSION:
+            raise ValidationError(_("PDF conversion is not enabled."))
+
+        document = self.get_object()
+        file = document.get_latest_original()
+
+        response = requests.post(
+            settings.ALEXANDRIA_DMS_URL + "/convert",
+            data={"target_format": "pdf"},
+            headers={"authorization": get_authorization_header(request)},
+            files={"file": file.content},
+        )
+
+        if response.status_code == HTTP_401_UNAUTHORIZED:
+            raise AuthenticationFailed(response.json().get("detail"))
+
+        response.raise_for_status()
+
+        username = serializers.default_user_attribute(
+            request.user, settings.ALEXANDRIA_CREATED_BY_USER_PROPERTY
+        )
+        group = serializers.default_user_attribute(
+            request.user, settings.ALEXANDRIA_CREATED_BY_GROUP_PROPERTY
+        )
+
+        converted_document = models.Document.objects.create(
+            title={k: f"{ splitext(v)[0]}.pdf" for k, v in document.title.items()},
+            description=document.description,
+            category=document.category,
+            date=document.date,
+            created_by_user=username,
+            created_by_group=group,
+            modified_by_user=username,
+            modified_by_group=group,
+        )
+        file_name = f"{splitext(file.name)[0]}.pdf"
+        converted_file = models.File.objects.create(
+            document=converted_document,
+            name=file_name,
+            content=ContentFile(response.content, file_name),
+            mime_type="application/pdf",
+            size=len(response.content),
+            created_by_user=username,
+            created_by_group=group,
+            modified_by_user=username,
+            modified_by_group=group,
+        )
+        converted_file.create_thumbnail()
+
+        serializer = self.get_serializer(converted_document)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=HTTP_201_CREATED, headers=headers)
 
 
 class FileViewSet(
