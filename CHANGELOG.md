@@ -1,3 +1,7 @@
+# 3.0.0-beta.13
+### Fix
+* **convert:** Copy over metainfo ([#468](https://github.com/projectcaluma/alexandria/issues/468)) ([`4d0b7c0`](https://github.com/projectcaluma/alexandria/commit/4d0b7c0f995e2065443fdd6fc2a9328cd97fd20b))
+
 # 3.0.0-beta.12
 ### Feature
 * Add optional dms integration ([`38ecbec`](https://github.com/projectcaluma/alexandria/commit/38ecbec4e2c5cb088be4a74abd81b3cadbeb1ea5))
