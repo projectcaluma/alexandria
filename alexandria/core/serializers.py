@@ -179,6 +179,8 @@ class FileSerializer(BaseSerializer):
         return instance.get_download_url(self.context.get("request"))
 
     def get_webdav_url(self, instance):
+        if instance.variant != models.File.Variant.ORIGINAL:
+            return None
         request = self.context.get("request")
         scheme = request.scheme if request else "http"
         host = request.get_host() if request else "localhost"
