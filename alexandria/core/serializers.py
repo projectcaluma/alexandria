@@ -183,12 +183,16 @@ class FileSerializer(BaseSerializer):
         scheme = request.scheme if request else "http"
         host = request.get_host() if request else "localhost"
         username = (
-            getattr(request.user, settings.ALEXANDRIA_CREATED_BY_USER_PROPERTY)
+            default_user_attribute(
+                request.user, settings.ALEXANDRIA_CREATED_BY_USER_PROPERTY
+            )
             if request is not None
             else None
         )
         group = (
-            getattr(request.user, settings.ALEXANDRIA_CREATED_BY_GROUP_PROPERTY)
+            default_user_attribute(
+                request.user, settings.ALEXANDRIA_CREATED_BY_GROUP_PROPERTY
+            )
             if request is not None
             else None
         )
