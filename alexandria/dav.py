@@ -94,7 +94,6 @@ class AlexandriaFileResource(ManabiFileResourceMixin, DAVNonCollection):
         return self.memory_file
 
     def end_write(self, *, with_errors):
-        super().end_write(with_errors=with_errors)
         try:
             validate_file_infection(self.memory_file)
         except ValidationError:
@@ -122,6 +121,7 @@ class AlexandriaFileResource(ManabiFileResourceMixin, DAVNonCollection):
         file.save()
         self.file = file
         self.memory_file.do_close()
+        super().end_write(with_errors=with_errors)
 
 
 class AlexandriaProvider(ManabiProvider):
