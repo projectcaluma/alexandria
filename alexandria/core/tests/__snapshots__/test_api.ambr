@@ -207,6 +207,7 @@
           'name': 'Jason Lopez',
           'size': 11,
           'variant': 'original',
+          'webdav-url': str,
         }),
         'id': 'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad',
         'relationships': dict({
@@ -757,6 +758,7 @@
           'name': 'Jason Lopez',
           'size': 186,
           'variant': 'original',
+          'webdav-url': str,
         }),
         'id': '9336ebf2-5087-d91c-818e-e6e9ec29f8c1',
         'relationships': dict({
@@ -1518,6 +1520,7 @@
             'name': 'Jason Lopez',
             'size': 186,
             'variant': 'original',
+            'webdav-url': str,
           }),
           'id': '9336ebf2-5087-d91c-818e-e6e9ec29f8c1',
           'relationships': dict({
@@ -1556,6 +1559,7 @@
             'name': 'Rebecca Gonzalez',
             'size': 7738,
             'variant': 'original',
+            'webdav-url': str,
           }),
           'id': 'ea416ed0-759d-46a8-de58-f63a59077499',
           'relationships': dict({
@@ -1594,6 +1598,7 @@
             'name': 'Nicole Pineda',
             'size': 4950,
             'variant': 'original',
+            'webdav-url': str,
           }),
           'id': 'dad3a37a-a9d5-0688-b515-7698acfd7aee',
           'relationships': dict({

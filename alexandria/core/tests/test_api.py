@@ -13,6 +13,7 @@ from django.db.models.fields.related import ManyToManyDescriptor
 from django.test.utils import CaptureQueriesContext
 from django.urls import reverse
 from rest_framework_json_api.renderers import JSONRenderer
+from syrupy.matchers import path_type
 
 from ..views import (
     CategoryViewSet,
@@ -150,7 +151,14 @@ def assert_response(
     if include_json:
         value["response"] = response.json()
 
-    assert value == snapshot
+    assert value == snapshot(
+        matcher=path_type(
+            {
+                ".*webdav-url": (str,),
+            },
+            regex=True,
+        )
+    )
 
 
 @pytest.mark.freeze_time("2017-05-21")

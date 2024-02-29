@@ -1,0 +1,42 @@
+# serializer version: 1
+# name: test_dav_propfind
+  '''
+  <?xml version="1.0" ?>
+  <ns0:multistatus xmlns:ns0="DAV:">
+    <ns0:response>
+      <ns0:href>/dav/test.txt</ns0:href>
+      <ns0:propstat>
+        <ns0:prop>
+          <ns0:resourcetype/>
+          <ns0:creationdate>1970-01-01T00:00:00Z</ns0:creationdate>
+          <ns0:getcontentlength>11</ns0:getcontentlength>
+          <ns0:getcontenttype>model/vrml</ns0:getcontenttype>
+          <ns0:getlastmodified>Thu, 01 Jan 1970 00:00:00 GMT</ns0:getlastmodified>
+          <ns0:displayname>test.txt</ns0:displayname>
+          <ns0:lockdiscovery/>
+          <ns0:supportedlock>
+            <ns0:lockentry>
+              <ns0:lockscope>
+                <ns0:exclusive/>
+              </ns0:lockscope>
+              <ns0:locktype>
+                <ns0:write/>
+              </ns0:locktype>
+            </ns0:lockentry>
+            <ns0:lockentry>
+              <ns0:lockscope>
+                <ns0:shared/>
+              </ns0:lockscope>
+              <ns0:locktype>
+                <ns0:write/>
+              </ns0:locktype>
+            </ns0:lockentry>
+          </ns0:supportedlock>
+        </ns0:prop>
+        <ns0:status>HTTP/1.1 200 OK</ns0:status>
+      </ns0:propstat>
+    </ns0:response>
+  </ns0:multistatus>
+  
+  '''
+# ---

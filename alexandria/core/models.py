@@ -14,6 +14,7 @@ from django.db.models.fields.files import ImageFile
 from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
 from localized_fields.fields import LocalizedCharField, LocalizedTextField
+from manabi.token import Key, Token
 from preview_generator.exception import UnsupportedMimeType
 from preview_generator.manager import PreviewManager
 
@@ -238,6 +239,21 @@ class File(UUIDModel):
         if settings.ALEXANDRIA_ENABLE_CHECKSUM:
             self.set_checksum()
         return super().save(force_insert, force_update, using, update_fields)
+
+    def get_webdav_url(self, username, group, scheme="http", host="localhost"):
+        # The path doesn't need to match the actual file path, because we're accessing
+        # the file via the `File.pk`. So we can use just the name, that will then be
+        # the last part of the URL
+        path = Path(self.name)
+        key = Key.from_dictionary({"manabi": {"key": settings.MANABI_SHARED_KEY}})
+
+        # we encode `username`, `group` and `File.pk` into the token. That way, we can
+        # easily access the file via it's model and also apply/validate `user` and
+        # `group`
+        payload = (username, group, str(self.pk))
+        token = Token(key, path, payload=payload)
+
+        return f"{scheme}://{host}{settings.ALEXANDRIA_MANABI_DAV_URL_PATH}/{token.as_url()}"
 
     def create_thumbnail(self):
         if not settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION:

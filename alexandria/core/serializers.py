@@ -166,6 +166,7 @@ class FileSerializer(BaseSerializer):
     }
 
     download_url = serializers.SerializerMethodField()
+    webdav_url = serializers.SerializerMethodField()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -176,6 +177,22 @@ class FileSerializer(BaseSerializer):
 
     def get_download_url(self, instance):
         return instance.get_download_url(self.context.get("request"))
+
+    def get_webdav_url(self, instance):
+        request = self.context.get("request")
+        scheme = request.scheme if request else "http"
+        host = request.get_host() if request else "localhost"
+        username = (
+            getattr(request.user, settings.ALEXANDRIA_CREATED_BY_USER_PROPERTY)
+            if request is not None
+            else None
+        )
+        group = (
+            getattr(request.user, settings.ALEXANDRIA_CREATED_BY_GROUP_PROPERTY)
+            if request is not None
+            else None
+        )
+        return instance.get_webdav_url(username, group, scheme, host)
 
     def validate(self, *args, **kwargs):
         """Validate the data.
@@ -247,6 +264,7 @@ class FileSerializer(BaseSerializer):
             "checksum",
             "content",
             "download_url",
+            "webdav_url",
             "mime_type",
             "size",
         )
