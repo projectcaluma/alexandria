@@ -54,7 +54,14 @@ class AlexandriaFileResource(ManabiFileResourceMixin, DAVNonCollection):
         self._cb_config = cb_hook_config
         self._token = environ["manabi.token"]
         self.user, self.group, file_pk = self._token.payload
-        self.file = File.objects.get(pk=file_pk)
+
+        # We only serve the newest original File of the Document.
+        self.file = (
+            File.objects.get(pk=file_pk)
+            .document.files.filter(variant=File.Variant.ORIGINAL)
+            .order_by("-created_at")
+            .first()
+        )
         self.memory_file = MyBytesIO()
         self.name = Path(self.path).name
 
