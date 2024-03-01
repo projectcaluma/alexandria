@@ -1,3 +1,7 @@
+# 3.0.0-beta.14
+### Feature
+* Integrate manabi for editing files over WebDAV ([`7e0ec86`](https://github.com/projectcaluma/alexandria/commit/7e0ec86291606945302734579e0868f05cbf73bf))
+
 # 3.0.0-beta.13
 ### Fix
 * **convert:** Copy over metainfo ([#468](https://github.com/projectcaluma/alexandria/issues/468)) ([`4d0b7c0`](https://github.com/projectcaluma/alexandria/commit/4d0b7c0f995e2065443fdd6fc2a9328cd97fd20b))
