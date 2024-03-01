@@ -178,7 +178,10 @@ class FileSerializer(BaseSerializer):
         return instance.get_download_url(self.context.get("request"))
 
     def get_webdav_url(self, instance):
-        if instance.variant != models.File.Variant.ORIGINAL:
+        if (
+            instance.variant != models.File.Variant.ORIGINAL
+            or not settings.ALEXANDRIA_USE_MANABI
+        ):
             return None
         request = self.context.get("request")
         host = request.get_host() if request else "localhost"
