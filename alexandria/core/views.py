@@ -129,11 +129,11 @@ class DocumentViewSet(PermissionViewMixin, VisibilityViewMixin, ModelViewSet):
 
         response.raise_for_status()
 
-        username = serializers.default_user_attribute(
-            request.user, settings.ALEXANDRIA_CREATED_BY_USER_PROPERTY
+        username = getattr(
+            request.user, settings.ALEXANDRIA_CREATED_BY_USER_PROPERTY, None
         )
-        group = serializers.default_user_attribute(
-            request.user, settings.ALEXANDRIA_CREATED_BY_GROUP_PROPERTY
+        group = getattr(
+            request.user, settings.ALEXANDRIA_CREATED_BY_GROUP_PROPERTY, None
         )
 
         converted_document = models.Document.objects.create(

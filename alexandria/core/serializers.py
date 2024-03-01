@@ -1,5 +1,4 @@
 from django.conf import settings
-from django.contrib.auth.models import AnonymousUser
 from django.template.defaultfilters import slugify
 from django.utils import translation
 from django_clamd.validators import validate_file_infection
@@ -14,10 +13,6 @@ from rest_framework_json_api import serializers
 from . import models
 
 
-def default_user_attribute(user, attribute):
-    return getattr(user, attribute) if not isinstance(user, AnonymousUser) else None
-
-
 class BaseSerializer(
     ValidatorMixin, VisibilitySerializerMixin, serializers.ModelSerializer
 ):
@@ -28,11 +23,15 @@ class BaseSerializer(
     def is_valid(self, *args, **kwargs):
         # Prime data so the validators are called (and default values filled
         # if client didn't pass them.)
-        group = default_user_attribute(
-            self.context["request"].user, settings.ALEXANDRIA_CREATED_BY_GROUP_PROPERTY
+        group = getattr(
+            self.context["request"].user,
+            settings.ALEXANDRIA_CREATED_BY_GROUP_PROPERTY,
+            None,
         )
-        user = default_user_attribute(
-            self.context["request"].user, settings.ALEXANDRIA_CREATED_BY_USER_PROPERTY
+        user = getattr(
+            self.context["request"].user,
+            settings.ALEXANDRIA_CREATED_BY_USER_PROPERTY,
+            None,
         )
         self.initial_data.setdefault("created_by_group", group)
         self.initial_data.setdefault("modified_by_group", group)
@@ -179,22 +178,20 @@ class FileSerializer(BaseSerializer):
         return instance.get_download_url(self.context.get("request"))
 
     def get_webdav_url(self, instance):
+        if instance.variant != models.File.Variant.ORIGINAL:
+            return None
         request = self.context.get("request")
         scheme = request.scheme if request else "http"
         host = request.get_host() if request else "localhost"
-        username = (
-            default_user_attribute(
-                request.user, settings.ALEXANDRIA_CREATED_BY_USER_PROPERTY
-            )
-            if request is not None
-            else None
+        username = getattr(
+            getattr(request, "user", None),
+            settings.ALEXANDRIA_CREATED_BY_USER_PROPERTY,
+            None,
         )
-        group = (
-            default_user_attribute(
-                request.user, settings.ALEXANDRIA_CREATED_BY_GROUP_PROPERTY
-            )
-            if request is not None
-            else None
+        group = getattr(
+            getattr(request, "user", None),
+            settings.ALEXANDRIA_CREATED_BY_GROUP_PROPERTY,
+            None,
         )
         return instance.get_webdav_url(username, group, scheme, host)
 

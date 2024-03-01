@@ -54,7 +54,14 @@ class AlexandriaFileResource(ManabiFileResourceMixin, DAVNonCollection):
         self._cb_config = cb_hook_config
         self._token = environ["manabi.token"]
         self.user, self.group, file_pk = self._token.payload
-        self.file = File.objects.get(pk=file_pk)
+
+        # We only serve the newest original File of the Document.
+        self.file = (
+            File.objects.get(pk=file_pk)
+            .document.files.filter(variant=File.Variant.ORIGINAL)
+            .order_by("-created_at")
+            .first()
+        )
         self.memory_file = MyBytesIO()
         self.name = Path(self.path).name
 
@@ -94,7 +101,6 @@ class AlexandriaFileResource(ManabiFileResourceMixin, DAVNonCollection):
         return self.memory_file
 
     def end_write(self, *, with_errors):
-        super().end_write(with_errors=with_errors)
         try:
             validate_file_infection(self.memory_file)
         except ValidationError:
@@ -122,6 +128,7 @@ class AlexandriaFileResource(ManabiFileResourceMixin, DAVNonCollection):
         file.save()
         self.file = file
         self.memory_file.do_close()
+        super().end_write(with_errors=with_errors)
 
 
 class AlexandriaProvider(ManabiProvider):
