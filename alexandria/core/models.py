@@ -240,7 +240,7 @@ class File(UUIDModel):
             self.set_checksum()
         return super().save(force_insert, force_update, using, update_fields)
 
-    def get_webdav_url(self, username, group, scheme="http", host="localhost"):
+    def get_webdav_url(self, username, group, scheme="webdav", host="localhost:8000"):
         # The path doesn't need to match the actual file path, because we're accessing
         # the file via the `File.pk`. So we can use just the name, that will then be
         # the last part of the URL
