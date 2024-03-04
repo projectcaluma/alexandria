@@ -150,12 +150,13 @@ def get_dav():
         f"host={settings.DATABASES['default']['HOST']} "
         f"password={settings.DATABASES['default']['PASSWORD']}"
     )
+    ttl = 600
     root_folder = settings.MEDIA_ROOT
     if settings.ALEXANDRIA_FILE_STORAGE == "alexandria.storages.backends.s3.S3Storage":
         root_folder = "/"
 
     config = {
-        "lock_storage": ManabiDbLockStorage(60, postgres_dsn),
+        "lock_storage": ManabiDbLockStorage(ttl, postgres_dsn),
         "provider_mapping": {
             settings.ALEXANDRIA_MANABI_DAV_URL_PATH: AlexandriaProvider(
                 root_folder, cb_hook_config=None
@@ -171,8 +172,9 @@ def get_dav():
         ],
         "manabi": {
             "key": settings.MANABI_SHARED_KEY,
-            "refresh": 600,
-            "initial": 60,
+            "refresh": ttl,
+            "initial": ttl,
+            "secure": settings.MANABI_SECURE,
         },
     }
     return ManabiDAVApp(config)

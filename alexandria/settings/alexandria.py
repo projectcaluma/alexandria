@@ -181,3 +181,4 @@ ALEXANDRIA_MANABI_DAV_URL_PATH = env.str(
 MANABI_SHARED_KEY = env.str(
     "MANABI_SHARED_KEY", default=default("2QhWg20fXq0xlnJUkFTDgFoA3JWqvb86OejD9mAVFCW")
 )
+MANABI_SECURE = True if ENV == "production" else False
