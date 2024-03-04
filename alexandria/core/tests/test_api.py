@@ -53,6 +53,11 @@ def deterministic_uuids(mocker):
     mocker.patch("uuid.uuid4", next_uuid)
 
 
+@pytest.fixture()
+def manabi(settings):
+    settings.ALEXANDRIA_USE_MANABI = True
+
+
 @pytest.fixture(
     params=[
         # add your viewset and expected queries run for generic api testing...
@@ -162,7 +167,7 @@ def assert_response(
 
 
 @pytest.mark.freeze_time("2017-05-21")
-def test_api_list(fixture, request, admin_client, snapshot, viewset):
+def test_api_list(fixture, request, admin_client, snapshot, viewset, manabi):
     url = reverse("{0}-list".format(viewset.base_name))
 
     # create more data for proper num queries check
@@ -176,7 +181,7 @@ def test_api_list(fixture, request, admin_client, snapshot, viewset):
 
 
 @pytest.mark.freeze_time("2017-05-21")
-def test_api_detail(fixture, admin_client, viewset, snapshot):
+def test_api_detail(fixture, admin_client, viewset, snapshot, manabi):
     url = reverse("{0}-detail".format(viewset.base_name), args=[fixture.pk])
 
     included = getattr(viewset.serializer_class, "included_serializers", {})
@@ -192,7 +197,7 @@ def test_api_detail(fixture, admin_client, viewset, snapshot):
 
 
 @pytest.mark.freeze_time("2017-05-21")
-def test_api_create(fixture, admin_client, viewset, snapshot):
+def test_api_create(fixture, admin_client, viewset, snapshot, manabi):
     url = reverse("{0}-list".format(viewset.base_name))
 
     serializer = viewset.serializer_class(fixture)
