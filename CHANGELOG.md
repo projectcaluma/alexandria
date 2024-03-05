@@ -1,3 +1,13 @@
+# 3.0.0-beta.15
+### Fix
+* Disable manabi by default ([`eea655c`](https://github.com/projectcaluma/alexandria/commit/eea655c01a66761efd227fd8bd39f3984251fc7b))
+* **manabi:** Set sane TTL and configure `secure` ([`6eb0ca2`](https://github.com/projectcaluma/alexandria/commit/6eb0ca23c6b3d030f30b700ab16a3724786dc47f))
+* **webdav:** Only serve webdav link if manabi is enabled ([`ef2e0b9`](https://github.com/projectcaluma/alexandria/commit/ef2e0b9d1d29fd1cdabb7507f3004d9c62297c8f))
+* **webdav:** Use `webdav`-scheme as default for webdav links ([`d513916`](https://github.com/projectcaluma/alexandria/commit/d51391655dd27b1dd7fa4bda82dd84f846666051))
+* Only serve newest File form Document ([`27bc67f`](https://github.com/projectcaluma/alexandria/commit/27bc67f0614cbc48ba0cde803d3f423f2e8c614b))
+* Only create webDAV links for original Files ([`279d31d`](https://github.com/projectcaluma/alexandria/commit/279d31d4e773283fd5fd76773a65d6c8f192a891))
+* Run hooks after file save was successful ([`6d12b7a`](https://github.com/projectcaluma/alexandria/commit/6d12b7ac7eaa6e4ce82bf52803a5b92d179e0014))
+
 # 3.0.0-beta.14
 ### Feature
 * Integrate manabi for editing files over WebDAV ([`7e0ec86`](https://github.com/projectcaluma/alexandria/commit/7e0ec86291606945302734579e0868f05cbf73bf))
@@ -55,7 +65,7 @@
 
 # 3.0.0-beta.3
 ### Feature
-* **storage:** use Django's storage backend for object storage 
+* **storage:** use Django's storage backend for object storage
 * Add command to encrypt existing files ([`ac4a910`](https://github.com/projectcaluma/alexandria/commit/ac4a91022d011385931b37f8f6798cf2c8bf60bc))
 * **files:** Add signed download_url to file ([`922f55a`](https://github.com/projectcaluma/alexandria/commit/922f55a67299aa42a94ef539ac0949ba375901b6))
 
