@@ -1,3 +1,7 @@
+# 3.0.0-beta.16
+### Fix
+* **webdav:** Make scheme a setting ([`a634c86`](https://github.com/projectcaluma/alexandria/commit/a634c863c3219ca465c15b40f6e80971b6905b9f))
+
 # 3.0.0-beta.15
 ### Fix
 * Disable manabi by default ([`eea655c`](https://github.com/projectcaluma/alexandria/commit/eea655c01a66761efd227fd8bd39f3984251fc7b))
