@@ -13,7 +13,8 @@ from webtest import TestApp, TestRequest
 from wsgidav.dav_error import HTTP_FORBIDDEN
 
 from alexandria.core.models import File
-from alexandria.dav import AlexandriaProvider, get_dav
+from alexandria.dav import get_dav
+from alexandria.dav_provider import AlexandriaProvider
 
 
 @pytest.fixture
@@ -100,7 +101,7 @@ def test_dav_not_found(db, settings):
 
 def test_dav_file_infection(db, manabi, mocker, file_factory):
     mocker.patch(
-        "alexandria.dav.validate_file_infection",
+        "alexandria.dav_provider.validate_file_infection",
         return_value=None,
         side_effect=ValidationError("File is infected with malware.", code="infected"),
     )
