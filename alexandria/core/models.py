@@ -240,7 +240,7 @@ class File(UUIDModel):
             self.set_checksum()
         return super().save(force_insert, force_update, using, update_fields)
 
-    def get_webdav_url(self, username, group, scheme="webdav", host="localhost:8000"):
+    def get_webdav_url(self, username, group, host="localhost:8000"):
         # The path doesn't need to match the actual file path, because we're accessing
         # the file via the `File.pk`. So we can use just the name, that will then be
         # the last part of the URL
@@ -253,7 +253,7 @@ class File(UUIDModel):
         payload = (username, group, str(self.pk))
         token = Token(key, path, payload=payload)
 
-        return f"{scheme}://{host}{settings.ALEXANDRIA_MANABI_DAV_URL_PATH}/{token.as_url()}"
+        return f"{settings.ALEXANDRIA_MANABI_DAV_SCHEME}://{host}{settings.ALEXANDRIA_MANABI_DAV_URL_PATH}/{token.as_url()}"
 
     def create_thumbnail(self):
         if not settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION:

@@ -29,7 +29,7 @@ def s3(settings):
 
 @pytest.mark.parametrize("use_s3", [True, False])
 @pytest.mark.parametrize("same_user", [True, False])
-def test_dav(db, settings, s3, file_factory, use_s3, same_user):
+def test_dav(db, manabi, settings, s3, file_factory, use_s3, same_user):
     if use_s3:
         settings.ALEXANDRIA_FILE_STORAGE = "alexandria.storages.backends.s3.S3Storage"
     user = "admin"
@@ -48,11 +48,11 @@ def test_dav(db, settings, s3, file_factory, use_s3, same_user):
         file.modified_by_group = group
         file.save()
         dav_app = TestApp(get_dav())
-        resp = dav_app.get(file.get_webdav_url("foobar", "foobar", "http"))
+        resp = dav_app.get(file.get_webdav_url("foobar", "foobar"))
         assert resp.status_code == status.HTTP_200_OK
         assert resp.body == b"hello world"
 
-        resp = dav_app.put(file.get_webdav_url("foobar", "foobar", "http"), b"foo bar")
+        resp = dav_app.put(file.get_webdav_url("foobar", "foobar"), b"foo bar")
         assert resp.status_code == status.HTTP_204_NO_CONTENT
 
         file.refresh_from_db()
@@ -73,11 +73,11 @@ def test_dav(db, settings, s3, file_factory, use_s3, same_user):
 
 
 @pytest.mark.freeze_time("1970-01-01")
-def test_dav_propfind(db, file_factory, snapshot):
+def test_dav_propfind(db, manabi, file_factory, snapshot):
     content_file = ContentFile(b"hello world", name="test.txt")
     file = file_factory(name="test.txt", content=content_file, size=content_file.size)
     dav_app = TestApp(get_dav())
-    url = file.get_webdav_url("foobar", "foobar", "http")
+    url = file.get_webdav_url("foobar", "foobar")
     req = TestRequest.blank(url, method="PROPFIND", headers={"Depth": "1"})
     resp = dav_app.do_request(req)
     assert minidom.parseString(resp.body).toprettyxml(indent="  ") == snapshot
@@ -98,7 +98,7 @@ def test_dav_not_found(db, settings):
     )
 
 
-def test_dav_file_infection(db, mocker, file_factory):
+def test_dav_file_infection(db, manabi, mocker, file_factory):
     mocker.patch(
         "alexandria.dav.validate_file_infection",
         return_value=None,
@@ -108,5 +108,5 @@ def test_dav_file_infection(db, mocker, file_factory):
     content_file = ContentFile(b"hello world", name="test.txt")
     file = file_factory(name="test.txt", content=content_file, size=content_file.size)
     dav_app = TestApp(get_dav())
-    url = file.get_webdav_url("foobar", "foobar", "http")
+    url = file.get_webdav_url("foobar", "foobar")
     dav_app.put(url, b"foo bar", status=HTTP_FORBIDDEN)

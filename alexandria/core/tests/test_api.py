@@ -53,11 +53,6 @@ def deterministic_uuids(mocker):
     mocker.patch("uuid.uuid4", next_uuid)
 
 
-@pytest.fixture()
-def manabi(settings):
-    settings.ALEXANDRIA_USE_MANABI = True
-
-
 @pytest.fixture(
     params=[
         # add your viewset and expected queries run for generic api testing...

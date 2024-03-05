@@ -112,6 +112,7 @@ A list of configuration options which you need
     To use SSE-C in development make sure to generate a certificate for the minio container and set `ALEXANDRIA_S3_VERIFY` to `false`.
 
 - ClamAV
+
   - `ALEXANDRIA_CLAMD_ENABLED`: Set this to `True` to enable ClamAV (virus scanner).
   - `ALEXANDRIA_CLAMD_SOCKET`: ClamAV socket
   - `ALEXANDRIA_CLAMD_USE_TCP`: Use TCP to connect to ClamAV service
@@ -119,19 +120,20 @@ A list of configuration options which you need
   - `ALEXANDRIA_CLAMD_TCP_ADDR`: ClamAV service address
 
 - [Document Merge Service](https://github.com/adfinis/document-merge-service)
-Enable conversion of docx/odt files to pdf directly in alexandria.
+  Enable conversion of docx/odt files to pdf directly in alexandria.
+
   - `ALEXANDRIA_ENABLE_PDF_CONVERSION`: Set this to `True` to enable the pdf conversion endpoint.
   - `ALEXANDRIA_DMS_URL`: URL where the document merge service is running
 
-
 - WebDAV
-- `ALEXANDRIA_USE_MANABI`: Set to `true` to enable WebDAV via Manabi
-- `MANABI_SHARED_KEY`: Can be generated with:
-   ```py
-   import manabi
-   manabi.keygen()
-   ```
-
+  - `ALEXANDRIA_USE_MANABI`: Set to `true` to enable WebDAV via Manabi
+  - `ALEXANDRIA_MANABI_DAV_URL_PATH`: Set the path segement where WebDAV is being served
+  - `ALEXANDRIA_MANABI_DAV_SCHEME`: Set the scheme for the WebDAV URL
+  - `MANABI_SHARED_KEY`: Can be generated with:
+  ```py
+  import manabi
+  manabi.keygen()
+  ```
 
 For development, you can also set the following environemnt variables to help you:
 
