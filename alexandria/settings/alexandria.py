@@ -174,9 +174,14 @@ ALEXANDRIA_ENABLE_PDF_CONVERSION = env.bool(
 )
 ALEXANDRIA_DMS_URL = env.str("ALEXANDRIA_DMS_URL", default="http://dms:8000/api/v1")
 
+# Manabi
 ALEXANDRIA_USE_MANABI = env.bool("ALEXANDRIA_USE_MANABI", default=False)
 ALEXANDRIA_MANABI_DAV_URL_PATH = env.str(
     "ALEXANDRIA_MANABI_DAV_URL_PATH", default="/dav"
+)
+ALEXANDRIA_MANABI_DAV_SCHEME = env.str(
+    "ALEXANDRIA_DAV_SCHEME",
+    default=default("ms-word:ofe|u|http", "ms-word:ofe|u|https"),
 )
 MANABI_SHARED_KEY = env.str(
     "MANABI_SHARED_KEY", default=default("2QhWg20fXq0xlnJUkFTDgFoA3JWqvb86OejD9mAVFCW")

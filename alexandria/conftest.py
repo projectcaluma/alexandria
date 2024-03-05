@@ -103,3 +103,9 @@ def reset_config_classes(settings):
     # First, set config to original value
     core_config = apps.get_app_config("generic_permissions")
     core_config.ready()
+
+
+@pytest.fixture()
+def manabi(settings):
+    settings.ALEXANDRIA_USE_MANABI = True
+    settings.ALEXANDRIA_MANABI_DAV_SCHEME = "http"
