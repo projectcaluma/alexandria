@@ -48,11 +48,11 @@ def test_dav(db, settings, s3, file_factory, use_s3, same_user):
         file.modified_by_group = group
         file.save()
         dav_app = TestApp(get_dav())
-        resp = dav_app.get(file.get_webdav_url("foobar", "foobar"))
+        resp = dav_app.get(file.get_webdav_url("foobar", "foobar", "http"))
         assert resp.status_code == status.HTTP_200_OK
         assert resp.body == b"hello world"
 
-        resp = dav_app.put(file.get_webdav_url("foobar", "foobar"), b"foo bar")
+        resp = dav_app.put(file.get_webdav_url("foobar", "foobar", "http"), b"foo bar")
         assert resp.status_code == status.HTTP_204_NO_CONTENT
 
         file.refresh_from_db()
@@ -77,7 +77,7 @@ def test_dav_propfind(db, file_factory, snapshot):
     content_file = ContentFile(b"hello world", name="test.txt")
     file = file_factory(name="test.txt", content=content_file, size=content_file.size)
     dav_app = TestApp(get_dav())
-    url = file.get_webdav_url("foobar", "foobar")
+    url = file.get_webdav_url("foobar", "foobar", "http")
     req = TestRequest.blank(url, method="PROPFIND", headers={"Depth": "1"})
     resp = dav_app.do_request(req)
     assert minidom.parseString(resp.body).toprettyxml(indent="  ") == snapshot
@@ -108,5 +108,5 @@ def test_dav_file_infection(db, mocker, file_factory):
     content_file = ContentFile(b"hello world", name="test.txt")
     file = file_factory(name="test.txt", content=content_file, size=content_file.size)
     dav_app = TestApp(get_dav())
-    url = file.get_webdav_url("foobar", "foobar")
+    url = file.get_webdav_url("foobar", "foobar", "http")
     dav_app.put(url, b"foo bar", status=HTTP_FORBIDDEN)
