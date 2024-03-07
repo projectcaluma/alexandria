@@ -21,6 +21,10 @@ class DynamicStorageFieldFile(FieldFile):
 class DynamicStorageFileField(models.FileField):
     attr_class = DynamicStorageFieldFile
 
+    # TODO: When next working on file / storage stuff, consider extracting
+    # the storage code into it's own project, so we can reuse it outside
+    # of Alexandria: https://github.com/projectcaluma/alexandria/issues/480
+
     def pre_save(self, instance, add):
         # set storage to default storage class to prevent reusing the last selection
         self.storage = get_storage_class(settings.ALEXANDRIA_FILE_STORAGE)()
