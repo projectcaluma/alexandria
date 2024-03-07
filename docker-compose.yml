@@ -18,6 +18,7 @@ services:
       - minio
     environment:
       - DATABASE_HOST=db
+      - DATABASE_PORT=5432
       # following options are a must to configure on production system:
       # https://docs.djangoproject.com/en/2.1/ref/settings/#std:setting-SECRET_KEY
       # - SECRET_KEY=
