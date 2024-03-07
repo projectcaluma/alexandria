@@ -1,3 +1,7 @@
+# 3.0.0-beta.17
+### Fix
+* **webdav:** Split alexandria provider out of dav.py ([`a0c7d64`](https://github.com/projectcaluma/alexandria/commit/a0c7d64412bc8fada912b94c5206823278a76052))
+
 # 3.0.0-beta.16
 ### Fix
 * **webdav:** Make scheme a setting ([`a634c86`](https://github.com/projectcaluma/alexandria/commit/a634c863c3219ca465c15b40f6e80971b6905b9f))
