@@ -250,6 +250,10 @@ class FileViewSet(
     def create(self, request, *args, **kwargs):
         # invoke dgap permission check
         self._check_permissions(request)
+
+        # TODO: When next working on file / storage stuff, consider extracting
+        # the storage code into it's own project, so we can reuse it outside
+        # of Alexandria: https://github.com/projectcaluma/alexandria/issues/480
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         if settings.ALEXANDRIA_ENABLE_AT_REST_ENCRYPTION:

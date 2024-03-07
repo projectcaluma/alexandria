@@ -248,6 +248,10 @@ class FileSerializer(BaseSerializer):
             self.initial_data["original"] = {"type": "files", "id": original}
 
     def is_valid(self, *args, raise_exception=False, **kwargs):
+        # TODO: When next working on file / storage stuff, consider extracting
+        # the storage code into it's own project, so we can reuse it outside
+        # of Alexandria: https://github.com/projectcaluma/alexandria/issues/480
+
         if self.context["request"].content_type.startswith("multipart/"):
             self._prepare_multipart()
         return super().is_valid(*args, raise_exception=raise_exception, **kwargs)

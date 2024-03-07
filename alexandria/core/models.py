@@ -222,6 +222,10 @@ class File(UUIDModel):
         null=True,
         blank=True,
     )
+
+    # TODO: When next working on file / storage stuff, consider extracting
+    # the storage code into it's own project, so we can reuse it outside
+    # of Alexandria: https://github.com/projectcaluma/alexandria/issues/480
     content = DynamicStorageFileField(upload_to=upload_file_content_to, max_length=300)
     mime_type = models.CharField(max_length=255)
     size = models.IntegerField()
