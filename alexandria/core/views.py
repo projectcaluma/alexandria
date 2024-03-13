@@ -38,6 +38,7 @@ from rest_framework_json_api.views import (
 )
 
 from . import models, serializers
+from .api import create_document_file
 from .filters import (
     CategoryFilterSet,
     DocumentFilterSet,
@@ -46,7 +47,6 @@ from .filters import (
     TagFilterSet,
 )
 from .presign_urls import verify_signed_components
-from .utils import create_document_file
 
 log = logging.getLogger(__name__)
 
