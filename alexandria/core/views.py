@@ -46,6 +46,7 @@ from .filters import (
     TagFilterSet,
 )
 from .presign_urls import verify_signed_components
+from .utils import create_document_file
 
 log = logging.getLogger(__name__)
 
@@ -136,31 +137,27 @@ class DocumentViewSet(PermissionViewMixin, VisibilityViewMixin, ModelViewSet):
             request.user, settings.ALEXANDRIA_CREATED_BY_GROUP_PROPERTY, None
         )
 
-        converted_document = models.Document.objects.create(
-            title={k: f"{ splitext(v)[0]}.pdf" for k, v in document.title.items()},
-            description=document.description,
-            category=document.category,
-            date=document.date,
-            metainfo=document.metainfo,
-            created_by_user=username,
-            created_by_group=group,
-            modified_by_user=username,
-            modified_by_group=group,
-        )
         file_name = f"{splitext(file.name)[0]}.pdf"
-        converted_file = models.File.objects.create(
-            document=converted_document,
-            name=file_name,
-            content=ContentFile(response.content, file_name),
-            mime_type="application/pdf",
-            size=len(response.content),
-            metainfo=file.metainfo,
-            created_by_user=username,
-            created_by_group=group,
-            modified_by_user=username,
-            modified_by_group=group,
+        converted_document, __ = create_document_file(
+            username,
+            group,
+            {
+                "title": {
+                    k: f"{ splitext(v)[0]}.pdf" for k, v in document.title.items()
+                },
+                "description": document.description,
+                "category": document.category,
+                "date": document.date,
+                "metainfo": document.metainfo,
+            },
+            {
+                "name": file_name,
+                "content": ContentFile(response.content, file_name),
+                "mime_type": "application/pdf",
+                "size": len(response.content),
+                "metainfo": file.metainfo,
+            },
         )
-        converted_file.create_thumbnail()
 
         serializer = self.get_serializer(converted_document)
         headers = self.get_success_headers(serializer.data)
