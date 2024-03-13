@@ -1,8 +1,12 @@
+import logging
+
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.files import File
 
 from alexandria.core import models
+
+log = logging.getLogger(__name__)
 
 
 def create_document_file(
@@ -33,13 +37,13 @@ def create_document_file(
         **document_attributes,
     )
     file = create_file(
-        document,
-        user,
-        group,
-        file_name,
-        file_content,
-        mime_type,
-        file_size,
+        document=document,
+        user=user,
+        group=group,
+        name=file_name,
+        content=file_content,
+        mime_type=mime_type,
+        size=file_size,
         **file_attributes,
     )
 
@@ -82,8 +86,11 @@ def create_file(
 
     try:
         file.create_thumbnail()
-    except ValidationError:  # pragma: no cover
-        # thumbnail could not be generated because of an unsupported mime type
-        pass
+    except ValidationError as e:  # pragma: no cover
+        log.error(
+            "Object {obj} created successfully. Thumbnail creation failed. Error: {error}".format(
+                obj=file, error=e.messages
+            )
+        )
 
     return file

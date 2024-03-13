@@ -139,20 +139,22 @@ class DocumentViewSet(PermissionViewMixin, VisibilityViewMixin, ModelViewSet):
 
         file_name = f"{splitext(file.name)[0]}.pdf"
         converted_document, __ = create_document_file(
-            username,
-            group,
-            document.category,
-            {k: f"{ splitext(v)[0]}.pdf" for k, v in document.title.items()},
-            file_name,
-            ContentFile(response.content, file_name),
-            "application/pdf",
-            len(response.content),
-            {
+            user=username,
+            group=group,
+            category=document.category,
+            document_title={
+                k: f"{ splitext(v)[0]}.pdf" for k, v in document.title.items()
+            },
+            file_name=file_name,
+            file_content=ContentFile(response.content, file_name),
+            mime_type="application/pdf",
+            file_size=len(response.content),
+            document_attributes={
                 "description": document.description,
                 "date": document.date,
                 "metainfo": document.metainfo,
             },
-            {
+            file_attributes={
                 "metainfo": file.metainfo,
             },
         )
