@@ -2,9 +2,11 @@
 
 Functions which make interacting with the models easier.
 
-`create_document_file`
+## `create_document_file`
+
 Creates a document and file
-Params:
+
+### Parameters
 
 - `user` The user creating the document and file.
 - `group` The group creating the document and file.
@@ -16,12 +18,16 @@ Params:
 - `file_size` File size 
 - `document_attributes` A dictionary containing the optional fields for the document.
 - `file_attributes` A dictionary containing the optional, fields for the file.
-  Return:
+
+### Return
+
 - A tuple containing the created document and file.
 
-`create_file`
+## `create_file`
+
 Creates a file with thumbnail
-Params:
+
+### Parameters
 
 - `document` The document associated with the file.
 - `user` The user who created the file.
@@ -31,5 +37,7 @@ Params:
 - `mime_type` File mime type
 - `size` File size
 - `attributes` Kwargs containing the optional fields for the file. 
-  Return:
+
+### Return
+
 - The created file object.
