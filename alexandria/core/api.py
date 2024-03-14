@@ -18,8 +18,8 @@ def create_document_file(
     file_content: File,
     mime_type: str,
     file_size: int,
-    document_attributes={},
-    file_attributes={},
+    additional_document_attributes={},
+    additional_file_attributes={},
 ):
     """
     Create a document and file with the given attributes.
@@ -34,7 +34,7 @@ def create_document_file(
         created_by_group=group,
         modified_by_user=user,
         modified_by_group=group,
-        **document_attributes,
+        **additional_document_attributes,
     )
     file = create_file(
         document=document,
@@ -44,7 +44,7 @@ def create_document_file(
         content=file_content,
         mime_type=mime_type,
         size=file_size,
-        **file_attributes,
+        **additional_file_attributes,
     )
 
     return document, file
@@ -58,7 +58,7 @@ def create_file(
     content: File,
     mime_type: str,
     size: int,
-    **attributes
+    **additional_attributes
 ):
     """
     Create a file with defaults and generate a thumbnail.
@@ -81,7 +81,7 @@ def create_file(
         created_by_group=group,
         modified_by_user=user,
         modified_by_group=group,
-        **attributes,
+        **additional_attributes,
     )
 
     try:

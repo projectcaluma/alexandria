@@ -16,8 +16,8 @@ Creates a document and file
 - `file_content` File object
 - `mime_type` File mime type
 - `file_size` File size 
-- `document_attributes` A dictionary containing the optional fields for the document.
-- `file_attributes` A dictionary containing the optional, fields for the file.
+- `additional_document_attributes` A dictionary containing the optional fields for the document.
+- `additional_file_attributes` A dictionary containing the optional fields for the file.
 
 ### Return
 
@@ -36,7 +36,7 @@ Creates a file with thumbnail
 - `content` File object
 - `mime_type` File mime type
 - `size` File size
-- `attributes` Kwargs containing the optional fields for the file. 
+- `additional_attributes` Kwargs containing the optional fields for the file. 
 
 ### Return
 

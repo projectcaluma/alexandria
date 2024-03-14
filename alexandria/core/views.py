@@ -149,12 +149,12 @@ class DocumentViewSet(PermissionViewMixin, VisibilityViewMixin, ModelViewSet):
             file_content=ContentFile(response.content, file_name),
             mime_type="application/pdf",
             file_size=len(response.content),
-            document_attributes={
+            additional_document_attributes={
                 "description": document.description,
                 "date": document.date,
                 "metainfo": document.metainfo,
             },
-            file_attributes={
+            additional_file_attributes={
                 "metainfo": file.metainfo,
             },
         )
