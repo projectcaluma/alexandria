@@ -42,6 +42,10 @@ To load a set of categories run the following command:
 make load_example_data
 ```
 
+### Usage
+
+If alexandria is installed as a package you can use [PYTHON_API](PYTHON_API.md) for interacting with the models in an easier way.
+
 ### Configuration
 
 Alexandria is a [12factor app](https://12factor.net/) which means that configuration is stored in environment variables.

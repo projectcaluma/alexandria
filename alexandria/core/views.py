@@ -38,6 +38,7 @@ from rest_framework_json_api.views import (
 )
 
 from . import models, serializers
+from .api import create_document_file
 from .filters import (
     CategoryFilterSet,
     DocumentFilterSet,
@@ -136,31 +137,27 @@ class DocumentViewSet(PermissionViewMixin, VisibilityViewMixin, ModelViewSet):
             request.user, settings.ALEXANDRIA_CREATED_BY_GROUP_PROPERTY, None
         )
 
-        converted_document = models.Document.objects.create(
-            title={k: f"{ splitext(v)[0]}.pdf" for k, v in document.title.items()},
-            description=document.description,
-            category=document.category,
-            date=document.date,
-            metainfo=document.metainfo,
-            created_by_user=username,
-            created_by_group=group,
-            modified_by_user=username,
-            modified_by_group=group,
-        )
         file_name = f"{splitext(file.name)[0]}.pdf"
-        converted_file = models.File.objects.create(
-            document=converted_document,
-            name=file_name,
-            content=ContentFile(response.content, file_name),
+        converted_document, __ = create_document_file(
+            user=username,
+            group=group,
+            category=document.category,
+            document_title={
+                k: f"{ splitext(v)[0]}.pdf" for k, v in document.title.items()
+            },
+            file_name=file_name,
+            file_content=ContentFile(response.content, file_name),
             mime_type="application/pdf",
-            size=len(response.content),
-            metainfo=file.metainfo,
-            created_by_user=username,
-            created_by_group=group,
-            modified_by_user=username,
-            modified_by_group=group,
+            file_size=len(response.content),
+            additional_document_attributes={
+                "description": document.description,
+                "date": document.date,
+                "metainfo": document.metainfo,
+            },
+            additional_file_attributes={
+                "metainfo": file.metainfo,
+            },
         )
-        converted_file.create_thumbnail()
 
         serializer = self.get_serializer(converted_document)
         headers = self.get_success_headers(serializer.data)
