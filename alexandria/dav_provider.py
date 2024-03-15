@@ -112,6 +112,8 @@ class AlexandriaFileResource(ManabiFileResourceMixin, DAVNonCollection):
                 document=self.file.document,
                 encryption_status=self.file.encryption_status,
                 mime_type=self.file.mime_type,
+                created_by_user=self.user,
+                created_by_group=self.group,
                 modified_by_user=self.user,
                 modified_by_group=self.group,
             )
