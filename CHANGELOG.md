@@ -1,3 +1,7 @@
+# 3.0.0
+### Fix
+* **dav:** Set created_by_* attributes on new files ([`f480cb6`](https://github.com/projectcaluma/alexandria/commit/f480cb670bf359adee82ac49ec59ee2c018df8ab))
+
 # 3.0.0-beta.18
 ### Feature
 * Add python api for creating files ([#487](https://github.com/projectcaluma/alexandria/issues/487)) ([`a26f058`](https://github.com/projectcaluma/alexandria/commit/a26f0588a6a4365598079283d8dd26d5a580e3e3))
