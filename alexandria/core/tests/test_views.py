@@ -1,6 +1,7 @@
 import io
 import uuid
 import zipfile
+from pathlib import Path
 
 import pytest
 from django.db.models import Count, Q
@@ -453,7 +454,9 @@ def test_convert_document(
 
     response = mocker.Mock()
     response.status_code = HTTP_200_OK
-    response.content = b"pdfdata"
+
+    with Path(__file__).with_name("pdf-test.pdf").open("rb") as test_file:
+        response.content = test_file.read()
     mocker.patch("requests.post", return_value=response)
     url = reverse("document-convert", args=[document.pk])
     response = admin_client.post(url)

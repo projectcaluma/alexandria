@@ -1,3 +1,5 @@
+from mimetypes import guess_type
+
 from django.conf import settings
 from django.template.defaultfilters import slugify
 from django.utils import translation
@@ -219,6 +221,12 @@ class FileSerializer(BaseSerializer):
                 f'"original" must not be set for variant "{variant}".'
             )
 
+        mime_type = validated_data["content"].content_type
+        if mime_type == "application/octet-stream":
+            guess, _ = guess_type(validated_data["name"])
+            if guess is not None:
+                mime_type = guess
+        validated_data["mime_type"] = mime_type
         validated_data["mime_type"] = validated_data["content"].content_type
         validated_data["size"] = validated_data["content"].size
 
