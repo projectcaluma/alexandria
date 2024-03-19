@@ -2,6 +2,7 @@ import hashlib
 import logging
 import re
 import uuid
+from mimetypes import guess_extension
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 
@@ -268,7 +269,8 @@ class File(UUIDModel):
             manager = PreviewManager(str(temp_file.parent))
             with temp_file.open("wb") as f:
                 f.write(self.content.file.file.read())
-            preview_kwargs = {}
+            extension = guess_extension(self.mime_type)
+            preview_kwargs = {"file_ext": extension}
             if settings.ALEXANDRIA_THUMBNAIL_WIDTH:  # pragma: no cover
                 preview_kwargs["width"] = settings.ALEXANDRIA_THUMBNAIL_WIDTH
             if settings.ALEXANDRIA_THUMBNAIL_HEIGHT:  # pragma: no cover
