@@ -217,9 +217,6 @@
               'type': 'documents',
             }),
           }),
-          'original': dict({
-            'data': None,
-          }),
           'renderings': dict({
             'data': list([
               dict({
@@ -767,9 +764,6 @@
               'id': '9dd4e461-268c-8034-f5c8-564e155c67a6',
               'type': 'documents',
             }),
-          }),
-          'original': dict({
-            'data': None,
           }),
           'renderings': dict({
             'data': list([
@@ -1530,9 +1524,6 @@
                 'type': 'documents',
               }),
             }),
-            'original': dict({
-              'data': None,
-            }),
             'renderings': dict({
               'data': list([
               ]),
@@ -1569,9 +1560,6 @@
                 'type': 'documents',
               }),
             }),
-            'original': dict({
-              'data': None,
-            }),
             'renderings': dict({
               'data': list([
               ]),
@@ -1607,9 +1595,6 @@
                 'id': 'fb0e22c7-9ac7-5679-e988-1e6ba183b354',
                 'type': 'documents',
               }),
-            }),
-            'original': dict({
-              'data': None,
             }),
             'renderings': dict({
               'data': list([

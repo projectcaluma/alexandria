@@ -267,17 +267,6 @@ class FileViewSet(
                         obj=obj, error=e.messages
                     )
                 )
-        if obj.variant == models.File.Variant.THUMBNAIL:
-            try:
-                # coerce the uploaded file to a thumbnail
-                obj.create_thumbnail()
-            except DjangoCoreValidationError as e:
-                # remove the uploaded file on failure to avoid
-                # collsions
-                obj.delete()
-                raise ValidationError(*e.messages)
-            # if the original already had a thumbnail remove that
-            self.queryset.filter(original=obj.original).exclude(pk=obj.pk).delete()
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=HTTP_201_CREATED, headers=headers)
 

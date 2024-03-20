@@ -9,7 +9,6 @@ from generic_permissions.visibilities import (
     VisibilityResourceRelatedField,
     VisibilitySerializerMixin,
 )
-from rest_framework.exceptions import ValidationError
 from rest_framework_json_api import serializers
 
 from . import models
@@ -199,6 +198,13 @@ class FileSerializer(BaseSerializer):
         )
         return instance.get_webdav_url(username, group, host)
 
+    def validate_variant(self, value):
+        if not value:
+            value = "original"
+        if value != "original":
+            raise serializers.ValidationError("only original files can be created")
+        return value
+
     def validate(self, *args, **kwargs):
         """Validate the data.
 
@@ -206,20 +212,6 @@ class FileSerializer(BaseSerializer):
         `validator_classes` attribute of the FileViewSet.
         """
         validated_data = super().validate(*args, **kwargs)
-        if validated_data.get(
-            "variant"
-        ) != models.File.Variant.ORIGINAL and not validated_data.get("original"):
-            file_variant = validated_data.get("variant")
-            raise ValidationError(
-                f'"original" must be set for variant "{file_variant}".'
-            )
-
-        if (
-            variant := validated_data.get("variant")
-        ) == models.File.Variant.ORIGINAL and validated_data.get("original"):
-            raise ValidationError(
-                f'"original" must not be set for variant "{variant}".'
-            )
 
         mime_type = validated_data["content"].content_type
         if mime_type == "application/octet-stream":
@@ -272,7 +264,6 @@ class FileSerializer(BaseSerializer):
         fields = BaseSerializer.Meta.fields + (
             "variant",
             "name",
-            "original",
             "renderings",
             "document",
             "checksum",
@@ -283,6 +274,7 @@ class FileSerializer(BaseSerializer):
             "size",
         )
         read_only_fields = (
+            "original",
             "mime_type",
             "size",
         )
