@@ -8,7 +8,6 @@ from tempfile import NamedTemporaryFile
 
 from django.conf import settings
 from django.contrib.postgres.fields import ArrayField
-from django.core.exceptions import ValidationError as DjangoCoreValidationError
 from django.core.files import File as DjangoFile
 from django.core.validators import RegexValidator
 from django.db import models, transaction
@@ -17,7 +16,6 @@ from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
 from localized_fields.fields import LocalizedCharField, LocalizedTextField
 from manabi.token import Key, Token
-from preview_generator.exception import UnsupportedMimeType
 from preview_generator.manager import PreviewManager
 
 from alexandria.core.presign_urls import make_signature_components
@@ -183,14 +181,7 @@ class Document(UUIDModel):
                 latest_original.document = self
                 latest_original.save()
 
-        try:
-            latest_original.create_thumbnail()
-        except DjangoCoreValidationError as e:
-            log.error(
-                "Object {obj} created successfully. Thumbnail creation failed. Error: {error}".format(
-                    obj=latest_original, error=e.messages
-                )
-            )
+        latest_original.create_thumbnail()
 
         return self
 
@@ -286,9 +277,10 @@ class File(UUIDModel):
                 path_to_preview_image = Path(
                     manager.get_jpeg_preview(str(temp_file), **preview_kwargs)
                 )
-            except UnsupportedMimeType:
-                msg = f"Unsupported MimeType for file {self.name}"
-                raise DjangoCoreValidationError(msg)
+            # thumbnail generation can throw many different exceptions, catch all
+            except Exception:  # noqa: B902
+                log.exception("Thumbnail generation failed")
+                return None
 
         with path_to_preview_image.open("rb") as thumb:
             file = ImageFile(thumb)
