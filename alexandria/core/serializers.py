@@ -212,10 +212,14 @@ class FileSerializer(BaseSerializer):
         if variant != models.File.Variant.ORIGINAL and not validated_data.get(
             "original"
         ):
-            raise ValidationError(_(f'"original" must be set for variant "{variant}".'))
+            raise ValidationError(
+                _('"original" must be set for variant "%(variant)s".')
+                % {"variant": variant}
+            )
         elif variant == models.File.Variant.ORIGINAL and validated_data.get("original"):
             raise ValidationError(
-                _(f'"original" must not be set for variant "{variant}".')
+                _('"original" must not be set for variant "%(variant)s".')
+                % {"variant": variant}
             )
 
         mime_type = validated_data["content"].content_type
@@ -233,7 +237,10 @@ class FileSerializer(BaseSerializer):
             and mime_type not in category.allowed_mime_types
         ):
             raise ValidationError(
-                _(f"File type {mime_type} is not allowed in category {category.pk}.")
+                _(
+                    "File type %(mime_type)s is not allowed in category %(category)s."
+                    % {"mime_type": mime_type, "category": category.pk}
+                )
             )
 
         validated_data["mime_type"] = mime_type
