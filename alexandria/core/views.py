@@ -244,43 +244,6 @@ class FileViewSet(
 
             return response
 
-    def create(self, request, *args, **kwargs):
-        # invoke dgap permission check
-        self._check_permissions(request)
-
-        # TODO: When next working on file / storage stuff, consider extracting
-        # the storage code into it's own project, so we can reuse it outside
-        # of Alexandria: https://github.com/projectcaluma/alexandria/issues/480
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        if settings.ALEXANDRIA_ENABLE_AT_REST_ENCRYPTION:
-            serializer.validated_data["encryption_status"] = (
-                settings.ALEXANDRIA_ENCRYPTION_METHOD
-            )
-        obj = serializer.save()
-        if obj.variant == models.File.Variant.ORIGINAL:
-            try:
-                obj.create_thumbnail()
-            except DjangoCoreValidationError as e:
-                log.error(
-                    "Object {obj} created successfully. Thumbnail creation failed. Error: {error}".format(
-                        obj=obj, error=e.messages
-                    )
-                )
-        if obj.variant == models.File.Variant.THUMBNAIL:
-            try:
-                # coerce the uploaded file to a thumbnail
-                obj.create_thumbnail()
-            except DjangoCoreValidationError as e:
-                # remove the uploaded file on failure to avoid
-                # collsions
-                obj.delete()
-                raise ValidationError(*e.messages)
-            # if the original already had a thumbnail remove that
-            self.queryset.filter(original=obj.original).exclude(pk=obj.pk).delete()
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=HTTP_201_CREATED, headers=headers)
-
     @permission_classes([AllowAny])
     @action(methods=["get"], detail=True)
     def download(self, request, pk=None):

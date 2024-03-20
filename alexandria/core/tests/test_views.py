@@ -4,12 +4,9 @@ import zipfile
 from pathlib import Path
 
 import pytest
-from django.db.models import Count, Q
 from django.urls import reverse
 from django.utils import timezone
 from factory.django import django_files
-from PIL import Image
-from preview_generator.manager import PreviewManager
 from rest_framework.status import (
     HTTP_200_OK,
     HTTP_201_CREATED,
@@ -56,71 +53,27 @@ def test_anonymous_writing(db, document, client, settings, user, allow_anon, met
 
 @pytest.mark.parametrize("enable_checksum", (True, False))
 @pytest.mark.parametrize(
-    "file_variant,enable_thumbnails,existing_thumbnail,file_type,allowed_mime_types,original,status_code",
+    "file_type,allowed_mime_types,thumbnail_count,status",
     [
-        (
-            File.Variant.ORIGINAL,
-            True,
-            False,
-            "png",
-            ["image/png"],
-            False,
-            HTTP_201_CREATED,
-        ),
-        # Original cannot also relate to another original
-        (File.Variant.ORIGINAL, True, False, "png", None, True, HTTP_400_BAD_REQUEST),
-        (File.Variant.THUMBNAIL, True, False, "png", [], True, HTTP_201_CREATED),
-        # thumbnail requires original
-        (File.Variant.THUMBNAIL, True, True, "png", None, False, HTTP_400_BAD_REQUEST),
-        (File.Variant.THUMBNAIL, True, True, "png800", None, True, HTTP_201_CREATED),
-        # Variant is required
-        (None, True, True, "png", None, False, HTTP_400_BAD_REQUEST),
-        (
-            File.Variant.ORIGINAL,
-            True,
-            True,
-            "unsupported",
-            None,
-            False,
-            HTTP_201_CREATED,
-        ),
-        (
-            File.Variant.THUMBNAIL,
-            True,
-            False,
-            "unsupported",
-            None,
-            True,
-            HTTP_400_BAD_REQUEST,
-        ),
-        (
-            File.Variant.ORIGINAL,
-            True,
-            False,
-            "png",
-            ["application/pdf"],
-            False,
-            HTTP_400_BAD_REQUEST,
-        ),
+        ("png", None, 1, HTTP_201_CREATED),
+        ("unsupported", None, 0, HTTP_201_CREATED),
+        ("png", ["application/pdf"], 1, HTTP_400_BAD_REQUEST),
     ],
 )
 def test_file_upload(
     admin_client,
-    category_factory,
     document_factory,
     tmp_path,
     file_factory,
-    file_variant,
-    existing_thumbnail,
-    enable_thumbnails,
     enable_checksum,
     file_type,
-    allowed_mime_types,
-    original,
-    status_code,
     settings,
+    thumbnail_count,
+    allowed_mime_types,
+    status,
+    category_factory
 ):
-    settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION = enable_thumbnails
+    settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION = True
     settings.ALEXANDRIA_ENABLE_CHECKSUM = enable_checksum
     category = category_factory(allowed_mime_types=allowed_mime_types)
     doc = document_factory(category=category)
@@ -129,67 +82,24 @@ def test_file_upload(
         "document": str(doc.pk),
         "content": io.BytesIO(getattr(FileData, file_type)),
     }
-    if file_variant:
-        data["variant"] = file_variant
-    if original:
-        file_ = file_factory(document=doc, variant=File.Variant.ORIGINAL)
-        data["original"] = str(file_.pk)
-        if existing_thumbnail:
-            thumb = file_factory(
-                document=doc, variant=File.Variant.THUMBNAIL, original=file_
-            )
     url = reverse("file-list")
     resp = admin_client.post(url, data=data, format="multipart")
 
-    assert resp.status_code == status_code
+    assert resp.status_code == status
     doc.refresh_from_db()
 
-    if status_code < HTTP_400_BAD_REQUEST:
-        assert doc.files.filter(name="file.png", variant=file_variant).exists()
-    # No document should have more than one original or thumbnail
-    assert (
-        not Document.objects.annotate(
-            thumb_cnt=Count(
-                "files", filter=Q(**{"files__variant": File.Variant.THUMBNAIL})
-            )
-        )
-        .filter(thumb_cnt__gt=1)
-        .exists()
-    )
-    # check that no thumbnails are larger than configured aka uploaded thumbnails are
-    # in fact resized:
-    for thumb in File.objects.filter(variant=File.Variant.THUMBNAIL).iterator():
-        width, height = Image.open(thumb.content.file).size
-        assert not any(
-            [
-                width > (settings.ALEXANDRIA_THUMBNAIL_WIDTH or 256),
-                height > (settings.ALEXANDRIA_THUMBNAIL_HEIGHT or 256),
-            ]
-        )
+    if status_code == HTTP_400_BAD_REQUEST:
+        return
 
-    if enable_checksum and status_code < HTTP_400_BAD_REQUEST:
-        if file_variant == File.Variant.THUMBNAIL:
-            # the thumbnail checksum will not necessarily be calculated from the
-            # uploaded file but from the rezised version.
-            # To emulate this behaviour we first need to store the uploaded file
-            # because PreviewManager does not accept in-memory byte streams
-            uploaded = tmp_path / f"uploaded.{file_type}"
-            with uploaded.open("wb") as f:
-                f.write(getattr(FileData, file_type))
-            manager = PreviewManager(tmp_path)
-            preview_path = manager.get_jpeg_preview(str(uploaded))
-            with open(preview_path, "rb") as f:
-                checksum = File.make_checksum(f.read())
-                assert (
-                    doc.files.filter(variant=File.Variant.THUMBNAIL).first().checksum
-                    == checksum
-                )
-        elif file_variant == File.Variant.ORIGINAL:
-            assert doc.files.filter(
-                variant=File.Variant.ORIGINAL
-            ).first().checksum == File.make_checksum(getattr(FileData, file_type))
-        else:
-            pass
+    assert doc.files.filter(name="file.png", variant="original").exists()
+    assert (
+        File.objects.filter(variant=File.Variant.THUMBNAIL).count() == thumbnail_count
+    )
+
+    if enable_checksum:
+        assert doc.files.filter(
+            variant=File.Variant.ORIGINAL
+        ).first().checksum == File.make_checksum(getattr(FileData, file_type))
 
 
 def test_at_rest_encryption(admin_client, settings, document, mocker):
@@ -271,10 +181,8 @@ def test_validate_created_by(
 
     if viewset == FileViewSet and not update:
         del post_data["data"]
-        for key in ["variant", "name", "original"]:
+        for key in ["variant", "name"]:
             post_data[key] = serialized_model[key]
-        if post_data["original"] is None:
-            del post_data["original"]
 
         post_data["content"] = io.BytesIO(b"datadatatatat")
         post_data["document"] = serialized_model["document"]["id"]
