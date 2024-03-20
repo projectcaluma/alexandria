@@ -71,7 +71,7 @@ def test_file_upload(
     thumbnail_count,
     allowed_mime_types,
     status,
-    category_factory
+    category_factory,
 ):
     settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION = True
     settings.ALEXANDRIA_ENABLE_CHECKSUM = enable_checksum
@@ -88,7 +88,7 @@ def test_file_upload(
     assert resp.status_code == status
     doc.refresh_from_db()
 
-    if status_code == HTTP_400_BAD_REQUEST:
+    if status == HTTP_400_BAD_REQUEST:
         return
 
     assert doc.files.filter(name="file.png", variant="original").exists()
