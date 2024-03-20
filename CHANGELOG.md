@@ -1,3 +1,13 @@
+# 3.1.0
+### Feature
+* **category:** Define allowed mime types ([`d4fd84e`](https://github.com/projectcaluma/alexandria/commit/d4fd84e6edb0502818f885082217aa48f0e56c5b))
+
+### Fix
+* **mimetypes:** Cleanup, simplify error handling ([`3bde9c4`](https://github.com/projectcaluma/alexandria/commit/3bde9c490f5ba67d4859767fa37afeabba3f1326))
+* **translation:** Use string replacement instead of f string ([`74dd485`](https://github.com/projectcaluma/alexandria/commit/74dd485587e30765bea4a784beead595a33df405))
+* **migrations:** Add missing migration for modified by description ([`7f53058`](https://github.com/projectcaluma/alexandria/commit/7f5305820f3e76e1ff6d06bfaa2d7af7d97cd08c))
+* **upload:** Use content-type and filename to infer mime types ([`d475321`](https://github.com/projectcaluma/alexandria/commit/d475321d23a7a21037b3012fd4aebeb6cb78b134))
+
 # 3.0.0
 ### Fix
 * **dav:** Set created_by_* attributes on new files ([`f480cb6`](https://github.com/projectcaluma/alexandria/commit/f480cb670bf359adee82ac49ec59ee2c018df8ab))
