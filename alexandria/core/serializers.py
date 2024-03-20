@@ -2,7 +2,6 @@ import logging
 from mimetypes import guess_type
 
 from django.conf import settings
-from django.core.exceptions import ValidationError as DjangoCoreValidationError
 from django.template.defaultfilters import slugify
 from django.utils import translation
 from django.utils.translation import gettext as _
@@ -241,21 +240,13 @@ class FileSerializer(BaseSerializer):
             )
 
         validated_data["mime_type"] = mime_type
-        validated_data["mime_type"] = validated_data["content"].content_type
         validated_data["size"] = validated_data["content"].size
 
         return validated_data
 
     def create(self, validated_data):
         file = super().create(validated_data)
-        try:
-            file.create_thumbnail()
-        except DjangoCoreValidationError as e:
-            log.error(
-                "Object {obj} created successfully. Thumbnail creation failed. Error: {error}".format(
-                    obj=file, error=e.messages
-                )
-            )
+        file.create_thumbnail()
         return file
 
     def _prepare_multipart(self):
