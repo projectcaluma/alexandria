@@ -7,6 +7,7 @@ from pathlib import Path
 from tempfile import NamedTemporaryFile
 
 from django.conf import settings
+from django.contrib.postgres.fields import ArrayField
 from django.core.exceptions import ValidationError as DjangoCoreValidationError
 from django.core.files import File as DjangoFile
 from django.core.validators import RegexValidator
@@ -99,6 +100,12 @@ class Category(SlugModel):
     )
     description = LocalizedTextField(
         _("category description"), null=True, blank=True, required=False
+    )
+    allowed_mime_types = ArrayField(
+        base_field=models.CharField(max_length=255),
+        blank=True,
+        null=True,
+        verbose_name=_("allowed mime types"),
     )
     color = models.CharField(
         max_length=18,
