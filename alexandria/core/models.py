@@ -291,10 +291,6 @@ class File(UUIDModel):
                 raise DjangoCoreValidationError(msg)
 
         with path_to_preview_image.open("rb") as thumb:
-            if self.variant == File.Variant.THUMBNAIL:
-                self.content = ImageFile(thumb)
-                self.save()
-                return self
             file = ImageFile(thumb)
             thumb_file = File.objects.create(
                 name=f"{self.name}_preview.jpg",
