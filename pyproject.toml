@@ -32,7 +32,7 @@ psutil = "^5.9.8"
 psycopg2-binary = "~2.9"
 requests = "^2.31.0"
 uwsgi = "^2.0.20"
-django-generic-api-permissions = "^0.4.2"
+django-generic-api-permissions = "^0.4.4"
 django-storages = { extras = ['s3'], version = "^1.14.2" }
 boto3 = "^1.29.7"
 tqdm = "^4.66.1"
