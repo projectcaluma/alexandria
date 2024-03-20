@@ -12,6 +12,7 @@
       "metainfo": {},
       "name": "{\"en\": \"All involved\"}",
       "description": "{\"en\": \"\"}",
+      "allowed_mime_types": "[\"application/pdf\"]",
       "color": "#CB68C1",
       "parent": null
     }
@@ -29,25 +30,9 @@
       "metainfo": {},
       "name": "{\"en\": \"Supplements to the application\"}",
       "description": "{\"en\": \"\"}",
+      "allowed_mime_types": null,
       "color": "#9CDD69",
       "parent": null
-    }
-  },
-  {
-    "model": "alexandria_core.category",
-    "pk": "maps",
-    "fields": {
-      "created_at": "2020-08-04T13:24:00.677Z",
-      "created_by_user": null,
-      "created_by_group": null,
-      "modified_at": "2020-08-04T13:24:00.677Z",
-      "modified_by_user": null,
-      "modified_by_group": null,
-      "metainfo": {},
-      "name": "{\"en\": \"Maps\"}",
-      "description": "{\"en\": \"\"}",
-      "color": "#9CDD69",
-      "parent": "beilagen-zum-gesuch"
     }
   },
   {
@@ -63,6 +48,7 @@
       "metainfo": {},
       "name": "{\"en\": \"Involved Authorities\"}",
       "description": "{\"en\": \"\"}",
+      "allowed_mime_types": null,
       "color": "#8791EC",
       "parent": null
     }
@@ -80,8 +66,27 @@
       "metainfo": {},
       "name": "{\"en\": \"Internal\"}",
       "description": "{\"en\": \"\"}",
+      "allowed_mime_types": null,
       "color": "#DB8B72",
       "parent": null
+    }
+  },
+  {
+    "model": "alexandria_core.category",
+    "pk": "maps",
+    "fields": {
+      "created_at": "2020-08-04T13:24:00.677Z",
+      "created_by_user": null,
+      "created_by_group": null,
+      "modified_at": "2020-08-04T13:24:00.677Z",
+      "modified_by_user": null,
+      "modified_by_group": null,
+      "metainfo": {},
+      "name": "{\"en\": \"Maps\"}",
+      "description": "{\"en\": \"\"}",
+      "allowed_mime_types": null,
+      "color": "#9CDD69",
+      "parent": "beilagen-zum-gesuch"
     }
   },
   {
@@ -97,6 +102,7 @@
       "metainfo": {},
       "name": "{\"en\": \"Additional claims\"}",
       "description": "{\"en\": \"\"}",
+      "allowed_mime_types": null,
       "color": "#66CFC9",
       "parent": null
     }
