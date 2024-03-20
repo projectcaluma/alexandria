@@ -1,6 +1,8 @@
+import logging
 from mimetypes import guess_type
 
 from django.conf import settings
+from django.core.exceptions import ValidationError as DjangoCoreValidationError
 from django.template.defaultfilters import slugify
 from django.utils import translation
 from django_clamd.validators import validate_file_infection
@@ -9,10 +11,11 @@ from generic_permissions.visibilities import (
     VisibilityResourceRelatedField,
     VisibilitySerializerMixin,
 )
-from rest_framework.exceptions import ValidationError
 from rest_framework_json_api import serializers
 
 from . import models
+
+log = logging.getLogger(__name__)
 
 
 class BaseSerializer(
@@ -206,20 +209,12 @@ class FileSerializer(BaseSerializer):
         `validator_classes` attribute of the FileViewSet.
         """
         validated_data = super().validate(*args, **kwargs)
-        if validated_data.get(
-            "variant"
-        ) != models.File.Variant.ORIGINAL and not validated_data.get("original"):
-            file_variant = validated_data.get("variant")
-            raise ValidationError(
-                f'"original" must be set for variant "{file_variant}".'
-            )
 
-        if (
-            variant := validated_data.get("variant")
-        ) == models.File.Variant.ORIGINAL and validated_data.get("original"):
-            raise ValidationError(
-                f'"original" must not be set for variant "{variant}".'
-            )
+        # TODO: When next working on file / storage stuff, consider extracting
+        # the storage code into it's own project, so we can reuse it outside
+        # of Alexandria: https://github.com/projectcaluma/alexandria/issues/480
+        if settings.ALEXANDRIA_ENABLE_AT_REST_ENCRYPTION:
+            validated_data["encryption_status"] = settings.ALEXANDRIA_ENCRYPTION_METHOD
 
         mime_type = validated_data["content"].content_type
         if mime_type == "application/octet-stream":
@@ -231,6 +226,18 @@ class FileSerializer(BaseSerializer):
         validated_data["size"] = validated_data["content"].size
 
         return validated_data
+
+    def create(self, validated_data):
+        file = super().create(validated_data)
+        try:
+            file.create_thumbnail()
+        except DjangoCoreValidationError as e:
+            log.error(
+                "Object {obj} created successfully. Thumbnail creation failed. Error: {error}".format(
+                    obj=file, error=e.messages
+                )
+            )
+        return file
 
     def _prepare_multipart(self):
         """Massage multipart data into jsonapi-compatible form."""
@@ -284,6 +291,8 @@ class FileSerializer(BaseSerializer):
             "size",
         )
         read_only_fields = (
+            "variant",
+            "original",
             "mime_type",
             "size",
         )
