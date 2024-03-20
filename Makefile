@@ -53,4 +53,8 @@ load_example_data: ## Load a set of example data
 
 .PHONY: flush
 flush: ## Flush the database
-	@docker-compose exec alexandria poetry run python ./manage.py flush --no-input
+	@docker compose exec alexandria poetry run python ./manage.py flush --no-input
+
+.PHONY: dump
+dump: ## dump alexandria data
+	@docker compose run --rm alexandria poetry run python ./manage.py dumpdata alexandria_core | jq > initial_data.json
