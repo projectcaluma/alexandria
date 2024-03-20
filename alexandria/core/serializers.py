@@ -227,7 +227,6 @@ class FileSerializer(BaseSerializer):
             if guess is not None:
                 mime_type = guess
         validated_data["mime_type"] = mime_type
-        validated_data["mime_type"] = validated_data["content"].content_type
         validated_data["size"] = validated_data["content"].size
 
         return validated_data
