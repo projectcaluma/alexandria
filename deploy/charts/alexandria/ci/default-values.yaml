@@ -1,0 +1,14 @@
+postgresql:
+  auth:
+    password: alexandria
+  primary:
+    persistence:
+      enabled: false
+minio:
+  accessKey: alexandria
+  secretKey: alexandria
+  persistence:
+    enabled: false
+  resources:
+    requests:
+      memory: 512Mi

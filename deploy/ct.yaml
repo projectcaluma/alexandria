@@ -1,0 +1,6 @@
+target-branch: main
+chart-repos:
+  - minio=https://charts.min.io
+  - bitnami=https://charts.bitnami.com/bitnami
+charts:
+  - deploy/charts/alexandria
