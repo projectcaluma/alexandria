@@ -3,6 +3,7 @@ from mimetypes import guess_type
 from django.conf import settings
 from django.template.defaultfilters import slugify
 from django.utils import translation
+from django.utils.translation import gettext as _
 from django_clamd.validators import validate_file_infection
 from generic_permissions.validation import ValidatorMixin
 from generic_permissions.visibilities import (
@@ -115,6 +116,7 @@ class CategorySerializer(SlugModelSerializer):
         fields = SlugModelSerializer.Meta.fields + (
             "name",
             "description",
+            "allowed_mime_types",
             "color",
             "parent",
             "children",
@@ -206,26 +208,41 @@ class FileSerializer(BaseSerializer):
         `validator_classes` attribute of the FileViewSet.
         """
         validated_data = super().validate(*args, **kwargs)
-        if validated_data.get(
-            "variant"
-        ) != models.File.Variant.ORIGINAL and not validated_data.get("original"):
-            file_variant = validated_data.get("variant")
+        variant = validated_data.get("variant")
+        if variant != models.File.Variant.ORIGINAL and not validated_data.get(
+            "original"
+        ):
             raise ValidationError(
-                f'"original" must be set for variant "{file_variant}".'
+                _('"original" must be set for variant "%(variant)s".')
+                % {"variant": variant}
             )
-
-        if (
-            variant := validated_data.get("variant")
-        ) == models.File.Variant.ORIGINAL and validated_data.get("original"):
+        elif variant == models.File.Variant.ORIGINAL and validated_data.get("original"):
             raise ValidationError(
-                f'"original" must not be set for variant "{variant}".'
+                _('"original" must not be set for variant "%(variant)s".')
+                % {"variant": variant}
             )
 
         mime_type = validated_data["content"].content_type
         if mime_type == "application/octet-stream":
-            guess, _ = guess_type(validated_data["name"])
+            guess, encoding = guess_type(validated_data["name"])
             if guess is not None:
                 mime_type = guess
+
+        category = models.Document.objects.get(
+            pk=self.initial_data.get("document")["id"]
+        ).category
+        if (
+            category.allowed_mime_types is not None
+            and len(category.allowed_mime_types)
+            and mime_type not in category.allowed_mime_types
+        ):
+            raise ValidationError(
+                _(
+                    "File type %(mime_type)s is not allowed in category %(category)s."
+                    % {"mime_type": mime_type, "category": category.pk}
+                )
+            )
+
         validated_data["mime_type"] = mime_type
         validated_data["mime_type"] = validated_data["content"].content_type
         validated_data["size"] = validated_data["content"].size

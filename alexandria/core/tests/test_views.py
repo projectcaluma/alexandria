@@ -56,30 +56,57 @@ def test_anonymous_writing(db, document, client, settings, user, allow_anon, met
 
 @pytest.mark.parametrize("enable_checksum", (True, False))
 @pytest.mark.parametrize(
-    "file_variant,enable_thumbnails,existing_thumbnail,file_type,original,status_code",
+    "file_variant,enable_thumbnails,existing_thumbnail,file_type,allowed_mime_types,original,status_code",
     [
-        (File.Variant.ORIGINAL, True, False, "png", False, HTTP_201_CREATED),
+        (
+            File.Variant.ORIGINAL,
+            True,
+            False,
+            "png",
+            ["image/png"],
+            False,
+            HTTP_201_CREATED,
+        ),
         # Original cannot also relate to another original
-        (File.Variant.ORIGINAL, True, False, "png", True, HTTP_400_BAD_REQUEST),
-        (File.Variant.THUMBNAIL, True, False, "png", True, HTTP_201_CREATED),
+        (File.Variant.ORIGINAL, True, False, "png", None, True, HTTP_400_BAD_REQUEST),
+        (File.Variant.THUMBNAIL, True, False, "png", [], True, HTTP_201_CREATED),
         # thumbnail requires original
-        (File.Variant.THUMBNAIL, True, True, "png", False, HTTP_400_BAD_REQUEST),
-        (File.Variant.THUMBNAIL, True, True, "png800", True, HTTP_201_CREATED),
+        (File.Variant.THUMBNAIL, True, True, "png", None, False, HTTP_400_BAD_REQUEST),
+        (File.Variant.THUMBNAIL, True, True, "png800", None, True, HTTP_201_CREATED),
         # Variant is required
-        (None, True, True, "png", False, HTTP_400_BAD_REQUEST),
-        (File.Variant.ORIGINAL, True, True, "unsupported", False, HTTP_201_CREATED),
+        (None, True, True, "png", None, False, HTTP_400_BAD_REQUEST),
+        (
+            File.Variant.ORIGINAL,
+            True,
+            True,
+            "unsupported",
+            None,
+            False,
+            HTTP_201_CREATED,
+        ),
         (
             File.Variant.THUMBNAIL,
             True,
             False,
             "unsupported",
+            None,
             True,
+            HTTP_400_BAD_REQUEST,
+        ),
+        (
+            File.Variant.ORIGINAL,
+            True,
+            False,
+            "png",
+            ["application/pdf"],
+            False,
             HTTP_400_BAD_REQUEST,
         ),
     ],
 )
 def test_file_upload(
     admin_client,
+    category_factory,
     document_factory,
     tmp_path,
     file_factory,
@@ -88,13 +115,15 @@ def test_file_upload(
     enable_thumbnails,
     enable_checksum,
     file_type,
+    allowed_mime_types,
     original,
     status_code,
     settings,
 ):
     settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION = enable_thumbnails
     settings.ALEXANDRIA_ENABLE_CHECKSUM = enable_checksum
-    doc = document_factory()
+    category = category_factory(allowed_mime_types=allowed_mime_types)
+    doc = document_factory(category=category)
     data = {
         "name": "file.png",
         "document": str(doc.pk),
