@@ -1,7 +1,6 @@
 import logging
 
 from django.conf import settings
-from django.core.exceptions import ValidationError
 from django.core.files import File
 
 from alexandria.core import models
@@ -58,7 +57,7 @@ def create_file(
     content: File,
     mime_type: str,
     size: int,
-    **additional_attributes
+    **additional_attributes,
 ):
     """
     Create a file with defaults and generate a thumbnail.
@@ -84,13 +83,6 @@ def create_file(
         **additional_attributes,
     )
 
-    try:
-        file.create_thumbnail()
-    except ValidationError as e:  # pragma: no cover
-        log.error(
-            "Object {obj} created successfully. Thumbnail creation failed. Error: {error}".format(
-                obj=file, error=e.messages
-            )
-        )
+    file.create_thumbnail()
 
     return file
