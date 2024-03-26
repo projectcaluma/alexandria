@@ -26,24 +26,31 @@ from ..views import DocumentViewSet, FileViewSet, TagViewSet
 
 @pytest.mark.parametrize("allow_anon", [True, False])
 @pytest.mark.parametrize("method", ["post", "patch"])
-def test_anonymous_writing(db, document, client, settings, user, allow_anon, method):
+def test_anonymous_writing(
+    db, document, document_post_data, client, settings, user, allow_anon, method
+):
     settings.ALEXANDRIA_ALLOW_ANONYMOUS_WRITE = allow_anon
     if not allow_anon:
         settings.REST_FRAMEWORK["DEFAULT_PERMISSION_CLASSES"] = [
             "rest_framework.permissions.IsAuthenticatedOrReadOnly",
         ]
 
-    data = {
-        "data": {"type": "documents", "attributes": {"title": {"en": "winstonsmith"}}}
-    }
-
-    url = reverse("document-list")
-
     if method == "patch":
-        data["data"]["id"] = str(document.pk)
         url = reverse("document-detail", args=[document.pk])
+        data = {
+            "data": {
+                "type": "documents",
+                "id": document.pk,
+                "attributes": {"title": {"en": "winstonsmith"}},
+            }
+        }
+    else:
+        url = reverse("document-list")
+        data = document_post_data
 
-    resp = getattr(client, method)(url, data=data)
+    resp = getattr(client, method)(
+        url, data=data, format="json" if method == "patch" else "multipart"
+    )
     assert (
         resp.status_code in {HTTP_201_CREATED, HTTP_200_OK}
         if allow_anon
@@ -144,6 +151,7 @@ def test_validate_created_by(
     viewset,
     request,
     update,
+    document_post_data,
     admin_client,
     admin_user,
     admin_groups,
@@ -153,6 +161,12 @@ def test_validate_created_by(
     viewset_inst = viewset()
     model_class = viewset_inst.queryset.model
     model_name = model_class.__name__.lower()
+
+    if model_name == "file" and update:
+        # PATCH on files not implemented, but I don't wanna
+        # not test it on POST
+        return
+
     model = request.getfixturevalue(f"{model_name}_factory").create(
         **{f"created_by_{attribute}": "Apple"}
     )
@@ -174,18 +188,14 @@ def test_validate_created_by(
     if update:
         post_data["data"]["id"] = str(model.pk)
 
-    if model_name == "file" and update:
-        # PATCH on files not implemented, but I don't wanna
-        # not test it on POST
-        return
-
-    if viewset == FileViewSet and not update:
+    if viewset == FileViewSet:
         del post_data["data"]
+        post_data["content"] = io.BytesIO(b"datadatatatat")
         for key in ["variant", "name"]:
             post_data[key] = serialized_model[key]
-
-        post_data["content"] = io.BytesIO(b"datadatatatat")
         post_data["document"] = serialized_model["document"]["id"]
+    if viewset == DocumentViewSet and not update:
+        post_data = document_post_data
 
     if update:
         request_meth = admin_client.patch
@@ -197,11 +207,13 @@ def test_validate_created_by(
         request_meth = admin_client.post
         url = reverse(f"{model_name}-list")
 
-    response = (
-        request_meth(url, post_data, format="multipart")
-        if viewset == FileViewSet
-        else request_meth(url, post_data)
+    request_format = (
+        "multipart"
+        if viewset == FileViewSet or (viewset == DocumentViewSet and not update)
+        else None
     )
+    response = request_meth(url, post_data, format=request_format)
+    print(response.content)
     assert response.status_code == expect_response
     modified_by = response.json()["data"]["attributes"][f"modified-by-{attribute}"]
     if attribute == "user":
