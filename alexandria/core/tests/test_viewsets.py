@@ -192,7 +192,9 @@ def test_api_detail(fixture, admin_client, viewset, snapshot, manabi):
 
 
 @pytest.mark.freeze_time("2017-05-21")
-def test_api_create(fixture, admin_client, viewset, snapshot, manabi):
+def test_api_create(
+    fixture, admin_client, viewset, snapshot, document_post_data, manabi
+):
     url = reverse("{0}-list".format(viewset.base_name))
 
     serializer = viewset.serializer_class(fixture)
@@ -208,9 +210,11 @@ def test_api_create(fixture, admin_client, viewset, snapshot, manabi):
         data = {
             "content": io.BytesIO(b"FiLeCoNtEnt"),
             "name": serializer.data["name"],
-            "variant": fixture.Variant.ORIGINAL.value,
             "document": str(fixture.document.pk),
         }
+        opts = {"format": "multipart"}
+    elif viewset.get_view_name() == "Document":
+        data = document_post_data
         opts = {"format": "multipart"}
 
     if viewset.base_name in ["category"]:

@@ -33,6 +33,7 @@ def test_document_permission(
     admin_user,
     admin_client,
     client,
+    document_post_data,
     method,
     status,
     use_admin_client,
@@ -43,9 +44,10 @@ def test_document_permission(
     class CustomPermission:
         @permission_for(Document)
         def has_permission_for_document(self, request):
-            if request.user.username == "admin" or request.data["title"]["en"] == "new":
-                return True
-            return False
+            if request.method == "PATCH":
+                return request.data["title"]["en"] == "new"
+            elif request.method in {"DELETE", "POST"}:
+                return request.user.username == "admin"
 
         @object_permission_for(Document)
         def has_object_permission_for_document(self, request, instance):
@@ -61,25 +63,27 @@ def test_document_permission(
 
     url = reverse("document-list")
 
-    data = {
-        "data": {
-            "type": "documents",
-            "attributes": {"title": {"de": "", "en": "foo", "fr": ""}},
-        }
-    }
-
     if method in ["patch", "delete"]:
         url = reverse("document-detail", args=[doc.pk])
-        data["data"]["id"] = str(doc.pk)
 
-    if method == "patch":
-        data["data"]["attributes"]["title"] = {
-            "de": "",
-            "en": "new",
-            "fr": "",
-        }
+    data = {
+        "post": document_post_data,
+        "patch": {
+            "data": {
+                "id": doc.pk,
+                "type": "documents",
+                "attributes": {"title": {"de": "", "en": "new", "fr": ""}},
+                "relationships": {
+                    "category": {"data": {"id": doc.category.pk, "type": "categories"}}
+                },
+            }
+        },
+        "delete": None,
+    }
 
-    response = getattr(client, method)(url, data=data)
+    response = getattr(client, method)(
+        url, data=data[method], format="multipart" if method == "post" else None
+    )
 
     if not use_admin_client:
         assert response.status_code == HTTP_403_FORBIDDEN
