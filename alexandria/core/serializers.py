@@ -1,3 +1,4 @@
+import json
 import logging
 from mimetypes import guess_type
 
@@ -305,15 +306,54 @@ class FileSerializer(BaseSerializer):
 
 
 class DocumentSerializer(BaseSerializer):
+    category = serializers.ResourceRelatedField(queryset=models.Category.objects)
     files = serializers.ResourceRelatedField(
         queryset=models.File.objects.all(), required=False, many=True
     )
+    content = serializers.FileField(write_only=True, required=True)
+
     included_serializers = {
         "category": CategorySerializer,
         "tags": TagSerializer,
         "marks": MarkSerializer,
         "files": FileSerializer,
     }
+
+    def create(self, validated_data):
+        content = validated_data.pop("content")
+        document = super().create(validated_data)
+
+        file_data = {
+            "name": content.name,
+            "document": {
+                "type": "documents",
+                "id": document.pk,
+            },
+            "content": content,
+        }
+        file_serializer = FileSerializer(data=file_data, context=self.context)
+        file_serializer.is_valid(raise_exception=True)
+        file_serializer.save()
+
+        return document
+
+    def _prepare_multipart(self):
+        """Massage multipart data into jsonapi-compatible form."""
+        self.initial_data = self.initial_data.dict()
+
+        self.initial_data.update(
+            json.loads(self.initial_data["data"].read().decode("utf-8"))
+        )
+        if not isinstance(self.initial_data.get("category"), dict):
+            self.initial_data["category"] = {
+                "type": "categories",
+                "id": self.initial_data["category"],
+            }
+
+    def is_valid(self, *args, raise_exception=False, **kwargs):
+        if self.context["request"].content_type.startswith("multipart/"):
+            self._prepare_multipart()
+        return super().is_valid(*args, raise_exception=raise_exception, **kwargs)
 
     class Meta:
         model = models.Document
@@ -325,4 +365,6 @@ class DocumentSerializer(BaseSerializer):
             "category",
             "tags",
             "marks",
+            "content",
         )
+        extra_kwargs = {"content": {"write_only": True}}

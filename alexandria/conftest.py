@@ -1,5 +1,7 @@
 import importlib
 import inspect
+import io
+import json
 import shutil
 import sys
 from pathlib import Path
@@ -109,3 +111,17 @@ def reset_config_classes(settings):
 def manabi(settings):
     settings.ALEXANDRIA_USE_MANABI = True
     settings.ALEXANDRIA_MANABI_DAV_SCHEME = "http"
+
+
+@pytest.fixture()
+def document_post_data(category):
+    return {
+        "content": io.BytesIO(
+            b"%PDF-1.\ntrailer<</Root<</Pages<</Kids[<</MediaBox[0 0 3 3]>>]>>>>>>"
+        ),
+        "data": io.BytesIO(
+            json.dumps(
+                {"title": {"en": "winstonsmith"}, "category": category.pk}
+            ).encode("utf-8")
+        ),
+    }
