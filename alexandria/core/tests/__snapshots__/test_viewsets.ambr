@@ -3,96 +3,31 @@
   dict({
     'queries': list([
       'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."metainfo", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description", "alexandria_core_category"."allowed_mime_types", "alexandria_core_category"."color", "alexandria_core_category"."parent_id" FROM "alexandria_core_category" WHERE "alexandria_core_category"."slug" = \'note-act-source\' LIMIT 21',
-      'SELECT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."metainfo", "alexandria_core_tag"."id", "alexandria_core_tag"."name", "alexandria_core_tag"."description", "alexandria_core_tag"."tag_synonym_group_id" FROM "alexandria_core_tag" WHERE "alexandria_core_tag"."id" = \'9336ebf2-5087-d91c-818e-e6e9ec29f8c1\'::uuid LIMIT 21',
-      'SELECT "alexandria_core_mark"."created_at", "alexandria_core_mark"."created_by_user", "alexandria_core_mark"."created_by_group", "alexandria_core_mark"."modified_at", "alexandria_core_mark"."modified_by_user", "alexandria_core_mark"."modified_by_group", "alexandria_core_mark"."metainfo", "alexandria_core_mark"."slug", "alexandria_core_mark"."name", "alexandria_core_mark"."description" FROM "alexandria_core_mark" WHERE "alexandria_core_mark"."slug" = \'father-should-keep\' LIMIT 21',
-      '''
-        INSERT INTO "alexandria_core_document" ("created_at", "created_by_user", "created_by_group", "modified_at", "modified_by_user", "modified_by_group", "metainfo", "id", "title", "description", "category_id", "date") VALUES ('2017-05-21T00:00:00+00:00'::timestamptz, 'admin', 'admin', '2017-05-21T00:00:00+00:00'::timestamptz, 'admin', 'admin', '{}', 'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad'::uuid, hstore(ARRAY['en','de','fr'], ARRAY['Michael Edwards','','']), hstore(ARRAY['en','de','fr'], ARRAY['Open else look tree arm responsibility week. Environmental statement bag someone them style.
-        Public these health team change. Tax final upon stay sing middle suggest.','','']), 'note-act-source', '1999-11-26'::date)
-      ''',
-      'SELECT "alexandria_core_tag"."id" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."id" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" = \'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad\'::uuid',
-      'INSERT INTO "alexandria_core_document_tags" ("document_id", "tag_id") VALUES (\'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad\'::uuid, \'9336ebf2-5087-d91c-818e-e6e9ec29f8c1\'::uuid) ON CONFLICT DO NOTHING',
-      'SELECT "alexandria_core_mark"."slug" FROM "alexandria_core_mark" INNER JOIN "alexandria_core_document_marks" ON ("alexandria_core_mark"."slug" = "alexandria_core_document_marks"."mark_id") WHERE "alexandria_core_document_marks"."document_id" = \'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad\'::uuid',
-      'INSERT INTO "alexandria_core_document_marks" ("document_id", "mark_id") VALUES (\'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad\'::uuid, \'father-should-keep\') ON CONFLICT DO NOTHING',
+      'INSERT INTO "alexandria_core_document" ("created_at", "created_by_user", "created_by_group", "modified_at", "modified_by_user", "modified_by_group", "metainfo", "id", "title", "description", "category_id", "date") VALUES (\'2017-05-21T00:00:00+00:00\'::timestamptz, \'admin\', \'admin\', \'2017-05-21T00:00:00+00:00\'::timestamptz, \'admin\', \'admin\', \'{}\', \'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad\'::uuid, hstore(ARRAY[\'en\',\'de\',\'fr\'], ARRAY[\'winstonsmith\',\'\',\'\']), hstore(ARRAY[\'en\',\'de\',\'fr\'], ARRAY[\'\',\'\',\'\']), \'note-act-source\', NULL)',
+      'SELECT "alexandria_core_document"."created_at", "alexandria_core_document"."created_by_user", "alexandria_core_document"."created_by_group", "alexandria_core_document"."modified_at", "alexandria_core_document"."modified_by_user", "alexandria_core_document"."modified_by_group", "alexandria_core_document"."metainfo", "alexandria_core_document"."id", "alexandria_core_document"."title", "alexandria_core_document"."description", "alexandria_core_document"."category_id", "alexandria_core_document"."date" FROM "alexandria_core_document" WHERE "alexandria_core_document"."id" = \'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad\'::uuid LIMIT 21',
+      'SELECT "alexandria_core_document"."created_at", "alexandria_core_document"."created_by_user", "alexandria_core_document"."created_by_group", "alexandria_core_document"."modified_at", "alexandria_core_document"."modified_by_user", "alexandria_core_document"."modified_by_group", "alexandria_core_document"."metainfo", "alexandria_core_document"."id", "alexandria_core_document"."title", "alexandria_core_document"."description", "alexandria_core_document"."category_id", "alexandria_core_document"."date" FROM "alexandria_core_document" WHERE "alexandria_core_document"."id" = \'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad\'::uuid LIMIT 21',
+      'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."metainfo", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description", "alexandria_core_category"."allowed_mime_types", "alexandria_core_category"."color", "alexandria_core_category"."parent_id" FROM "alexandria_core_category" WHERE "alexandria_core_category"."slug" = \'note-act-source\' LIMIT 21',
+      'INSERT INTO "alexandria_core_file" ("created_at", "created_by_user", "created_by_group", "modified_at", "modified_by_user", "modified_by_group", "metainfo", "id", "variant", "original_id", "name", "document_id", "checksum", "encryption_status", "content", "mime_type", "size") VALUES (\'2017-05-21T00:00:00+00:00\'::timestamptz, \'admin\', \'admin\', \'2017-05-21T00:00:00+00:00\'::timestamptz, \'admin\', \'admin\', \'{}\', \'ea416ed0-759d-46a8-de58-f63a59077499\'::uuid, \'original\', NULL, \'content\', \'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad\'::uuid, \'sha256:a154d301b8eb0a1af4c32bb560689af62fd1afd50221533cb414191babbc9fef\', NULL, \'ea416ed0-759d-46a8-de58-f63a59077499_content\', \'application/octet-stream\', 67)',
       'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."checksum", "alexandria_core_file"."encryption_status", "alexandria_core_file"."content", "alexandria_core_file"."mime_type", "alexandria_core_file"."size" FROM "alexandria_core_file" WHERE "alexandria_core_file"."document_id" = \'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad\'::uuid ORDER BY "alexandria_core_file"."created_at" DESC',
-      'SELECT (1) AS "a" FROM "alexandria_core_category" WHERE ("alexandria_core_category"."slug" = \'note-act-source\' AND "alexandria_core_category"."slug" = \'note-act-source\') LIMIT 1',
       'SELECT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."metainfo", "alexandria_core_tag"."id", "alexandria_core_tag"."name", "alexandria_core_tag"."description", "alexandria_core_tag"."tag_synonym_group_id" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."id" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" = \'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad\'::uuid',
       'SELECT "alexandria_core_mark"."created_at", "alexandria_core_mark"."created_by_user", "alexandria_core_mark"."created_by_group", "alexandria_core_mark"."modified_at", "alexandria_core_mark"."modified_by_user", "alexandria_core_mark"."modified_by_group", "alexandria_core_mark"."metainfo", "alexandria_core_mark"."slug", "alexandria_core_mark"."name", "alexandria_core_mark"."description" FROM "alexandria_core_mark" INNER JOIN "alexandria_core_document_marks" ON ("alexandria_core_mark"."slug" = "alexandria_core_document_marks"."mark_id") WHERE "alexandria_core_document_marks"."document_id" = \'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad\'::uuid',
     ]),
-    'query_count': 12,
+    'query_count': 9,
     'request': dict({
-      'CONTENT_LENGTH': '859',
-      'CONTENT_TYPE': 'application/vnd.api+json',
+      'CONTENT_LENGTH': '405',
+      'CONTENT_TYPE': 'multipart/form-data; boundary=BoUnDaRyStRiNg; charset=utf-8',
       'PATH_INFO': '/api/v1/documents',
       'QUERY_STRING': '',
       'REQUEST_METHOD': 'POST',
       'SERVER_PORT': '80',
     }),
     'request_payload': dict({
-      'data': dict({
-        'attributes': dict({
-          'created-at': '2017-05-21T00:00:00Z',
-          'created-by-group': 'admin',
-          'created-by-user': 'admin',
-          'date': '1999-11-26',
-          'description': dict({
-            'de': '',
-            'en': '''
-              Open else look tree arm responsibility week. Environmental statement bag someone them style.
-              Public these health team change. Tax final upon stay sing middle suggest.
-            ''',
-            'fr': '',
-          }),
-          'metainfo': dict({
-          }),
-          'modified-at': '2017-05-21T00:00:00Z',
-          'modified-by-group': 'admin',
-          'modified-by-user': 'admin',
-          'title': dict({
-            'de': '',
-            'en': 'Michael Edwards',
-            'fr': '',
-          }),
-        }),
-        'id': '9dd4e461-268c-8034-f5c8-564e155c67a6',
-        'relationships': dict({
-          'category': dict({
-            'data': dict({
-              'id': 'note-act-source',
-              'type': 'categories',
-            }),
-          }),
-          'files': dict({
-            'data': list([
-            ]),
-            'meta': dict({
-              'count': 0,
-            }),
-          }),
-          'marks': dict({
-            'data': list([
-              dict({
-                'id': 'father-should-keep',
-                'type': 'marks',
-              }),
-            ]),
-            'meta': dict({
-              'count': 1,
-            }),
-          }),
-          'tags': dict({
-            'data': list([
-              dict({
-                'id': '9336ebf2-5087-d91c-818e-e6e9ec29f8c1',
-                'type': 'tags',
-              }),
-            ]),
-            'meta': dict({
-              'count': 1,
-            }),
-          }),
-        }),
-        'type': 'documents',
-      }),
+      'content': BytesIO(
+        closed=False,
+      ),
+      'data': BytesIO(
+        closed=False,
+      ),
     }),
     'response': dict({
       'data': dict({
@@ -100,13 +35,10 @@
           'created-at': '2017-05-21T00:00:00Z',
           'created-by-group': 'admin',
           'created-by-user': 'admin',
-          'date': '1999-11-26',
+          'date': None,
           'description': dict({
             'de': '',
-            'en': '''
-              Open else look tree arm responsibility week. Environmental statement bag someone them style.
-              Public these health team change. Tax final upon stay sing middle suggest.
-            ''',
+            'en': '',
             'fr': '',
           }),
           'metainfo': dict({
@@ -116,7 +48,7 @@
           'modified-by-user': 'admin',
           'title': dict({
             'de': '',
-            'en': 'Michael Edwards',
+            'en': 'winstonsmith',
             'fr': '',
           }),
         }),
@@ -130,31 +62,27 @@
           }),
           'files': dict({
             'data': list([
+              dict({
+                'id': 'ea416ed0-759d-46a8-de58-f63a59077499',
+                'type': 'files',
+              }),
+            ]),
+            'meta': dict({
+              'count': 1,
+            }),
+          }),
+          'marks': dict({
+            'data': list([
             ]),
             'meta': dict({
               'count': 0,
             }),
           }),
-          'marks': dict({
-            'data': list([
-              dict({
-                'id': 'father-should-keep',
-                'type': 'marks',
-              }),
-            ]),
-            'meta': dict({
-              'count': 1,
-            }),
-          }),
           'tags': dict({
             'data': list([
-              dict({
-                'id': '9336ebf2-5087-d91c-818e-e6e9ec29f8c1',
-                'type': 'tags',
-              }),
             ]),
             'meta': dict({
-              'count': 1,
+              'count': 0,
             }),
           }),
         }),
@@ -177,7 +105,7 @@
     ]),
     'query_count': 7,
     'request': dict({
-      'CONTENT_LENGTH': '424',
+      'CONTENT_LENGTH': '346',
       'CONTENT_TYPE': 'multipart/form-data; boundary=BoUnDaRyStRiNg; charset=utf-8',
       'PATH_INFO': '/api/v1/files',
       'QUERY_STRING': '',
@@ -190,7 +118,6 @@
       ),
       'document': '9dd4e461-268c-8034-f5c8-564e155c67a6',
       'name': 'Jason Lopez',
-      'variant': 'original',
     }),
     'response': dict({
       'data': dict({
@@ -540,11 +467,9 @@
       'SELECT ("alexandria_core_document_tags"."document_id") AS "_prefetch_related_val_document_id", "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."metainfo", "alexandria_core_tag"."id", "alexandria_core_tag"."name", "alexandria_core_tag"."description", "alexandria_core_tag"."tag_synonym_group_id" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."id" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" IN (\'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid)',
       'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."checksum", "alexandria_core_file"."encryption_status", "alexandria_core_file"."content", "alexandria_core_file"."mime_type", "alexandria_core_file"."size" FROM "alexandria_core_file" WHERE "alexandria_core_file"."document_id" IN (\'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid) ORDER BY "alexandria_core_file"."created_at" DESC',
       'SELECT ("alexandria_core_document_marks"."document_id") AS "_prefetch_related_val_document_id", "alexandria_core_mark"."created_at", "alexandria_core_mark"."created_by_user", "alexandria_core_mark"."created_by_group", "alexandria_core_mark"."modified_at", "alexandria_core_mark"."modified_by_user", "alexandria_core_mark"."modified_by_group", "alexandria_core_mark"."metainfo", "alexandria_core_mark"."slug", "alexandria_core_mark"."name", "alexandria_core_mark"."description" FROM "alexandria_core_mark" INNER JOIN "alexandria_core_document_marks" ON ("alexandria_core_mark"."slug" = "alexandria_core_document_marks"."mark_id") WHERE "alexandria_core_document_marks"."document_id" IN (\'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid)',
-      'SELECT (1) AS "a" FROM "alexandria_core_category" WHERE ("alexandria_core_category"."slug" = \'note-act-source\' AND "alexandria_core_category"."slug" = \'note-act-source\') LIMIT 1',
-      'SELECT (1) AS "a" FROM "alexandria_core_category" WHERE ("alexandria_core_category"."slug" = \'note-act-source\' AND "alexandria_core_category"."slug" = \'note-act-source\') LIMIT 1',
       'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."metainfo", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description", "alexandria_core_category"."allowed_mime_types", "alexandria_core_category"."color", "alexandria_core_category"."parent_id" FROM "alexandria_core_category" WHERE "alexandria_core_category"."parent_id" = \'note-act-source\'',
     ]),
-    'query_count': 7,
+    'query_count': 5,
     'request': dict({
       'CONTENT_TYPE': 'application/octet-stream',
       'PATH_INFO': '/api/v1/documents/9dd4e461-268c-8034-f5c8-564e155c67a6',
@@ -729,11 +654,10 @@
       'SELECT (1) AS "a" FROM "alexandria_core_document" WHERE ("alexandria_core_document"."id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid AND "alexandria_core_document"."id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid) LIMIT 1',
       'SELECT (1) AS "a" FROM "alexandria_core_document" WHERE ("alexandria_core_document"."id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid AND "alexandria_core_document"."id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid) LIMIT 1',
       'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."checksum", "alexandria_core_file"."encryption_status", "alexandria_core_file"."content", "alexandria_core_file"."mime_type", "alexandria_core_file"."size" FROM "alexandria_core_file" WHERE "alexandria_core_file"."document_id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid ORDER BY "alexandria_core_file"."created_at" DESC',
-      'SELECT (1) AS "a" FROM "alexandria_core_category" WHERE ("alexandria_core_category"."slug" = \'note-act-source\' AND "alexandria_core_category"."slug" = \'note-act-source\') LIMIT 1',
       'SELECT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."metainfo", "alexandria_core_tag"."id", "alexandria_core_tag"."name", "alexandria_core_tag"."description", "alexandria_core_tag"."tag_synonym_group_id" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."id" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid',
       'SELECT "alexandria_core_mark"."created_at", "alexandria_core_mark"."created_by_user", "alexandria_core_mark"."created_by_group", "alexandria_core_mark"."modified_at", "alexandria_core_mark"."modified_by_user", "alexandria_core_mark"."modified_by_group", "alexandria_core_mark"."metainfo", "alexandria_core_mark"."slug", "alexandria_core_mark"."name", "alexandria_core_mark"."description" FROM "alexandria_core_mark" INNER JOIN "alexandria_core_document_marks" ON ("alexandria_core_mark"."slug" = "alexandria_core_document_marks"."mark_id") WHERE "alexandria_core_document_marks"."document_id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid',
     ]),
-    'query_count': 8,
+    'query_count': 7,
     'request': dict({
       'CONTENT_TYPE': 'application/octet-stream',
       'PATH_INFO': '/api/v1/files/9336ebf2-5087-d91c-818e-e6e9ec29f8c1',
@@ -1094,17 +1018,11 @@
       'SELECT ("alexandria_core_document_tags"."document_id") AS "_prefetch_related_val_document_id", "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."metainfo", "alexandria_core_tag"."id", "alexandria_core_tag"."name", "alexandria_core_tag"."description", "alexandria_core_tag"."tag_synonym_group_id" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."id" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" IN (\'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid, \'ea416ed0-759d-46a8-de58-f63a59077499\'::uuid, \'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad\'::uuid)',
       'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."checksum", "alexandria_core_file"."encryption_status", "alexandria_core_file"."content", "alexandria_core_file"."mime_type", "alexandria_core_file"."size" FROM "alexandria_core_file" WHERE "alexandria_core_file"."document_id" IN (\'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid, \'ea416ed0-759d-46a8-de58-f63a59077499\'::uuid, \'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad\'::uuid) ORDER BY "alexandria_core_file"."created_at" DESC',
       'SELECT ("alexandria_core_document_marks"."document_id") AS "_prefetch_related_val_document_id", "alexandria_core_mark"."created_at", "alexandria_core_mark"."created_by_user", "alexandria_core_mark"."created_by_group", "alexandria_core_mark"."modified_at", "alexandria_core_mark"."modified_by_user", "alexandria_core_mark"."modified_by_group", "alexandria_core_mark"."metainfo", "alexandria_core_mark"."slug", "alexandria_core_mark"."name", "alexandria_core_mark"."description" FROM "alexandria_core_mark" INNER JOIN "alexandria_core_document_marks" ON ("alexandria_core_mark"."slug" = "alexandria_core_document_marks"."mark_id") WHERE "alexandria_core_document_marks"."document_id" IN (\'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid, \'ea416ed0-759d-46a8-de58-f63a59077499\'::uuid, \'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad\'::uuid)',
-      'SELECT (1) AS "a" FROM "alexandria_core_category" WHERE ("alexandria_core_category"."slug" = \'note-act-source\' AND "alexandria_core_category"."slug" = \'note-act-source\') LIMIT 1',
-      'SELECT (1) AS "a" FROM "alexandria_core_category" WHERE ("alexandria_core_category"."slug" = \'right-professor\' AND "alexandria_core_category"."slug" = \'right-professor\') LIMIT 1',
-      'SELECT (1) AS "a" FROM "alexandria_core_category" WHERE ("alexandria_core_category"."slug" = \'moment-poor\' AND "alexandria_core_category"."slug" = \'moment-poor\') LIMIT 1',
-      'SELECT (1) AS "a" FROM "alexandria_core_category" WHERE ("alexandria_core_category"."slug" = \'note-act-source\' AND "alexandria_core_category"."slug" = \'note-act-source\') LIMIT 1',
       'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."metainfo", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description", "alexandria_core_category"."allowed_mime_types", "alexandria_core_category"."color", "alexandria_core_category"."parent_id" FROM "alexandria_core_category" WHERE "alexandria_core_category"."parent_id" = \'note-act-source\'',
-      'SELECT (1) AS "a" FROM "alexandria_core_category" WHERE ("alexandria_core_category"."slug" = \'right-professor\' AND "alexandria_core_category"."slug" = \'right-professor\') LIMIT 1',
       'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."metainfo", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description", "alexandria_core_category"."allowed_mime_types", "alexandria_core_category"."color", "alexandria_core_category"."parent_id" FROM "alexandria_core_category" WHERE "alexandria_core_category"."parent_id" = \'right-professor\'',
-      'SELECT (1) AS "a" FROM "alexandria_core_category" WHERE ("alexandria_core_category"."slug" = \'moment-poor\' AND "alexandria_core_category"."slug" = \'moment-poor\') LIMIT 1',
       'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."metainfo", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description", "alexandria_core_category"."allowed_mime_types", "alexandria_core_category"."color", "alexandria_core_category"."parent_id" FROM "alexandria_core_category" WHERE "alexandria_core_category"."parent_id" = \'moment-poor\'',
     ]),
-    'query_count': 13,
+    'query_count': 7,
     'request': dict({
       'CONTENT_TYPE': 'application/octet-stream',
       'PATH_INFO': '/api/v1/documents',
@@ -1489,21 +1407,18 @@
       'SELECT (1) AS "a" FROM "alexandria_core_document" WHERE ("alexandria_core_document"."id" = \'fb0e22c7-9ac7-5679-e988-1e6ba183b354\'::uuid AND "alexandria_core_document"."id" = \'fb0e22c7-9ac7-5679-e988-1e6ba183b354\'::uuid) LIMIT 1',
       'SELECT (1) AS "a" FROM "alexandria_core_document" WHERE ("alexandria_core_document"."id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid AND "alexandria_core_document"."id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid) LIMIT 1',
       'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."checksum", "alexandria_core_file"."encryption_status", "alexandria_core_file"."content", "alexandria_core_file"."mime_type", "alexandria_core_file"."size" FROM "alexandria_core_file" WHERE "alexandria_core_file"."document_id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid ORDER BY "alexandria_core_file"."created_at" DESC',
-      'SELECT (1) AS "a" FROM "alexandria_core_category" WHERE ("alexandria_core_category"."slug" = \'note-act-source\' AND "alexandria_core_category"."slug" = \'note-act-source\') LIMIT 1',
       'SELECT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."metainfo", "alexandria_core_tag"."id", "alexandria_core_tag"."name", "alexandria_core_tag"."description", "alexandria_core_tag"."tag_synonym_group_id" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."id" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid',
       'SELECT "alexandria_core_mark"."created_at", "alexandria_core_mark"."created_by_user", "alexandria_core_mark"."created_by_group", "alexandria_core_mark"."modified_at", "alexandria_core_mark"."modified_by_user", "alexandria_core_mark"."modified_by_group", "alexandria_core_mark"."metainfo", "alexandria_core_mark"."slug", "alexandria_core_mark"."name", "alexandria_core_mark"."description" FROM "alexandria_core_mark" INNER JOIN "alexandria_core_document_marks" ON ("alexandria_core_mark"."slug" = "alexandria_core_document_marks"."mark_id") WHERE "alexandria_core_document_marks"."document_id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid',
       'SELECT (1) AS "a" FROM "alexandria_core_document" WHERE ("alexandria_core_document"."id" = \'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad\'::uuid AND "alexandria_core_document"."id" = \'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad\'::uuid) LIMIT 1',
       'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."checksum", "alexandria_core_file"."encryption_status", "alexandria_core_file"."content", "alexandria_core_file"."mime_type", "alexandria_core_file"."size" FROM "alexandria_core_file" WHERE "alexandria_core_file"."document_id" = \'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad\'::uuid ORDER BY "alexandria_core_file"."created_at" DESC',
-      'SELECT (1) AS "a" FROM "alexandria_core_category" WHERE ("alexandria_core_category"."slug" = \'right-professor\' AND "alexandria_core_category"."slug" = \'right-professor\') LIMIT 1',
       'SELECT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."metainfo", "alexandria_core_tag"."id", "alexandria_core_tag"."name", "alexandria_core_tag"."description", "alexandria_core_tag"."tag_synonym_group_id" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."id" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" = \'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad\'::uuid',
       'SELECT "alexandria_core_mark"."created_at", "alexandria_core_mark"."created_by_user", "alexandria_core_mark"."created_by_group", "alexandria_core_mark"."modified_at", "alexandria_core_mark"."modified_by_user", "alexandria_core_mark"."modified_by_group", "alexandria_core_mark"."metainfo", "alexandria_core_mark"."slug", "alexandria_core_mark"."name", "alexandria_core_mark"."description" FROM "alexandria_core_mark" INNER JOIN "alexandria_core_document_marks" ON ("alexandria_core_mark"."slug" = "alexandria_core_document_marks"."mark_id") WHERE "alexandria_core_document_marks"."document_id" = \'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad\'::uuid',
       'SELECT (1) AS "a" FROM "alexandria_core_document" WHERE ("alexandria_core_document"."id" = \'fb0e22c7-9ac7-5679-e988-1e6ba183b354\'::uuid AND "alexandria_core_document"."id" = \'fb0e22c7-9ac7-5679-e988-1e6ba183b354\'::uuid) LIMIT 1',
       'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."checksum", "alexandria_core_file"."encryption_status", "alexandria_core_file"."content", "alexandria_core_file"."mime_type", "alexandria_core_file"."size" FROM "alexandria_core_file" WHERE "alexandria_core_file"."document_id" = \'fb0e22c7-9ac7-5679-e988-1e6ba183b354\'::uuid ORDER BY "alexandria_core_file"."created_at" DESC',
-      'SELECT (1) AS "a" FROM "alexandria_core_category" WHERE ("alexandria_core_category"."slug" = \'moment-poor\' AND "alexandria_core_category"."slug" = \'moment-poor\') LIMIT 1',
       'SELECT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."metainfo", "alexandria_core_tag"."id", "alexandria_core_tag"."name", "alexandria_core_tag"."description", "alexandria_core_tag"."tag_synonym_group_id" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."id" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" = \'fb0e22c7-9ac7-5679-e988-1e6ba183b354\'::uuid',
       'SELECT "alexandria_core_mark"."created_at", "alexandria_core_mark"."created_by_user", "alexandria_core_mark"."created_by_group", "alexandria_core_mark"."modified_at", "alexandria_core_mark"."modified_by_user", "alexandria_core_mark"."modified_by_group", "alexandria_core_mark"."metainfo", "alexandria_core_mark"."slug", "alexandria_core_mark"."name", "alexandria_core_mark"."description" FROM "alexandria_core_mark" INNER JOIN "alexandria_core_document_marks" ON ("alexandria_core_mark"."slug" = "alexandria_core_document_marks"."mark_id") WHERE "alexandria_core_document_marks"."document_id" = \'fb0e22c7-9ac7-5679-e988-1e6ba183b354\'::uuid',
     ]),
-    'query_count': 20,
+    'query_count': 17,
     'request': dict({
       'CONTENT_TYPE': 'application/octet-stream',
       'PATH_INFO': '/api/v1/files',
@@ -2113,12 +2028,11 @@
       'SELECT "alexandria_core_tag"."id" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."id" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid',
       'SELECT "alexandria_core_mark"."slug" FROM "alexandria_core_mark" INNER JOIN "alexandria_core_document_marks" ON ("alexandria_core_mark"."slug" = "alexandria_core_document_marks"."mark_id") WHERE "alexandria_core_document_marks"."document_id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid',
       'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."checksum", "alexandria_core_file"."encryption_status", "alexandria_core_file"."content", "alexandria_core_file"."mime_type", "alexandria_core_file"."size" FROM "alexandria_core_file" WHERE "alexandria_core_file"."document_id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid ORDER BY "alexandria_core_file"."created_at" DESC',
-      'SELECT (1) AS "a" FROM "alexandria_core_category" WHERE ("alexandria_core_category"."slug" = \'note-act-source\' AND "alexandria_core_category"."slug" = \'note-act-source\') LIMIT 1',
       'SELECT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."metainfo", "alexandria_core_tag"."id", "alexandria_core_tag"."name", "alexandria_core_tag"."description", "alexandria_core_tag"."tag_synonym_group_id" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."id" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid',
       'SELECT "alexandria_core_mark"."created_at", "alexandria_core_mark"."created_by_user", "alexandria_core_mark"."created_by_group", "alexandria_core_mark"."modified_at", "alexandria_core_mark"."modified_by_user", "alexandria_core_mark"."modified_by_group", "alexandria_core_mark"."metainfo", "alexandria_core_mark"."slug", "alexandria_core_mark"."name", "alexandria_core_mark"."description" FROM "alexandria_core_mark" INNER JOIN "alexandria_core_document_marks" ON ("alexandria_core_mark"."slug" = "alexandria_core_document_marks"."mark_id") WHERE "alexandria_core_document_marks"."document_id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid',
       'SELECT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."metainfo", "alexandria_core_tag"."id", "alexandria_core_tag"."name", "alexandria_core_tag"."description", "alexandria_core_tag"."tag_synonym_group_id" FROM "alexandria_core_tag" LEFT OUTER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."id" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" IS NULL',
     ]),
-    'query_count': 14,
+    'query_count': 13,
     'request': dict({
       'CONTENT_LENGTH': '859',
       'CONTENT_TYPE': 'application/vnd.api+json',
