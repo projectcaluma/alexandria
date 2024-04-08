@@ -89,4 +89,4 @@ def test_own_and_admin_visibility(
     assert len(resp.json()["data"]) == expected_count
 
     resp = client.get(reverse("file-list"))
-    assert len(resp.json()["data"]) == expected_count
+    assert len(resp.json()["data"]) == expected_count * 2

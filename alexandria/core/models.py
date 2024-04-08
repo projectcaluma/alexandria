@@ -181,8 +181,6 @@ class Document(UUIDModel):
                 latest_original.document = self
                 latest_original.save()
 
-        latest_original.create_thumbnail()
-
         return self
 
 
@@ -241,7 +239,13 @@ class File(UUIDModel):
     ):
         if settings.ALEXANDRIA_ENABLE_CHECKSUM:
             self.set_checksum()
-        return super().save(force_insert, force_update, using, update_fields)
+
+        file = super().save(force_insert, force_update, using, update_fields)
+
+        if self.variant == File.Variant.ORIGINAL and self.renderings.count() == 0:
+            self.create_thumbnail()
+
+        return file
 
     def get_webdav_url(self, username, group, host="localhost:8000"):
         # The path doesn't need to match the actual file path, because we're accessing

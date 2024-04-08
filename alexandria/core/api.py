@@ -4,6 +4,7 @@ from django.conf import settings
 from django.core.files import File
 
 from alexandria.core import models
+from alexandria.core.validations import validate_file
 
 log = logging.getLogger(__name__)
 
@@ -65,7 +66,7 @@ def create_file(
     Use this instead of the normal File.objects.create to ensure that all important fields are set.
     As well as generating a thumbnail for the file.
     """
-    file = models.File.objects.create(
+    file = models.File(
         name=name,
         content=content,
         mime_type=mime_type,
@@ -82,7 +83,7 @@ def create_file(
         modified_by_group=group,
         **additional_attributes,
     )
-
-    file.create_thumbnail()
+    validate_file(file)
+    file.save()
 
     return file
