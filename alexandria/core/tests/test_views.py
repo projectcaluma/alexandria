@@ -281,12 +281,16 @@ def test_multi_download(admin_client, file_factory):
     assert len(zip.filelist) == 4
     filelist = sorted(zip.filelist, key=lambda a: a.filename)
     assert filelist[0].filename == "a_file"
+    file2.content.file.seek(0)
     assert zip.open("a_file").read() == file2.content.file.read()
     assert filelist[1].filename == "a_file(1)"
+    file1.content.file.seek(0)
     assert zip.open("a_file(1)").read() == file1.content.file.read()
     assert filelist[2].filename == "a_file(2)"
+    file3.content.file.seek(0)
     assert zip.open("a_file(2)").read() == file3.content.file.read()
     assert filelist[3].filename == "b_file.png"
+    file4.content.file.seek(0)
     assert zip.open(file4.name).read() == file4.content.file.read()
 
 
@@ -413,7 +417,7 @@ def test_convert_document(
     assert response.status_code == HTTP_201_CREATED
 
     assert Document.objects.all().count() == 2
-    assert File.objects.all().count() == 3
+    assert File.objects.all().count() == 4
     assert File.objects.filter(name="foo.pdf", variant=File.Variant.ORIGINAL).exists()
 
 

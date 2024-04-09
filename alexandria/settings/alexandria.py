@@ -70,7 +70,10 @@ ALEXANDRIA_PERMISSION_CLASSES = env.list(
     "ALEXANDRIA_PERMISSION_CLASSES",
     default=default(["generic_permissions.permissions.AllowAny"], []),
 )
-ALEXANDRIA_VALIDATION_CLASSES = env.list("ALEXANDRIA_VALIDATION_CLASSES", default=[])
+ALEXANDRIA_VALIDATION_CLASSES = env.list(
+    "ALEXANDRIA_VALIDATION_CLASSES",
+    default=["alexandria.core.validations.AlexandriaValidator"],
+)
 
 # We use DGAP as a permission/visibility/validation handler. Copy
 # the configuration over so DGAP knows

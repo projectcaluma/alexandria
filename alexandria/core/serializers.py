@@ -1,18 +1,14 @@
 import json
 import logging
-from mimetypes import guess_type
 
 from django.conf import settings
 from django.template.defaultfilters import slugify
 from django.utils import translation
-from django.utils.translation import gettext as _
-from django_clamd.validators import validate_file_infection
 from generic_permissions.validation import ValidatorMixin
 from generic_permissions.visibilities import (
     VisibilityResourceRelatedField,
     VisibilitySerializerMixin,
 )
-from rest_framework.exceptions import ValidationError
 from rest_framework_json_api import serializers
 
 from . import models
@@ -219,36 +215,9 @@ class FileSerializer(BaseSerializer):
         if settings.ALEXANDRIA_ENABLE_AT_REST_ENCRYPTION:
             validated_data["encryption_status"] = settings.ALEXANDRIA_ENCRYPTION_METHOD
 
-        mime_type = validated_data["content"].content_type
-        if mime_type == "application/octet-stream":
-            guess, encoding = guess_type(validated_data["name"])
-            if guess is not None:
-                mime_type = guess
-
-        category = models.Document.objects.get(
-            pk=self.initial_data.get("document")["id"]
-        ).category
-        if (
-            category.allowed_mime_types is not None
-            and len(category.allowed_mime_types)
-            and mime_type not in category.allowed_mime_types
-        ):
-            raise ValidationError(
-                _(
-                    "File type %(mime_type)s is not allowed in category %(category)s."
-                    % {"mime_type": mime_type, "category": category.pk}
-                )
-            )
-
-        validated_data["mime_type"] = mime_type
         validated_data["size"] = validated_data["content"].size
 
         return validated_data
-
-    def create(self, validated_data):
-        file = super().create(validated_data)
-        file.create_thumbnail()
-        return file
 
     def _prepare_multipart(self):
         """Massage multipart data into jsonapi-compatible form."""
@@ -276,10 +245,6 @@ class FileSerializer(BaseSerializer):
         if self.context["request"].content_type.startswith("multipart/"):
             self._prepare_multipart()
         return super().is_valid(*args, raise_exception=raise_exception, **kwargs)
-
-    def validate_content(self, value):
-        validate_file_infection(value)
-        return value
 
     class Meta:
         model = models.File

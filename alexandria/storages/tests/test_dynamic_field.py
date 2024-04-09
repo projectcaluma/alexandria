@@ -21,6 +21,7 @@ def test_dynamic_storage_select_global_ssec(
     settings.ALEXANDRIA_S3_STORAGE_SSEC_SECRET = secret
 
     mocker.patch("storages.backends.s3.S3Storage.save")
+    mocker.patch("alexandria.core.models.File.create_thumbnail")
     SsecGlobalS3Storage.save.return_value = "name-of-the-file"
     if raises is not None:
         with pytest.raises(raises):

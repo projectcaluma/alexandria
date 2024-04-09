@@ -58,11 +58,15 @@ def test_dav(db, manabi, settings, s3, file_factory, use_s3, same_user):
 
         file.refresh_from_db()
         new_file = file
-        document_files_count = 1
+        document_files_count = 2
         if not same_user:
-            document_files_count = 2
+            document_files_count = 4
             new_file = (
-                File.objects.filter(document=file.document).exclude(pk=file.pk).first()
+                File.objects.filter(
+                    document=file.document, variant=File.Variant.ORIGINAL
+                )
+                .exclude(pk=file.pk)
+                .first()
             )
             assert file.modified_by_user == file.modified_by_group == "admin"
 

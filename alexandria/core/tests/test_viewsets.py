@@ -154,7 +154,7 @@ def assert_response(
     assert value == snapshot(
         matcher=path_type(
             {
-                ".*webdav-url": (str,),
+                ".*webdav-url": (str, type(None)),
             },
             regex=True,
         )
