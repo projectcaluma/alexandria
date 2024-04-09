@@ -1,6 +1,6 @@
 import json
 
-from django.contrib.postgres.fields.jsonb import KeyTextTransform
+from django.db.models.fields.json import KeyTextTransform
 from django.db.models import FloatField, Q, TextField, Value
 from django.db.models.functions import Cast
 from django_filters import (

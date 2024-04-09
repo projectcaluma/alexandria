@@ -60,6 +60,7 @@ class CategoryFactory(BaseFactory):
 class TagSynonymGroupFactory(BaseFactory):
     class Meta:
         model = models.TagSynonymGroup
+        skip_postgeneration_save = True
 
     @post_generation
     def tags(self, create, extracted, **kwargs):
@@ -93,6 +94,7 @@ class MarkFactory(BaseFactory):
 class DocumentFactory(BaseFactory):
     class Meta:
         model = models.Document
+        skip_postgeneration_save = True
 
     title = Faker("name")
     description = Faker("text")
