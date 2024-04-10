@@ -1,3 +1,10 @@
+# 4.0.0
+### Feature
+* **document:** Create document and file in one request! ([`444912d`](https://github.com/projectcaluma/alexandria/commit/444912d4cb584c05096ca8a78dd455b8471e9441))
+
+### Breaking
+* The document post endpoint now requires the file data to be provided as well. The reason for this change is allowing the frontend to create documents and files in one request, preventing documents with no associated files. Which fixes the problem if the file got rejected for any reason, the application would create an empty document. ([`444912d`](https://github.com/projectcaluma/alexandria/commit/444912d4cb584c05096ca8a78dd455b8471e9441))
+
 # 3.1.0
 ### Feature
 * **category:** Define allowed mime types ([`d4fd84e`](https://github.com/projectcaluma/alexandria/commit/d4fd84e6edb0502818f885082217aa48f0e56c5b))
