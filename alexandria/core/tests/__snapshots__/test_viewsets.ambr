@@ -99,7 +99,7 @@
       'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."metainfo", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description", "alexandria_core_category"."allowed_mime_types", "alexandria_core_category"."color", "alexandria_core_category"."parent_id" FROM "alexandria_core_category" WHERE "alexandria_core_category"."slug" = \'note-act-source\' LIMIT 21',
       'INSERT INTO "alexandria_core_file" ("created_at", "created_by_user", "created_by_group", "modified_at", "modified_by_user", "modified_by_group", "metainfo", "id", "variant", "original_id", "name", "document_id", "checksum", "encryption_status", "content", "mime_type", "size") VALUES (\'2017-05-21T00:00:00+00:00\'::timestamptz, \'admin\', \'admin\', \'2017-05-21T00:00:00+00:00\'::timestamptz, \'admin\', \'admin\', \'{}\', \'ea416ed0-759d-46a8-de58-f63a59077499\'::uuid, \'original\', NULL, \'Jason Lopez\', \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid, \'sha256:945db0f84bf4ec45cf1c4835cb61848210d64c3867f5a3d78f55ca18e4a98879\', NULL, \'ea416ed0-759d-46a8-de58-f63a59077499_Jason_Lopez\', \'application/octet-stream\', 11)',
       'SELECT COUNT(*) AS "__count" FROM "alexandria_core_file" WHERE "alexandria_core_file"."original_id" = \'ea416ed0-759d-46a8-de58-f63a59077499\'::uuid',
-      'INSERT INTO "alexandria_core_file" ("created_at", "created_by_user", "created_by_group", "modified_at", "modified_by_user", "modified_by_group", "metainfo", "id", "variant", "original_id", "name", "document_id", "checksum", "encryption_status", "content", "mime_type", "size") VALUES (\'2017-05-21T00:00:00+00:00\'::timestamptz, NULL, NULL, \'2017-05-21T00:00:00+00:00\'::timestamptz, NULL, NULL, \'{}\', \'fb0e22c7-9ac7-5679-e988-1e6ba183b354\'::uuid, \'thumbnail\', \'ea416ed0-759d-46a8-de58-f63a59077499\'::uuid, \'Jason Lopez_preview.jpg\', \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid, \'sha256:0b5121c3edeb9ac0ac4d2f2cfa34773e43b68017bba0dfc859bdfdeae4392cc2\', NULL, \'fb0e22c7-9ac7-5679-e988-1e6ba183b354_Jason_Lopez_preview.jpg\', \'image/jpeg\', 438)',
+      'INSERT INTO "alexandria_core_file" ("created_at", "created_by_user", "created_by_group", "modified_at", "modified_by_user", "modified_by_group", "metainfo", "id", "variant", "original_id", "name", "document_id", "checksum", "encryption_status", "content", "mime_type", "size") VALUES (\'2017-05-21T00:00:00+00:00\'::timestamptz, NULL, NULL, \'2017-05-21T00:00:00+00:00\'::timestamptz, NULL, NULL, \'{}\', \'fb0e22c7-9ac7-5679-e988-1e6ba183b354\'::uuid, \'thumbnail\', \'ea416ed0-759d-46a8-de58-f63a59077499\'::uuid, \'Jason Lopez_preview.jpg\', \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid, \'sha256:d3cb7034b6ae106173147af8961e67510b2f16eb3c8e4518a1bf561da875b74d\', NULL, \'fb0e22c7-9ac7-5679-e988-1e6ba183b354_Jason_Lopez_preview.jpg\', \'image/jpeg\', 1422)',
       'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."checksum", "alexandria_core_file"."encryption_status", "alexandria_core_file"."content", "alexandria_core_file"."mime_type", "alexandria_core_file"."size" FROM "alexandria_core_file" WHERE "alexandria_core_file"."original_id" = \'ea416ed0-759d-46a8-de58-f63a59077499\'::uuid ORDER BY "alexandria_core_file"."created_at" DESC',
       'SELECT (1) AS "a" FROM "alexandria_core_document" WHERE ("alexandria_core_document"."id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid AND "alexandria_core_document"."id" = \'9dd4e461-268c-8034-f5c8-564e155c67a6\'::uuid) LIMIT 1',
     ]),
@@ -785,7 +785,7 @@
         }),
         dict({
           'attributes': dict({
-            'checksum': 'sha256:2326873dfaedc7d5aa551f9cc412cbfa32e96c0e1736ebea0ad48a649e61523f',
+            'checksum': 'sha256:25afe0ed8b1f1663713d3cff0368a22478d14ed61933e3d5e6076f139dcf2e9d',
             'created-at': '2017-05-21T00:00:00Z',
             'created-by-group': None,
             'created-by-user': None,
@@ -797,7 +797,7 @@
             'modified-by-group': None,
             'modified-by-user': None,
             'name': 'Jason Lopez_preview.jpg',
-            'size': 1107,
+            'size': 2257,
             'variant': 'thumbnail',
             'webdav-url': NoneType,
           }),
@@ -1512,7 +1512,7 @@
       'data': list([
         dict({
           'attributes': dict({
-            'checksum': 'sha256:2326873dfaedc7d5aa551f9cc412cbfa32e96c0e1736ebea0ad48a649e61523f',
+            'checksum': 'sha256:25afe0ed8b1f1663713d3cff0368a22478d14ed61933e3d5e6076f139dcf2e9d',
             'created-at': '2017-05-21T00:00:00Z',
             'created-by-group': None,
             'created-by-user': None,
@@ -1524,7 +1524,7 @@
             'modified-by-group': None,
             'modified-by-user': None,
             'name': 'Jason Lopez_preview.jpg',
-            'size': 1107,
+            'size': 2257,
             'variant': 'thumbnail',
             'webdav-url': NoneType,
           }),
@@ -1597,7 +1597,7 @@
         }),
         dict({
           'attributes': dict({
-            'checksum': 'sha256:2326873dfaedc7d5aa551f9cc412cbfa32e96c0e1736ebea0ad48a649e61523f',
+            'checksum': 'sha256:25afe0ed8b1f1663713d3cff0368a22478d14ed61933e3d5e6076f139dcf2e9d',
             'created-at': '2017-05-21T00:00:00Z',
             'created-by-group': None,
             'created-by-user': None,
@@ -1609,7 +1609,7 @@
             'modified-by-group': None,
             'modified-by-user': None,
             'name': 'Rebecca Gonzalez_preview.jpg',
-            'size': 1107,
+            'size': 2257,
             'variant': 'thumbnail',
             'webdav-url': NoneType,
           }),
@@ -1682,7 +1682,7 @@
         }),
         dict({
           'attributes': dict({
-            'checksum': 'sha256:2326873dfaedc7d5aa551f9cc412cbfa32e96c0e1736ebea0ad48a649e61523f',
+            'checksum': 'sha256:25afe0ed8b1f1663713d3cff0368a22478d14ed61933e3d5e6076f139dcf2e9d',
             'created-at': '2017-05-21T00:00:00Z',
             'created-by-group': None,
             'created-by-user': None,
@@ -1694,7 +1694,7 @@
             'modified-by-group': None,
             'modified-by-user': None,
             'name': 'Nicole Pineda_preview.jpg',
-            'size': 1107,
+            'size': 2257,
             'variant': 'thumbnail',
             'webdav-url': NoneType,
           }),
