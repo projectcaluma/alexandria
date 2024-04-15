@@ -1,3 +1,7 @@
+# 4.0.1
+### Fix
+* **thumbnails:** Enlarge the thumbnails ([`a80f7b5`](https://github.com/projectcaluma/alexandria/commit/a80f7b535ba21e3c8a3c23318cb95ca4be70f273))
+
 # 4.0.0
 ### Feature
 * **document:** Create document and file in one request! ([`444912d`](https://github.com/projectcaluma/alexandria/commit/444912d4cb584c05096ca8a78dd455b8471e9441))
