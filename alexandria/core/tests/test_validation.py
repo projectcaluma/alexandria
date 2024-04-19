@@ -7,7 +7,7 @@ from generic_permissions.validation import validator_for
 from alexandria.core.models import Document
 
 
-def test_validation(db, reset_config_classes, document, file, admin_client):
+def test_custom_validation(db, reset_config_classes, document, file, admin_client):
     call_counter = Counter()
 
     class TestValidator:

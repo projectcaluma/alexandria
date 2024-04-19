@@ -1,5 +1,6 @@
 from mimetypes import guess_type
 
+import magic
 from django.utils.translation import gettext_lazy as _
 from django_clamd.validators import validate_file_infection
 from generic_permissions.validation import validator_for
@@ -40,6 +41,10 @@ class AlexandriaValidator:
             guess, encoding = guess_type(data["name"])
             if guess is not None:
                 mime_type = guess
+            else:
+                data["content"].seek(0)
+                mime_type = magic.from_buffer(data["content"].read(), mime=True)
+                data["content"].seek(0)
 
         validate_mime_type(mime_type, data["document"].category)
         data["mime_type"] = mime_type

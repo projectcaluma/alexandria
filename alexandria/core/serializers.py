@@ -1,8 +1,8 @@
 import json
 import logging
 
-from django.db.transaction import atomic
 from django.conf import settings
+from django.db.transaction import atomic
 from django.template.defaultfilters import slugify
 from django.utils import translation
 from generic_permissions.validation import ValidatorMixin
