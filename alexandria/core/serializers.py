@@ -2,6 +2,7 @@ import json
 import logging
 
 from django.conf import settings
+from django.db.transaction import atomic
 from django.template.defaultfilters import slugify
 from django.utils import translation
 from generic_permissions.validation import ValidatorMixin
@@ -284,6 +285,7 @@ class DocumentSerializer(BaseSerializer):
         "files": FileSerializer,
     }
 
+    @atomic
     def create(self, validated_data):
         content = validated_data.pop("content")
         document = super().create(validated_data)
@@ -306,6 +308,7 @@ class DocumentSerializer(BaseSerializer):
         """Massage multipart data into jsonapi-compatible form."""
         self.initial_data = self.initial_data.dict()
 
+        self.initial_data["data"].seek(0)
         self.initial_data.update(
             json.loads(self.initial_data["data"].read().decode("utf-8"))
         )

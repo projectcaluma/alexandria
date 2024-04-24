@@ -80,10 +80,10 @@ def test_own_and_admin_visibility(
         client.force_authenticate(OIDCUser(token="foo", claims={"sub": user.username}))
         expected_count = 1
 
-    file_factory(
-        created_by_user=requesting_user, document__created_by_user=requesting_user
-    )
-    file_factory(created_by_user="admin", document__created_by_user="admin")
+    document_same = document_factory(created_by_user=requesting_user)
+    document_admin = document_factory(created_by_user="admin")
+    file_factory(created_by_user=requesting_user, document=document_same)
+    file_factory(created_by_user="admin", document=document_admin)
 
     resp = client.get(reverse("document-list"))
     assert len(resp.json()["data"]) == expected_count

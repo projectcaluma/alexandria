@@ -12,7 +12,7 @@
       "metainfo": {},
       "name": "{\"en\": \"All involved\"}",
       "description": "{\"en\": \"\"}",
-      "allowed_mime_types": "[\"application/pdf\"]",
+      "allowed_mime_types": "[\"application/pdf\", \"image/jpeg\", \"image/png\", \"image/gif\", \"application/msword\", \"application/vnd.openxmlformats-officedocument.wordprocessingml.document\", \"application/vnd.ms-excel\", \"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet\", \"application/vnd.ms-powerpoint\", \"application/vnd.openxmlformats-officedocument.presentationml.presentation\", \"application/vnd.ms-outlook\", \"msg\"]",
       "color": "#CB68C1",
       "parent": null
     }
