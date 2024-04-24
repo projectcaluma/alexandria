@@ -1,3 +1,8 @@
+# 4.0.2
+### Fix
+* **mime:** Allow file extension checking if all fails ([`ddaa134`](https://github.com/projectcaluma/alexandria/commit/ddaa1344b2cde98a0c52f3311772d36da6e28c28))
+* Use atomic for document and file creation ([`1a630ad`](https://github.com/projectcaluma/alexandria/commit/1a630adb83a8351d1ed01b3070790e65b00cc43d))
+
 # 4.0.1
 ### Fix
 * **thumbnails:** Enlarge the thumbnails ([`a80f7b5`](https://github.com/projectcaluma/alexandria/commit/a80f7b535ba21e3c8a3c23318cb95ca4be70f273))
