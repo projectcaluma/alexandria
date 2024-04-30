@@ -16,7 +16,6 @@ from rest_framework_json_api import serializers
 from . import models
 
 log = logging.getLogger(__name__)
-get_user_and_group = import_string(settings.ALEXANDRIA_GET_USER_AND_GROUP_FUNCTION)
 
 
 class BaseSerializer(
@@ -26,10 +25,15 @@ class BaseSerializer(
 
     created_at = serializers.DateTimeField(read_only=True)
 
+    def get_user_and_group(self):
+        return import_string(settings.ALEXANDRIA_GET_USER_AND_GROUP_FUNCTION)(
+            self.context.get("request")
+        )
+
     def is_valid(self, *args, **kwargs):
         # Prime data so the validators are called (and default values filled
         # if client didn't pass them.)
-        user, group = get_user_and_group(self.context["request"])
+        user, group = self.get_user_and_group()
         self.initial_data.setdefault("created_by_group", group)
         self.initial_data.setdefault("modified_by_group", group)
         self.initial_data.setdefault("created_by_user", user)
@@ -39,7 +43,7 @@ class BaseSerializer(
     def validate(self, *args, **kwargs):
         validated_data = super().validate(*args, **kwargs)
 
-        user, group = get_user_and_group(self.context["request"])
+        user, group = self.get_user_and_group()
         validated_data["modified_by_user"] = user
         validated_data["modified_by_group"] = group
 
@@ -183,7 +187,7 @@ class FileSerializer(BaseSerializer):
             return None
         request = self.context.get("request")
         host = request.get_host() if request else "localhost"
-        user, group = get_user_and_group(request)
+        user, group = self.get_user_and_group()
         return instance.get_webdav_url(user, group, host)
 
     def validate(self, *args, **kwargs):
