@@ -59,6 +59,10 @@ ALEXANDRIA_CREATED_BY_USER_PROPERTY = env.str(
 ALEXANDRIA_CREATED_BY_GROUP_PROPERTY = env.str(
     "ALEXANDRIA_CREATED_BY_GROUP_PROPERTY", default="group"
 )
+ALEXANDRIA_GET_USER_AND_GROUP_FUNCTION = env.str(
+    "ALEXANDRIA_GET_USER_AND_GROUP_FUNCTION",
+    default="alexandria.oidc_auth.authentication.get_user_and_group",
+)
 
 
 # Extensions

@@ -10,6 +10,7 @@ from django.conf import settings
 from django.core.exceptions import ValidationError as DjangoCoreValidationError
 from django.core.files.base import ContentFile
 from django.http import FileResponse
+from django.utils.module_loading import import_string
 from django.utils.translation import gettext as _
 from generic_permissions.permissions import AllowAny, PermissionViewMixin
 from generic_permissions.visibilities import VisibilityViewMixin
@@ -130,16 +131,13 @@ class DocumentViewSet(PermissionViewMixin, VisibilityViewMixin, ModelViewSet):
 
         response.raise_for_status()
 
-        username = getattr(
-            request.user, settings.ALEXANDRIA_CREATED_BY_USER_PROPERTY, None
-        )
-        group = getattr(
-            request.user, settings.ALEXANDRIA_CREATED_BY_GROUP_PROPERTY, None
+        user, group = import_string(settings.ALEXANDRIA_GET_USER_AND_GROUP_FUNCTION)(
+            request
         )
 
         file_name = f"{splitext(file.name)[0]}.pdf"
         converted_document, __ = create_document_file(
-            user=username,
+            user=user,
             group=group,
             category=document.category,
             document_title={
