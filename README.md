@@ -73,6 +73,7 @@ A list of configuration options which you need
   - `ALEXANDRIA_OIDC_USER_FACTORY`: Overwrite the default user with your own
   - `ALEXANDRIA_CREATED_BY_USER_PROPERTY`: Overwrite the default user property which is used for `..._by_user` (default: username)
   - `ALEXANDRIA_CREATED_BY_GROUP_PROPERTY`: Overwrite the default group property which is used for `..._by_group` (default: group)
+  - `ALEXANDRIA_GET_USER_AND_GROUP_FUNCTION`: Overwrite the import string if further configuration how user and group are determined is needed.
 - Authorization configurations
   - `ALEXANDRIA_VISIBILITY_CLASSES`: Comma-separated list of [DGAP](https://github.com/adfinis/django-generic-api-permissions/?tab=readme-ov-file#visibilities) classes that define visibility for all models
   - `ALEXANDRIA_PERMISSION_CLASSES`: Comma-separated list of [DGAP](https://github.com/adfinis/django-generic-api-permissions/?tab=readme-ov-file#permissions) classes that define permissions for all models

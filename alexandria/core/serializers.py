@@ -5,6 +5,7 @@ from django.conf import settings
 from django.db.transaction import atomic
 from django.template.defaultfilters import slugify
 from django.utils import translation
+from django.utils.module_loading import import_string
 from generic_permissions.validation import ValidatorMixin
 from generic_permissions.visibilities import (
     VisibilityResourceRelatedField,
@@ -24,19 +25,15 @@ class BaseSerializer(
 
     created_at = serializers.DateTimeField(read_only=True)
 
+    def get_user_and_group(self):
+        return import_string(settings.ALEXANDRIA_GET_USER_AND_GROUP_FUNCTION)(
+            self.context.get("request")
+        )
+
     def is_valid(self, *args, **kwargs):
         # Prime data so the validators are called (and default values filled
         # if client didn't pass them.)
-        group = getattr(
-            self.context["request"].user,
-            settings.ALEXANDRIA_CREATED_BY_GROUP_PROPERTY,
-            None,
-        )
-        user = getattr(
-            self.context["request"].user,
-            settings.ALEXANDRIA_CREATED_BY_USER_PROPERTY,
-            None,
-        )
+        user, group = self.get_user_and_group()
         self.initial_data.setdefault("created_by_group", group)
         self.initial_data.setdefault("modified_by_group", group)
         self.initial_data.setdefault("created_by_user", user)
@@ -46,9 +43,9 @@ class BaseSerializer(
     def validate(self, *args, **kwargs):
         validated_data = super().validate(*args, **kwargs)
 
-        user = self.context["request"].user
-        username = getattr(user, settings.ALEXANDRIA_CREATED_BY_USER_PROPERTY)
-        validated_data["modified_by_user"] = username
+        user, group = self.get_user_and_group()
+        validated_data["modified_by_user"] = user
+        validated_data["modified_by_group"] = group
 
         return validated_data
 
@@ -190,17 +187,8 @@ class FileSerializer(BaseSerializer):
             return None
         request = self.context.get("request")
         host = request.get_host() if request else "localhost"
-        username = getattr(
-            getattr(request, "user", None),
-            settings.ALEXANDRIA_CREATED_BY_USER_PROPERTY,
-            None,
-        )
-        group = getattr(
-            getattr(request, "user", None),
-            settings.ALEXANDRIA_CREATED_BY_GROUP_PROPERTY,
-            None,
-        )
-        return instance.get_webdav_url(username, group, host)
+        user, group = self.get_user_and_group()
+        return instance.get_webdav_url(user, group, host)
 
     def validate(self, *args, **kwargs):
         """Validate the data.
