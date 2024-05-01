@@ -1,3 +1,10 @@
+# 4.1.0
+### Feature
+* Allow custom implementation of username and group getters ([`72bf2e4`](https://github.com/projectcaluma/alexandria/commit/72bf2e42862bb72fbd34cda059b8df0aa107ef7a))
+
+### Fix
+* **core:** Add get_user_and_group for serializer ([`b5bc3b6`](https://github.com/projectcaluma/alexandria/commit/b5bc3b67645bb2fe46dc547f94f8399ee5c2ecb7))
+
 # 4.0.2
 ### Fix
 * **mime:** Allow file extension checking if all fails ([`ddaa134`](https://github.com/projectcaluma/alexandria/commit/ddaa1344b2cde98a0c52f3311772d36da6e28c28))
