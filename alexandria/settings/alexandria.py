@@ -201,3 +201,15 @@ MANABI_SHARED_KEY = env.str(
     "MANABI_SHARED_KEY", default=default("2QhWg20fXq0xlnJUkFTDgFoA3JWqvb86OejD9mAVFCW")
 )
 MANABI_SECURE = True if ENV == "production" else False
+
+
+# Content search
+ALEXANDRIA_ENABLE_CONTENT_SEARCH = env.bool(
+    "ALEXANDRIA_ENABLE_CONTENT_SEARCH", default=False
+)
+ISO_639_TO_PSQL_SEARCH_CONFIG = {
+    "en": "english",
+    "de": "german",
+    "fr": "french",
+    "it": "italian",
+}
