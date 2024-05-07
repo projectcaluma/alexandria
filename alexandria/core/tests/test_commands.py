@@ -1,6 +1,7 @@
 from io import StringIO
 
 import pytest
+import tika
 from django.core.files import File as DjangoFile
 from django.core.management import call_command
 
@@ -53,3 +54,37 @@ def test_encrypt_files_misconfigured(
     call_command("encrypt_files", stdout=out)
 
     assert "Encryption is not enabled. Skipping encryption of files." in out.getvalue()
+
+
+def test_generate_content_vector(db, settings, file_factory):
+    settings.ALEXANDRIA_ENABLE_CONTENT_SEARCH = False
+    file_without_vector = file_factory(name="old")
+
+    settings.ALEXANDRIA_ENABLE_CONTENT_SEARCH = True
+    file_with_vector = file_factory(name="neu.docx")
+
+    tika.parser.from_buffer.return_value = {"content": "Das ist Inhalt"}
+    tika.language.from_buffer.return_value = "de"
+    call_command("generate_content_vectors")
+
+    file_with_vector.refresh_from_db()
+    file_without_vector.refresh_from_db()
+
+    assert tika.parser.from_buffer.called_once()
+    assert tika.language.from_buffer.called_once()
+
+    assert file_with_vector.content_vector == "'import':2B 'neu':1A 'text':3B"
+    assert file_without_vector.content_vector == "'inhalt':4B 'old':1A"
+    assert file_without_vector.language == "de"
+
+
+def test_generate_content_vector_disabled(db, settings, file_factory):
+    settings.ALEXANDRIA_ENABLE_CONTENT_SEARCH = False
+
+    out = StringIO()
+    call_command("generate_content_vectors", stdout=out)
+
+    assert (
+        "Content search is not enabled. Skipping vectorization of file contents."
+        in out.getvalue()
+    )
