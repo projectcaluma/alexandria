@@ -38,6 +38,7 @@ boto3 = "^1.29.7"
 tqdm = "^4.66.1"
 manabi = "^1.4.0"
 python-magic = "^0.4.27"
+tika = "^2.6.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "24.4.2"
