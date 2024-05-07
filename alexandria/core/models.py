@@ -6,11 +6,15 @@ from mimetypes import guess_extension
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 
+import tika
 from django.conf import settings
 from django.contrib.postgres.fields import ArrayField
+from django.contrib.postgres.indexes import GinIndex
+from django.contrib.postgres.search import SearchVector, SearchVectorField
 from django.core.files import File as DjangoFile
 from django.core.validators import RegexValidator
 from django.db import models, transaction
+from django.db.models import Value
 from django.db.models.fields.files import ImageFile
 from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
@@ -220,6 +224,9 @@ class File(UUIDModel):
         blank=True,
     )
 
+    content_vector = SearchVectorField(null=True, blank=True)
+    language = models.CharField(max_length=10, blank=True, null=True)
+
     # TODO: When next working on file / storage stuff, consider extracting
     # the storage code into it's own project, so we can reuse it outside
     # of Alexandria: https://github.com/projectcaluma/alexandria/issues/480
@@ -232,13 +239,34 @@ class File(UUIDModel):
         return f"sha256:{hashlib.sha256(bytes_).hexdigest()}"
 
     def set_checksum(self):
+        self.content.file.file.seek(0)
         self.checksum = self.make_checksum(self.content.file.file.read())
+
+    def set_content_vector(self):
+        self.content.file.file.seek(0)
+        parsed_content = tika.parser.from_buffer(self.content.file.file)
+        # use part of content for language detection, beacause metadata is not reliable
+        detected_language = tika.language.from_buffer(parsed_content["content"][:1000])
+        self.language = detected_language
+        config = settings.ISO_639_TO_PSQL_SEARCH_CONFIG.get(detected_language, "simple")
+        self.content_vector = SearchVector(
+            Value(Path(self.name).stem), config=config, weight="A"
+        ) + SearchVector(
+            Value(parsed_content["content"]),
+            config=config,
+            weight="B",
+        )
 
     def save(
         self, force_insert=False, force_update=False, using=None, update_fields=None
     ):
         if settings.ALEXANDRIA_ENABLE_CHECKSUM:
             self.set_checksum()
+        if (
+            self.variant == File.Variant.ORIGINAL
+            and settings.ALEXANDRIA_ENABLE_CONTENT_SEARCH
+        ):
+            self.set_content_vector()
 
         file = super().save(force_insert, force_update, using, update_fields)
 
@@ -315,6 +343,7 @@ class File(UUIDModel):
 
     class Meta:
         ordering = ["-created_at"]
+        indexes = [GinIndex(fields=["content_vector"])]
 
 
 @receiver(models.signals.post_delete, sender=File)
