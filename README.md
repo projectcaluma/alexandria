@@ -1,9 +1,9 @@
-# alexandria
+# Alexandria
 
-[![Build Status](https://github.com/projectcaluma/emeis/workflows/Tests/badge.svg)](https://github.com/projectcaluma/emeis/actions?query=workflow%3ATests)
-[![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen.svg)](https://github.com/projectcaluma/emeis/blob/master/setup.cfg#L50)
+[![Build Status](https://github.com/projectcaluma/alexandria/workflows/Tests/badge.svg)](https://github.com/projectcaluma/alexandria/actions?query=workflow%3ATests)
+[![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen.svg)](https://github.com/projectcaluma/alexandria/blob/master/pyproject.toml#L107)
 [![Black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/projectcaluma/alexandria)
-[![License: GPL-3.0-or-later](https://img.shields.io/github/license/projectcaluma/emeis)](https://spdx.org/licenses/GPL-3.0-or-later.html)
+[![License: GPL-3.0-or-later](https://img.shields.io/github/license/projectcaluma/alexandria)](https://spdx.org/licenses/GPL-3.0-or-later.html)
 
 Our goal is to implement an external document management service to hold and provide uploaded documents.
 Documents can be uploaded and, depending on user access, managed by internal as well as external users.
