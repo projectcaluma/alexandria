@@ -67,7 +67,7 @@ pytest-randomly = "3.15.0"
 python-semantic-release = "7.33.3"
 requests-mock = "1.12.1"
 syrupy = "4.6.1"
-werkzeug = "3.0.2"
+werkzeug = "3.0.3"
 moto = {extras = ["s3"], version = "^5.0.2"}
 webtest = "^3.0.0"
 
