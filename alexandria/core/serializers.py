@@ -167,7 +167,6 @@ class FileSerializer(BaseSerializer):
     }
 
     download_url = serializers.SerializerMethodField()
-    webdav_url = serializers.SerializerMethodField()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -178,17 +177,6 @@ class FileSerializer(BaseSerializer):
 
     def get_download_url(self, instance):
         return instance.get_download_url(self.context.get("request"))
-
-    def get_webdav_url(self, instance):
-        if (
-            instance.variant != models.File.Variant.ORIGINAL
-            or not settings.ALEXANDRIA_USE_MANABI
-        ):
-            return None
-        request = self.context.get("request")
-        host = request.get_host() if request else "localhost"
-        user, group = self.get_user_and_group()
-        return instance.get_webdav_url(user, group, host)
 
     def validate(self, *args, **kwargs):
         """Validate the data.
@@ -246,7 +234,6 @@ class FileSerializer(BaseSerializer):
             "checksum",
             "content",
             "download_url",
-            "webdav_url",
             "mime_type",
             "size",
         )
@@ -324,3 +311,20 @@ class DocumentSerializer(BaseSerializer):
             "content",
         )
         extra_kwargs = {"content": {"write_only": True}}
+
+
+class WebDAVSerializer(BaseSerializer):
+    webdav_url = serializers.SerializerMethodField()
+
+    def get_webdav_url(self, instance):
+        if not settings.ALEXANDRIA_USE_MANABI:
+            return None
+
+        request = self.context.get("request")
+        host = request.get_host() if request else "localhost"
+        user, group = self.get_user_and_group()
+        return instance.get_latest_original().get_webdav_url(user, group, host)
+
+    class Meta:
+        model = models.Document
+        fields = ("webdav_url",)
