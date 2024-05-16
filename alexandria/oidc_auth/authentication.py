@@ -12,7 +12,7 @@ from mozilla_django_oidc.auth import OIDCAuthenticationBackend
 
 
 def get_user_and_group(request):
-    if request is None:
+    if request is None:  # pragma: no cover
         return None, None
 
     user = getattr(request.user, settings.ALEXANDRIA_CREATED_BY_USER_PROPERTY, None)

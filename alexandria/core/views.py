@@ -259,3 +259,13 @@ class FileViewSet(
                 obj.content.file.file, as_attachment=False, filename=obj.name
             )
         raise PermissionDenied("For downloading a file use the presigned download URL.")
+
+
+class WebDAVViewSet(
+    PermissionViewMixin,
+    VisibilityViewMixin,
+    RetrieveModelMixin,
+    GenericViewSet,
+):
+    serializer_class = serializers.WebDAVSerializer
+    queryset = models.Document.objects.all()

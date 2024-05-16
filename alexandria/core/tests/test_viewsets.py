@@ -13,7 +13,6 @@ from django.db.models.fields.related import ManyToManyDescriptor
 from django.test.utils import CaptureQueriesContext
 from django.urls import reverse
 from rest_framework_json_api.renderers import JSONRenderer
-from syrupy.matchers import path_type
 
 from ..views import (
     CategoryViewSet,
@@ -151,18 +150,11 @@ def assert_response(
     if include_json:
         value["response"] = response.json()
 
-    assert value == snapshot(
-        matcher=path_type(
-            {
-                ".*webdav-url": (str, type(None)),
-            },
-            regex=True,
-        )
-    )
+    assert value == snapshot
 
 
 @pytest.mark.freeze_time("2017-05-21")
-def test_api_list(fixture, request, admin_client, snapshot, viewset, manabi):
+def test_api_list(fixture, request, admin_client, snapshot, viewset):
     url = reverse("{0}-list".format(viewset.base_name))
 
     # create more data for proper num queries check
@@ -176,7 +168,7 @@ def test_api_list(fixture, request, admin_client, snapshot, viewset, manabi):
 
 
 @pytest.mark.freeze_time("2017-05-21")
-def test_api_detail(fixture, admin_client, viewset, snapshot, manabi):
+def test_api_detail(fixture, admin_client, viewset, snapshot):
     url = reverse("{0}-detail".format(viewset.base_name), args=[fixture.pk])
 
     included = getattr(viewset.serializer_class, "included_serializers", {})
@@ -193,7 +185,7 @@ def test_api_detail(fixture, admin_client, viewset, snapshot, manabi):
 
 @pytest.mark.freeze_time("2017-05-21")
 def test_api_create(
-    fixture, admin_client, viewset, snapshot, document_post_data, manabi
+    fixture, admin_client, viewset, snapshot, document_post_data
 ):
     url = reverse("{0}-list".format(viewset.base_name))
 

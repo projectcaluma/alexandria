@@ -10,5 +10,6 @@ r.register(r"files", views.FileViewSet)
 r.register(r"tags", views.TagViewSet)
 r.register(r"marks", views.MarkViewSet)
 r.register(r"tagsynonymgroups", views.TagSynonymGroupViewSet)
+r.register(r"webdav", views.WebDAVViewSet, basename="webdav")
 
 urlpatterns = r.urls

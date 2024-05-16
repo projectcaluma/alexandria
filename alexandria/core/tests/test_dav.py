@@ -6,9 +6,11 @@ import boto3
 import pytest
 from django.core.exceptions import ValidationError
 from django.core.files.base import ContentFile
+from django.urls import reverse
 from manabi.token import Key, Token
 from moto import mock_aws
 from rest_framework import status
+from rest_framework.status import HTTP_200_OK
 from webtest import TestApp, TestRequest
 from wsgidav.dav_error import HTTP_FORBIDDEN
 
@@ -115,3 +117,21 @@ def test_dav_file_infection(db, manabi, mocker, file_factory):
     dav_app = TestApp(get_dav())
     url = file.get_webdav_url("foobar", "foobar")
     dav_app.put(url, b"foo bar", status=HTTP_FORBIDDEN)
+
+
+@pytest.mark.parametrize("use_manabi", [True, False])
+def test_dav_view(manabi, admin_client, document, file_factory, use_manabi, settings):
+    settings.ALEXANDRIA_USE_MANABI = use_manabi
+    content_file = ContentFile(b"hello world", name="test.txt")
+    file = file_factory(name="test.txt", content=content_file, size=content_file.size)
+    document.files.add(file)
+
+    url = reverse("webdav-detail", args=[document.pk])
+    response = admin_client.get(url)
+    assert response.status_code == HTTP_200_OK
+    dav_url = response.json()["data"]["attributes"]["webdav-url"]
+    if use_manabi:
+        assert dav_url.startswith("http://testserver/dav/")
+        assert dav_url.endswith("test.txt")
+    else:
+        assert dav_url is None
