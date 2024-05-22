@@ -184,9 +184,7 @@ def test_api_detail(fixture, admin_client, viewset, snapshot):
 
 
 @pytest.mark.freeze_time("2017-05-21")
-def test_api_create(
-    fixture, admin_client, viewset, snapshot, document_post_data
-):
+def test_api_create(fixture, admin_client, viewset, snapshot, document_post_data):
     url = reverse("{0}-list".format(viewset.base_name))
 
     serializer = viewset.serializer_class(fixture)

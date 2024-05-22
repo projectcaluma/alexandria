@@ -190,6 +190,15 @@ ALEXANDRIA_MANABI_DAV_SCHEME = env.str(
     "ALEXANDRIA_DAV_SCHEME",
     default=default("ms-word:ofe|u|http", "ms-word:ofe|u|https"),
 )
+ALEXANDRIA_MANABI_ALLOWED_MIMETYPES = env.list(
+    "ALEXANDRIA_MANABI_ALLOWED_MIMETYPES",
+    default=[
+        "application/msword",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "application/vnd.ms-excel",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    ],
+)
 MANABI_SHARED_KEY = env.str(
     "MANABI_SHARED_KEY", default=default("2QhWg20fXq0xlnJUkFTDgFoA3JWqvb86OejD9mAVFCW")
 )

@@ -317,9 +317,6 @@ class WebDAVSerializer(BaseSerializer):
     webdav_url = serializers.SerializerMethodField()
 
     def get_webdav_url(self, instance):
-        if not settings.ALEXANDRIA_USE_MANABI:
-            return None
-
         request = self.context.get("request")
         host = request.get_host() if request else "localhost"
         user, group = self.get_user_and_group()
