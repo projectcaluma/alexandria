@@ -122,9 +122,17 @@ def test_dav_file_infection(db, manabi, mocker, file_factory):
 @pytest.mark.parametrize(
     "use_manabi,mime_type,expected_status",
     [
-        (True, "application/msword", HTTP_200_OK),
+        (
+            True,
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            HTTP_200_OK,
+        ),
         (True, "image/png", HTTP_404_NOT_FOUND),
-        (False, "application/msword", HTTP_404_NOT_FOUND),
+        (
+            False,
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            HTTP_404_NOT_FOUND,
+        ),
     ],
 )
 def test_dav_view(
