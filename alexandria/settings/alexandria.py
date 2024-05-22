@@ -193,9 +193,7 @@ ALEXANDRIA_MANABI_DAV_SCHEME = env.str(
 ALEXANDRIA_MANABI_ALLOWED_MIMETYPES = env.list(
     "ALEXANDRIA_MANABI_ALLOWED_MIMETYPES",
     default=[
-        "application/msword",
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        "application/vnd.ms-excel",
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     ],
 )
