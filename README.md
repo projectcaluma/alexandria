@@ -134,6 +134,7 @@ A list of configuration options which you need
   - `ALEXANDRIA_USE_MANABI`: Set to `true` to enable WebDAV via Manabi
   - `ALEXANDRIA_MANABI_DAV_URL_PATH`: Set the path segement where WebDAV is being served
   - `ALEXANDRIA_MANABI_DAV_SCHEME`: Set the scheme for the WebDAV URL
+  - `ALEXANDRIA_MANABI_ALLOWED_MIMETYPES`: List of which mime types can be served through WebDAV. (default: docx, xlsx)
   - `MANABI_SHARED_KEY`: Can be generated with:
   ```py
   import manabi

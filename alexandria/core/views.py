@@ -258,7 +258,9 @@ class FileViewSet(
             return FileResponse(
                 obj.content.file.file, as_attachment=False, filename=obj.name
             )
-        raise PermissionDenied("For downloading a file use the presigned download URL.")
+        raise PermissionDenied(
+            _("For downloading a file use the presigned download URL.")
+        )
 
 
 class WebDAVViewSet(
@@ -269,3 +271,18 @@ class WebDAVViewSet(
 ):
     serializer_class = serializers.WebDAVSerializer
     queryset = models.Document.objects.all()
+
+    def check_permissions(self, request):
+        if not settings.ALEXANDRIA_USE_MANABI:
+            raise NotFound(_("WebDAV is not enabled."))
+
+        return super().check_permissions(request)
+
+    def check_object_permissions(self, request, instance):
+        if (
+            instance.get_latest_original().mime_type
+            not in settings.ALEXANDRIA_MANABI_ALLOWED_MIMETYPES
+        ):
+            raise NotFound(_("WebDAV is not enabled for this documents mime type."))
+
+        return super().check_object_permissions(request, instance)
