@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.core.files.storage import get_storage_class
+from django.core.files.storage import storages
 from django.core.management.base import BaseCommand
 from django.db.models import Q
 from tqdm import tqdm
@@ -36,7 +36,7 @@ class Command(BaseCommand):
         missing_files = []
 
         # flip between default and encrypted storage to have the correct parameters in the requests
-        Storage = get_storage_class(settings.ALEXANDRIA_FILE_STORAGE)
+        Storage = storages.create_storage({"BACKEND": settings.ALEXANDRIA_FILE_STORAGE})
         for file in tqdm(
             File.objects.filter(
                 Q(encryption_status=File.EncryptionStatus.NOT_ENCRYPTED)
@@ -44,7 +44,7 @@ class Command(BaseCommand):
             ),
         ):
             # get original file content
-            file.content.storage = Storage()
+            file.content.storage = Storage
             try:
                 content = file.content.open()
             except FileNotFoundError:  # pragma: no cover

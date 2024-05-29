@@ -18,6 +18,8 @@ from alexandria.core.models import File
 from alexandria.dav import get_dav
 from alexandria.dav_provider import AlexandriaProvider
 
+TestRequest.__test__ = False
+
 
 @pytest.fixture
 def s3(settings):
