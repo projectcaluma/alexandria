@@ -1,6 +1,7 @@
 import io
 
 import pytest
+from django.core.files.base import ContentFile
 from django.urls import reverse
 from generic_permissions.config import ObjectPermissionsConfig, PermissionsConfig
 from generic_permissions.permissions import object_permission_for, permission_for
@@ -105,7 +106,7 @@ def test_document_permission(
         ("post", True, False, HTTP_201_CREATED),
         ("post", False, False, HTTP_403_FORBIDDEN),
         ("patch", True, False, HTTP_405_METHOD_NOT_ALLOWED),
-        ("patch", False, False, HTTP_405_METHOD_NOT_ALLOWED),
+        ("patch", False, False, HTTP_403_FORBIDDEN),
         ("delete", True, True, HTTP_204_NO_CONTENT),
         ("delete", False, True, HTTP_403_FORBIDDEN),
     ],
@@ -166,3 +167,52 @@ def test_file_permission(
     if method == "post" and use_admin_client:
         result = response.json()
         assert result["data"]["attributes"]["created-at"] == TIMESTAMP
+
+
+@pytest.mark.parametrize(
+    "use_admin_client,status",
+    [
+        (True, HTTP_200_OK),
+        (False, HTTP_403_FORBIDDEN),
+    ],
+)
+def test_webdav_permission(
+    manabi,
+    document_factory,
+    admin_user,
+    admin_client,
+    client,
+    status,
+    use_admin_client,
+    file_factory,
+    reset_config_classes,
+):
+    client = admin_client if use_admin_client else client
+
+    class CustomPermission:
+        @permission_for(Document)
+        def has_permission_for_document(self, request):
+            return request.user.username == "admin"
+
+        @object_permission_for(Document)
+        def has_object_permission_for_document(self, request, instance):
+            return request.user.username == "admin"
+
+    PermissionsConfig.register_handler_class(CustomPermission)
+    ObjectPermissionsConfig.register_handler_class(CustomPermission)
+
+    document = document_factory(title="bar")
+    content_file = ContentFile(b"hello world", name="test.txt")
+    file = file_factory(
+        name="test.txt",
+        content=content_file,
+        size=content_file.size,
+        mime_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    )
+    document.files.add(file)
+
+    url = reverse("webdav-detail", args=[document.pk])
+
+    response = client.get(url)
+
+    assert response.status_code == status

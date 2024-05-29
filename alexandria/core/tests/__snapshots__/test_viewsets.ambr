@@ -1,4 +1,75 @@
 # serializer version: 1
+# name: test_api_create[CategoryViewSet]
+  dict({
+    'queries': list([
+    ]),
+    'query_count': 0,
+    'request': dict({
+      'CONTENT_LENGTH': '672',
+      'CONTENT_TYPE': 'application/vnd.api+json',
+      'PATH_INFO': '/api/v1/categories',
+      'QUERY_STRING': '',
+      'REQUEST_METHOD': 'POST',
+      'SERVER_PORT': '80',
+    }),
+    'request_payload': dict({
+      'data': dict({
+        'attributes': dict({
+          'allowed-mime-types': None,
+          'color': '#093f87',
+          'created-at': '2017-05-21T00:00:00Z',
+          'created-by-group': 'admin',
+          'created-by-user': 'admin',
+          'description': dict({
+            'de': '',
+            'en': '''
+              Far bit among again. Station story first. Team suggest traditional boy above.
+              Central meeting anyone remember. There today material minute ago get. Range whose scientist draw free property consider.
+            ''',
+            'fr': '',
+          }),
+          'metainfo': dict({
+          }),
+          'modified-at': '2017-05-21T00:00:00Z',
+          'modified-by-group': 'admin',
+          'modified-by-user': 'admin',
+          'name': dict({
+            'de': '',
+            'en': 'Erin Scott',
+            'fr': '',
+          }),
+        }),
+        'id': 'note-act-source',
+        'relationships': dict({
+          'children': dict({
+            'data': list([
+            ]),
+            'meta': dict({
+              'count': 0,
+            }),
+          }),
+          'parent': dict({
+            'data': None,
+          }),
+        }),
+        'type': 'categories',
+      }),
+    }),
+    'response': dict({
+      'errors': list([
+        dict({
+          'code': 'method_not_allowed',
+          'detail': 'Method "POST" not allowed.',
+          'source': dict({
+            'pointer': '/data',
+          }),
+          'status': '405',
+        }),
+      ]),
+    }),
+    'status': 405,
+  })
+# ---
 # name: test_api_create[DocumentViewSet]
   dict({
     'queries': list([
@@ -317,6 +388,21 @@
       }),
     }),
     'status': 201,
+  })
+# ---
+# name: test_api_destroy[CategoryViewSet]
+  dict({
+    'queries': list([
+    ]),
+    'query_count': 0,
+    'request': dict({
+      'PATH_INFO': '/api/v1/categories/note-act-source',
+      'QUERY_STRING': '',
+      'REQUEST_METHOD': 'DELETE',
+      'SERVER_PORT': '80',
+    }),
+    'request_payload': None,
+    'status': 405,
   })
 # ---
 # name: test_api_destroy[DocumentViewSet]

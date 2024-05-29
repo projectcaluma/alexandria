@@ -68,14 +68,6 @@ class CategoryViewSet(
     select_for_includes = {"parent": ["parent"]}
     prefetch_for_includes = {"children": ["children"]}
 
-    def perform_destroy(self, instance):
-        # needed for DGAP
-        raise NotImplementedError(_("Deleting categories over API is not supported."))
-
-    def create(self, request, *args, **kwargs):
-        # needed for DGAP
-        raise NotImplementedError(_("Creating categories over API is not supported."))
-
 
 class TagSynonymGroupViewSet(PermissionViewMixin, VisibilityViewMixin, ModelViewSet):
     serializer_class = serializers.TagSynonymGroupSerializer
@@ -275,8 +267,9 @@ class WebDAVViewSet(
     def check_permissions(self, request):
         if not settings.ALEXANDRIA_USE_MANABI:
             raise NotFound(_("WebDAV is not enabled."))
-
-        return super().check_permissions(request)
+        # call DGAP
+        self._check_permissions(request)
+        super().check_permissions(request)
 
     def check_object_permissions(self, request, instance):
         if (
@@ -284,5 +277,6 @@ class WebDAVViewSet(
             not in settings.ALEXANDRIA_MANABI_ALLOWED_MIMETYPES
         ):
             raise NotFound(_("WebDAV is not enabled for this documents mime type."))
-
-        return super().check_object_permissions(request, instance)
+        # call DGAP
+        self._check_object_permissions(request, instance)
+        super().check_object_permissions(request, instance)
