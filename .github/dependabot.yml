@@ -11,7 +11,7 @@ updates:
     ignore:
       - dependency-name: django
         versions:
-          - ">=4"
+          - ">=5"
       - dependency-name: python-semantic-release
         versions:
           - ">=8"
@@ -26,7 +26,7 @@ updates:
     ignore:
       - dependency-name: python
         versions:
-          - ">=3.9"
+          - ">=3.11"
   - package-ecosystem: github-actions
     directory: "/"
     schedule:

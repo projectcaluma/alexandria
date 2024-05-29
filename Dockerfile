@@ -1,4 +1,4 @@
-FROM python:3.8-slim
+FROM python:3.10-slim
 
 # needs to be set for users with manually set UID
 ENV HOME=/home/alexandria

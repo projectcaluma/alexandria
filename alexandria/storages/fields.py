@@ -1,5 +1,5 @@
 from django.conf import ImproperlyConfigured, settings
-from django.core.files.storage import get_storage_class
+from django.core.files.storage import storages
 from django.db import models
 from django.db.models.fields.files import FieldFile
 from storages.backends.s3 import S3Storage
@@ -10,7 +10,9 @@ from alexandria.storages.backends.s3 import SsecGlobalS3Storage
 class DynamicStorageFieldFile(FieldFile):
     def __init__(self, instance, field, name):
         super().__init__(instance, field, name)
-        self.storage = get_storage_class(settings.ALEXANDRIA_FILE_STORAGE)()
+        self.storage = storages.create_storage(
+            {"BACKEND": settings.ALEXANDRIA_FILE_STORAGE}
+        )
         if settings.ALEXANDRIA_ENABLE_AT_REST_ENCRYPTION:
             from alexandria.core.models import File
 
@@ -27,7 +29,9 @@ class DynamicStorageFileField(models.FileField):
 
     def pre_save(self, instance, add):
         # set storage to default storage class to prevent reusing the last selection
-        self.storage = get_storage_class(settings.ALEXANDRIA_FILE_STORAGE)()
+        self.storage = storages.create_storage(
+            {"BACKEND": settings.ALEXANDRIA_FILE_STORAGE}
+        )
         if settings.ALEXANDRIA_ENABLE_AT_REST_ENCRYPTION:
             from alexandria.core.models import File
 
