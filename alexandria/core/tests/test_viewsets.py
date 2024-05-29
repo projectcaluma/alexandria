@@ -207,14 +207,10 @@ def test_api_create(fixture, admin_client, viewset, snapshot, document_post_data
         data = document_post_data
         opts = {"format": "multipart"}
 
-    if viewset.base_name in ["category"]:
-        with pytest.raises(NotImplementedError):
-            response = admin_client.post(url, data=data)
-    else:
-        with CaptureQueriesContext(connection) as context:
-            response = admin_client.post(url, data=data, **opts)
+    with CaptureQueriesContext(connection) as context:
+        response = admin_client.post(url, data=data, **opts)
 
-        assert_response(response, context, snapshot, request_payload=data)
+    assert_response(response, context, snapshot, request_payload=data)
 
 
 @pytest.mark.freeze_time("2017-05-21")
@@ -236,11 +232,7 @@ def test_api_patch(fixture, admin_client, viewset, snapshot):
 def test_api_destroy(fixture, admin_client, snapshot, viewset):
     url = reverse("{0}-detail".format(viewset.base_name), args=[fixture.pk])
 
-    if viewset.base_name in ["category"]:
-        with pytest.raises(NotImplementedError):
-            response = admin_client.delete(url)
-    else:
-        with CaptureQueriesContext(connection) as context:
-            response = admin_client.delete(url)
+    with CaptureQueriesContext(connection) as context:
+        response = admin_client.delete(url)
 
-        assert_response(response, context, snapshot, include_json=False)
+    assert_response(response, context, snapshot, include_json=False)
