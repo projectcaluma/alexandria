@@ -118,6 +118,7 @@ class CategorySerializer(SlugModelSerializer):
             "color",
             "parent",
             "children",
+            "sort",
         )
 
 

@@ -117,6 +117,7 @@ class Category(SlugModel):
         null=True,
         related_name="children",
     )
+    sort = models.IntegerField(blank=True, null=True)
 
 
 class TagSynonymGroup(BaseModel):
