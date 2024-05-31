@@ -51,6 +51,12 @@ def mock_clamd(mocker):
     mocker.patch("django_clamd.validators.validate_file_infection", return_value=None)
 
 
+@pytest.fixture(autouse=True)
+def mock_tika(mocker):
+    mocker.patch("tika.parser.from_buffer", return_value={"content": "Important text"})
+    mocker.patch("tika.language.from_buffer", return_value="en")
+
+
 @pytest.fixture
 def admin_groups():
     return ["admin"]

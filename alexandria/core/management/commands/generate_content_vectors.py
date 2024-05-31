@@ -23,6 +23,6 @@ class Command(BaseCommand):
             file.set_content_vector()
             file.save()
 
-            if virtual_memory().available < 300000000:  # pragma: no cover
+            if virtual_memory().available < 300_000_000:  # pragma: no cover
                 print("about to run out of memory, stopping")
                 break

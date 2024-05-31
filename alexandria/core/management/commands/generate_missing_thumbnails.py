@@ -13,6 +13,6 @@ class Command(BaseCommand):
             File.objects.filter(variant="original", renderings__isnull=True)
         ):
             file.create_thumbnail()
-            if virtual_memory().available < 300000000:
+            if virtual_memory().available < 300_000_000:
                 print("about to run out of memory, stopping")
                 break

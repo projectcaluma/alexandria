@@ -10,7 +10,7 @@
           <ns0:resourcetype/>
           <ns0:creationdate>1970-01-01T00:00:00Z</ns0:creationdate>
           <ns0:getcontentlength>11</ns0:getcontentlength>
-          <ns0:getcontenttype>model/vrml</ns0:getcontenttype>
+          <ns0:getcontenttype>text/plain</ns0:getcontenttype>
           <ns0:getlastmodified>Thu, 01 Jan 1970 00:00:00 GMT</ns0:getlastmodified>
           <ns0:displayname>test.txt</ns0:displayname>
           <ns0:lockdiscovery/>

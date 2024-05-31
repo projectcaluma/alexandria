@@ -47,7 +47,10 @@ def test_dav(db, manabi, settings, s3, file_factory, use_s3, same_user):
 
         content_file = ContentFile(b"hello world", name="test.txt")
         file = file_factory(
-            name="test.txt", content=content_file, size=content_file.size
+            name="test.txt",
+            content=content_file,
+            size=content_file.size,
+            mime_type="text/plain",
         )
         file.modified_by_user = user
         file.modified_by_group = group
@@ -84,7 +87,12 @@ def test_dav(db, manabi, settings, s3, file_factory, use_s3, same_user):
 @pytest.mark.freeze_time("1970-01-01")
 def test_dav_propfind(db, manabi, file_factory, snapshot):
     content_file = ContentFile(b"hello world", name="test.txt")
-    file = file_factory(name="test.txt", content=content_file, size=content_file.size)
+    file = file_factory(
+        name="test.txt",
+        content=content_file,
+        size=content_file.size,
+        mime_type="text/plain",
+    )
     dav_app = TestApp(get_dav())
     url = file.get_webdav_url("foobar", "foobar")
     req = TestRequest.blank(url, method="PROPFIND", headers={"Depth": "1"})

@@ -30,6 +30,6 @@ class Command(BaseCommand):
 
             file.save()
 
-            if virtual_memory().available < 300000000:
+            if virtual_memory().available < 300_000_000:
                 print("about to run out of memory, stopping")
                 break

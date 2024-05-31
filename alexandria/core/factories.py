@@ -162,7 +162,11 @@ class FileFactory(BaseFactory):
             document=factory.SelfAttribute("..document"),
         ),
     )
-    mime_type = Faker("mime_type")
+    mime_type = factory.Maybe(
+        factory.LazyAttribute(lambda o: o.variant == models.File.Variant.THUMBNAIL),
+        yes_declaration="image/jpeg",
+        no_declaration=Faker("mime_type"),
+    )
     size = Faker("pyint")
 
     class Meta:
