@@ -4,10 +4,11 @@ from pathlib import Path
 
 from django.core.exceptions import ValidationError
 from django.core.files.base import File as DjangoFile
-from django_clamd.validators import validate_file_infection
 from manabi.filesystem import ManabiFileResourceMixin, ManabiProvider
 from wsgidav.dav_error import HTTP_FORBIDDEN, DAVError
 from wsgidav.dav_provider import DAVNonCollection
+
+from alexandria.core.validations import validate_file
 
 
 class MyBytesIO(io.BytesIO):
@@ -95,11 +96,6 @@ class AlexandriaFileResource(ManabiFileResourceMixin, DAVNonCollection):
         return self.memory_file
 
     def end_write(self, *, with_errors):
-        try:
-            validate_file_infection(self.memory_file)
-        except ValidationError:
-            raise DAVError(HTTP_FORBIDDEN)
-
         file = self.file
         if (
             self.file.modified_by_user != self.user
@@ -121,6 +117,12 @@ class AlexandriaFileResource(ManabiFileResourceMixin, DAVNonCollection):
         self.memory_file.seek(0)
         django_file = DjangoFile(name=file.name, file=self.memory_file)
         file.content = django_file
+
+        try:
+            validate_file(file)
+        except ValidationError:
+            raise DAVError(HTTP_FORBIDDEN)
+
         file.save()
         self.file = file
         self.memory_file.do_close()

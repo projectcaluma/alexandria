@@ -1,12 +1,38 @@
+import logging
 from mimetypes import guess_type
 
 import magic
+from clamdpy import ClamdNetworkSocket
+from django.conf import settings
 from django.utils.translation import gettext_lazy as _
-from django_clamd.validators import validate_file_infection
 from generic_permissions.validation import validator_for
 from rest_framework.exceptions import ValidationError
 
 from alexandria.core.models import File
+
+log = logging.getLogger(__name__)
+
+
+def validate_file_infection(file_content):
+    # inspired by django-clamd
+    if file_content is None or not settings.ALEXANDRIA_CLAMD_ENABLED:
+        return
+
+    scanner = ClamdNetworkSocket(
+        settings.ALEXANDRIA_CLAMD_TCP_ADDR, settings.ALEXANDRIA_CLAMD_TCP_SOCKET
+    )
+
+    file_content.seek(0)
+    result = scanner.instream(file_content)
+    file_content.seek(0)
+
+    if result.status == "FOUND":
+        raise ValidationError(_("File is infected with malware."), code="infected")
+    elif result.status == "ERROR":
+        raise ValidationError(
+            (_("Malware scan had an error: ") + result.reason),
+            code="incomplete",
+        )
 
 
 def validate_file(file):

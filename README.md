@@ -137,8 +137,6 @@ Supported backends:
 #### ClamAV (optional)
 
 - `ALEXANDRIA_CLAMD_ENABLED`: Set this to `True` to enable ClamAV (virus scanner).
-- `ALEXANDRIA_CLAMD_SOCKET`: ClamAV socket
-- `ALEXANDRIA_CLAMD_USE_TCP`: Use TCP to connect to ClamAV service
 - `ALEXANDRIA_CLAMD_TCP_SOCKET`: ClamAV service socket
 - `ALEXANDRIA_CLAMD_TCP_ADDR`: ClamAV service address
 

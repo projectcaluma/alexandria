@@ -19,7 +19,6 @@ packages = [{ include = "alexandria" }]
 [tool.poetry.dependencies]
 python = ">=3.10.0,<4.0"
 django = "~4.2.13"
-django-clamd = { git = "https://github.com/vstoykov/django-clamd.git", rev = "1.0.0" }
 django-environ = ">=0.9.0,<0.12.0"
 django-filter = ">=22.1,<25.0"
 django-localized-fields = "^6.6"
@@ -39,6 +38,7 @@ tqdm = "^4.66.1"
 manabi = "^1.4.0"
 python-magic = "^0.4.27"
 tika = "^2.6.0"
+clamdpy = "^0.1.0.post1"
 
 [tool.poetry.group.dev.dependencies]
 black = "24.4.2"
@@ -86,7 +86,6 @@ addopts = "--reuse-db --randomly-seed=1521188766"
 DJANGO_SETTINGS_MODULE = "alexandria.settings.django"
 django_debug_mode = true
 filterwarnings = [
-    "ignore:Running clamd validator with CLAMD_ENABLED=False:UserWarning",
     "ignore:Cache could not write path:pytest.PytestCacheWarning",
     "error::PendingDeprecationWarning",
 ]

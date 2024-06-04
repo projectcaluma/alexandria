@@ -49,5 +49,10 @@ services:
       - MINIO_ROOT_USER=minio
       - MINIO_ROOT_PASSWORD=minio123
 
+  clamav:
+    environment:
+      - CONCURRENT_DATABASE_RELOAD=false
+      - ENABLE_DEFINITIONS_UPDATE=false
+
 volumes:
   uploads:
