@@ -1,3 +1,25 @@
+# 5.0.0
+### Feature
+* **file:** Add search view ([`c9d3766`](https://github.com/projectcaluma/alexandria/commit/c9d37661f7cf4acb0fed55d088f07e7d6cd5d886))
+* **file:** Add management command to fill content_vector ([`79b1978`](https://github.com/projectcaluma/alexandria/commit/79b1978ca4b0801cb3eb2edc84340d334d67022f))
+* **file:** Add SearchVector field for extracted content ([`b0e5bad`](https://github.com/projectcaluma/alexandria/commit/b0e5baddf41aa03a249bac39c2bc875447cc2c13))
+* **file:** Add apache tika for file content extraction ([`0557c59`](https://github.com/projectcaluma/alexandria/commit/0557c5997f6a92055f7b0db56e9a04e93f1f3464))
+* **webdav:** Add allowed list of mime types for webdav ([`343a2ee`](https://github.com/projectcaluma/alexandria/commit/343a2eee4b0620c26cec5ced6cd499f5ecb8f4f0))
+* **webdav:** Webdav_url to sperate webdav view ([`7162f28`](https://github.com/projectcaluma/alexandria/commit/7162f28d4cdfe8c7059d1b8cd95c5fa7dbeb93a5))
+
+### Fix
+* Update dgap for webdav get permission check ([`4b1bb74`](https://github.com/projectcaluma/alexandria/commit/4b1bb74ba5be445db2f3cb6f06fd998045fd7ac6))
+* **webdav:** Remove default doc, xls files ([`94df87f`](https://github.com/projectcaluma/alexandria/commit/94df87f0d3d34f20054b606edfcf3455a8017d78))
+
+### Breaking
+* webdav_url to sperate webdav view ([`7162f28`](https://github.com/projectcaluma/alexandria/commit/7162f28d4cdfe8c7059d1b8cd95c5fa7dbeb93a5))
+
+The URL for WebDAV editing is now in a seperate endpoint, to allow for checking the Permissions before serving it.
+Previously the WebDAV URL was served even if the Permissions were denied, as getting the WebDAV URL was a Visibility check. 
+
+### Documentation
+* **readme:** Improve documentation for available features and config ([`a19b8cb`](https://github.com/projectcaluma/alexandria/commit/a19b8cb57c2c7222d2ff8943db6a5fc5b42e2341))
+
 # 4.1.0
 ### Feature
 * Allow custom implementation of username and group getters ([`72bf2e4`](https://github.com/projectcaluma/alexandria/commit/72bf2e42862bb72fbd34cda059b8df0aa107ef7a))
