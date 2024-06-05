@@ -117,7 +117,7 @@ def test_dav_not_found(db, settings):
 
 def test_dav_file_infection(db, manabi, mocker, file_factory):
     mocker.patch(
-        "alexandria.dav_provider.validate_file_infection",
+        "alexandria.core.validations.validate_file_infection",
         return_value=None,
         side_effect=ValidationError("File is infected with malware.", code="infected"),
     )

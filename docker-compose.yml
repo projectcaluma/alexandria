@@ -18,11 +18,14 @@ services:
       - db
       - minio
       - tika
+      - clamav
+      - dms
     environment:
       - DATABASE_HOST=db
       - DATABASE_PORT=5432
       - TIKA_CLIENT_ONLY=true
       - TIKA_SERVER_ENDPOINT=http://tika:9998
+      - ALEXANDRIA_CLAMD_TCP_ADDR=clamav
       # following options are a must to configure on production system:
       # https://docs.djangoproject.com/en/2.1/ref/settings/#std:setting-SECRET_KEY
       # - SECRET_KEY=
@@ -80,6 +83,10 @@ services:
     ports:
       - "9998:9998"
   
+  clamav:
+    image: tiredofit/clamav:2.6.17
+    ports:
+      - "3310:3310"
 
 volumes:
   dbdata:
