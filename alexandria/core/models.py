@@ -6,7 +6,8 @@ from mimetypes import guess_extension
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 
-import tika
+import tika.language
+import tika.parser
 from django.conf import settings
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.postgres.indexes import GinIndex
