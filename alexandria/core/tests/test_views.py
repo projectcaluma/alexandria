@@ -4,7 +4,7 @@ import zipfile
 from pathlib import Path
 
 import pytest
-import tika
+import tika.parser
 from django.urls import reverse
 from django.utils import timezone
 from factory.django import django_files

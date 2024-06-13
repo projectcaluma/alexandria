@@ -1,7 +1,8 @@
 from io import StringIO
 
 import pytest
-import tika
+import tika.language
+import tika.parser
 from django.core.files import File as DjangoFile
 from django.core.management import call_command
 
