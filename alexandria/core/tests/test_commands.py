@@ -71,8 +71,8 @@ def test_generate_content_vector(db, settings, file_factory):
     file_with_vector.refresh_from_db()
     file_without_vector.refresh_from_db()
 
-    assert tika.parser.from_buffer.called_once()
-    assert tika.language.from_buffer.called_once()
+    assert tika.parser.from_buffer.call_count == 2
+    assert tika.language.from_buffer.call_count == 2
 
     assert file_with_vector.content_vector == "'import':2B 'neu':1A 'text':3B"
     assert file_without_vector.content_vector == "'inhalt':4B 'old':1A"
@@ -89,3 +89,17 @@ def test_generate_content_vector_disabled(db, settings, file_factory):
         "Content search is not enabled. Skipping vectorization of file contents."
         in out.getvalue()
     )
+
+
+def test_generate_content_vector_error(db, settings, file_factory, mocker):
+    settings.ALEXANDRIA_ENABLE_CONTENT_SEARCH = False
+    file_factory(name="old")
+    settings.ALEXANDRIA_ENABLE_CONTENT_SEARCH = True
+    mocker.patch(
+        "alexandria.core.models.File.set_content_vector", side_effect=FileNotFoundError
+    )
+
+    out = StringIO()
+    call_command("generate_content_vectors", stdout=out)
+
+    assert "Failed to process 1 file" in out.getvalue()
