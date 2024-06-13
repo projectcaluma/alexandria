@@ -17,12 +17,27 @@ class Command(BaseCommand):
                 )
             )
 
+        failed_files = []
         for file in tqdm(
             File.objects.filter(variant="original", content_vector__isnull=True)
         ):
-            file.set_content_vector()
-            file.save()
+            try:
+                file.save()  # this will call set_content_vector
+            except FileNotFoundError as e:
+                failed_files.append(file.id)
+                self.stdout.write(
+                    self.style.WARNING(f"Error processing {file.id}: {e}")
+                )
 
             if virtual_memory().available < 300_000_000:  # pragma: no cover
-                print("about to run out of memory, stopping")
+                self.stdout.write(
+                    self.style.ERROR("about to run out of memory, stopping")
+                )
                 break
+
+        if failed_files:
+            self.stdout.write(
+                self.style.WARNING(
+                    f"Failed to process {len(failed_files)} files: {failed_files}"
+                )
+            )
