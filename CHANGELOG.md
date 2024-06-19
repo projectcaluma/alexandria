@@ -1,3 +1,8 @@
+# 5.0.1
+### Fix
+* Improve content vector generation command (145ae23aee4241922af21d88d88050423c3d894b)
+* Use module path imports (2df7b7ad814905de87c9bb3a8be9c5ec8f0e707b)
+
 # 5.0.0
 ### Feature
 * **file:** Add search view ([`c9d3766`](https://github.com/projectcaluma/alexandria/commit/c9d37661f7cf4acb0fed55d088f07e7d6cd5d886))
