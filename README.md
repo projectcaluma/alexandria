@@ -149,13 +149,28 @@ Supported backends:
 
 - `ALEXANDRIA_USE_MANABI`: Set to `true` to enable WebDAV via Manabi
 - `ALEXANDRIA_MANABI_DAV_URL_PATH`: Set the path segement where WebDAV is being served
-- `ALEXANDRIA_MANABI_DAV_SCHEME`: Set the scheme for the WebDAV URL
 - `ALEXANDRIA_MANABI_ALLOWED_MIMETYPES`: List of which mime types can be served through WebDAV. (default: docx, xlsx)
+- `ALEXANDRIA_MANABI_DAV_URI_SCHEMES`: Dictionary of which mime types will be mapped to which WebDAV URI scheme. (default: docx, xlsx for editing in MS Word / Excel)
 - `MANABI_SHARED_KEY`: Can be generated with:
 
 ```py
 import manabi
 manabi.keygen()
+```
+
+If you want to enable WebDAV for e.g. MS Powerpoint files you can do that by configuring `ALEXANDRIA_MANABI_ALLOWED_MIMETYPES` and `ALEXANDRIA_MANABI_DAV_URI_SCHEMES`:
+
+```py
+ALEXANDRIA_MANABI_ALLOWED_MIMETYPES = [
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation", # New
+]
+ALEXANDRIA_MANABI_DAV_URI_SCHEMES = {
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document": "ms-word:ofe|u|",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": "ms-excel:ofe|u|",
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation": "ms-powerpoint:ofe|u|" # New, see https://learn.microsoft.com/en-us/office/client-developer/office-uri-schemes for more information
+}
 ```
 
 #### File content search (optional)
