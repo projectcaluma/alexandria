@@ -319,8 +319,11 @@ class WebDAVSerializer(BaseSerializer):
     def get_webdav_url(self, instance):
         request = self.context.get("request")
         host = request.get_host() if request else "localhost"
+        scheme = request.scheme if request else "http"
         user, group = self.get_user_and_group()
-        return instance.get_latest_original().get_webdav_url(user, group, host)
+        return instance.get_latest_original().get_webdav_url(
+            user, group, f"{scheme}://{host}"
+        )
 
     class Meta:
         model = models.Document

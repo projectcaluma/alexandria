@@ -4,7 +4,8 @@ from xml.dom import minidom
 
 import boto3
 import pytest
-from django.core.exceptions import ValidationError
+from django.conf import settings
+from django.core.exceptions import ImproperlyConfigured, ValidationError
 from django.core.files.base import ContentFile
 from django.urls import reverse
 from manabi.token import Key, Token
@@ -32,9 +33,17 @@ def s3(settings):
         )
 
 
+def get_webdav_url_without_uri_scheme(file, *args):
+    uri = file.get_webdav_url(*args)
+
+    return uri.split("|")[-1]
+
+
 @pytest.mark.parametrize("use_s3", [True, False])
 @pytest.mark.parametrize("same_user", [True, False])
 def test_dav(db, manabi, settings, s3, file_factory, use_s3, same_user):
+    settings.ALEXANDRIA_MANABI_DAV_URI_SCHEMES = {"text/plain": "ms-word:ofe|u|"}
+
     if use_s3:
         settings.ALEXANDRIA_FILE_STORAGE = "alexandria.storages.backends.s3.S3Storage"
     user = "admin"
@@ -56,11 +65,13 @@ def test_dav(db, manabi, settings, s3, file_factory, use_s3, same_user):
         file.modified_by_group = group
         file.save()
         dav_app = TestApp(get_dav())
-        resp = dav_app.get(file.get_webdav_url("foobar", "foobar"))
+        resp = dav_app.get(get_webdav_url_without_uri_scheme(file, "foobar", "foobar"))
         assert resp.status_code == status.HTTP_200_OK
         assert resp.body == b"hello world"
 
-        resp = dav_app.put(file.get_webdav_url("foobar", "foobar"), b"foo bar")
+        resp = dav_app.put(
+            get_webdav_url_without_uri_scheme(file, "foobar", "foobar"), b"foo bar"
+        )
         assert resp.status_code == status.HTTP_204_NO_CONTENT
 
         file.refresh_from_db()
@@ -86,6 +97,8 @@ def test_dav(db, manabi, settings, s3, file_factory, use_s3, same_user):
 
 @pytest.mark.freeze_time("1970-01-01")
 def test_dav_propfind(db, manabi, file_factory, snapshot):
+    settings.ALEXANDRIA_MANABI_DAV_URI_SCHEMES = {"text/plain": "ms-word:ofe|u|"}
+
     content_file = ContentFile(b"hello world", name="test.txt")
     file = file_factory(
         name="test.txt",
@@ -94,7 +107,7 @@ def test_dav_propfind(db, manabi, file_factory, snapshot):
         mime_type="text/plain",
     )
     dav_app = TestApp(get_dav())
-    url = file.get_webdav_url("foobar", "foobar")
+    url = get_webdav_url_without_uri_scheme(file, "foobar", "foobar")
     req = TestRequest.blank(url, method="PROPFIND", headers={"Depth": "1"})
     resp = dav_app.do_request(req)
     assert minidom.parseString(resp.body).toprettyxml(indent="  ") == snapshot
@@ -124,8 +137,9 @@ def test_dav_file_infection(db, manabi, mocker, file_factory):
 
     content_file = ContentFile(b"hello world", name="test.txt")
     file = file_factory(name="test.txt", content=content_file, size=content_file.size)
+    settings.ALEXANDRIA_MANABI_DAV_URI_SCHEMES = {file.mime_type: "ms-word:ofe|u|"}
     dav_app = TestApp(get_dav())
-    url = file.get_webdav_url("foobar", "foobar")
+    url = get_webdav_url_without_uri_scheme(file, "foobar", "foobar")
     dav_app.put(url, b"foo bar", status=HTTP_FORBIDDEN)
 
 
@@ -171,5 +185,40 @@ def test_dav_view(
     assert response.status_code == expected_status
     if expected_status == HTTP_200_OK:
         dav_url = response.json()["data"]["attributes"]["webdav-url"]
-        assert dav_url.startswith("http://testserver/dav/")
+        assert dav_url.startswith("ms-word:ofe|u|http://testserver/dav/")
         assert dav_url.endswith("test.txt")
+
+
+@pytest.mark.parametrize(
+    "mime_type,expected_scheme", settings.ALEXANDRIA_MANABI_DAV_URI_SCHEMES.items()
+)
+def test_dav_url_schemes(
+    admin_client,
+    document,
+    expected_scheme,
+    file_factory,
+    manabi,
+    mime_type,
+):
+    document.files.add(file_factory(mime_type=mime_type))
+
+    url = reverse("webdav-detail", args=[document.pk])
+    response = admin_client.get(url)
+
+    assert response.status_code == HTTP_200_OK
+    dav_url = response.json()["data"]["attributes"]["webdav-url"]
+    assert dav_url.startswith(expected_scheme)
+
+
+def test_dav_url_schemes_unconfigured(db, file_factory, manabi, settings):
+    mime_type = "application/vnd.ms-word.document.macroenabled.12"  # .docm
+
+    settings.ALEXANDRIA_MANABI_ALLOWED_MIMETYPES = [mime_type]
+    settings.ALEXANDRIA_MANABI_DAV_URI_SCHEMES = {}
+
+    file = file_factory(mime_type=mime_type)
+
+    with pytest.raises(ImproperlyConfigured) as e:
+        file.get_webdav_url("foobar", "foobar")
+
+    assert str(e.value).startswith(f'The MIME type "{mime_type}"')
