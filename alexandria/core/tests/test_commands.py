@@ -103,3 +103,19 @@ def test_generate_content_vector_error(db, settings, file_factory, mocker):
     call_command("generate_content_vectors", stdout=out)
 
     assert "Failed to process 1 file" in out.getvalue()
+
+
+def test_generate_empty_content_vector(db, settings, file_factory):
+    settings.ALEXANDRIA_ENABLE_CONTENT_SEARCH = False
+    file_without_vector = file_factory(name="old")
+    settings.ALEXANDRIA_ENABLE_CONTENT_SEARCH = True
+
+    tika.parser.from_buffer.return_value = {"content": None}
+    call_command("generate_content_vectors")
+
+    file_without_vector.refresh_from_db()
+
+    assert tika.parser.from_buffer.call_count == 1
+
+    assert file_without_vector.content_vector == "'old':1A"
+    assert file_without_vector.language is None

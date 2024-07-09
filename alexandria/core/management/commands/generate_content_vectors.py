@@ -17,14 +17,18 @@ class Command(BaseCommand):
                 )
             )
 
+        # disable additional features to focus on vectorization
+        settings.ALEXANDRIA_ENABLE_CHECKSUM = False
+        settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION = False
+
         failed_files = []
-        for file in tqdm(
-            File.objects.filter(variant="original", content_vector__isnull=True)
-        ):
+        query = File.objects.filter(variant="original", content_vector__isnull=True)
+        # iterate over files in batches to prevent memory exhaustion
+        for file in tqdm(query.iterator(50), "Generating vectors", query.count()):
             try:
                 file.save()  # this will call set_content_vector
-            except FileNotFoundError as e:
-                failed_files.append(file.id)
+            except Exception as e:  # noqa: B902
+                failed_files.append(str(file.id))
                 self.stdout.write(
                     self.style.WARNING(f"Error processing {file.id}: {e}")
                 )
