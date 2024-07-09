@@ -240,19 +240,26 @@ class File(UUIDModel):
         return f"sha256:{hashlib.sha256(bytes_).hexdigest()}"
 
     def set_checksum(self):
+        if not settings.ALEXANDRIA_ENABLE_CHECKSUM:
+            return
+
         self.content.file.file.seek(0)
         self.checksum = self.make_checksum(self.content.file.file.read())
 
     def set_content_vector(self):
         self.content.file.file.seek(0)
         parsed_content = tika.parser.from_buffer(self.content.file.file)
+
+        name_vector = SearchVector(Value(Path(self.name).stem), weight="A")
+        if not parsed_content["content"]:
+            self.content_vector = name_vector
+            return
+
         # use part of content for language detection, beacause metadata is not reliable
         detected_language = tika.language.from_buffer(parsed_content["content"][:1000])
         self.language = detected_language
         config = settings.ISO_639_TO_PSQL_SEARCH_CONFIG.get(detected_language, "simple")
-        self.content_vector = SearchVector(
-            Value(Path(self.name).stem), config=config, weight="A"
-        ) + SearchVector(
+        self.content_vector = name_vector + SearchVector(
             Value(parsed_content["content"]),
             config=config,
             weight="B",
@@ -271,7 +278,11 @@ class File(UUIDModel):
 
         file = super().save(force_insert, force_update, using, update_fields)
 
-        if self.variant == File.Variant.ORIGINAL and self.renderings.count() == 0:
+        if (
+            self.variant == File.Variant.ORIGINAL
+            and self.renderings.count() == 0
+            and settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION
+        ):
             self.create_thumbnail()
 
         return file
@@ -292,9 +303,6 @@ class File(UUIDModel):
         return f"{settings.ALEXANDRIA_MANABI_DAV_SCHEME}://{host}{settings.ALEXANDRIA_MANABI_DAV_URL_PATH}/{token.as_url()}"
 
     def create_thumbnail(self):
-        if not settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION:
-            return
-
         with NamedTemporaryFile() as tmp:
             temp_file = Path(tmp.name)
             manager = PreviewManager(str(temp_file.parent))
