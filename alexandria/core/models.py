@@ -247,6 +247,12 @@ class File(UUIDModel):
         self.checksum = self.make_checksum(self.content.file.file.read())
 
     def set_content_vector(self):
+        if (
+            self.variant != File.Variant.ORIGINAL
+            or not settings.ALEXANDRIA_ENABLE_CONTENT_SEARCH
+        ):
+            return
+
         self.content.file.file.seek(0)
         parsed_content = tika.parser.from_buffer(self.content.file.file)
 
@@ -268,22 +274,12 @@ class File(UUIDModel):
     def save(
         self, force_insert=False, force_update=False, using=None, update_fields=None
     ):
-        if settings.ALEXANDRIA_ENABLE_CHECKSUM:
-            self.set_checksum()
-        if (
-            self.variant == File.Variant.ORIGINAL
-            and settings.ALEXANDRIA_ENABLE_CONTENT_SEARCH
-        ):
-            self.set_content_vector()
+        self.set_checksum()
+        self.set_content_vector()
 
         file = super().save(force_insert, force_update, using, update_fields)
 
-        if (
-            self.variant == File.Variant.ORIGINAL
-            and self.renderings.count() == 0
-            and settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION
-        ):
-            self.create_thumbnail()
+        self.create_thumbnail()
 
         return file
 
@@ -303,6 +299,13 @@ class File(UUIDModel):
         return f"{settings.ALEXANDRIA_MANABI_DAV_SCHEME}://{host}{settings.ALEXANDRIA_MANABI_DAV_URL_PATH}/{token.as_url()}"
 
     def create_thumbnail(self):
+        if (
+            self.variant != File.Variant.ORIGINAL
+            or self.renderings.count() > 0
+            or not settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION
+        ):
+            return
+
         with NamedTemporaryFile() as tmp:
             temp_file = Path(tmp.name)
             manager = PreviewManager(str(temp_file.parent))
