@@ -1,7 +1,14 @@
+# 5.0.2
+### Fix
+* fix(file): improve content vector generation ([`b6841da`](https://github.com/projectcaluma/alexandria/commit/b6841da326198065d5d838febf360eaf28aa0389))
+
+### Refactor
+* refactor(file): move check for optional feature methods ([`a8420c5`](https://github.com/projectcaluma/alexandria/commit/a8420c5597579809d759a0d7d0daca8768f04379))
+
 # 5.0.1
 ### Fix
-* Improve content vector generation command (145ae23aee4241922af21d88d88050423c3d894b)
-* Use module path imports (2df7b7ad814905de87c9bb3a8be9c5ec8f0e707b)
+* fix(file): improve content vector generation command ([`145ae23`](https://github.com/projectcaluma/alexandria/commit/145ae23aee4241922af21d88d88050423c3d894b))
+* fix(tika): use module path imports ([`2df7b7a`](https://github.com/projectcaluma/alexandria/commit/2df7b7ad814905de87c9bb3a8be9c5ec8f0e707b))
 
 # 5.0.0
 ### Feature
