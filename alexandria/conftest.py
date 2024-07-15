@@ -111,7 +111,6 @@ def reset_config_classes(settings):
 @pytest.fixture()
 def manabi(settings):
     settings.ALEXANDRIA_USE_MANABI = True
-    settings.ALEXANDRIA_MANABI_DAV_SCHEME = "http"
 
 
 @pytest.fixture()

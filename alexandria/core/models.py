@@ -12,6 +12,7 @@ from django.conf import settings
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.postgres.indexes import GinIndex
 from django.contrib.postgres.search import SearchVector, SearchVectorField
+from django.core.exceptions import ImproperlyConfigured
 from django.core.files import File as DjangoFile
 from django.core.validators import RegexValidator
 from django.db import models, transaction
@@ -283,7 +284,7 @@ class File(UUIDModel):
 
         return file
 
-    def get_webdav_url(self, username, group, host="localhost:8000"):
+    def get_webdav_url(self, username, group, host="http://localhost:8000"):
         # The path doesn't need to match the actual file path, because we're accessing
         # the file via the `File.pk`. So we can use just the name, that will then be
         # the last part of the URL
@@ -296,7 +297,19 @@ class File(UUIDModel):
         payload = (username, group, str(self.pk))
         token = Token(key, path, payload=payload)
 
-        return f"{settings.ALEXANDRIA_MANABI_DAV_SCHEME}://{host}{settings.ALEXANDRIA_MANABI_DAV_URL_PATH}/{token.as_url()}"
+        try:
+            handler = settings.ALEXANDRIA_MANABI_DAV_URI_SCHEMES[self.mime_type]
+        except KeyError:
+            raise ImproperlyConfigured(
+                f'The MIME type "{self.mime_type}" is configured in'
+                "`ALEXANDRIA_MANABI_ALLOWED_MIMETYPES` but has no URI scheme"
+                "configured. Please add the associated URI scheme in"
+                "`ALEXANDRIA_MANABI_DAV_URI_SCHEMES`"
+            )
+
+        return (
+            f"{handler}{host}{settings.ALEXANDRIA_MANABI_DAV_URL_PATH}/{token.as_url()}"
+        )
 
     def create_thumbnail(self):
         if (
