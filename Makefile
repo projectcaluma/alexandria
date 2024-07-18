@@ -20,6 +20,10 @@ test: ## Test the backend
 lint: ## Lint the backend
 	@docker compose run --rm alexandria sh -c "poetry run black --check . && poetry run flake8"
 
+.PHONY: format
+format: ## format the backend
+	@docker compose run --rm alexandria sh -c "poetry run black . && poetry run isort ."
+
 .PHONY: bash
 bash: ## Shell into the backend
 	@docker compose run --rm alexandria bash
