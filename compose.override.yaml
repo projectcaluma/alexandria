@@ -1,3 +1,4 @@
+---
 version: "3"
 services:
   db:
@@ -10,15 +11,14 @@ services:
     image: alpine
     restart: "no"
     volumes:
-       - uploads:/media/uploads
+      - uploads:/media/uploads
     entrypoint: |
       /bin/sh -c "chown -R ${UID}:${UID} /media"
 
   alexandria:
     build:
       context: .
-      args:
-        INSTALL_DEV_DEPENDENCIES: "true"
+      target: dev
     user: "${UID:?Set UID env variable to your user id}"
     tty: true
     stdin_open: true
@@ -26,13 +26,7 @@ services:
       - ./:/app
       - uploads:/media/uploads
     depends_on:
-     - media-files
-    command:
-      [
-        "/bin/sh",
-        "-c",
-        "wait-for-it db:5432 -- poetry run python ./manage.py migrate && poetry run python ./manage.py runserver_plus --nostatic 0.0.0.0:8000",
-      ]
+      - media-files
     environment:
       - ENV=dev
       - DEBUG=true
