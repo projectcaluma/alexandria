@@ -1,3 +1,4 @@
+---
 services:
   db:
     environment:
@@ -9,7 +10,7 @@ services:
     image: alpine
     restart: "no"
     volumes:
-       - uploads:/media/uploads
+      - uploads:/media/uploads
     entrypoint: |
       /bin/sh -c "chown -R ${UID}:${UID} /media"
 
@@ -24,7 +25,7 @@ services:
       - ./:/app
       - uploads:/media/uploads
     depends_on:
-     - media-files
+      - media-files
     environment:
       - ENV=dev
       - DEBUG=true

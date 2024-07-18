@@ -1,3 +1,4 @@
+---
 services:
   db:
     image: postgres:alpine
@@ -81,7 +82,7 @@ services:
     image: apache/tika:2.9.2.0-full
     ports:
       - "9998:9998"
-  
+
   clamav:
     image: tiredofit/clamav:2.6.17
     ports:
