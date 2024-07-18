@@ -262,9 +262,10 @@ class File(UUIDModel):
             return
 
         # use part of content for language detection, beacause metadata is not reliable
-        detected_language = tika.language.from_buffer(parsed_content["content"][:1000])
-        self.language = detected_language
-        config = settings.ISO_639_TO_PSQL_SEARCH_CONFIG.get(detected_language, "simple")
+        self.language = tika.language.from_buffer(parsed_content["content"][:1000])
+        config = settings.ALEXANDRIA_ISO_639_TO_PSQL_SEARCH_CONFIG.get(
+            self.language, "simple"
+        )
         self.content_vector = name_vector + SearchVector(
             Value(parsed_content["content"]),
             config=config,

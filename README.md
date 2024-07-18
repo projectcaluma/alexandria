@@ -161,6 +161,8 @@ manabi.keygen()
 #### File content search (optional)
 
 - `ALEXANDRIA_ENABLE_CONTENT_SEARCH`: Set to `True` to enable file content extraction
+- `ALEXANDRIA_ISO_639_TO_PSQL_SEARCH_CONFIG`: Mapping from language code from tika to django search vector language config. Also defines which languages are supported by the search. (default: `{"en":"english","de":"german","fr":"french","it":"italian"}`)
+- `ALEXANDRIA_CONTENT_SEARCH_TYPE`: Django full text search type. (default: phrase)
 
 #### Development
 

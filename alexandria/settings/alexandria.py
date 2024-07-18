@@ -205,9 +205,15 @@ MANABI_SECURE = True if ENV == "production" else False
 ALEXANDRIA_ENABLE_CONTENT_SEARCH = env.bool(
     "ALEXANDRIA_ENABLE_CONTENT_SEARCH", default=False
 )
-ISO_639_TO_PSQL_SEARCH_CONFIG = {
-    "en": "english",
-    "de": "german",
-    "fr": "french",
-    "it": "italian",
-}
+ALEXANDRIA_ISO_639_TO_PSQL_SEARCH_CONFIG = env.dict(
+    "ALEXANDRIA_ISO_639_TO_PSQL_SEARCH_CONFIG",
+    default={
+        "en": "english",
+        "de": "german",
+        "fr": "french",
+        "it": "italian",
+    },
+)
+ALEXANDRIA_CONTENT_SEARCH_TYPE = env.str(
+    "ALEXANDRIA_CONTENT_SEARCH_TYPE", default="phrase"
+)
