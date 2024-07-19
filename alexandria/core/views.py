@@ -6,6 +6,7 @@ from functools import reduce
 from operator import or_
 from os.path import splitext
 from tempfile import NamedTemporaryFile
+from rest_framework_json_api.relations import reverse
 
 import requests
 from django.conf import settings
@@ -51,7 +52,7 @@ from .filters import (
     MarkFilterSet,
     TagFilterSet,
 )
-from .presign_urls import verify_signed_components
+from django_presigned_url.presign_urls import verify_presigned_request
 
 log = logging.getLogger(__name__)
 
@@ -241,14 +242,7 @@ class FileViewSet(
     @permission_classes([AllowAny])
     @action(methods=["get"], detail=True)
     def download(self, request, pk=None):
-        if token_sig := request.query_params.get("signature"):
-            verify_signed_components(
-                pk,
-                request.get_host(),
-                expires=int(request.query_params.get("expires")),
-                scheme=request.META.get("wsgi.url_scheme", "http"),
-                token_sig=token_sig,
-            )
+        if verify_presigned_request(reverse("file-download", args=[pk]), request):
             obj = models.File.objects.get(pk=pk)
 
             return FileResponse(
