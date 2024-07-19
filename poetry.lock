@@ -843,6 +843,20 @@ publish = ["build (==0.7.0)", "twine (==3.7.1)"]
 test = ["coveralls (==3.3.0)", "dj-database-url (==0.5.0)", "freezegun (==1.1.0)", "psycopg2 (>=2.8.4,<3.0.0)", "pytest (==6.2.5)", "pytest-benchmark (==3.4.1)", "pytest-cov (==3.0.0)", "pytest-django (==4.4.0)", "snapshottest (==0.6.0)", "tox (==3.24.4)"]
 
 [[package]]
+name = "django-presigned-url"
+version = "0.1.0"
+description = "Generate presigned urls for django"
+optional = false
+python-versions = "<4,>=3.10"
+files = [
+    {file = "django_presigned_url-0.1.0-py3-none-any.whl", hash = "sha256:dda1afd2446c8d706e2410b292da818c5d156bee770d496bdc7d191b6321ce28"},
+    {file = "django_presigned_url-0.1.0.tar.gz", hash = "sha256:f75893995a29ad07ecfb7c991c420aa5fb76194db3a35bbd2a343810b215b4c1"},
+]
+
+[package.dependencies]
+django = ">=4.2"
+
+[[package]]
 name = "django-storages"
 version = "1.14.4"
 description = "Support for many storage backends in Django"
@@ -3243,4 +3257,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10.0,<4.0"
-content-hash = "47db157a74de6000be523aabeebdc3e02333fd37829b983894699c0736daa5c0"
+content-hash = "24d39742249a2578075df30382d1775b31e535def0fee1cc091266ab358918b4"

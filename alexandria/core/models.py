@@ -13,10 +13,11 @@ from django.core.validators import RegexValidator
 from django.db import models, transaction
 from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
+from django_presigned_url.presign_urls import make_presigned_url
 from localized_fields.fields import LocalizedCharField, LocalizedTextField
 from manabi.token import Key, Token
+from rest_framework_json_api.relations import reverse
 
-from alexandria.core.presign_urls import make_signature_components
 from alexandria.storages.backends.s3 import S3Storage
 from alexandria.storages.fields import DynamicStorageFileField
 
@@ -284,13 +285,7 @@ class File(UUIDModel):
         if not request:
             return None
 
-        url, expires, signature = make_signature_components(
-            str(self.pk),
-            request.get_host(),
-            scheme=request.META.get("wsgi.url_scheme", "http"),
-        )
-
-        return f"{url}?expires={expires}&signature={signature}"
+        return make_presigned_url(reverse("file-download", args=[self.pk]), request)
 
     class Meta:
         ordering = ["-created_at"]

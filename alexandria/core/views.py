@@ -12,6 +12,7 @@ from django.core.files.base import ContentFile
 from django.http import FileResponse
 from django.utils.module_loading import import_string
 from django.utils.translation import gettext as _
+from django_presigned_url.presign_urls import verify_presigned_request
 from generic_permissions.permissions import AllowAny, PermissionViewMixin
 from generic_permissions.visibilities import VisibilityViewMixin
 from rest_framework.authentication import get_authorization_header
@@ -31,6 +32,7 @@ from rest_framework.mixins import (
 from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED, HTTP_401_UNAUTHORIZED
 from rest_framework.viewsets import GenericViewSet
+from rest_framework_json_api.relations import reverse
 from rest_framework_json_api.views import (
     AutoPrefetchMixin,
     ModelViewSet,
@@ -48,7 +50,6 @@ from .filters import (
     SearchFilterSet,
     TagFilterSet,
 )
-from .presign_urls import verify_signed_components
 from .tasks import set_content_vector
 
 log = logging.getLogger(__name__)
@@ -247,25 +248,19 @@ class FileViewSet(
     @permission_classes([AllowAny])
     @action(methods=["get"], detail=True)
     def download(self, request, pk=None):
-        if token_sig := request.query_params.get("signature"):
-            verify_signed_components(
-                pk,
-                request.get_host(),
-                expires=int(request.query_params.get("expires")),
-                scheme=request.META.get("wsgi.url_scheme", "http"),
-                token_sig=token_sig,
+        if not verify_presigned_request(reverse("file-download", args=[pk]), request):
+            raise PermissionDenied(
+                _("For downloading a file use the presigned download URL.")
             )
-            obj = models.File.objects.get(pk=pk)
 
-            unsafe = obj.mime_type not in settings.SAFE_FOR_INLINE_DISPOSITION
-            return FileResponse(
-                obj.content.file.file,
-                as_attachment=unsafe,
-                filename=obj.name,
-                content_type=obj.mime_type,
-            )
-        raise PermissionDenied(
-            _("For downloading a file use the presigned download URL.")
+        obj = models.File.objects.get(pk=pk)
+
+        unsafe = obj.mime_type not in settings.SAFE_FOR_INLINE_DISPOSITION
+        return FileResponse(
+            obj.content.file.file,
+            as_attachment=unsafe,
+            filename=obj.name,
+            content_type=obj.mime_type,
         )
 
 

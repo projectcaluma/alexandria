@@ -102,6 +102,7 @@ ALEXANDRIA_ENCRYPTION_METHOD = env.str(
 ALEXANDRIA_DOWNLOAD_URL_LIFETIME = env.int(
     "ALEXANDRIA_DOWNLOAD_URL_LIFETIME", default=300
 )
+PRESIGNED_URL_LIFETIME = ALEXANDRIA_DOWNLOAD_URL_LIFETIME
 
 # S3 / boto3 storage client specific configurations
 # -------------------------------------------------
