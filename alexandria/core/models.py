@@ -6,6 +6,7 @@ from mimetypes import guess_extension
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 
+from rest_framework_json_api.relations import reverse
 import tika.language
 import tika.parser
 from django.conf import settings
@@ -24,7 +25,7 @@ from localized_fields.fields import LocalizedCharField, LocalizedTextField
 from manabi.token import Key, Token
 from preview_generator.manager import PreviewManager
 
-from alexandria.core.presign_urls import make_signature_components
+from django_presigned_url.presign_urls import make_presigned_url
 from alexandria.storages.fields import DynamicStorageFileField
 
 log = logging.getLogger(__name__)
@@ -358,13 +359,7 @@ class File(UUIDModel):
         if not request:
             return None
 
-        url, expires, signature = make_signature_components(
-            str(self.pk),
-            request.get_host(),
-            scheme=request.META.get("wsgi.url_scheme", "http"),
-        )
-
-        return f"{url}?expires={expires}&signature={signature}"
+        return make_presigned_url(reverse("file-download", args=[self.pk]), request)
 
     class Meta:
         ordering = ["-created_at"]
