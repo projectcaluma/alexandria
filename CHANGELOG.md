@@ -1,3 +1,9 @@
+# 5.1.0
+
+### Feature
+* Search over all configured stemmings (1d9cca20db4d5054fa55cb8db490db3eebbe53b5)
+* Allow opening webdav links with custom URI schemes (9f4516631dfb25aa5bcbf3b3500bcb5d0ab131be)
+
 # 5.0.2
 ### Fix
 * fix(file): improve content vector generation ([`b6841da`](https://github.com/projectcaluma/alexandria/commit/b6841da326198065d5d838febf360eaf28aa0389))
