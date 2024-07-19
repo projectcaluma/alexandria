@@ -301,14 +301,22 @@ class SearchViewSet(
     def filter_queryset(self, queryset):
         query = self.request.query_params.get("filter[query]")
 
-        search_queries = []
-        for lang, desc in settings.LANGUAGES:
-            config = settings.ISO_639_TO_PSQL_SEARCH_CONFIG.get(lang, "simple")
+        search_queries = [
+            Q(
+                content_vector=SearchQuery(
+                    query,
+                    config="simple",
+                    search_type=settings.ALEXANDRIA_CONTENT_SEARCH_TYPE,
+                )
+            )
+        ]
+        for lang, config in settings.ALEXANDRIA_ISO_639_TO_PSQL_SEARCH_CONFIG.items():
             search_queries.append(
-                Q(language=lang)
-                & Q(
+                Q(
                     content_vector=SearchQuery(
-                        query, config=config, search_type="phrase"
+                        query,
+                        config=config,
+                        search_type=settings.ALEXANDRIA_CONTENT_SEARCH_TYPE,
                     )
                 )
             )
