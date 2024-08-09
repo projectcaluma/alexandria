@@ -42,7 +42,7 @@ tika = "^2.6.0"
 clamdpy = "^0.1.0.post1"
 
 [tool.poetry.group.dev.dependencies]
-black = "24.4.2"
+black = "24.8.0"
 django-extensions = "3.2.3"
 django-test-migrations = "1.4.0"
 factory-boy = "3.3.0"
