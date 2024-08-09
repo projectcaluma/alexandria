@@ -1,5 +1,8 @@
-# 5.1.0
+# 5.1.1
+### Fix
+* fix(deps): update dependencies ([`2144e0b`](https://github.com/projectcaluma/alexandria/commit/2144e0b0b91de626c3994fde266e4de35d4258c9))
 
+# 5.1.0
 ### Feature
 * Search over all configured stemmings (1d9cca20db4d5054fa55cb8db490db3eebbe53b5)
 * Allow opening webdav links with custom URI schemes (9f4516631dfb25aa5bcbf3b3500bcb5d0ab131be)
