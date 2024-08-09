@@ -6,7 +6,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("alexandria_core", "0016_category_allowed_mime_types"),
     ]

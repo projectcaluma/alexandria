@@ -2,7 +2,6 @@ import datetime
 import uuid
 
 from django.db import migrations
-from alexandria.core.models import make_uuid
 
 
 def slug_to_uuid(apps, schema_editor):
