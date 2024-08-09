@@ -42,19 +42,10 @@ tika = "^2.6.0"
 clamdpy = "^0.1.0.post1"
 
 [tool.poetry.group.dev.dependencies]
-black = "24.4.2"
 django-extensions = "3.2.3"
 django-test-migrations = "1.4.0"
 factory-boy = "3.3.0"
-flake8 = "7.1.0"
-flake8-blind-except = "0.2.1"
-flake8-debugger = "4.1.2"
-flake8-docstrings = "1.7.0"
-flake8-isort = "6.1.1"
-flake8-string-format = "0.3.0"
-flake8-tuple = "0.4.1"
 gitlint = "0.19.1"
-isort = "5.13.2"
 pdbpp = "0.10.3"
 pillow = "^10.1.0"
 pre-commit = "3.8.0"
@@ -68,19 +59,18 @@ pytest-mock = "3.14.0"
 pytest-randomly = "3.15.0"
 python-semantic-release = "7.33.3"
 requests-mock = "1.12.1"
+ruff = "0.5.7"
 syrupy = "4.6.1"
 werkzeug = "3.0.3"
 moto = { extras = ["s3"], version = "^5.0.2" }
 webtest = "^3.0.0"
 
-[tool.isort]
-skip = ["migrations"]
-known_first_party = ["alexandria"]
-multi_line_output = 3
-include_trailing_comma = true
-force_grid_wrap = 0
-combine_as_imports = true
-line_length = 88
+[tool.ruff.lint]
+extend-select = ["I"]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+known-first-party = ["ebau_gwr"]
 
 [tool.pytest.ini_options]
 addopts = "--reuse-db --randomly-seed=1521188766"
