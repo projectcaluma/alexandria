@@ -179,6 +179,17 @@ ALEXANDRIA_MANABI_DAV_URI_SCHEMES = {
 - `ALEXANDRIA_ISO_639_TO_PSQL_SEARCH_CONFIG`: Mapping from language code from tika to django search vector language config. Also defines which languages are supported by the search. (default: `{"en":"english","de":"german","fr":"french","it":"italian"}`)
 - `ALEXANDRIA_CONTENT_SEARCH_TYPE`: Django full text search type. (default: phrase)
 
+#### Celery (optional)
+For checksums and file content search [celery](https://docs.celeryq.dev) with a redis broker is used.
+
+- `REDIS_HOST`: Redis host (default: redis)
+- `REDIS_PORT`: Redis port (default: 6379)
+- `REDIS_USER`: Redis user (default: default)
+- `REDIS_PASSWORD`: Redis password (default: redis)
+- `CELERY_BROKER_URL`: Broker url (default: `redis://{REDIS_USER}:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/0`)
+- `CELERY_TASK_ACKS_LATE`: Tasks only are marked complete after finishing (default: True)
+- `CELERY_TASK_SOFT_TIME_LIMIT`: Prevents task existing forever (default: 60)
+
 #### Development
 
 For development, you can also set the following environemnt variables to help you:

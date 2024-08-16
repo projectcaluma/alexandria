@@ -4,6 +4,7 @@ from psutil import virtual_memory
 from tqdm import tqdm
 
 from alexandria.core.models import File
+from alexandria.core.tasks import set_content_vector
 
 
 class Command(BaseCommand):
@@ -26,7 +27,7 @@ class Command(BaseCommand):
         # iterate over files in batches to prevent memory exhaustion
         for file in tqdm(query.iterator(50), "Generating vectors", query.count()):
             try:
-                file.save()  # this will call set_content_vector
+                set_content_vector(file.pk)
             except Exception as e:  # noqa: B902
                 failed_files.append(str(file.id))
                 self.stdout.write(

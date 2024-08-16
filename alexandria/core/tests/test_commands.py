@@ -57,7 +57,11 @@ def test_encrypt_files_misconfigured(
     assert "Encryption is not enabled. Skipping encryption of files." in out.getvalue()
 
 
-def test_generate_content_vector(db, settings, file_factory):
+def test_generate_content_vector(
+    db,
+    settings,
+    file_factory,
+):
     settings.ALEXANDRIA_ENABLE_CONTENT_SEARCH = False
     file_without_vector = file_factory(name="old")
 
@@ -70,9 +74,6 @@ def test_generate_content_vector(db, settings, file_factory):
 
     file_with_vector.refresh_from_db()
     file_without_vector.refresh_from_db()
-
-    assert tika.parser.from_buffer.call_count == 2
-    assert tika.language.from_buffer.call_count == 2
 
     assert file_with_vector.content_vector == "'import':2B 'neu':1A 'text':3B"
     assert file_without_vector.content_vector == "'inhalt':4B 'old':1A"
@@ -96,7 +97,8 @@ def test_generate_content_vector_error(db, settings, file_factory, mocker):
     file_factory(name="old")
     settings.ALEXANDRIA_ENABLE_CONTENT_SEARCH = True
     mocker.patch(
-        "alexandria.core.models.File.set_content_vector", side_effect=FileNotFoundError
+        "alexandria.core.management.commands.generate_content_vectors.set_content_vector",
+        side_effect=FileNotFoundError,
     )
 
     out = StringIO()

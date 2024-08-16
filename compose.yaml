@@ -1,4 +1,19 @@
 ---
+x-alexandria-common: &alexandria-common
+  image: ghcr.io/projectcaluma/alexandria:dev
+  depends_on:
+    - db
+    - minio
+    - tika
+    - clamav
+    - dms
+  environment:
+    - DATABASE_HOST=db
+    - DATABASE_PORT=5432
+    - TIKA_CLIENT_ONLY=true
+    - TIKA_SERVER_ENDPOINT=http://tika:9998
+    - ALEXANDRIA_CLAMD_TCP_ADDR=clamav
+
 services:
   db:
     image: postgres:alpine
@@ -11,29 +26,9 @@ services:
       - dbdata:/var/lib/postgresql/data
 
   alexandria:
-    image: ghcr.io/projectcaluma/alexandria:dev
+    <<: *alexandria-common
     ports:
       - "8000:8000"
-    depends_on:
-      - db
-      - minio
-      - tika
-      - clamav
-      - dms
-    environment:
-      - DATABASE_HOST=db
-      - DATABASE_PORT=5432
-      - TIKA_CLIENT_ONLY=true
-      - TIKA_SERVER_ENDPOINT=http://tika:9998
-      - ALEXANDRIA_CLAMD_TCP_ADDR=clamav
-      # following options are a must to configure on production system:
-      # https://docs.djangoproject.com/en/2.1/ref/settings/#std:setting-SECRET_KEY
-      # - SECRET_KEY=
-      # https://docs.djangoproject.com/en/2.1/ref/settings/#allowed-hosts
-      # - ALLOWED_HOSTS=
-      # https://docs.djangoproject.com/en/2.1/ref/settings/#password
-      # same as postgres password above
-      # - DATABASE_PASSWORD=
 
   dms:
     image: ghcr.io/adfinis/document-merge-service:6.4.4
@@ -72,9 +67,7 @@ services:
       - MINIO_ROOT_PASSWORD=secret
     # You might need to override the entrypoint in docker-compose.override.yml to reflect your setup
     entrypoint: >
-      /bin/sh -c "
-      mc config host add dc-minio http://minio:9000 $${MINIO_ROOT_USER} $${MINIO_ROOT_PASSWORD} --api S3v4;
-      mc mb dc-minio/alexandria-media;"
+      /bin/sh -c " mc config host add dc-minio http://minio:9000 $${MINIO_ROOT_USER} $${MINIO_ROOT_PASSWORD} --api S3v4; mc mb dc-minio/alexandria-media;"
     depends_on:
       - minio
 
@@ -88,7 +81,19 @@ services:
     ports:
       - "3310:3310"
 
+  redis:
+    image: redis:7.4
+    volumes:
+      - redis_data:/redis/data
+
+  celery:
+    <<: *alexandria-common
+    volumes:
+      - ./celery/entrypoint.sh:/entrypoint.sh
+    entrypoint: /entrypoint.sh
+
 volumes:
   dbdata:
+  redis_data:
   minio_data:
     driver: local
