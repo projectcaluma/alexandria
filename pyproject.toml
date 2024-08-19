@@ -38,7 +38,7 @@ python-magic = "^0.4.27"
 requests = "^2.31.0"
 tika = "^2.6.0"
 tqdm = "^4.66.5"
-uwsgi = "^2.0.20"
+gunicorn = "^23.0.0"
 
 [tool.poetry.group.dev.dependencies]
 django-extensions = "3.2.3"
