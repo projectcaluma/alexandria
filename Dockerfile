@@ -1,6 +1,6 @@
 FROM python:3.10-slim AS base
 
-ENV DJANGO_SETTINGS_MODULE=alexandria.settings \
+ENV DJANGO_SETTINGS_MODULE=alexandria.settings.django \
     PYTHONFAULTHANDLER=1 \
     PYTHONHASHSEED=random \
     PYTHONDONTWRITEBYTECODE=1 \
