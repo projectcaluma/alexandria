@@ -46,7 +46,7 @@ def test_document_permission(
         @permission_for(Document)
         def has_permission_for_document(self, request):
             if request.method == "PATCH":
-                return request.data["title"]["en"] == "new"
+                return request.data["title"] == "new"
             elif request.method in {"DELETE", "POST"}:
                 return request.user.username == "admin"
 
@@ -73,7 +73,7 @@ def test_document_permission(
             "data": {
                 "id": doc.pk,
                 "type": "documents",
-                "attributes": {"title": {"de": "", "en": "new", "fr": ""}},
+                "attributes": {"title": "new"},
                 "relationships": {
                     "category": {"data": {"id": doc.category.pk, "type": "categories"}}
                 },
@@ -96,7 +96,7 @@ def test_document_permission(
         assert result["data"]["attributes"]["created-at"] == TIMESTAMP
     elif method == "patch":
         doc.refresh_from_db()
-        assert doc.title["en"] == "new"
+        assert doc.title == "new"
 
 
 @pytest.mark.freeze_time(TIMESTAMP)

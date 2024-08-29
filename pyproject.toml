@@ -39,6 +39,7 @@ requests = "^2.31.0"
 tika = "^2.6.0"
 tqdm = "^4.66.5"
 gunicorn = "^23.0.0"
+pghstore = "^2.0.2"
 
 [tool.poetry.group.dev.dependencies]
 django-extensions = "3.2.3"

@@ -136,9 +136,7 @@ class DocumentViewSet(PermissionViewMixin, VisibilityViewMixin, ModelViewSet):
             user=user,
             group=group,
             category=document.category,
-            document_title={
-                k: f"{ splitext(v)[0]}.pdf" for k, v in document.title.items()
-            },
+            document_title=document.title,
             file_name=file_name,
             file_content=ContentFile(response.content, file_name),
             mime_type="application/pdf",

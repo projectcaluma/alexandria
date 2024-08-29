@@ -120,8 +120,8 @@ def document_post_data(category):
             b"%PDF-1.\ntrailer<</Root<</Pages<</Kids[<</MediaBox[0 0 3 3]>>]>>>>>>"
         ),
         "data": io.BytesIO(
-            json.dumps(
-                {"title": {"en": "winstonsmith"}, "category": category.pk}
-            ).encode("utf-8")
+            json.dumps({"title": "winstonsmith", "category": category.pk}).encode(
+                "utf-8"
+            )
         ),
     }
