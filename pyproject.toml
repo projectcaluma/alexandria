@@ -64,7 +64,7 @@ requests-mock = "1.12.1"
 ruff = "0.6.2"
 syrupy = "4.6.1"
 webtest = "^3.0.0"
-werkzeug = "3.0.3"
+werkzeug = "3.0.4"
 
 [tool.ruff.lint]
 extend-select = ["I"]
