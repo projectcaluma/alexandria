@@ -151,12 +151,8 @@ class Mark(SlugModel):
 
 
 class Document(UUIDModel):
-    title = LocalizedCharField(
-        _("document title"), blank=True, null=True, required=False
-    )
-    description = LocalizedTextField(
-        _("document description"), null=True, blank=True, required=False
-    )
+    title = models.CharField(_("document title"), blank=True, null=True)
+    description = models.TextField(_("document description"), null=True, blank=True)
     category = models.ForeignKey(
         Category,
         on_delete=models.SET_NULL,

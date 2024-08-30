@@ -1409,6 +1409,19 @@ funcsigs = ["funcsigs"]
 testing = ["funcsigs", "pytest"]
 
 [[package]]
+name = "pghstore"
+version = "2.0.2"
+description = "PostgreSQL hstore formatter"
+optional = false
+python-versions = "*"
+files = [
+    {file = "pghstore-2.0.2.tar.gz", hash = "sha256:c6d152d454b6fea8ec13a46ff754b2c6ca76aebe752068d4f8d8f6a948dd5436"},
+]
+
+[package.dependencies]
+six = "*"
+
+[[package]]
 name = "pillow"
 version = "10.4.0"
 description = "Python Imaging Library (Fork)"
@@ -2819,4 +2832,4 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10.0,<4.0"
-content-hash = "1c0676f176e6db78fac354ea410b16a91fb180aa910b83e5024496450968160f"
+content-hash = "4228c520b84008cdd74bad96c9b51eed58345fc87f91a7dd4861c600af90f3dc"

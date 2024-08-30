@@ -119,3 +119,17 @@ def test_generate_empty_content_vector(db, settings, file_factory):
 
     assert file_without_vector.content_vector == "'old':1A"
     assert file_without_vector.language is None
+
+
+def test_migrate_document_title_and_description(db, settings, document_factory):
+    doc = document_factory(title='"en"=>"pdf-test.pdf"', description='"en"=>""')
+    doc2 = document_factory(title="already_migrated", description="")
+
+    call_command("migrate_document_title_and_description", "en")
+
+    doc.refresh_from_db()
+    doc2.refresh_from_db()
+    assert doc.title == "pdf-test.pdf"
+    assert doc.description == ""
+    assert doc2.title == "already_migrated"
+    assert doc2.description == ""

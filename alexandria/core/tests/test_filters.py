@@ -74,10 +74,8 @@ def test_document_search_filter(
     """
     tag1 = tag_factory(name="bar_tag")  # matches
     tag2 = tag_factory(name="foo_tag")  # doesn't match
-    doc = document_factory(title={"en": "foo_title", "de": "bar_title"})  # matches
-    doc2 = document_factory(
-        title={"en": "bar_title", "de": "foo_title"}
-    )  # doesn't match
+    doc = document_factory(title="foo_title")  # matches
+    doc2 = document_factory(title="bar_title")  # doesn't match
     doc.tags.add(tag1)
     doc2.tags.add(tag2)
     file_factory(name="filename.pdf", document=doc)
@@ -386,4 +384,4 @@ def test_document_category_filters(
     assert response.status_code == HTTP_200_OK
     data = response.json()["data"]
     assert len(data) == expected_count
-    assert sorted([doc["attributes"]["title"]["en"] for doc in data]) == snapshot
+    assert sorted([doc["attributes"]["title"] for doc in data]) == snapshot

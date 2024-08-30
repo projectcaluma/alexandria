@@ -75,7 +75,7 @@
     'queries': list([
       'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."metainfo", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description", "alexandria_core_category"."allowed_mime_types", "alexandria_core_category"."color", "alexandria_core_category"."parent_id" FROM "alexandria_core_category" WHERE "alexandria_core_category"."slug" = \'note-act-source\' LIMIT 21',
       'BEGIN',
-      'INSERT INTO "alexandria_core_document" ("created_at", "created_by_user", "created_by_group", "modified_at", "modified_by_user", "modified_by_group", "metainfo", "id", "title", "description", "category_id", "date") VALUES (\'2017-05-21 00:00:00+00:00\'::timestamptz, \'admin\', \'admin\', \'2017-05-21 00:00:00+00:00\'::timestamptz, \'admin\', \'admin\', \'{}\'::jsonb, \'f561aaf6ef0bf14d4208bb46a4ccb3ad\'::uuid, \'"en"=>"winstonsmith","de"=>"","fr"=>""\'::hstore, \'"en"=>"","de"=>"","fr"=>""\'::hstore, \'note-act-source\', NULL)',
+      'INSERT INTO "alexandria_core_document" ("created_at", "created_by_user", "created_by_group", "modified_at", "modified_by_user", "modified_by_group", "metainfo", "id", "title", "description", "category_id", "date") VALUES (\'2017-05-21 00:00:00+00:00\'::timestamptz, \'admin\', \'admin\', \'2017-05-21 00:00:00+00:00\'::timestamptz, \'admin\', \'admin\', \'{}\'::jsonb, \'f561aaf6ef0bf14d4208bb46a4ccb3ad\'::uuid, \'winstonsmith\', NULL, \'note-act-source\', NULL)',
       'SELECT "alexandria_core_document"."created_at", "alexandria_core_document"."created_by_user", "alexandria_core_document"."created_by_group", "alexandria_core_document"."modified_at", "alexandria_core_document"."modified_by_user", "alexandria_core_document"."modified_by_group", "alexandria_core_document"."metainfo", "alexandria_core_document"."id", "alexandria_core_document"."title", "alexandria_core_document"."description", "alexandria_core_document"."category_id", "alexandria_core_document"."date" FROM "alexandria_core_document" WHERE "alexandria_core_document"."id" = \'f561aaf6ef0bf14d4208bb46a4ccb3ad\'::uuid LIMIT 21',
       'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."metainfo", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description", "alexandria_core_category"."allowed_mime_types", "alexandria_core_category"."color", "alexandria_core_category"."parent_id" FROM "alexandria_core_category" WHERE "alexandria_core_category"."slug" = \'note-act-source\' LIMIT 21',
       'INSERT INTO "alexandria_core_file" ("created_at", "created_by_user", "created_by_group", "modified_at", "modified_by_user", "modified_by_group", "metainfo", "id", "variant", "original_id", "name", "document_id", "checksum", "encryption_status", "content_vector", "language", "content", "mime_type", "size") VALUES (\'2017-05-21 00:00:00+00:00\'::timestamptz, \'admin\', \'admin\', \'2017-05-21 00:00:00+00:00\'::timestamptz, \'admin\', \'admin\', \'{}\'::jsonb, \'ea416ed0759d46a8de58f63a59077499\'::uuid, \'original\', NULL, \'content\', \'f561aaf6ef0bf14d4208bb46a4ccb3ad\'::uuid, \'sha256:a154d301b8eb0a1af4c32bb560689af62fd1afd50221533cb414191babbc9fef\', NULL, NULL, NULL, \'ea416ed0-759d-46a8-de58-f63a59077499_content\', \'application/pdf\', 67)',
@@ -87,7 +87,7 @@
     ]),
     'query_count': 11,
     'request': dict({
-      'CONTENT_LENGTH': '405',
+      'CONTENT_LENGTH': '397',
       'CONTENT_TYPE': 'multipart/form-data; boundary=BoUnDaRyStRiNg; charset=utf-8',
       'PATH_INFO': '/api/v1/documents',
       'QUERY_STRING': '',
@@ -109,21 +109,13 @@
           'created-by-group': 'admin',
           'created-by-user': 'admin',
           'date': None,
-          'description': dict({
-            'de': '',
-            'en': '',
-            'fr': '',
-          }),
+          'description': None,
           'metainfo': dict({
           }),
           'modified-at': '2017-05-21T00:00:00Z',
           'modified-by-group': 'admin',
           'modified-by-user': 'admin',
-          'title': dict({
-            'de': '',
-            'en': 'winstonsmith',
-            'fr': '',
-          }),
+          'title': 'winstonsmith',
         }),
         'id': 'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad',
         'relationships': dict({
@@ -576,24 +568,16 @@
           'created-by-group': 'admin',
           'created-by-user': 'admin',
           'date': '1999-11-26',
-          'description': dict({
-            'de': '',
-            'en': '''
-              Open else look tree arm responsibility week. Environmental statement bag someone them style.
-              Public these health team change. Tax final upon stay sing middle suggest.
-            ''',
-            'fr': '',
-          }),
+          'description': '''
+            Open else look tree arm responsibility week. Environmental statement bag someone them style.
+            Public these health team change. Tax final upon stay sing middle suggest.
+          ''',
           'metainfo': dict({
           }),
           'modified-at': '2017-05-21T00:00:00Z',
           'modified-by-group': 'admin',
           'modified-by-user': 'admin',
-          'title': dict({
-            'de': '',
-            'en': 'Michael Edwards',
-            'fr': '',
-          }),
+          'title': 'Michael Edwards',
         }),
         'id': '9dd4e461-268c-8034-f5c8-564e155c67a6',
         'relationships': dict({
@@ -813,24 +797,16 @@
             'created-by-group': 'admin',
             'created-by-user': 'admin',
             'date': '1999-11-26',
-            'description': dict({
-              'de': '',
-              'en': '''
-                Open else look tree arm responsibility week. Environmental statement bag someone them style.
-                Public these health team change. Tax final upon stay sing middle suggest.
-              ''',
-              'fr': '',
-            }),
+            'description': '''
+              Open else look tree arm responsibility week. Environmental statement bag someone them style.
+              Public these health team change. Tax final upon stay sing middle suggest.
+            ''',
             'metainfo': dict({
             }),
             'modified-at': '2017-05-21T00:00:00Z',
             'modified-by-group': 'admin',
             'modified-by-user': 'admin',
-            'title': dict({
-              'de': '',
-              'en': 'Michael Edwards',
-              'fr': '',
-            }),
+            'title': 'Michael Edwards',
           }),
           'id': '9dd4e461-268c-8034-f5c8-564e155c67a6',
           'relationships': dict({
@@ -1181,24 +1157,16 @@
             'created-by-group': 'admin',
             'created-by-user': 'admin',
             'date': '1999-11-26',
-            'description': dict({
-              'de': '',
-              'en': '''
-                Open else look tree arm responsibility week. Environmental statement bag someone them style.
-                Public these health team change. Tax final upon stay sing middle suggest.
-              ''',
-              'fr': '',
-            }),
+            'description': '''
+              Open else look tree arm responsibility week. Environmental statement bag someone them style.
+              Public these health team change. Tax final upon stay sing middle suggest.
+            ''',
             'metainfo': dict({
             }),
             'modified-at': '2017-05-21T00:00:00Z',
             'modified-by-group': 'admin',
             'modified-by-user': 'admin',
-            'title': dict({
-              'de': '',
-              'en': 'Michael Edwards',
-              'fr': '',
-            }),
+            'title': 'Michael Edwards',
           }),
           'id': '9dd4e461-268c-8034-f5c8-564e155c67a6',
           'relationships': dict({
@@ -1246,24 +1214,16 @@
             'created-by-group': 'admin',
             'created-by-user': 'admin',
             'date': '2005-06-14',
-            'description': dict({
-              'de': '',
-              'en': '''
-                Bank arm serious live by itself. Project find white continue none president. Idea eye plan third program.
-                Son success provide beyond. Officer player possible issue ahead suffer.
-              ''',
-              'fr': '',
-            }),
+            'description': '''
+              Bank arm serious live by itself. Project find white continue none president. Idea eye plan third program.
+              Son success provide beyond. Officer player possible issue ahead suffer.
+            ''',
             'metainfo': dict({
             }),
             'modified-at': '2017-05-21T00:00:00Z',
             'modified-by-group': 'admin',
             'modified-by-user': 'admin',
-            'title': dict({
-              'de': '',
-              'en': 'Rebecca Gonzalez',
-              'fr': '',
-            }),
+            'title': 'Rebecca Gonzalez',
           }),
           'id': 'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad',
           'relationships': dict({
@@ -1303,24 +1263,16 @@
             'created-by-group': 'admin',
             'created-by-user': 'admin',
             'date': '1973-06-29',
-            'description': dict({
-              'de': '',
-              'en': '''
-                Cell series star. Agency season worry take value eye sell.
-                Human less power relate fine religious. Loss increase firm friend ability. Their office though television return main.
-              ''',
-              'fr': '',
-            }),
+            'description': '''
+              Cell series star. Agency season worry take value eye sell.
+              Human less power relate fine religious. Loss increase firm friend ability. Their office though television return main.
+            ''',
             'metainfo': dict({
             }),
             'modified-at': '2017-05-21T00:00:00Z',
             'modified-by-group': 'admin',
             'modified-by-user': 'admin',
-            'title': dict({
-              'de': '',
-              'en': 'William Kennedy',
-              'fr': '',
-            }),
+            'title': 'William Kennedy',
           }),
           'id': 'ea416ed0-759d-46a8-de58-f63a59077499',
           'relationships': dict({
@@ -1801,24 +1753,16 @@
             'created-by-group': 'admin',
             'created-by-user': 'admin',
             'date': '1977-12-09',
-            'description': dict({
-              'de': '',
-              'en': '''
-                Star Republican agency season. Take value eye sell them he.
-                Same season natural think Mr course tree. Within never whose five hold food.
-              ''',
-              'fr': '',
-            }),
+            'description': '''
+              Star Republican agency season. Take value eye sell them he.
+              Same season natural think Mr course tree. Within never whose five hold food.
+            ''',
             'metainfo': dict({
             }),
             'modified-at': '2017-05-21T00:00:00Z',
             'modified-by-group': 'admin',
             'modified-by-user': 'admin',
-            'title': dict({
-              'de': '',
-              'en': 'Carol Mata',
-              'fr': '',
-            }),
+            'title': 'Carol Mata',
           }),
           'id': '04adb4e2-f055-c978-c9bb-101ee1bc5cd4',
           'relationships': dict({
@@ -1862,24 +1806,16 @@
             'created-by-group': 'admin',
             'created-by-user': 'admin',
             'date': '1999-11-26',
-            'description': dict({
-              'de': '',
-              'en': '''
-                Open else look tree arm responsibility week. Environmental statement bag someone them style.
-                Public these health team change. Tax final upon stay sing middle suggest.
-              ''',
-              'fr': '',
-            }),
+            'description': '''
+              Open else look tree arm responsibility week. Environmental statement bag someone them style.
+              Public these health team change. Tax final upon stay sing middle suggest.
+            ''',
             'metainfo': dict({
             }),
             'modified-at': '2017-05-21T00:00:00Z',
             'modified-by-group': 'admin',
             'modified-by-user': 'admin',
-            'title': dict({
-              'de': '',
-              'en': 'Michael Edwards',
-              'fr': '',
-            }),
+            'title': 'Michael Edwards',
           }),
           'id': '9dd4e461-268c-8034-f5c8-564e155c67a6',
           'relationships': dict({
@@ -1927,24 +1863,16 @@
             'created-by-group': 'admin',
             'created-by-user': 'admin',
             'date': '2005-06-14',
-            'description': dict({
-              'de': '',
-              'en': '''
-                Bank arm serious live by itself. Project find white continue none president. Idea eye plan third program.
-                Son success provide beyond. Officer player possible issue ahead suffer.
-              ''',
-              'fr': '',
-            }),
+            'description': '''
+              Bank arm serious live by itself. Project find white continue none president. Idea eye plan third program.
+              Son success provide beyond. Officer player possible issue ahead suffer.
+            ''',
             'metainfo': dict({
             }),
             'modified-at': '2017-05-21T00:00:00Z',
             'modified-by-group': 'admin',
             'modified-by-user': 'admin',
-            'title': dict({
-              'de': '',
-              'en': 'Linda White',
-              'fr': '',
-            }),
+            'title': 'Linda White',
           }),
           'id': 'ea416ed0-759d-46a8-de58-f63a59077499',
           'relationships': dict({
@@ -2280,8 +2208,8 @@
       'SELECT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."metainfo", "alexandria_core_tag"."id", "alexandria_core_tag"."name", "alexandria_core_tag"."description", "alexandria_core_tag"."tag_synonym_group_id" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."id" = "alexandria_core_document_tags"."tag_id") WHERE ("alexandria_core_document_tags"."document_id" = \'9dd4e461268c8034f5c8564e155c67a6\'::uuid AND NOT ("alexandria_core_tag"."id" IN (SELECT U0."id" FROM "alexandria_core_tag" U0 INNER JOIN "alexandria_core_document_tags" U1 ON (U0."id" = U1."tag_id") WHERE U1."document_id" = \'9dd4e461268c8034f5c8564e155c67a6\'::uuid)))',
       'SELECT "alexandria_core_mark"."created_at", "alexandria_core_mark"."created_by_user", "alexandria_core_mark"."created_by_group", "alexandria_core_mark"."modified_at", "alexandria_core_mark"."modified_by_user", "alexandria_core_mark"."modified_by_group", "alexandria_core_mark"."metainfo", "alexandria_core_mark"."slug", "alexandria_core_mark"."name", "alexandria_core_mark"."description" FROM "alexandria_core_mark" INNER JOIN "alexandria_core_document_marks" ON ("alexandria_core_mark"."slug" = "alexandria_core_document_marks"."mark_id") WHERE ("alexandria_core_document_marks"."document_id" = \'9dd4e461268c8034f5c8564e155c67a6\'::uuid AND NOT ("alexandria_core_mark"."slug" IN (SELECT U0."slug" FROM "alexandria_core_mark" U0 INNER JOIN "alexandria_core_document_marks" U1 ON (U0."slug" = U1."mark_id") WHERE U1."document_id" = \'9dd4e461268c8034f5c8564e155c67a6\'::uuid)))',
       '''
-        UPDATE "alexandria_core_document" SET "created_at" = '2017-05-21 00:00:00+00:00'::timestamptz, "created_by_user" = 'admin', "created_by_group" = 'admin', "modified_at" = '2017-05-21 00:00:00+00:00'::timestamptz, "modified_by_user" = 'admin', "modified_by_group" = 'admin', "metainfo" = '{}'::jsonb, "title" = '"en"=>"Michael Edwards","de"=>"","fr"=>""'::hstore, "description" = '"en"=>"Open else look tree arm responsibility week. Environmental statement bag someone them style.
-        Public these health team change. Tax final upon stay sing middle suggest.","de"=>"","fr"=>""'::hstore, "category_id" = 'note-act-source', "date" = '1999-11-26'::date WHERE "alexandria_core_document"."id" = '9dd4e461268c8034f5c8564e155c67a6'::uuid
+        UPDATE "alexandria_core_document" SET "created_at" = '2017-05-21 00:00:00+00:00'::timestamptz, "created_by_user" = 'admin', "created_by_group" = 'admin', "modified_at" = '2017-05-21 00:00:00+00:00'::timestamptz, "modified_by_user" = 'admin', "modified_by_group" = 'admin', "metainfo" = '{}'::jsonb, "title" = 'Michael Edwards', "description" = 'Open else look tree arm responsibility week. Environmental statement bag someone them style.
+        Public these health team change. Tax final upon stay sing middle suggest.', "category_id" = 'note-act-source', "date" = '1999-11-26'::date WHERE "alexandria_core_document"."id" = '9dd4e461268c8034f5c8564e155c67a6'::uuid
       ''',
       'BEGIN',
       'SELECT "alexandria_core_tag"."id" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."id" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" = \'9dd4e461268c8034f5c8564e155c67a6\'::uuid',
@@ -2298,7 +2226,7 @@
     ]),
     'query_count': 19,
     'request': dict({
-      'CONTENT_LENGTH': '859',
+      'CONTENT_LENGTH': '813',
       'CONTENT_TYPE': 'application/vnd.api+json',
       'PATH_INFO': '/api/v1/documents/9dd4e461-268c-8034-f5c8-564e155c67a6',
       'QUERY_STRING': '',
@@ -2312,24 +2240,16 @@
           'created-by-group': 'admin',
           'created-by-user': 'admin',
           'date': '1999-11-26',
-          'description': dict({
-            'de': '',
-            'en': '''
-              Open else look tree arm responsibility week. Environmental statement bag someone them style.
-              Public these health team change. Tax final upon stay sing middle suggest.
-            ''',
-            'fr': '',
-          }),
+          'description': '''
+            Open else look tree arm responsibility week. Environmental statement bag someone them style.
+            Public these health team change. Tax final upon stay sing middle suggest.
+          ''',
           'metainfo': dict({
           }),
           'modified-at': '2017-05-21T00:00:00Z',
           'modified-by-group': 'admin',
           'modified-by-user': 'admin',
-          'title': dict({
-            'de': '',
-            'en': 'Michael Edwards',
-            'fr': '',
-          }),
+          'title': 'Michael Edwards',
         }),
         'id': '9dd4e461-268c-8034-f5c8-564e155c67a6',
         'relationships': dict({
@@ -2379,24 +2299,16 @@
           'created-by-group': 'admin',
           'created-by-user': 'admin',
           'date': '1999-11-26',
-          'description': dict({
-            'de': '',
-            'en': '''
-              Open else look tree arm responsibility week. Environmental statement bag someone them style.
-              Public these health team change. Tax final upon stay sing middle suggest.
-            ''',
-            'fr': '',
-          }),
+          'description': '''
+            Open else look tree arm responsibility week. Environmental statement bag someone them style.
+            Public these health team change. Tax final upon stay sing middle suggest.
+          ''',
           'metainfo': dict({
           }),
           'modified-at': '2017-05-21T00:00:00Z',
           'modified-by-group': 'admin',
           'modified-by-user': 'admin',
-          'title': dict({
-            'de': '',
-            'en': 'Michael Edwards',
-            'fr': '',
-          }),
+          'title': 'Michael Edwards',
         }),
         'id': '9dd4e461-268c-8034-f5c8-564e155c67a6',
         'relationships': dict({
