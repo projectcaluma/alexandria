@@ -1,3 +1,12 @@
+# 6.0.0
+### Fix
+* Make document title and description not localized ([`39436b7`](https://github.com/projectcaluma/alexandria/commit/39436b7739d8a06c9da2a51f7a7b5bed82a84d4c))
+* **dockerfile:** Use correct settings ([`ddccc4d`](https://github.com/projectcaluma/alexandria/commit/ddccc4d27aeda004bcf69130787b46585d1ae137))
+
+### Breaking
+* Turn the document's `title` and `description` into regular CharFields/TextFields, instead of localized ones, because localized fields do not make sense for user-generated data. ([`39436b7`](https://github.com/projectcaluma/alexandria/commit/39436b7739d8a06c9da2a51f7a7b5bed82a84d4c))
+* drop poetry from prod build by building a wheel ([`249544d`](https://github.com/projectcaluma/alexandria/commit/249544df7eadbe73a452164f73639f87966cb323))
+
 # 5.1.1
 ### Fix
 * fix(deps): update dependencies ([`2144e0b`](https://github.com/projectcaluma/alexandria/commit/2144e0b0b91de626c3994fde266e4de35d4258c9))
@@ -38,7 +47,7 @@
 * webdav_url to sperate webdav view ([`7162f28`](https://github.com/projectcaluma/alexandria/commit/7162f28d4cdfe8c7059d1b8cd95c5fa7dbeb93a5))
 
 The URL for WebDAV editing is now in a seperate endpoint, to allow for checking the Permissions before serving it.
-Previously the WebDAV URL was served even if the Permissions were denied, as getting the WebDAV URL was a Visibility check. 
+Previously the WebDAV URL was served even if the Permissions were denied, as getting the WebDAV URL was a Visibility check.
 
 ### Documentation
 * **readme:** Improve documentation for available features and config ([`a19b8cb`](https://github.com/projectcaluma/alexandria/commit/a19b8cb57c2c7222d2ff8943db6a5fc5b42e2341))
