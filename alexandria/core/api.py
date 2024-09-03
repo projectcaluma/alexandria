@@ -1,12 +1,31 @@
 import logging
+from typing import Optional, Tuple
 
 from django.conf import settings
 from django.core.files import File
 
-from alexandria.core import models
+from alexandria.core import models, presign_urls
 from alexandria.core.validations import validate_file
 
 log = logging.getLogger(__name__)
+
+
+def make_signature_components(
+    pk: str,
+    hostname: str,
+    expires: Optional[int] = None,
+    scheme: str = "http",
+    download_path: Optional[str] = None,
+) -> Tuple[str, int, str]:
+    return presign_urls.make_signature_components(
+        pk, hostname, expires, scheme, download_path
+    )
+
+
+def verify_signed_components(pk, hostname, expires, scheme, token_sig):
+    return presign_urls.verify_signed_components(
+        pk, hostname, expires, scheme, token_sig
+    )
 
 
 def create_document_file(

@@ -21,3 +21,13 @@ def test_create_document_file(db, category):
     )
     assert doc.title == "Bar.pdf"
     assert file.name == "Mee.pdf"
+
+
+def test_presigning_api(mocker):
+    mock = mocker.patch("alexandria.core.presign_urls.make_signature_components")
+    api.make_signature_components("123", "foo")
+    mock.assert_called_once_with("123", "foo", None, "http", None)
+
+    mock = mocker.patch("alexandria.core.presign_urls.verify_signed_components")
+    api.verify_signed_components("123", "foo", "foo", "http", "abcabc")
+    mock.assert_called_once_with("123", "foo", "foo", "http", "abcabc")

@@ -9,7 +9,11 @@ from rest_framework_json_api.relations import reverse
 
 
 def make_signature_components(
-    pk: str, hostname: str, expires: Optional[int] = None, scheme: str = "http"
+    pk: str,
+    hostname: str,
+    expires: Optional[int] = None,
+    scheme: str = "http",
+    download_path: Optional[str] = None,
 ) -> Tuple[str, int, str]:
     """Make the components used to sign and verify the download_url.
 
@@ -24,7 +28,7 @@ def make_signature_components(
                 + timezone.timedelta(seconds=settings.ALEXANDRIA_DOWNLOAD_URL_LIFETIME)
             ).timestamp()
         )
-    download_path = reverse("file-download", args=[pk])
+    download_path = download_path or reverse("file-download", args=[pk])
     host = f"{scheme}://{hostname}"
     url = f"{host.strip('/')}{download_path}"
     token = f"{url}{expires}{settings.SECRET_KEY}"
