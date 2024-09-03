@@ -132,11 +132,12 @@ class DocumentViewSet(PermissionViewMixin, VisibilityViewMixin, ModelViewSet):
         )
 
         file_name = f"{splitext(file.name)[0]}.pdf"
+        document_title = f"{splitext(document.title)[0]}.pdf"
         converted_document, __ = create_document_file(
             user=user,
             group=group,
             category=document.category,
-            document_title=document.title,
+            document_title=document_title,
             file_name=file_name,
             file_content=ContentFile(response.content, file_name),
             mime_type="application/pdf",

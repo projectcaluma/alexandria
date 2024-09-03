@@ -403,7 +403,7 @@ def test_convert_document(
     admin_client, document_factory, file_factory, settings, mocker
 ):
     settings.ALEXANDRIA_ENABLE_PDF_CONVERSION = True
-    document = document_factory()
+    document = document_factory(title="document.docx")
     file_factory(document=document, name="foo.docx")
 
     response = mocker.Mock()
@@ -417,9 +417,14 @@ def test_convert_document(
 
     assert response.status_code == HTTP_201_CREATED
 
-    assert Document.objects.all().count() == 2
-    assert File.objects.all().count() == 4
-    assert File.objects.filter(name="foo.pdf", variant=File.Variant.ORIGINAL).exists()
+    converted_document = Document.objects.get(pk=response.json()["data"]["id"])
+    assert converted_document
+    assert converted_document.title == "document.pdf"
+    assert converted_document.files.count() == 2
+
+    converted_file = converted_document.files.get(variant=File.Variant.ORIGINAL)
+    assert converted_file
+    assert converted_file.name == "foo.pdf"
 
 
 def test_convert_document_not_enabled(
