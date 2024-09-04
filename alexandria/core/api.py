@@ -22,9 +22,16 @@ def make_signature_components(
     )
 
 
-def verify_signed_components(pk, hostname, expires, scheme, token_sig):
+def verify_signed_components(
+    pk: str,
+    hostname: str,
+    token_sig: str,
+    expires: Optional[int] = None,
+    scheme: str = "http",
+    download_path: Optional[str] = None,
+):
     return presign_urls.verify_signed_components(
-        pk, hostname, expires, scheme, token_sig
+        pk, hostname, token_sig, expires, scheme, download_path
     )
 
 
