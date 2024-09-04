@@ -1,3 +1,10 @@
+# 6.1.0
+### Feature
+* Add presigning functions to public api ([`a6a56a6`](https://github.com/projectcaluma/alexandria/commit/a6a56a6d857f53c26d93f275aeea02d41a11a4a0))
+
+### Fix
+* **convert:** Change file extension in document title on conversion ([`c91d7fa`](https://github.com/projectcaluma/alexandria/commit/c91d7faf947b0e16cc3222b844d782a0944bfdaf))
+
 # 6.0.0
 ### Fix
 * Make document title and description not localized ([`39436b7`](https://github.com/projectcaluma/alexandria/commit/39436b7739d8a06c9da2a51f7a7b5bed82a84d4c))
