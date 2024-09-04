@@ -38,7 +38,14 @@ def make_signature_components(
     return url, expires, signature
 
 
-def verify_signed_components(pk, hostname, expires, scheme, token_sig):
+def verify_signed_components(
+    pk: str,
+    hostname: str,
+    token_sig: str,
+    expires: Optional[int],
+    scheme: str = "http",
+    download_path: Optional[str] = None,
+):
     """Verify a presigned download URL.
 
     It tests against the expiry: raises a TimeoutError
@@ -47,7 +54,9 @@ def verify_signed_components(pk, hostname, expires, scheme, token_sig):
     returns True otherwise.
     """
     now = timezone.now()
-    host, expires, signature = make_signature_components(pk, hostname, expires, scheme)
+    host, expires, signature = make_signature_components(
+        pk, hostname, expires, scheme, download_path
+    )
 
     if int(now.timestamp()) > expires:
         raise ValidationError("Download URL expired.")
