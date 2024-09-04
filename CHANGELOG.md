@@ -1,3 +1,7 @@
+# 6.1.1
+### Fix
+* **api:** Add missing "download_path" param to verify_signed_components ([`f0cca6c`](https://github.com/projectcaluma/alexandria/commit/f0cca6c28754a34c2f094a59b10805bb1883c5fb))
+
 # 6.1.0
 ### Feature
 * Add presigning functions to public api ([`a6a56a6`](https://github.com/projectcaluma/alexandria/commit/a6a56a6d857f53c26d93f275aeea02d41a11a4a0))
