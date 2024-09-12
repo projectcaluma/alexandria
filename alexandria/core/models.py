@@ -1,4 +1,3 @@
-import hashlib
 import logging
 import re
 import uuid
@@ -6,17 +5,14 @@ from mimetypes import guess_extension
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 
-import tika.language
-import tika.parser
 from django.conf import settings
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.postgres.indexes import GinIndex
-from django.contrib.postgres.search import SearchVector, SearchVectorField
+from django.contrib.postgres.search import SearchVectorField
 from django.core.exceptions import ImproperlyConfigured
 from django.core.files import File as DjangoFile
 from django.core.validators import RegexValidator
 from django.db import models, transaction
-from django.db.models import Value
 from django.db.models.fields.files import ImageFile
 from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
@@ -232,55 +228,6 @@ class File(UUIDModel):
     mime_type = models.CharField(max_length=255)
     size = models.IntegerField()
 
-    @staticmethod
-    def make_checksum(bytes_: bytes) -> str:
-        return f"sha256:{hashlib.sha256(bytes_).hexdigest()}"
-
-    def set_checksum(self):
-        if not settings.ALEXANDRIA_ENABLE_CHECKSUM:
-            return
-
-        self.content.file.file.seek(0)
-        self.checksum = self.make_checksum(self.content.file.file.read())
-
-    def set_content_vector(self):
-        if (
-            self.variant != File.Variant.ORIGINAL
-            or not settings.ALEXANDRIA_ENABLE_CONTENT_SEARCH
-        ):
-            return
-
-        self.content.file.file.seek(0)
-        parsed_content = tika.parser.from_buffer(self.content.file.file)
-
-        name_vector = SearchVector(Value(Path(self.name).stem), weight="A")
-        if not parsed_content["content"]:
-            self.content_vector = name_vector
-            return
-
-        # use part of content for language detection, beacause metadata is not reliable
-        self.language = tika.language.from_buffer(parsed_content["content"][:1000])
-        config = settings.ALEXANDRIA_ISO_639_TO_PSQL_SEARCH_CONFIG.get(
-            self.language, "simple"
-        )
-        self.content_vector = name_vector + SearchVector(
-            Value(parsed_content["content"]),
-            config=config,
-            weight="B",
-        )
-
-    def save(
-        self, force_insert=False, force_update=False, using=None, update_fields=None
-    ):
-        self.set_checksum()
-        self.set_content_vector()
-
-        file = super().save(force_insert, force_update, using, update_fields)
-
-        self.create_thumbnail()
-
-        return file
-
     def get_webdav_url(self, username, group, host="http://localhost:8000"):
         # The path doesn't need to match the actual file path, because we're accessing
         # the file via the `File.pk`. So we can use just the name, that will then be
@@ -373,3 +320,20 @@ def auto_delete_file_on_delete(sender, instance, **kwargs):
     """Delete file from filesystem when `File` object is deleted."""
 
     instance.content.delete(save=False)
+
+
+@receiver(models.signals.post_save, sender=File)
+def set_file_attributes(sender, instance, **kwargs):
+    from alexandria.core import tasks
+
+    if settings.ALEXANDRIA_ENABLE_CHECKSUM and not instance.checksum:
+        tasks.set_checksum.delay_on_commit(instance.pk)
+
+    if (
+        settings.ALEXANDRIA_ENABLE_CONTENT_SEARCH
+        and instance.variant == File.Variant.ORIGINAL
+        and not instance.content_vector
+    ):
+        tasks.set_content_vector.delay_on_commit(instance.pk)
+
+    instance.create_thumbnail()

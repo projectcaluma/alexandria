@@ -14,6 +14,7 @@ from pytest_factoryboy import register
 from pytest_factoryboy.fixture import Box
 from rest_framework.test import APIClient
 
+from alexandria.core import tasks
 from alexandria.oidc_auth.models import OIDCUser
 
 
@@ -50,6 +51,19 @@ def _make_clean_media_dir(settings):
 def mock_tika(mocker):
     mocker.patch("tika.parser.from_buffer", return_value={"content": "Important text"})
     mocker.patch("tika.language.from_buffer", return_value="en")
+
+
+@pytest.fixture(autouse=True)
+def mock_celery(mocker):
+    mocker.patch("django.db.transaction.on_commit", side_effect=lambda f: f())
+    mocker.patch(
+        "alexandria.core.tasks.set_checksum.delay",
+        side_effect=lambda id: tasks.set_checksum(id),
+    )
+    mocker.patch(
+        "alexandria.core.tasks.set_content_vector.delay",
+        side_effect=lambda id: tasks.set_content_vector(id),
+    )
 
 
 @pytest.fixture

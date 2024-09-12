@@ -14,7 +14,7 @@ services:
     entrypoint: |
       /bin/sh -c "chown -R ${UID}:${UID} /media"
 
-  alexandria:
+  alexandria: &alexandria
     build:
       context: .
       target: dev
@@ -31,6 +31,9 @@ services:
       - DEBUG=true
       - ALEXANDRIA_DEV_AUTH_BACKEND=true
       - ALEXANDRIA_ALLOW_ANONYMOUS_WRITE=true
+      - ALEXANDRIA_ENABLE_CONTENT_SEARCH=true
+      - PYTHONUNBUFFERED=1
+      - CELERY_RDB_HOST=0.0.0.0. # to be able to telnet from outside the container
 
   minio:
     environment:
@@ -46,6 +49,15 @@ services:
     environment:
       - CONCURRENT_DATABASE_RELOAD=false
       - ENABLE_DEFINITIONS_UPDATE=false
+
+  redis:
+    environment:
+      - REDIS_PASSWORD=redis
+
+  celery:
+    <<: *alexandria
+    ports:
+      - "6900-7000:6900-7000"
 
 volumes:
   uploads:

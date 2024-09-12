@@ -38,6 +38,11 @@ debug-alexandria: ## start an api container with service ports for debugging
 	@echo "Run './manage.py runserver 0:8000' to start the debugging server"
 	@docker compose run --rm --user root --use-aliases --service-ports alexandria bash
 
+.PHONY: debug-celery
+debug-celery: ## start a celery container with service ports for debugging
+	@docker compose stop celery
+	@echo "See https://docs.celeryq.dev/en/stable/userguide/debugging.html on how to debug celery"
+	@docker compose run --rm --user root --use-aliases --service-ports celery
 
 .PHONY: makemigrations
 makemigrations: ## Make django migrations

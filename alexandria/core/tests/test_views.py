@@ -19,6 +19,7 @@ from rest_framework.status import (
 
 from alexandria.core.factories import FileData
 from alexandria.core.models import File
+from alexandria.core.tasks import make_checksum
 from alexandria.core.tests.test_permissions import TIMESTAMP
 
 from ..models import Document, Tag
@@ -107,7 +108,7 @@ def test_file_upload(
     if enable_checksum:
         assert doc.files.filter(
             variant=File.Variant.ORIGINAL
-        ).first().checksum == File.make_checksum(getattr(FileData, file_type))
+        ).first().checksum == make_checksum(getattr(FileData, file_type))
 
 
 def test_at_rest_encryption(admin_client, settings, document, mocker):
@@ -487,7 +488,6 @@ def test_file_search(
     document_factory,
     file_factory,
     admin_client,
-    mocker,
     filters,
     expected_name,
     num_queries,
