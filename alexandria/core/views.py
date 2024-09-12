@@ -2,17 +2,13 @@ import io
 import itertools
 import logging
 import zipfile
-from functools import reduce
-from operator import or_
 from os.path import splitext
 from tempfile import NamedTemporaryFile
 
 import requests
 from django.conf import settings
-from django.contrib.postgres.search import SearchQuery
 from django.core.exceptions import ValidationError as DjangoCoreValidationError
 from django.core.files.base import ContentFile
-from django.db.models import OuterRef, Q, Subquery
 from django.http import FileResponse
 from django.utils.module_loading import import_string
 from django.utils.translation import gettext as _
@@ -48,6 +44,7 @@ from .filters import (
     CategoryFilterSet,
     DocumentFilterSet,
     FileFilterSet,
+    FileSearchFilterSet,
     MarkFilterSet,
     TagFilterSet,
 )
@@ -296,37 +293,4 @@ class SearchViewSet(
 ):
     serializer_class = serializers.FileSerializer
     queryset = models.File.objects.all()
-
-    def filter_queryset(self, queryset):
-        query = self.request.query_params.get("filter[query]")
-
-        search_queries = [
-            Q(
-                content_vector=SearchQuery(
-                    query,
-                    config="simple",
-                    search_type=settings.ALEXANDRIA_CONTENT_SEARCH_TYPE,
-                )
-            )
-        ]
-        for lang, config in settings.ALEXANDRIA_ISO_639_TO_PSQL_SEARCH_CONFIG.items():
-            search_queries.append(
-                Q(
-                    content_vector=SearchQuery(
-                        query,
-                        config=config,
-                        search_type=settings.ALEXANDRIA_CONTENT_SEARCH_TYPE,
-                    )
-                )
-            )
-
-        search_query = reduce(or_, search_queries)
-
-        latest_files = models.File.objects.filter(
-            document=OuterRef("document_id"), variant=models.File.Variant.ORIGINAL
-        ).order_by("-created_at")
-        queryset = queryset.filter(pk=Subquery(latest_files.values("pk")[:1])).filter(
-            search_query
-        )
-
-        return queryset
+    filterset_class = FileSearchFilterSet
