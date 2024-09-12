@@ -1,6 +1,10 @@
 import json
+from functools import reduce
+from operator import or_
 
-from django.db.models import FloatField, Q, TextField, Value
+from django.conf import settings
+from django.contrib.postgres.search import SearchQuery
+from django.db.models import FloatField, OuterRef, Q, Subquery, TextField, Value
 from django.db.models.fields.json import KeyTextTransform
 from django.db.models.functions import Cast
 from django_filters import (
@@ -168,6 +172,46 @@ class FileFilterSet(FilterSet):
     class Meta:
         model = models.File
         fields = ["original", "renderings", "variant", "metainfo", "files"]
+
+
+class FileSearchFilterSet(FileFilterSet):
+    query = CharFilter(method="search_files")
+
+    def search_files(self, queryset, name, value):
+        search_queries = [
+            Q(
+                content_vector=SearchQuery(
+                    value,
+                    config="simple",
+                    search_type=settings.ALEXANDRIA_CONTENT_SEARCH_TYPE,
+                )
+            )
+        ]
+        for lang, config in settings.ALEXANDRIA_ISO_639_TO_PSQL_SEARCH_CONFIG.items():
+            search_queries.append(
+                Q(
+                    content_vector=SearchQuery(
+                        value,
+                        config=config,
+                        search_type=settings.ALEXANDRIA_CONTENT_SEARCH_TYPE,
+                    )
+                )
+            )
+
+        search_query = reduce(or_, search_queries)
+
+        latest_files = models.File.objects.filter(
+            document=OuterRef("document_id"), variant=models.File.Variant.ORIGINAL
+        ).order_by("-created_at")
+        queryset = queryset.filter(pk=Subquery(latest_files.values("pk")[:1])).filter(
+            search_query
+        )
+
+        return queryset
+
+    class Meta:
+        model = models.File
+        fields = ["original", "renderings", "variant", "metainfo", "files", "query"]
 
 
 class TagFilterSet(FilterSet):
