@@ -1,3 +1,7 @@
+# 6.2.0
+### Feature
+* Add celery to allow for background tasks (d6f995c5137b01fc2366bbf1011ea56a0a6c17a7)
+
 # 6.1.1
 ### Fix
 * **api:** Add missing "download_path" param to verify_signed_components ([`f0cca6c`](https://github.com/projectcaluma/alexandria/commit/f0cca6c28754a34c2f094a59b10805bb1883c5fb))
