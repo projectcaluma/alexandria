@@ -1,3 +1,7 @@
+# 6.3.0
+### Feature
+* Move the fulltext search code to a proper filterset (088a897820f88e3078bd20488ca0437e575a8372)
+
 # 6.2.0
 ### Feature
 * Add celery to allow for background tasks (d6f995c5137b01fc2366bbf1011ea56a0a6c17a7)
