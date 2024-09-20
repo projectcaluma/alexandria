@@ -220,3 +220,14 @@ ALEXANDRIA_ISO_639_TO_PSQL_SEARCH_CONFIG = env.dict(
 ALEXANDRIA_CONTENT_SEARCH_TYPE = env.str(
     "ALEXANDRIA_CONTENT_SEARCH_TYPE", default="phrase"
 )
+
+# Mime types that are considered safe for Content-Disposition: inline
+SAFE_FOR_INLINE_DISPOSITION = env.list(
+    "ALEXANDRIA_SAFE_FOR_INLINE_DISPOSITION",
+    default=[
+        "application/pdf",
+        "image/jpeg",
+        "image/png",
+        "image/gif",
+    ],
+)
