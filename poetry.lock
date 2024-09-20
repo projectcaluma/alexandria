@@ -2119,13 +2119,13 @@ dev = ["argcomplete", "attrs (>=19.2)", "hypothesis (>=3.56)", "mock", "pygments
 
 [[package]]
 name = "pytest-celery"
-version = "1.1.1"
+version = "1.1.2"
 description = "Pytest plugin for Celery"
 optional = false
 python-versions = "<4.0,>=3.8"
 files = [
-    {file = "pytest_celery-1.1.1-py3-none-any.whl", hash = "sha256:0b441f2a1caea29a34d87880b967a853fd36e65e44ce81ffe7f5af1bfe80768d"},
-    {file = "pytest_celery-1.1.1.tar.gz", hash = "sha256:21e89e191a6a2713c76b4d3307a2fea9751a7b71c22ca09c531873034d2b92e8"},
+    {file = "pytest_celery-1.1.2-py3-none-any.whl", hash = "sha256:e117cf2aa5164f99d7ac8296bd3dee16413faa0153d9b5de2c9f9242c60f350b"},
+    {file = "pytest_celery-1.1.2.tar.gz", hash = "sha256:b02cfab5775dd74af99e03ab963047fe1d980dc40f1da19934bf1142d11fa398"},
 ]
 
 [package.dependencies]
@@ -2134,7 +2134,7 @@ debugpy = ">=1.8.5,<2.0.0"
 docker = ">=7.1.0,<8.0.0"
 psutil = ">=6.0.0"
 pytest-docker-tools = ">=3.1.3"
-setuptools = ">=72.1.0"
+setuptools = ">=74.1.2"
 tenacity = ">=9.0.0"
 
 [package.extras]
@@ -3245,4 +3245,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10.0,<4.0"
-content-hash = "96bec1286cf0430f47481a622b3151db9578916be8241b3c290e4abe60fb7095"
+content-hash = "b47d9b06434aa9d620a6fc94ff0df7618caec0dcb9fb10717a75c111b88403ab"
