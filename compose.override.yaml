@@ -50,10 +50,6 @@ services:
       - CONCURRENT_DATABASE_RELOAD=false
       - ENABLE_DEFINITIONS_UPDATE=false
 
-  redis:
-    environment:
-      - REDIS_PASSWORD=redis
-
   celery:
     <<: *alexandria
     ports:
