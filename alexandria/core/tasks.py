@@ -1,14 +1,21 @@
 import hashlib
+from mimetypes import guess_extension
 from pathlib import Path
+from tempfile import NamedTemporaryFile
 
 import tika.language
 import tika.parser
 from django.conf import settings
 from django.contrib.postgres.search import SearchVector
 from django.db.models import Value
+from django.db.models.fields.files import ImageFile
+from preview_generator.manager import PreviewManager
 
 from alexandria.core.models import File
 from celery import shared_task
+from celery.utils.log import get_task_logger
+
+logger = get_task_logger(__name__)
 
 
 @shared_task(soft_time_limit=301)
@@ -56,3 +63,43 @@ def set_checksum(file_pk: str):
 
 def make_checksum(bytes_: bytes) -> str:
     return f"sha256:{hashlib.sha256(bytes_).hexdigest()}"
+
+
+@shared_task
+def create_thumbnail(file_pk: str):
+    file = File.objects.get(pk=file_pk)
+
+    with NamedTemporaryFile() as tmp:
+        temp_file = Path(tmp.name)
+        manager = PreviewManager(str(temp_file.parent))
+        with temp_file.open("wb") as f:
+            f.write(file.content.file.file.read())
+        extension = guess_extension(file.mime_type)
+        preview_kwargs = {"file_ext": extension}
+        if settings.ALEXANDRIA_THUMBNAIL_WIDTH:  # pragma: no cover
+            preview_kwargs["width"] = settings.ALEXANDRIA_THUMBNAIL_WIDTH
+        if settings.ALEXANDRIA_THUMBNAIL_HEIGHT:  # pragma: no cover
+            preview_kwargs["height"] = settings.ALEXANDRIA_THUMBNAIL_HEIGHT
+        try:
+            path_to_preview_image = Path(
+                manager.get_jpeg_preview(str(temp_file), **preview_kwargs)
+            )
+        # thumbnail generation can throw many different exceptions, catch all
+        except Exception:  # noqa: B902
+            logger.exception("Thumbnail generation failed")
+            return None
+
+    with path_to_preview_image.open("rb") as thumb:
+        image = ImageFile(thumb)
+        thumb_file = File.objects.create(
+            name=f"{file.name}_preview.jpg",
+            document=file.document,
+            variant=File.Variant.THUMBNAIL.value,
+            original=file,
+            encryption_status=file.encryption_status,
+            content=image,
+            mime_type="image/jpeg",
+            size=file.size,
+        )
+
+    return thumb_file

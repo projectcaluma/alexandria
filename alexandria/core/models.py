@@ -1,7 +1,5 @@
-import logging
 import re
 import uuid
-from mimetypes import guess_extension
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 
@@ -13,17 +11,13 @@ from django.core.exceptions import ImproperlyConfigured
 from django.core.files import File as DjangoFile
 from django.core.validators import RegexValidator
 from django.db import models, transaction
-from django.db.models.fields.files import ImageFile
 from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
 from localized_fields.fields import LocalizedCharField, LocalizedTextField
 from manabi.token import Key, Token
-from preview_generator.manager import PreviewManager
 
 from alexandria.core.presign_urls import make_signature_components
 from alexandria.storages.fields import DynamicStorageFileField
-
-log = logging.getLogger(__name__)
 
 
 def upload_file_content_to(instance, _):
@@ -255,49 +249,6 @@ class File(UUIDModel):
             f"{handler}{host}{settings.ALEXANDRIA_MANABI_DAV_URL_PATH}/{token.as_url()}"
         )
 
-    def create_thumbnail(self):
-        if (
-            self.variant != File.Variant.ORIGINAL
-            or self.renderings.count() > 0
-            or not settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION
-        ):
-            return
-
-        with NamedTemporaryFile() as tmp:
-            temp_file = Path(tmp.name)
-            manager = PreviewManager(str(temp_file.parent))
-            with temp_file.open("wb") as f:
-                f.write(self.content.file.file.read())
-            extension = guess_extension(self.mime_type)
-            preview_kwargs = {"file_ext": extension}
-            if settings.ALEXANDRIA_THUMBNAIL_WIDTH:  # pragma: no cover
-                preview_kwargs["width"] = settings.ALEXANDRIA_THUMBNAIL_WIDTH
-            if settings.ALEXANDRIA_THUMBNAIL_HEIGHT:  # pragma: no cover
-                preview_kwargs["height"] = settings.ALEXANDRIA_THUMBNAIL_HEIGHT
-            try:
-                path_to_preview_image = Path(
-                    manager.get_jpeg_preview(str(temp_file), **preview_kwargs)
-                )
-            # thumbnail generation can throw many different exceptions, catch all
-            except Exception:  # noqa: B902
-                log.exception("Thumbnail generation failed")
-                return None
-
-        with path_to_preview_image.open("rb") as thumb:
-            file = ImageFile(thumb)
-            thumb_file = File.objects.create(
-                name=f"{self.name}_preview.jpg",
-                document=self.document,
-                variant=File.Variant.THUMBNAIL.value,
-                original=self,
-                encryption_status=self.encryption_status,
-                content=file,
-                mime_type="image/jpeg",
-                size=file.size,
-            )
-
-        return thumb_file
-
     def get_download_url(self, request):
         if not request:
             return None
@@ -336,4 +287,9 @@ def set_file_attributes(sender, instance, **kwargs):
     ):
         tasks.set_content_vector.delay_on_commit(instance.pk)
 
-    instance.create_thumbnail()
+    if (
+        instance.variant == File.Variant.ORIGINAL
+        and instance.renderings.count() < 1
+        and settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION
+    ):
+        tasks.create_thumbnail.delay_on_commit(instance.pk)
