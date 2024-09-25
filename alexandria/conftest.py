@@ -133,10 +133,12 @@ def manabi(settings):
 
 @pytest.fixture()
 def document_post_data(category):
+    content = io.BytesIO(
+        b"%PDF-1.\ntrailer<</Root<</Pages<</Kids[<</MediaBox[0 0 3 3]>>]>>>>>>"
+    )
+    content.name = "foo.pdf"
     return {
-        "content": io.BytesIO(
-            b"%PDF-1.\ntrailer<</Root<</Pages<</Kids[<</MediaBox[0 0 3 3]>>]>>>>>>"
-        ),
+        "content": content,
         "data": io.BytesIO(
             json.dumps({"title": "winstonsmith", "category": category.pk}).encode(
                 "utf-8"

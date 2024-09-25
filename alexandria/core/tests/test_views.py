@@ -60,37 +60,41 @@ def test_anonymous_writing(
     )
 
 
-@pytest.mark.parametrize("enable_checksum", (True, False))
 @pytest.mark.parametrize(
-    "file_type,allowed_mime_types,thumbnail_count,status",
+    "file_type,extension,content_type,allowed_mime_types,thumbnail_count,status",
     [
-        ("png", None, 1, HTTP_201_CREATED),
-        ("unsupported", None, 0, HTTP_201_CREATED),
-        ("png", ["application/pdf"], 1, HTTP_400_BAD_REQUEST),
+        # happy case
+        ("png", "png", "image/png", None, 1, HTTP_201_CREATED),
+        # inconsistent extension
+        ("png", "jpeg", "image/png", None, 1, HTTP_400_BAD_REQUEST),
+        # missing extension
+        ("png", "", "image/png", None, 1, HTTP_400_BAD_REQUEST),
+        # inconsistent content
+        ("unsupported", "png", "image/png", None, 0, HTTP_400_BAD_REQUEST),
+        # mime type not allowed by category
+        ("png", "png", "image/png", ["application/pdf"], 1, HTTP_400_BAD_REQUEST),
     ],
 )
 def test_file_upload(
     admin_client,
     document_factory,
-    tmp_path,
-    file_factory,
-    enable_checksum,
     file_type,
+    extension,
     settings,
     thumbnail_count,
     allowed_mime_types,
+    content_type,
     status,
     category_factory,
 ):
     settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION = True
-    settings.ALEXANDRIA_ENABLE_CHECKSUM = enable_checksum
     category = category_factory(allowed_mime_types=allowed_mime_types)
     doc = document_factory(category=category)
-    data = {
-        "name": "file.png",
-        "document": str(doc.pk),
-        "content": io.BytesIO(getattr(FileData, file_type)),
-    }
+    filename = f"file.{extension}"
+    content = io.BytesIO(getattr(FileData, file_type))
+    content.name = filename
+    content.content_type = content_type
+    data = {"name": filename, "document": str(doc.pk), "content": content}
     url = reverse("file-list")
     resp = admin_client.post(url, data=data, format="multipart")
 
@@ -105,10 +109,23 @@ def test_file_upload(
         File.objects.filter(variant=File.Variant.THUMBNAIL).count() == thumbnail_count
     )
 
-    if enable_checksum:
-        assert doc.files.filter(
-            variant=File.Variant.ORIGINAL
-        ).first().checksum == make_checksum(getattr(FileData, file_type))
+
+def test_generate_checksum(admin_client, document_factory, settings):
+    settings.ALEXANDRIA_ENABLE_CHECKSUM = True
+    doc = document_factory()
+    data = {
+        "name": "file.png",
+        "document": str(doc.pk),
+        "content": io.BytesIO(FileData.png),
+    }
+    url = reverse("file-list")
+    resp = admin_client.post(url, data=data, format="multipart")
+
+    assert resp.status_code == HTTP_201_CREATED
+    doc.refresh_from_db()
+
+    file = doc.files.filter(name="file.png", variant=File.Variant.ORIGINAL).first()
+    assert file.checksum == make_checksum(FileData.png)
 
 
 def test_at_rest_encryption(admin_client, settings, document, mocker):
@@ -193,8 +210,8 @@ def test_validate_created_by(
     if viewset == FileViewSet:
         del post_data["data"]
         post_data["content"] = io.BytesIO(b"datadatatatat")
-        for key in ["variant", "name"]:
-            post_data[key] = serialized_model[key]
+        post_data["name"] = "foo.txt"
+        post_data["variant"] = serialized_model["variant"]
         post_data["document"] = serialized_model["document"]["id"]
     if viewset == DocumentViewSet and not update:
         post_data = document_post_data
@@ -364,6 +381,21 @@ def test_download_file(admin_client, file, presigned, expected_status):
 
     result = admin_client.get(url)
     assert result.status_code == expected_status
+
+
+@pytest.mark.parametrize(
+    "mime_type,expected_content_disposition",
+    [("application/pdf", "inline"), ("text/html", "attachment")],
+)
+def test_download_file_mime_type(
+    admin_client, file_factory, mime_type, expected_content_disposition
+):
+    file = file_factory(mime_type=mime_type)
+    response = admin_client.get(reverse("file-detail", args=(file.pk,)))
+    url = response.json()["data"]["attributes"]["download-url"]
+    result = admin_client.get(url)
+    assert result.headers["Content-Type"] == mime_type
+    assert expected_content_disposition in result.headers["Content-Disposition"]
 
 
 @pytest.mark.freeze_time(TIMESTAMP, as_arg=True)

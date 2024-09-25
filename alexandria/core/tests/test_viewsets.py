@@ -199,7 +199,7 @@ def test_api_create(fixture, admin_client, viewset, snapshot, document_post_data
     if viewset.get_view_name() == "File":
         data = {
             "content": io.BytesIO(b"FiLeCoNtEnt"),
-            "name": serializer.data["name"],
+            "name": "foo.txt",
             "document": str(fixture.document.pk),
         }
         opts = {"format": "multipart"}

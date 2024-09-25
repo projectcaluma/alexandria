@@ -78,11 +78,11 @@
       'INSERT INTO "alexandria_core_document" ("created_at", "created_by_user", "created_by_group", "modified_at", "modified_by_user", "modified_by_group", "metainfo", "id", "title", "description", "category_id", "date") VALUES (\'2017-05-21 00:00:00+00:00\'::timestamptz, \'admin\', \'admin\', \'2017-05-21 00:00:00+00:00\'::timestamptz, \'admin\', \'admin\', \'{}\'::jsonb, \'f561aaf6ef0bf14d4208bb46a4ccb3ad\'::uuid, \'winstonsmith\', NULL, \'note-act-source\', NULL)',
       'SELECT "alexandria_core_document"."created_at", "alexandria_core_document"."created_by_user", "alexandria_core_document"."created_by_group", "alexandria_core_document"."modified_at", "alexandria_core_document"."modified_by_user", "alexandria_core_document"."modified_by_group", "alexandria_core_document"."metainfo", "alexandria_core_document"."id", "alexandria_core_document"."title", "alexandria_core_document"."description", "alexandria_core_document"."category_id", "alexandria_core_document"."date" FROM "alexandria_core_document" WHERE "alexandria_core_document"."id" = \'f561aaf6ef0bf14d4208bb46a4ccb3ad\'::uuid LIMIT 21',
       'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."metainfo", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description", "alexandria_core_category"."allowed_mime_types", "alexandria_core_category"."color", "alexandria_core_category"."parent_id" FROM "alexandria_core_category" WHERE "alexandria_core_category"."slug" = \'note-act-source\' LIMIT 21',
-      'INSERT INTO "alexandria_core_file" ("created_at", "created_by_user", "created_by_group", "modified_at", "modified_by_user", "modified_by_group", "metainfo", "id", "variant", "original_id", "name", "document_id", "checksum", "encryption_status", "content_vector", "language", "content", "mime_type", "size") VALUES (\'2017-05-21 00:00:00+00:00\'::timestamptz, \'admin\', \'admin\', \'2017-05-21 00:00:00+00:00\'::timestamptz, \'admin\', \'admin\', \'{}\'::jsonb, \'ea416ed0759d46a8de58f63a59077499\'::uuid, \'original\', NULL, \'content\', \'f561aaf6ef0bf14d4208bb46a4ccb3ad\'::uuid, NULL, NULL, NULL, NULL, \'ea416ed0-759d-46a8-de58-f63a59077499_content\', \'application/pdf\', 67)',
+      'INSERT INTO "alexandria_core_file" ("created_at", "created_by_user", "created_by_group", "modified_at", "modified_by_user", "modified_by_group", "metainfo", "id", "variant", "original_id", "name", "document_id", "checksum", "encryption_status", "content_vector", "language", "content", "mime_type", "size") VALUES (\'2017-05-21 00:00:00+00:00\'::timestamptz, \'admin\', \'admin\', \'2017-05-21 00:00:00+00:00\'::timestamptz, \'admin\', \'admin\', \'{}\'::jsonb, \'ea416ed0759d46a8de58f63a59077499\'::uuid, \'original\', NULL, \'foo.pdf\', \'f561aaf6ef0bf14d4208bb46a4ccb3ad\'::uuid, NULL, NULL, NULL, NULL, \'ea416ed0-759d-46a8-de58-f63a59077499_foo.pdf\', \'application/pdf\', 67)',
       'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."checksum", "alexandria_core_file"."encryption_status", "alexandria_core_file"."content_vector", "alexandria_core_file"."language", "alexandria_core_file"."content", "alexandria_core_file"."mime_type", "alexandria_core_file"."size" FROM "alexandria_core_file" WHERE "alexandria_core_file"."id" = \'ea416ed0759d46a8de58f63a59077499\'::uuid LIMIT 21',
       'UPDATE "alexandria_core_file" SET "checksum" = \'sha256:a154d301b8eb0a1af4c32bb560689af62fd1afd50221533cb414191babbc9fef\' WHERE "alexandria_core_file"."id" = \'ea416ed0759d46a8de58f63a59077499\'::uuid',
       'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."checksum", "alexandria_core_file"."encryption_status", "alexandria_core_file"."content_vector", "alexandria_core_file"."language", "alexandria_core_file"."content", "alexandria_core_file"."mime_type", "alexandria_core_file"."size" FROM "alexandria_core_file" WHERE "alexandria_core_file"."id" = \'ea416ed0759d46a8de58f63a59077499\'::uuid LIMIT 21',
-      'UPDATE "alexandria_core_file" SET "content_vector" = (setweight(to_tsvector(COALESCE(\'content\', \'\')), \'A\') || setweight(to_tsvector(\'english\'::regconfig, COALESCE(\'Important text\', \'\')), \'B\')), "language" = \'en\' WHERE "alexandria_core_file"."id" = \'ea416ed0759d46a8de58f63a59077499\'::uuid',
+      'UPDATE "alexandria_core_file" SET "content_vector" = (setweight(to_tsvector(COALESCE(\'foo\', \'\')), \'A\') || setweight(to_tsvector(\'english\'::regconfig, COALESCE(\'Important text\', \'\')), \'B\')), "language" = \'en\' WHERE "alexandria_core_file"."id" = \'ea416ed0759d46a8de58f63a59077499\'::uuid',
       'SELECT COUNT(*) AS "__count" FROM "alexandria_core_file" WHERE "alexandria_core_file"."original_id" = \'ea416ed0759d46a8de58f63a59077499\'::uuid',
       'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."checksum", "alexandria_core_file"."encryption_status", "alexandria_core_file"."content_vector", "alexandria_core_file"."language", "alexandria_core_file"."content", "alexandria_core_file"."mime_type", "alexandria_core_file"."size" FROM "alexandria_core_file" WHERE "alexandria_core_file"."id" = \'ea416ed0759d46a8de58f63a59077499\'::uuid LIMIT 21',
       'COMMIT',
@@ -92,7 +92,7 @@
     ]),
     'query_count': 16,
     'request': dict({
-      'CONTENT_LENGTH': '397',
+      'CONTENT_LENGTH': '388',
       'CONTENT_TYPE': 'multipart/form-data; boundary=BoUnDaRyStRiNg; charset=utf-8',
       'PATH_INFO': '/api/v1/documents',
       'QUERY_STRING': '',
@@ -102,6 +102,7 @@
     'request_payload': dict({
       'content': BytesIO(
         closed=False,
+        name='foo.pdf',
       ),
       'data': BytesIO(
         closed=False,
@@ -167,19 +168,23 @@
     'queries': list([
       'SELECT "alexandria_core_document"."created_at", "alexandria_core_document"."created_by_user", "alexandria_core_document"."created_by_group", "alexandria_core_document"."modified_at", "alexandria_core_document"."modified_by_user", "alexandria_core_document"."modified_by_group", "alexandria_core_document"."metainfo", "alexandria_core_document"."id", "alexandria_core_document"."title", "alexandria_core_document"."description", "alexandria_core_document"."category_id", "alexandria_core_document"."date" FROM "alexandria_core_document" WHERE "alexandria_core_document"."id" = \'9dd4e461268c8034f5c8564e155c67a6\'::uuid LIMIT 21',
       'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."metainfo", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description", "alexandria_core_category"."allowed_mime_types", "alexandria_core_category"."color", "alexandria_core_category"."parent_id" FROM "alexandria_core_category" WHERE "alexandria_core_category"."slug" = \'note-act-source\' LIMIT 21',
-      'INSERT INTO "alexandria_core_file" ("created_at", "created_by_user", "created_by_group", "modified_at", "modified_by_user", "modified_by_group", "metainfo", "id", "variant", "original_id", "name", "document_id", "checksum", "encryption_status", "content_vector", "language", "content", "mime_type", "size") VALUES (\'2017-05-21 00:00:00+00:00\'::timestamptz, \'admin\', \'admin\', \'2017-05-21 00:00:00+00:00\'::timestamptz, \'admin\', \'admin\', \'{}\'::jsonb, \'ea416ed0759d46a8de58f63a59077499\'::uuid, \'original\', NULL, \'father.png\', \'9dd4e461268c8034f5c8564e155c67a6\'::uuid, NULL, NULL, NULL, NULL, \'ea416ed0-759d-46a8-de58-f63a59077499_father.png\', \'image/png\', 11)',
+      'INSERT INTO "alexandria_core_file" ("created_at", "created_by_user", "created_by_group", "modified_at", "modified_by_user", "modified_by_group", "metainfo", "id", "variant", "original_id", "name", "document_id", "checksum", "encryption_status", "content_vector", "language", "content", "mime_type", "size") VALUES (\'2017-05-21 00:00:00+00:00\'::timestamptz, \'admin\', \'admin\', \'2017-05-21 00:00:00+00:00\'::timestamptz, \'admin\', \'admin\', \'{}\'::jsonb, \'ea416ed0759d46a8de58f63a59077499\'::uuid, \'original\', NULL, \'foo.txt\', \'9dd4e461268c8034f5c8564e155c67a6\'::uuid, NULL, NULL, NULL, NULL, \'ea416ed0-759d-46a8-de58-f63a59077499_foo.txt\', \'text/plain\', 11)',
       'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."checksum", "alexandria_core_file"."encryption_status", "alexandria_core_file"."content_vector", "alexandria_core_file"."language", "alexandria_core_file"."content", "alexandria_core_file"."mime_type", "alexandria_core_file"."size" FROM "alexandria_core_file" WHERE "alexandria_core_file"."id" = \'ea416ed0759d46a8de58f63a59077499\'::uuid LIMIT 21',
       'UPDATE "alexandria_core_file" SET "checksum" = \'sha256:945db0f84bf4ec45cf1c4835cb61848210d64c3867f5a3d78f55ca18e4a98879\' WHERE "alexandria_core_file"."id" = \'ea416ed0759d46a8de58f63a59077499\'::uuid',
       'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."checksum", "alexandria_core_file"."encryption_status", "alexandria_core_file"."content_vector", "alexandria_core_file"."language", "alexandria_core_file"."content", "alexandria_core_file"."mime_type", "alexandria_core_file"."size" FROM "alexandria_core_file" WHERE "alexandria_core_file"."id" = \'ea416ed0759d46a8de58f63a59077499\'::uuid LIMIT 21',
-      'UPDATE "alexandria_core_file" SET "content_vector" = (setweight(to_tsvector(COALESCE(\'father\', \'\')), \'A\') || setweight(to_tsvector(\'english\'::regconfig, COALESCE(\'Important text\', \'\')), \'B\')), "language" = \'en\' WHERE "alexandria_core_file"."id" = \'ea416ed0759d46a8de58f63a59077499\'::uuid',
+      'UPDATE "alexandria_core_file" SET "content_vector" = (setweight(to_tsvector(COALESCE(\'foo\', \'\')), \'A\') || setweight(to_tsvector(\'english\'::regconfig, COALESCE(\'Important text\', \'\')), \'B\')), "language" = \'en\' WHERE "alexandria_core_file"."id" = \'ea416ed0759d46a8de58f63a59077499\'::uuid',
       'SELECT COUNT(*) AS "__count" FROM "alexandria_core_file" WHERE "alexandria_core_file"."original_id" = \'ea416ed0759d46a8de58f63a59077499\'::uuid',
       'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."checksum", "alexandria_core_file"."encryption_status", "alexandria_core_file"."content_vector", "alexandria_core_file"."language", "alexandria_core_file"."content", "alexandria_core_file"."mime_type", "alexandria_core_file"."size" FROM "alexandria_core_file" WHERE "alexandria_core_file"."id" = \'ea416ed0759d46a8de58f63a59077499\'::uuid LIMIT 21',
+      'SELECT "alexandria_core_document"."created_at", "alexandria_core_document"."created_by_user", "alexandria_core_document"."created_by_group", "alexandria_core_document"."modified_at", "alexandria_core_document"."modified_by_user", "alexandria_core_document"."modified_by_group", "alexandria_core_document"."metainfo", "alexandria_core_document"."id", "alexandria_core_document"."title", "alexandria_core_document"."description", "alexandria_core_document"."category_id", "alexandria_core_document"."date" FROM "alexandria_core_document" WHERE "alexandria_core_document"."id" = \'9dd4e461268c8034f5c8564e155c67a6\'::uuid LIMIT 21',
+      'INSERT INTO "alexandria_core_file" ("created_at", "created_by_user", "created_by_group", "modified_at", "modified_by_user", "modified_by_group", "metainfo", "id", "variant", "original_id", "name", "document_id", "checksum", "encryption_status", "content_vector", "language", "content", "mime_type", "size") VALUES (\'2017-05-21 00:00:00+00:00\'::timestamptz, NULL, NULL, \'2017-05-21 00:00:00+00:00\'::timestamptz, NULL, NULL, \'{}\'::jsonb, \'fb0e22c79ac75679e9881e6ba183b354\'::uuid, \'thumbnail\', \'ea416ed0759d46a8de58f63a59077499\'::uuid, \'foo.txt_preview.jpg\', \'9dd4e461268c8034f5c8564e155c67a6\'::uuid, NULL, NULL, NULL, NULL, \'fb0e22c7-9ac7-5679-e988-1e6ba183b354_foo.txt_preview.jpg\', \'image/jpeg\', 11)',
+      'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."checksum", "alexandria_core_file"."encryption_status", "alexandria_core_file"."content_vector", "alexandria_core_file"."language", "alexandria_core_file"."content", "alexandria_core_file"."mime_type", "alexandria_core_file"."size" FROM "alexandria_core_file" WHERE "alexandria_core_file"."id" = \'fb0e22c79ac75679e9881e6ba183b354\'::uuid LIMIT 21',
+      'UPDATE "alexandria_core_file" SET "checksum" = \'sha256:d3cb7034b6ae106173147af8961e67510b2f16eb3c8e4518a1bf561da875b74d\' WHERE "alexandria_core_file"."id" = \'fb0e22c79ac75679e9881e6ba183b354\'::uuid',
       'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."checksum", "alexandria_core_file"."encryption_status", "alexandria_core_file"."content_vector", "alexandria_core_file"."language", "alexandria_core_file"."content", "alexandria_core_file"."mime_type", "alexandria_core_file"."size" FROM "alexandria_core_file" WHERE "alexandria_core_file"."original_id" = \'ea416ed0759d46a8de58f63a59077499\'::uuid ORDER BY "alexandria_core_file"."created_at" DESC',
       'SELECT 1 AS "a" FROM "alexandria_core_document" WHERE ("alexandria_core_document"."id" = \'9dd4e461268c8034f5c8564e155c67a6\'::uuid AND "alexandria_core_document"."id" = \'9dd4e461268c8034f5c8564e155c67a6\'::uuid) LIMIT 1',
     ]),
-    'query_count': 11,
+    'query_count': 15,
     'request': dict({
-      'CONTENT_LENGTH': '345',
+      'CONTENT_LENGTH': '342',
       'CONTENT_TYPE': 'multipart/form-data; boundary=BoUnDaRyStRiNg; charset=utf-8',
       'PATH_INFO': '/api/v1/files',
       'QUERY_STRING': '',
@@ -191,7 +196,7 @@
         closed=False,
       ),
       'document': '9dd4e461-268c-8034-f5c8-564e155c67a6',
-      'name': 'father.png',
+      'name': 'foo.txt',
     }),
     'response': dict({
       'data': dict({
@@ -203,11 +208,11 @@
           'download-url': 'http://testserver/api/v1/files/ea416ed0-759d-46a8-de58-f63a59077499/download?expires=1495325100&signature=yomBR8YqKuSLguMHxfpQ2Myl2lywqF1v2GTbjBLg9a4',
           'metainfo': dict({
           }),
-          'mime-type': 'image/png',
+          'mime-type': 'text/plain',
           'modified-at': '2017-05-21T00:00:00Z',
           'modified-by-group': 'admin',
           'modified-by-user': 'admin',
-          'name': 'father.png',
+          'name': 'foo.txt',
           'size': 11,
           'variant': 'original',
         }),
@@ -224,9 +229,13 @@
           }),
           'renderings': dict({
             'data': list([
+              dict({
+                'id': 'fb0e22c7-9ac7-5679-e988-1e6ba183b354',
+                'type': 'files',
+              }),
             ]),
             'meta': dict({
-              'count': 0,
+              'count': 1,
             }),
           }),
         }),
@@ -2034,7 +2043,7 @@
 # name: test_api_list[TagViewSet]
   dict({
     'queries': list([
-      'SELECT DISTINCT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."metainfo", "alexandria_core_tag"."id", "alexandria_core_tag"."name", "alexandria_core_tag"."description", "alexandria_core_tag"."tag_synonym_group_id", "alexandria_core_tagsynonymgroup"."id", "alexandria_core_tagsynonymgroup"."created_at", "alexandria_core_tagsynonymgroup"."created_by_user", "alexandria_core_tagsynonymgroup"."created_by_group", "alexandria_core_tagsynonymgroup"."modified_at", "alexandria_core_tagsynonymgroup"."modified_by_user", "alexandria_core_tagsynonymgroup"."modified_by_group", "alexandria_core_tagsynonymgroup"."metainfo" FROM "alexandria_core_tag" LEFT OUTER JOIN "alexandria_core_tagsynonymgroup" ON ("alexandria_core_tag"."tag_synonym_group_id" = "alexandria_core_tagsynonymgroup"."id")',
+      'SELECT DISTINCT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."metainfo", "alexandria_core_tag"."id", "alexandria_core_tag"."name", "alexandria_core_tag"."description", "alexandria_core_tag"."tag_synonym_group_id", "alexandria_core_tagsynonymgroup"."id", "alexandria_core_tagsynonymgroup"."created_at", "alexandria_core_tagsynonymgroup"."created_by_user", "alexandria_core_tagsynonymgroup"."created_by_group", "alexandria_core_tagsynonymgroup"."modified_at", "alexandria_core_tagsynonymgroup"."modified_by_user", "alexandria_core_tagsynonymgroup"."modified_by_group", "alexandria_core_tagsynonymgroup"."metainfo" FROM "alexandria_core_tag" LEFT OUTER JOIN "alexandria_core_tagsynonymgroup" ON ("alexandria_core_tag"."tag_synonym_group_id" = "alexandria_core_tagsynonymgroup"."id") ORDER BY "alexandria_core_tag"."name" ASC',
     ]),
     'query_count': 1,
     'request': dict({
@@ -2047,6 +2056,35 @@
     'request_payload': None,
     'response': dict({
       'data': list([
+        dict({
+          'attributes': dict({
+            'created-at': '2017-05-21T00:00:00Z',
+            'created-by-group': 'admin',
+            'created-by-user': 'admin',
+            'description': dict({
+              'de': '',
+              'en': '''
+                Free environment measure role later now over.
+                Can bed notice range. Minute can second prove every check official. Stay culture create risk.
+                Daughter single product trade.
+              ''',
+              'fr': '',
+            }),
+            'metainfo': dict({
+            }),
+            'modified-at': '2017-05-21T00:00:00Z',
+            'modified-by-group': 'admin',
+            'modified-by-user': 'admin',
+            'name': 'Lorraine Reynolds',
+          }),
+          'id': 'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad',
+          'relationships': dict({
+            'tag-synonym-group': dict({
+              'data': None,
+            }),
+          }),
+          'type': 'tags',
+        }),
         dict({
           'attributes': dict({
             'created-at': '2017-05-21T00:00:00Z',
@@ -2096,35 +2134,6 @@
             'name': 'Rebecca Gonzalez',
           }),
           'id': '9336ebf2-5087-d91c-818e-e6e9ec29f8c1',
-          'relationships': dict({
-            'tag-synonym-group': dict({
-              'data': None,
-            }),
-          }),
-          'type': 'tags',
-        }),
-        dict({
-          'attributes': dict({
-            'created-at': '2017-05-21T00:00:00Z',
-            'created-by-group': 'admin',
-            'created-by-user': 'admin',
-            'description': dict({
-              'de': '',
-              'en': '''
-                Free environment measure role later now over.
-                Can bed notice range. Minute can second prove every check official. Stay culture create risk.
-                Daughter single product trade.
-              ''',
-              'fr': '',
-            }),
-            'metainfo': dict({
-            }),
-            'modified-at': '2017-05-21T00:00:00Z',
-            'modified-by-group': 'admin',
-            'modified-by-user': 'admin',
-            'name': 'Lorraine Reynolds',
-          }),
-          'id': 'f561aaf6-ef0b-f14d-4208-bb46a4ccb3ad',
           'relationships': dict({
             'tag-synonym-group': dict({
               'data': None,

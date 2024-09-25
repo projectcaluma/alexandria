@@ -4,7 +4,7 @@ from mimetypes import guess_type
 import magic
 from clamdpy import ClamdNetworkSocket
 from django.conf import settings
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext_lazy
 from generic_permissions.validation import validator_for
 from rest_framework.exceptions import ValidationError
 
@@ -27,10 +27,12 @@ def validate_file_infection(file_content):
     file_content.seek(0)
 
     if result.status == "FOUND":
-        raise ValidationError(_("File is infected with malware."), code="infected")
+        raise ValidationError(
+            gettext_lazy("File is infected with malware."), code="infected"
+        )
     elif result.status == "ERROR":
         raise ValidationError(
-            (_("Malware scan had an error: ") + result.reason),
+            (gettext_lazy("Malware scan had an error: ") + result.reason),
             code="incomplete",
         )
 
@@ -47,7 +49,7 @@ def validate_mime_type(mime_type, category):
         and mime_type not in category.allowed_mime_types
     ):
         raise ValidationError(
-            _(
+            gettext_lazy(
                 "File type %(mime_type)s is not allowed in category %(category)s."
                 % {"mime_type": mime_type, "category": category.pk}
             )
@@ -62,17 +64,40 @@ class AlexandriaValidator:
         validate_file_infection(data["content"])
 
         # Validate that the mime type is allowed in the category
-        mime_type = data["content"].content_type
-        if mime_type == "application/octet-stream" or not mime_type:
-            guess, encoding = guess_type(data["name"])
-            if guess is not None:
-                mime_type = guess
-            else:
-                data["content"].seek(0)
-                mime_type = magic.from_buffer(data["content"].read(), mime=True)
-                data["content"].seek(0)
+        content_type_header = data["content"].content_type
+        extension_type, _ = guess_type(data["name"])
 
-        validate_mime_type(mime_type, data["document"].category)
-        data["mime_type"] = mime_type
+        if not content_type_header:  # pragma: no cover
+            raise ValidationError(gettext_lazy("Missing Content-Type header"))
+        if not extension_type:
+            raise ValidationError(gettext_lazy("Unknown file extension"))
+
+        if content_type_header == "application/octet-stream":
+            content_type_header = extension_type
+        if content_type_header != extension_type:
+            raise ValidationError(
+                gettext_lazy(
+                    "Content-Type %(content_type)s does not match file extension %(extension)s."
+                    % {"content_type": content_type_header, "extension": extension_type}
+                )
+            )
+
+        data["content"].seek(0)
+        file_content_type = magic.from_buffer(data["content"].read(), mime=True)
+        data["content"].seek(0)
+
+        if file_content_type != content_type_header:
+            raise ValidationError(
+                gettext_lazy(
+                    "Content-Type %(content_type)s does not match detected file content %(file_content_type)s."
+                    % {
+                        "content_type": content_type_header,
+                        "file_content_type": file_content_type,
+                    }
+                )
+            )
+
+        validate_mime_type(content_type_header, data["document"].category)
+        data["mime_type"] = content_type_header
 
         return data

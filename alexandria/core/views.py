@@ -81,6 +81,8 @@ class TagViewSet(PermissionViewMixin, VisibilityViewMixin, ModelViewSet):
     filterset_class = TagFilterSet
     search_fields = ("name", "description")
     select_for_includes = {"tag_synonym_group": ["tag_synonym_group"]}
+    ordering_fields = "__all__"
+    ordering = ["name"]
 
 
 class MarkViewSet(PermissionViewMixin, VisibilityViewMixin, ModelViewSet):
@@ -247,8 +249,12 @@ class FileViewSet(
             )
             obj = models.File.objects.get(pk=pk)
 
+            unsafe = obj.mime_type not in settings.SAFE_FOR_INLINE_DISPOSITION
             return FileResponse(
-                obj.content.file.file, as_attachment=False, filename=obj.name
+                obj.content.file.file,
+                as_attachment=unsafe,
+                filename=obj.name,
+                content_type=obj.mime_type,
             )
         raise PermissionDenied(
             _("For downloading a file use the presigned download URL.")
