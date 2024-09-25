@@ -1,3 +1,11 @@
+# 6.4.0
+### Feature
+
+* **file:** Move thumbnail generation to celery ([`6d30dcd`](https://github.com/projectcaluma/alexandria/commit/6d30dcd0533be084b8596cc1536ca69894fdc174))
+
+### Fix
+* Stricter mime type handling ([`4b8ab5b`](https://github.com/projectcaluma/alexandria/commit/4b8ab5b71b19d34d0000ba5fe008ee80aecc1c4c))
+
 # 6.3.0
 ### Feature
 * Move the fulltext search code to a proper filterset (088a897820f88e3078bd20488ca0437e575a8372)
