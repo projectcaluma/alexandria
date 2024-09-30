@@ -168,10 +168,21 @@ class FileFilterSet(FilterSet):
     document_metainfo = JSONValueFilter(field_name="document__metainfo")
     active_group = ActiveGroupFilter()
     files = BaseCSVFilter(field_name="pk", lookup_expr="in")
+    category = CategoriesFilter(field_name="document__category")
+    categories = CategoriesFilter(field_name="document__category")
+    # exclude_children is applied in CategoriesFilter, this is needed for DjangoFilterBackend
+    exclude_children = BooleanFilter(field_name="title", method=lambda qs, __, ___: qs)
 
     class Meta:
         model = models.File
-        fields = ["original", "renderings", "variant", "metainfo", "files"]
+        fields = [
+            "original",
+            "renderings",
+            "variant",
+            "metainfo",
+            "files",
+            "categories",
+        ]
 
 
 class FileSearchFilterSet(FileFilterSet):
