@@ -385,3 +385,18 @@ def test_document_category_filters(
     data = response.json()["data"]
     assert len(data) == expected_count
     assert sorted([doc["attributes"]["title"] for doc in data]) == snapshot
+
+
+def test_file_category_filter(db, admin_client, file_factory):
+    f1 = file_factory(name="1.pdf")
+    file_factory(name="2.pdf")
+
+    response = admin_client.get(
+        reverse("file-list"),
+        {"filter[categories]": f1.document.category_id, "filter[variant]": "original"},
+    )
+
+    assert response.status_code == HTTP_200_OK
+    data = response.json()["data"]
+    assert len(data) == 1
+    assert sorted([doc["attributes"]["name"] for doc in data]) == ["1.pdf"]
