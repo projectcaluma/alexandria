@@ -45,5 +45,6 @@ def get_dav():
             "initial": ttl,
             "secure": settings.MANABI_SECURE,
         },
+        "suppress_version_info": True,
     }
     return ManabiDAVApp(config)
