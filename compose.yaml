@@ -61,7 +61,7 @@ services:
 
   mc:
     image: minio/mc:RELEASE.2023-11-06T04-19-23Z
-    restart: on-failure
+    restart: no
     environment:
       - MINIO_ROOT_USER=very
       - MINIO_ROOT_PASSWORD=secret
