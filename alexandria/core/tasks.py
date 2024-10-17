@@ -30,24 +30,29 @@ def set_content_vector(file_pk: str):
         file.content.file.file, requestOptions={"timeout": 300}
     )
 
-    name_vector = SearchVector(Value(Path(file.name).stem), weight="A")
+    name = str(Path(file.name).stem)
+    name_vector = SearchVector(Value(name), weight="A")
+
     if not parsed_content["content"]:
-        # Update only content_vector, to avoid race conditions
-        File.objects.filter(pk=file.pk).update(content_vector=name_vector)
+        # Update only content_vector and content_text to avoid race conditions
+        File.objects.filter(pk=file.pk).update(
+            content_vector=name_vector, content_text=name
+        )
         return
 
     # use part of content for language detection, beacause metadata is not reliable
     language = tika.language.from_buffer(parsed_content["content"][:1000])
     config = settings.ALEXANDRIA_ISO_639_TO_PSQL_SEARCH_CONFIG.get(language, "simple")
+    text_content = parsed_content["content"].strip()
     content_vector = name_vector + SearchVector(
-        Value(parsed_content["content"].strip()),
+        Value(text_content),
         config=config,
         weight="B",
     )
 
     # Update only need fields, to avoid race conditions
     File.objects.filter(pk=file.pk).update(
-        content_vector=content_vector, language=language
+        content_vector=content_vector, language=language, content_text=text_content
     )
 
 

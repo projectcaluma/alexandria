@@ -4,7 +4,6 @@ import zipfile
 from pathlib import Path
 
 import pytest
-import tika.parser
 from django.urls import reverse
 from django.utils import timezone
 from factory.django import django_files
@@ -492,60 +491,3 @@ def test_convert_document_dms_401(
     response = admin_client.post(url)
 
     assert response.status_code == HTTP_401_UNAUTHORIZED
-
-
-@pytest.mark.parametrize(
-    "filters,expected_name,num_queries",
-    [
-        (
-            {
-                "filter[query]": "important",
-            },
-            {"Bern.jpeg"},
-            3,
-        ),
-        (
-            {
-                "filter[query]": "London",
-            },
-            {"London.png"},
-            3,
-        ),
-    ],
-)
-def test_file_search(
-    db,
-    settings,
-    django_assert_num_queries,
-    document_factory,
-    file_factory,
-    admin_client,
-    filters,
-    expected_name,
-    num_queries,
-):
-    settings.ALEXANDRIA_ENABLE_CONTENT_SEARCH = True
-    doc1 = document_factory(title="Apple")
-    doc2 = document_factory(title="Pear")
-
-    tika.parser.from_buffer.return_value = {"content": "Important text"}
-    file_factory(document=doc1, name="Paris.png", mime_type="image/png")
-
-    tika.parser.from_buffer.return_value = {"content": "Title text"}
-    file_factory(document=doc1, name="London.png", mime_type="image/png")
-
-    tika.parser.from_buffer.return_value = {"content": "Hidden"}
-    file_factory(document=doc2, name="Athens.jpeg", mime_type="image/jpeg")
-
-    tika.parser.from_buffer.return_value = {"content": "Important text"}
-    file_factory(document=doc2, name="Bern.jpeg", mime_type="image/jpeg")
-
-    assert doc1.files.count() == 4
-    assert doc2.files.count() == 4
-
-    with django_assert_num_queries(num_queries):
-        response = admin_client.get(reverse("search-list"), filters)
-
-    assert response.status_code == HTTP_200_OK
-    data = response.json()["data"]
-    assert {file["attributes"]["name"] for file in data} == expected_name

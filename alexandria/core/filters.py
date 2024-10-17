@@ -3,8 +3,8 @@ from functools import reduce
 from operator import or_
 
 from django.conf import settings
-from django.contrib.postgres.search import SearchQuery
-from django.db.models import FloatField, OuterRef, Q, Subquery, TextField, Value
+from django.contrib.postgres.search import SearchHeadline, SearchQuery, SearchRank
+from django.db.models import Exists, F, FloatField, OuterRef, Q, TextField, Value
 from django.db.models.fields.json import KeyTextTransform
 from django.db.models.functions import Cast
 from django_filters import (
@@ -171,47 +171,66 @@ class FileFilterSet(FilterSet):
 
     class Meta:
         model = models.File
-        fields = ["original", "renderings", "variant", "metainfo", "files"]
+        fields = [
+            "original",
+            "renderings",
+            "variant",
+            "metainfo",
+            "files",
+        ]
 
 
-class FileSearchFilterSet(FileFilterSet):
+class SearchFilterSet(FileFilterSet):
     query = CharFilter(method="search_files")
+
+    def filter_queryset(self, queryset):
+        """Enforce some defaults in the queryset.
+
+        First, we only ever want to search originals, so no thumbnails
+        shall be searched. Secondly, we don't return any results if
+        the user didn't search for anything.
+        """
+        queryset = queryset.filter(
+            # We only ever search originals
+            variant=models.File.Variant.ORIGINAL
+        )
+
+        if not self.form.cleaned_data.get("query"):
+            # If no search parameter is given, we do not return any value
+            return queryset.none()
+        return super().filter_queryset(queryset)
 
     def search_files(self, queryset, name, value):
         search_queries = [
-            Q(
-                content_vector=SearchQuery(
-                    value,
-                    config="simple",
-                    search_type=settings.ALEXANDRIA_CONTENT_SEARCH_TYPE,
-                )
+            SearchQuery(
+                value,
+                config="simple",
+                search_type=settings.ALEXANDRIA_CONTENT_SEARCH_TYPE,
             )
         ]
         for lang, config in settings.ALEXANDRIA_ISO_639_TO_PSQL_SEARCH_CONFIG.items():
-            search_queries.append(
-                Q(
-                    content_vector=SearchQuery(
-                        value,
-                        config=config,
-                        search_type=settings.ALEXANDRIA_CONTENT_SEARCH_TYPE,
-                    )
-                )
+            query_fragment = SearchQuery(
+                value,
+                config=config,
+                search_type=settings.ALEXANDRIA_CONTENT_SEARCH_TYPE,
             )
+            search_queries.append(query_fragment)
 
         search_query = reduce(or_, search_queries)
 
-        latest_files = models.File.objects.filter(
-            document=OuterRef("document_id"), variant=models.File.Variant.ORIGINAL
-        ).order_by("-created_at")
-        queryset = queryset.filter(pk=Subquery(latest_files.values("pk")[:1])).filter(
-            search_query
-        )
+        queryset = queryset.annotate(
+            search_rank=SearchRank(F("content_vector"), search_query),
+            search_context=SearchHeadline(F("content_text"), search_query),
+        ).filter(content_vector=search_query)
 
+        # Can't do the default ordering in the viewset, as this is an annotated
+        # field that doesn't exist in the base queryset.
+        queryset = queryset.order_by("-search_rank")
         return queryset
 
     class Meta:
         model = models.File
-        fields = ["original", "renderings", "variant", "metainfo", "files", "query"]
+        fields = FileFilterSet.Meta.fields + ["query"]
 
 
 class TagFilterSet(FilterSet):
