@@ -168,6 +168,27 @@ class FileFilterSet(FilterSet):
     document_metainfo = JSONValueFilter(field_name="document__metainfo")
     active_group = ActiveGroupFilter()
     files = BaseCSVFilter(field_name="pk", lookup_expr="in")
+    only_newest = BooleanFilter(method="filter_only_newest")
+
+    def filter_only_newest(self, qs, name, value):
+        if value:
+            return qs.exclude(
+                Exists(
+                    # Find all newer versions of a file. A newer version is a file:
+                    #  - of the same variant
+                    #  - with a different ID (obviously)
+                    #  - a newer created_at timestamp
+                    #  - AND the same document
+                    models.File.objects.all()
+                    .filter(
+                        document=OuterRef("document_id"),
+                        created_at__gt=OuterRef("created_at"),
+                        variant=OuterRef("variant"),
+                    )
+                    .exclude(pk=OuterRef("pk")),
+                )
+            )
+        return qs
 
     class Meta:
         model = models.File
@@ -177,6 +198,7 @@ class FileFilterSet(FilterSet):
             "variant",
             "metainfo",
             "files",
+            "only_newest",
         ]
 
 

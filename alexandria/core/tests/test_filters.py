@@ -1,4 +1,5 @@
 import json
+import time
 from itertools import combinations
 from typing import Optional
 
@@ -344,3 +345,40 @@ def test_document_category_filters(
     data = response.json()["data"]
     assert len(data) == expected_count
     assert sorted([doc["attributes"]["title"] for doc in data]) == snapshot
+
+
+@pytest.mark.parametrize(
+    "filter_val, expect_v1, expect_v2",
+    [
+        (True, False, True),
+        (False, True, True),
+        (None, True, True),
+    ],
+)
+def test_only_newest_filter(
+    db, admin_client, document_factory, file_factory, filter_val, expect_v1, expect_v2
+):
+    doc = document_factory()
+    version_1 = file_factory(document=doc, variant="original")
+    time.sleep(0.5)
+    version_2 = file_factory(document=doc, variant="original")
+
+    # original and thumbnail (?)
+    assert doc.files.all().count() == 4
+
+    filters = {
+        "filter[variant]": "original",
+    }
+    if filter_val is not None:
+        filters["filter[only_newest]"] = filter_val
+
+    response = admin_client.get(reverse("file-list"), filters)
+
+    assert response.status_code == HTTP_200_OK, response.json()
+    received_file_ids = [f["id"] for f in response.json()["data"]]
+
+    has_v1 = str(version_1.pk) in received_file_ids
+    has_v2 = str(version_2.pk) in received_file_ids
+
+    assert has_v1 == expect_v1
+    assert has_v2 == expect_v2
