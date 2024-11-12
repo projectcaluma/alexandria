@@ -4,14 +4,14 @@ from django.urls import reverse
 from generic_permissions.config import ValidatorsConfig
 from generic_permissions.validation import validator_for
 
-from alexandria.core.models import Document
+from alexandria.core.models import Tag
 
 
-def test_custom_validation(db, reset_config_classes, document, file, admin_client):
+def test_custom_validation(db, reset_config_classes, tag, file, admin_client):
     call_counter = Counter()
 
     class TestValidator:
-        @validator_for(Document)
+        @validator_for(Tag)
         def validate(self, data, context):
             data["created_by_group"] = "foobar"
             call_counter["validate"] += 1
@@ -21,17 +21,12 @@ def test_custom_validation(db, reset_config_classes, document, file, admin_clien
 
     ValidatorsConfig.register_handler_class(TestValidator)
 
-    url = reverse("document-detail", args=[document.pk])
+    url = reverse("tag-detail", args=[tag.pk])
 
     # first, ensure validator is called for Document
     admin_client.patch(url, json={})
     assert call_counter["validate"] == 1
 
     # See if the validation had some effect
-    document.refresh_from_db()
-    assert document.created_by_group == "foobar"
-
-    # second, ensure validator is not called for File
-    url = reverse("file-detail", args=[file.pk])
-    admin_client.patch(url, json={})
-    assert call_counter["validate"] == 1
+    tag.refresh_from_db()
+    assert tag.created_by_group == "foobar"

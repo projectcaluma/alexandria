@@ -368,6 +368,37 @@ def test_document_delete_some_tags(admin_client, tag_factory, document_factory):
     )
 
 
+def test_move_document_to_new_category(
+    admin_client, category_factory, file_factory, document_factory
+):
+    category_not_allowed = category_factory.create(allowed_mime_types=["plain/text"])
+    category_allowed = category_factory.create(allowed_mime_types=["image/jpeg"])
+    document = document_factory()
+    file_factory.create(document=document, name="Image.jpeg", mime_type="image/jpeg")
+
+    url = reverse("document-detail", args=[document.pk])
+
+    data = {
+        "data": {
+            "type": "documents",
+            "id": document.pk,
+            "relationships": {
+                "category": {
+                    "data": {"id": category_not_allowed.pk, "type": "categories"}
+                }
+            },
+        }
+    }
+
+    response = admin_client.patch(url, data)
+
+    assert response.status_code == HTTP_400_BAD_REQUEST
+
+    data["data"]["relationships"]["category"]["data"]["id"] = category_allowed.pk
+    response = admin_client.patch(url, data)
+    assert response.status_code == HTTP_200_OK
+
+
 @pytest.mark.parametrize(
     "presigned, expected_status",
     [(True, HTTP_200_OK), (False, HTTP_403_FORBIDDEN)],

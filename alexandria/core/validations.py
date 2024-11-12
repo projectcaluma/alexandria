@@ -8,7 +8,7 @@ from django.utils.translation import gettext_lazy
 from generic_permissions.validation import validator_for
 from rest_framework.exceptions import ValidationError
 
-from alexandria.core.models import File
+from alexandria.core.models import Document, File
 
 log = logging.getLogger(__name__)
 
@@ -100,4 +100,16 @@ class AlexandriaValidator:
         validate_mime_type(content_type_header, data["document"].category)
         data["mime_type"] = content_type_header
 
+        return data
+
+    @validator_for(Document)
+    def validate_document(self, data, context):
+        if context["request"].method == "PATCH" and "category" in data:
+            category = data["category"]
+            document = context["view"].get_object()
+            if not document.category.pk == category.pk:
+                # Validate if a document is moved to another category that the
+                # mime type of the file is still compatible with the category's
+                # mime types.
+                validate_mime_type(document.get_latest_original().mime_type, category)
         return data
