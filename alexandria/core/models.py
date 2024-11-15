@@ -17,6 +17,7 @@ from localized_fields.fields import LocalizedCharField, LocalizedTextField
 from manabi.token import Key, Token
 
 from alexandria.core.presign_urls import make_signature_components
+from alexandria.storages.backends.s3 import S3Storage
 from alexandria.storages.fields import DynamicStorageFileField
 
 
@@ -166,15 +167,37 @@ class Document(UUIDModel):
         self.pk = None
         self.save()
 
-        with NamedTemporaryFile() as tmp:
-            temp_file = Path(tmp.name)
-            with temp_file.open("w+b") as file:
-                file.write(latest_original.content.file.file.read())
+        storage = File.content.field.storage
+        latest_original.pk = None
+        latest_original.document = self
+        if isinstance(storage, S3Storage):
+            new_name = f"{self.pk}_{latest_original.name}"
+            copy_args = {
+                "CopySource": {
+                    "Bucket": settings.ALEXANDRIA_S3_BUCKET_NAME,
+                    "Key": latest_original.content.name,
+                },
+                # Destination settings
+                "Bucket": settings.ALEXANDRIA_S3_BUCKET_NAME,
+                "Key": new_name,
+            }
 
-                latest_original.content = DjangoFile(file)
-                latest_original.pk = None
-                latest_original.document = self
-                latest_original.save()
+            if settings.ALEXANDRIA_ENABLE_AT_REST_ENCRYPTION:
+                copy_args["CopySourceSSECustomerKey"] = storage.ssec_secret
+                copy_args["CopySourceSSECustomerAlgorithm"] = "AES256"
+                copy_args["SSECustomerKey"] = storage.ssec_secret
+                copy_args["SSECustomerAlgorithm"] = "AES256"
+
+            storage.bucket.meta.client.copy_object(**copy_args)
+            latest_original.content = new_name
+            latest_original.save()
+        else:
+            with NamedTemporaryFile() as tmp:
+                temp_file = Path(tmp.name)
+                with temp_file.open("w+b") as file:
+                    file.write(latest_original.content.file.file.read())
+                    latest_original.content = DjangoFile(file)
+                    latest_original.save()
 
         return self
 
