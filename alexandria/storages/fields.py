@@ -27,6 +27,10 @@ class DynamicStorageFileField(models.FileField):
     # the storage code into it's own project, so we can reuse it outside
     # of Alexandria: https://github.com/projectcaluma/alexandria/issues/480
 
+    def __init__(self, storage=None, **kwargs):
+        storage = storages.create_storage({"BACKEND": settings.ALEXANDRIA_FILE_STORAGE})
+        super().__init__(storage=storage, **kwargs)
+
     def pre_save(self, instance, add):
         # set storage to default storage class to prevent reusing the last selection
         self.storage = storages.create_storage(
