@@ -1,3 +1,7 @@
+# 6.4.1
+### Fix
+* **document:** Revalidate mimetypes after moving document to different category ([`46066ac`](https://github.com/projectcaluma/alexandria/commit/46066ac030808fde94bfc263f8b303e21bea0482))
+
 # 6.4.0
 ### Feature
 

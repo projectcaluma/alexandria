@@ -67,3 +67,5 @@ poetry install
 poetry run pre-commit install --hook=pre-commit
 poetry run pre-commit install --hook=commit-msg
 ```
+
+You will need to have `exiftool` installed on your os.
