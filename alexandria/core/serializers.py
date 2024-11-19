@@ -12,6 +12,8 @@ from generic_permissions.visibilities import (
     VisibilitySerializerMixin,
 )
 from rest_framework_json_api import serializers
+from rest_framework_json_api.relations import SerializerMethodResourceRelatedField
+from rest_framework_json_api.views import Serializer
 
 from . import models
 
@@ -225,6 +227,7 @@ class FileSerializer(BaseSerializer):
 
     class Meta:
         model = models.File
+        resource_type = "files"
         fields = BaseSerializer.Meta.fields + (
             "variant",
             "name",
@@ -328,3 +331,35 @@ class WebDAVSerializer(BaseSerializer):
     class Meta:
         model = models.Document
         fields = ("webdav_url",)
+
+
+class SearchResultSerializer(Serializer):
+    search_rank = serializers.FloatField()
+    search_context = serializers.CharField()
+
+    document = serializers.ResourceRelatedField(queryset=models.Document.objects)
+    matched_file = SerializerMethodResourceRelatedField(
+        method_name="get_matched_file", model=models.File
+    )
+    file_name = serializers.CharField(source="name")
+    document_title = serializers.CharField(source="document.title")
+
+    included_serializers = {
+        "matched_file": FileSerializer,
+        "document": DocumentSerializer,
+    }
+
+    def get_matched_file(self, obj):
+        return obj
+
+    class Meta:
+        model = None
+        resource_name = "search-results"
+        fields = (
+            "document",
+            "matched_file",
+            "search_rank",
+            "search_context",
+            "name",
+        )
+        read_only_fields = fields

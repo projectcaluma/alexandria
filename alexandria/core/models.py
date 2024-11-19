@@ -213,6 +213,7 @@ class File(UUIDModel):
     )
 
     content_vector = SearchVectorField(null=True, blank=True)
+    content_text = models.TextField(null=True, blank=True)
     language = models.CharField(max_length=10, blank=True, null=True)
 
     # TODO: When next working on file / storage stuff, consider extracting

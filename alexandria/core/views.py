@@ -44,8 +44,8 @@ from .filters import (
     CategoryFilterSet,
     DocumentFilterSet,
     FileFilterSet,
-    FileSearchFilterSet,
     MarkFilterSet,
+    SearchFilterSet,
     TagFilterSet,
 )
 from .presign_urls import verify_signed_components
@@ -95,7 +95,6 @@ class DocumentViewSet(PermissionViewMixin, VisibilityViewMixin, ModelViewSet):
     serializer_class = serializers.DocumentSerializer
     queryset = models.Document.objects.all()
     filterset_class = DocumentFilterSet
-    search_fields = ("title", "files__name", "tags__name", "description")
     select_for_includes = {"category": ["category"]}
     prefetch_for_includes = {"tags": ["tags"], "files": ["files"]}
 
@@ -297,6 +296,7 @@ class SearchViewSet(
     ListModelMixin,
     GenericViewSet,
 ):
-    serializer_class = serializers.FileSerializer
-    queryset = models.File.objects.all()
-    filterset_class = FileSearchFilterSet
+    serializer_class = serializers.SearchResultSerializer
+    resource_name = "search-results"
+    queryset = models.File.objects.all().select_related("document")
+    filterset_class = SearchFilterSet
