@@ -10,13 +10,14 @@ from django.contrib.postgres.search import SearchVectorField
 from django.core.exceptions import ImproperlyConfigured
 from django.core.files import File as DjangoFile
 from django.core.validators import RegexValidator
-from django.db import models, transaction
+from django.db import connection, models, transaction
 from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
 from localized_fields.fields import LocalizedCharField, LocalizedTextField
 from manabi.token import Key, Token
 
 from alexandria.core.presign_urls import make_signature_components
+from alexandria.storages.backends.s3 import S3Storage
 from alexandria.storages.fields import DynamicStorageFileField
 
 
@@ -163,15 +164,49 @@ class Document(UUIDModel):
         self.pk = None
         self.save()
 
-        with NamedTemporaryFile() as tmp:
-            temp_file = Path(tmp.name)
-            with temp_file.open("w+b") as file:
-                file.write(latest_original.content.file.file.read())
+        storage = File.content.field.storage
+        if isinstance(storage, S3Storage):
+            new_name = f"{self.pk}_{latest_original.name}"
+            copy_args = {
+                "CopySource": {
+                    "Bucket": settings.ALEXANDRIA_S3_BUCKET_NAME,
+                    "Key": latest_original.content.name,
+                },
+                # Destination settings
+                "Bucket": settings.ALEXANDRIA_S3_BUCKET_NAME,
+                "Key": new_name,
+            }
 
-                latest_original.content = DjangoFile(file)
-                latest_original.pk = None
-                latest_original.document = self
-                latest_original.save()
+            if settings.ALEXANDRIA_ENABLE_AT_REST_ENCRYPTION:
+                copy_args["CopySourceSSECustomerKey"] = storage.ssec_secret
+                copy_args["CopySourceSSECustomerAlgorithm"] = "AES256"
+                copy_args["SSECustomerKey"] = storage.ssec_secret
+                copy_args["SSECustomerAlgorithm"] = "AES256"
+
+            storage.bucket.meta.client.copy_object(**copy_args)
+
+            # Raw SQL has to be used to avoid FileField save requiring the content, because the content has been copied in S3
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    """
+                    INSERT into alexandria_core_file 
+                    (id, variant, original_id, name, document_id, checksum, encryption_status, content_vector, language, content, mime_type, size, metainfo, created_at, created_by_user, created_by_group, modified_at, modified_by_user, modified_by_group)
+                    SELECT %s, variant, original_id, name, %s, checksum, encryption_status, content_vector, language, %s, mime_type, size, metainfo, NOW(), created_by_user, created_by_group, NOW(), modified_by_user, modified_by_group
+                    FROM alexandria_core_file
+                    WHERE id = %s
+                    """,
+                    [make_uuid(), self.pk, new_name, latest_original.pk],
+                )
+        else:
+            with NamedTemporaryFile() as tmp:
+                temp_file = Path(tmp.name)
+                with temp_file.open("w+b") as file:
+                    file.write(latest_original.content.file.file.read())
+
+                    latest_original.content = DjangoFile(file)
+                    latest_original.pk = None
+                    latest_original.document = self
+                    latest_original.save()
 
         return self
 
