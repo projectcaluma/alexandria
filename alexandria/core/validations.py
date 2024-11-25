@@ -107,7 +107,7 @@ class AlexandriaValidator:
         if context["request"].method == "PATCH" and "category" in data:
             category = data["category"]
             document = context["view"].get_object()
-            if not document.category.pk == category.pk:
+            if not document.category.pk == category.pk and document.files.count():
                 # Validate if a document is moved to another category that the
                 # mime type of the file is still compatible with the category's
                 # mime types.
