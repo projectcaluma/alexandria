@@ -1,5 +1,6 @@
 import pytest
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.db.models import ObjectDoesNotExist
 
 from alexandria.core.factories import FileData
 from alexandria.core.models import Document, File
@@ -37,3 +38,15 @@ def test_clone_document(db, file_factory, content_type):
 
     if content_type != "unsupported":
         assert clone.files.filter(variant=File.Variant.THUMBNAIL).exists()
+
+
+def test_document_no_files(
+    db,
+    document_factory,
+):
+    document = document_factory.create()
+
+    try:
+        document.get_latest_original()
+    except ObjectDoesNotExist:
+        assert True

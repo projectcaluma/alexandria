@@ -7,7 +7,7 @@ from django.conf import settings
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.postgres.indexes import GinIndex
 from django.contrib.postgres.search import SearchVectorField
-from django.core.exceptions import ImproperlyConfigured
+from django.core.exceptions import ImproperlyConfigured, ObjectDoesNotExist
 from django.core.files import File as DjangoFile
 from django.core.validators import RegexValidator
 from django.db import models, transaction
@@ -155,11 +155,14 @@ class Document(UUIDModel):
     date = models.DateField(blank=True, null=True)
 
     def get_latest_original(self):
+        if not self.files.count():
+            raise ObjectDoesNotExist("Document has no files")
         return self.files.filter(variant=File.Variant.ORIGINAL).latest("created_at")
 
     @transaction.atomic()
     def clone(self):
         latest_original = self.get_latest_original()
+
         self.pk = None
         self.save()
 
