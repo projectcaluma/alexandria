@@ -11,6 +11,10 @@
 ### Breaking
 * This changes the structure and type of the search endpoint's data. ([`99a0078`](https://github.com/projectcaluma/alexandria/commit/99a007827c87b158b4e0560acdde03cffab8dccc))
 
+# 6.4.2
+### Fix
+* **document:** Dont assume that a document has files ([`91e6a1f`](https://github.com/projectcaluma/alexandria/commit/91e6a1fdd6fe8fa9b89144a83f4ff94653c668fd))
+
 # 6.4.1
 ### Fix
 * **document:** Revalidate mimetypes after moving document to different category ([`46066ac`](https://github.com/projectcaluma/alexandria/commit/46066ac030808fde94bfc263f8b303e21bea0482))
