@@ -1,3 +1,16 @@
+# 7.0.0
+### Feature
+* **cmdline:** Search utility ([`e96aff8`](https://github.com/projectcaluma/alexandria/commit/e96aff8f6a6819eb4981b3bd75b51f9aca03f281))
+* **filters:** Add "only_newest" filter for files ([`2b42cb9`](https://github.com/projectcaluma/alexandria/commit/2b42cb9f17a38c6b3bb73b406fc1fe1969f64528))
+* Implement improved fulltext search ([`99a0078`](https://github.com/projectcaluma/alexandria/commit/99a007827c87b158b4e0560acdde03cffab8dccc))
+
+### Fix
+* **deps:** Update DGAP ([`c2c357b`](https://github.com/projectcaluma/alexandria/commit/c2c357b74f5409b92700f1724afae85be3b4b2e2))
+* **webdav:** Remove version from errors ([`e39470f`](https://github.com/projectcaluma/alexandria/commit/e39470f77183be42e3761abe0abf0fe15c1e174f))
+
+### Breaking
+* This changes the structure and type of the search endpoint's data. ([`99a0078`](https://github.com/projectcaluma/alexandria/commit/99a007827c87b158b4e0560acdde03cffab8dccc))
+
 # 6.4.1
 ### Fix
 * **document:** Revalidate mimetypes after moving document to different category ([`46066ac`](https://github.com/projectcaluma/alexandria/commit/46066ac030808fde94bfc263f8b303e21bea0482))
