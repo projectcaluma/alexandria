@@ -1407,13 +1407,13 @@ zookeeper = ["kazoo (>=2.8.0)"]
 
 [[package]]
 name = "manabi"
-version = "1.4.1"
+version = "1.5.0"
 description = "Provide WebDAV access for documents."
 optional = false
 python-versions = "<4.0.0,>=3.8.1"
 files = [
-    {file = "manabi-1.4.1-py3-none-any.whl", hash = "sha256:c8846ce383c3747e65a54582c0cad6a71606c211937e6788c37ab44b84eafeb8"},
-    {file = "manabi-1.4.1.tar.gz", hash = "sha256:c696fa9fcc3ae0ac6fdd2b2662b9542d726bb69067bac8770670a6dd6f0b2b7f"},
+    {file = "manabi-1.5.0-py3-none-any.whl", hash = "sha256:aa865c6ef7996a4fe63e11a46773e8286458bdfec70353e5974ff8edadf59323"},
+    {file = "manabi-1.5.0.tar.gz", hash = "sha256:bdfbe790e3942055952fe7f696ecc1c27e307b4d7d9d8ec2ceb9bc8fa498ae8d"},
 ]
 
 [package.dependencies]
