@@ -161,7 +161,6 @@ class DocumentFilterSet(FilterSet):
     active_group = ActiveGroupFilter()
     tags = TagsFilter()
     marks = CharInFilter()
-    category = CategoriesFilter()
     categories = CategoriesFilter(field_name="category")
     # exclude_children is applied in CategoriesFilter, this is needed for DjangoFilterBackend
     exclude_children = BooleanFilter(field_name="title", method=lambda qs, __, ___: qs)
@@ -177,8 +176,10 @@ class FileFilterSet(FilterSet):
     active_group = ActiveGroupFilter()
     files = BaseCSVFilter(field_name="pk", lookup_expr="in")
     only_newest = BooleanFilter(method="filter_only_newest")
-    categories = CategoriesFilter(field_name="document__category")
     tags = TagsFilter(field_name="document__tags")
+    categories = CategoriesFilter(field_name="document__category")
+    # exclude_children is applied in CategoriesFilter, this is needed for DjangoFilterBackend
+    exclude_children = BooleanFilter(field_name="name", method=lambda qs, __, ___: qs)
 
     def filter_only_newest(self, qs, name, value):
         if value:
