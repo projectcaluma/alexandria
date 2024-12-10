@@ -154,7 +154,7 @@ class Document(UUIDModel):
     marks = models.ManyToManyField(Mark, blank=True, related_name="documents")
     date = models.DateField(blank=True, null=True)
 
-    def get_latest_original(self):
+    def get_latest_original(self) -> "File":
         if not self.files.count():
             raise ObjectDoesNotExist("Document has no files")
         return self.files.filter(variant=File.Variant.ORIGINAL).latest("created_at")

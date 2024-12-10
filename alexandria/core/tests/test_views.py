@@ -522,3 +522,24 @@ def test_convert_document_dms_401(
     response = admin_client.post(url)
 
     assert response.status_code == HTTP_401_UNAUTHORIZED
+
+
+def test_document_update_content_vector(
+    admin_client, document_factory, file_factory, settings
+):
+    settings.ALEXANDRIA_ENABLE_CONTENT_SEARCH = True
+    document = document_factory(title="old", description="green")
+    file_factory.create(document=document, name="blue")
+
+    url = reverse("document-detail", args=[document.pk])
+
+    data = {
+        "data": {"type": "documents", "id": document.pk, "attributes": {"title": "new"}}
+    }
+
+    response = admin_client.patch(url, data)
+    assert response.status_code == HTTP_200_OK
+    assert (
+        document.files.filter(variant=File.Variant.ORIGINAL).first().content_vector
+        == "'blue':1 'green':3B 'import':4C 'new':2A 'text':5C"
+    )

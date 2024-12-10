@@ -60,13 +60,15 @@ def test_encrypt_files_misconfigured(
 def test_generate_content_vector(
     db,
     settings,
+    document_factory,
     file_factory,
 ):
     settings.ALEXANDRIA_ENABLE_CONTENT_SEARCH = False
-    file_without_vector = file_factory(name="old")
+    document = document_factory(title="name", description="desc")
+    file_without_vector = file_factory(name="old", document=document)
 
     settings.ALEXANDRIA_ENABLE_CONTENT_SEARCH = True
-    file_with_vector = file_factory(name="neu.docx")
+    file_with_vector = file_factory(name="neu.docx", document=document)
 
     tika.parser.from_buffer.return_value = {"content": "Das ist Inhalt"}
     tika.language.from_buffer.return_value = "de"
@@ -75,8 +77,13 @@ def test_generate_content_vector(
     file_with_vector.refresh_from_db()
     file_without_vector.refresh_from_db()
 
-    assert file_with_vector.content_vector == "'import':2B 'neu':1A 'text':3B"
-    assert file_without_vector.content_vector == "'inhalt':4B 'old':1A"
+    assert (
+        file_with_vector.content_vector
+        == "'desc':3B 'import':4C 'name':2A 'neu':1 'text':5C"
+    )
+    assert (
+        file_without_vector.content_vector == "'desc':3B 'inhalt':6C 'name':2A 'old':1"
+    )
     assert file_without_vector.language == "de"
 
 
@@ -107,9 +114,10 @@ def test_generate_content_vector_error(db, settings, file_factory, mocker):
     assert "Failed to process 1 file" in out.getvalue()
 
 
-def test_generate_empty_content_vector(db, settings, file_factory):
+def test_generate_empty_content_vector(db, settings, document_factory, file_factory):
     settings.ALEXANDRIA_ENABLE_CONTENT_SEARCH = False
-    file_without_vector = file_factory(name="old")
+    document = document_factory(title="name", description="desc")
+    file_without_vector = file_factory(name="old", document=document)
     settings.ALEXANDRIA_ENABLE_CONTENT_SEARCH = True
 
     tika.parser.from_buffer.return_value = {"content": None}
@@ -119,7 +127,7 @@ def test_generate_empty_content_vector(db, settings, file_factory):
 
     assert tika.parser.from_buffer.call_count == 1
 
-    assert file_without_vector.content_vector == "'old':1A"
+    assert file_without_vector.content_vector == "'desc':3B 'name':2A 'old':1"
     assert file_without_vector.language is None
 
 
