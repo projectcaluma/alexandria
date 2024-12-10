@@ -12,7 +12,7 @@ def searchable_data(
 ):
     settings.ALEXANDRIA_ENABLE_CONTENT_SEARCH = True
     doc1 = document_factory(title="Apple")
-    doc2 = document_factory(title="Pear")
+    doc2 = document_factory(title="Pear", description="Apple")
 
     mocker.patch("tika.parser.from_buffer", return_value={"content": "Important text"})
     file_factory(document=doc1, name="Paris.png", mime_type="image/png")
@@ -39,6 +39,11 @@ def searchable_data(
             1,
         ),
         ({"filter[query]": "London"}, {"London.png"}, 1),
+        (
+            {"filter[query]": "Apple"},
+            {"Paris.png", "London.png", "Athens.jpeg", "Bern.jpeg"},
+            1,
+        ),
     ],
 )
 def test_file_search(

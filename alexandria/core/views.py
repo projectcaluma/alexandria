@@ -49,6 +49,7 @@ from .filters import (
     TagFilterSet,
 )
 from .presign_urls import verify_signed_components
+from .tasks import set_content_vector
 
 log = logging.getLogger(__name__)
 
@@ -99,9 +100,17 @@ class DocumentViewSet(PermissionViewMixin, VisibilityViewMixin, ModelViewSet):
     prefetch_for_includes = {"tags": ["tags"], "files": ["files"]}
 
     def update(self, request, *args, **kwargs):
-        """Override so we can delete unused tags."""
+        document = self.get_object()
+        update_content_vector = settings.ALEXANDRIA_ENABLE_CONTENT_SEARCH and (
+            (request.data.get("title") != document.title)
+            or (request.data.get("description") != document.description)
+        )
+
         response = super().update(request, *args, **kwargs)
         models.Tag.objects.all().filter(documents__pk__isnull=True).delete()
+
+        if update_content_vector and document.files.count():
+            set_content_vector.delay_on_commit(document.get_latest_original().pk, True)
 
         return response
 

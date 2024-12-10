@@ -4,9 +4,17 @@ from operator import or_
 
 from django.conf import settings
 from django.contrib.postgres.search import SearchHeadline, SearchQuery, SearchRank
-from django.db.models import Exists, F, FloatField, OuterRef, Q, TextField, Value
+from django.db.models import (
+    Exists,
+    F,
+    FloatField,
+    OuterRef,
+    Q,
+    TextField,
+    Value,
+)
 from django.db.models.fields.json import KeyTextTransform
-from django.db.models.functions import Cast
+from django.db.models.functions import Cast, Concat
 from django_filters import (
     BaseCSVFilter,
     BaseInFilter,
@@ -114,7 +122,7 @@ class TagsFilter(BaseInFilter):
             synonyms = models.Tag.objects.filter(
                 Q(id=tag) | Q(tag_synonym_group__tags__id=tag)
             )
-            qs = qs.filter(tags__in=synonyms)
+            qs = qs.filter(**{f"{self.field_name}__in": synonyms})
         return qs
 
 
@@ -153,7 +161,6 @@ class DocumentFilterSet(FilterSet):
     active_group = ActiveGroupFilter()
     tags = TagsFilter()
     marks = CharInFilter()
-    category = CategoriesFilter()
     categories = CategoriesFilter(field_name="category")
     # exclude_children is applied in CategoriesFilter, this is needed for DjangoFilterBackend
     exclude_children = BooleanFilter(field_name="title", method=lambda qs, __, ___: qs)
@@ -169,6 +176,10 @@ class FileFilterSet(FilterSet):
     active_group = ActiveGroupFilter()
     files = BaseCSVFilter(field_name="pk", lookup_expr="in")
     only_newest = BooleanFilter(method="filter_only_newest")
+    tags = TagsFilter(field_name="document__tags")
+    categories = CategoriesFilter(field_name="document__category")
+    # exclude_children is applied in CategoriesFilter, this is needed for DjangoFilterBackend
+    exclude_children = BooleanFilter(field_name="name", method=lambda qs, __, ___: qs)
 
     def filter_only_newest(self, qs, name, value):
         if value:
@@ -242,7 +253,19 @@ class SearchFilterSet(FileFilterSet):
 
         queryset = queryset.annotate(
             search_rank=SearchRank(F("content_vector"), search_query),
-            search_context=SearchHeadline(F("content_text"), search_query),
+            # SearchHeadline is a very expensive operation, evaluate usage if performance is an issue
+            search_context=SearchHeadline(
+                Concat(
+                    F("document__title"),
+                    Value(" "),
+                    F("document__description"),
+                    Value(" "),
+                    F("name"),
+                    Value(" "),
+                    F("content_text"),
+                ),
+                search_query,
+            ),
         ).filter(content_vector=search_query)
 
         # Can't do the default ordering in the viewset, as this is an annotated
