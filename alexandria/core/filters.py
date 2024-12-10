@@ -161,7 +161,6 @@ class DocumentFilterSet(FilterSet):
     active_group = ActiveGroupFilter()
     tags = TagsFilter()
     marks = CharInFilter()
-    category = CategoriesFilter()
     categories = CategoriesFilter(field_name="category")
     # exclude_children is applied in CategoriesFilter, this is needed for DjangoFilterBackend
     exclude_children = BooleanFilter(field_name="title", method=lambda qs, __, ___: qs)

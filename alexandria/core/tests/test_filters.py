@@ -308,9 +308,9 @@ def test_category_slug_filters(
 @pytest.mark.parametrize(
     "filters,expected_count",
     [
-        ({"filter[category]": "category-1"}, 2),
-        ({"filter[category]": "category-3"}, 1),
-        ({"filter[category]": "category-1", "filter[exclude_children]": True}, 1),
+        ({"filter[categories]": "category-1"}, 2),
+        ({"filter[categories]": "category-3"}, 1),
+        ({"filter[categories]": "category-1", "filter[exclude_children]": True}, 1),
         ({"filter[categories]": "category-none"}, 0),
         ({"filter[categories]": "category-1,category-2"}, 3),
         (
