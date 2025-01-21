@@ -13,6 +13,7 @@ from moto import mock_aws
 from rest_framework import status
 from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND
 from webtest import TestApp, TestRequest
+from webtest.app import AppError
 from wsgidav.dav_error import HTTP_FORBIDDEN
 
 from alexandria.core.models import File
@@ -222,3 +223,15 @@ def test_dav_url_schemes_unconfigured(db, file_factory, manabi, settings):
         file.get_webdav_url("foobar", "foobar")
 
     assert str(e.value).startswith(f'The MIME type "{mime_type}"')
+
+
+def test_dav_without_content(db, manabi, settings, file_factory):
+    settings.ALEXANDRIA_MANABI_DAV_URI_SCHEMES = {"text/plain": "ms-word:ofe|u|"}
+
+    file = file_factory(name="test.txt", mime_type="text/plain")
+    dav_app = TestApp(get_dav())
+
+    with pytest.raises(AppError) as e:
+        dav_app.put(get_webdav_url_without_uri_scheme(file, "admin", "admin"), b"")
+
+    assert "400 Bad Request" in str(e)

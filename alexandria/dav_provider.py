@@ -5,7 +5,7 @@ from pathlib import Path
 from django.core.exceptions import ValidationError
 from django.core.files.base import File as DjangoFile
 from manabi.filesystem import ManabiFileResourceMixin, ManabiProvider
-from wsgidav.dav_error import HTTP_FORBIDDEN, DAVError
+from wsgidav.dav_error import HTTP_BAD_REQUEST, HTTP_FORBIDDEN, DAVError
 from wsgidav.dav_provider import DAVNonCollection
 
 from alexandria.core.validations import validate_file
@@ -93,6 +93,8 @@ class AlexandriaFileResource(ManabiFileResourceMixin, DAVNonCollection):
         assert not self.is_collection
         if self.provider.readonly:  # pragma: no cover
             raise DAVError(HTTP_FORBIDDEN)
+        if int(self.environ["CONTENT_LENGTH"]) == 0:
+            raise DAVError(HTTP_BAD_REQUEST)
         return self.memory_file
 
     def end_write(self, *, with_errors):
