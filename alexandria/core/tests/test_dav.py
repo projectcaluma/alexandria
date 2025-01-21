@@ -228,10 +228,24 @@ def test_dav_url_schemes_unconfigured(db, file_factory, manabi, settings):
 def test_dav_without_content(db, manabi, settings, file_factory):
     settings.ALEXANDRIA_MANABI_DAV_URI_SCHEMES = {"text/plain": "ms-word:ofe|u|"}
 
-    file = file_factory(name="test.txt", mime_type="text/plain")
+    file = file_factory(
+        name="test.txt",
+        mime_type="text/plain",
+        modified_by_user="some-user",
+        modified_by_group="some-group",
+    )
+
     dav_app = TestApp(get_dav())
 
     with pytest.raises(AppError) as e:
-        dav_app.put(get_webdav_url_without_uri_scheme(file, "admin", "admin"), b"")
+        dav_app.put(
+            get_webdav_url_without_uri_scheme(
+                file,
+                "some-other-user",
+                "some-other-group",
+            ),
+            b"",
+        )
 
     assert "400 Bad Request" in str(e)
+    assert file.document.files.filter(variant=File.Variant.ORIGINAL).count() == 1
