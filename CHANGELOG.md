@@ -1,3 +1,8 @@
+# 6.4.3
+
+### Fix
+* **dav:** Raise error if content length of put request is zero ([`488c21f`](https://github.com/projectcaluma/alexandria/commit/488c21f3af753f9c02b053629f72052502312bad))
+
 # 6.4.2
 ### Fix
 * **document:** Dont assume that a document has files ([`91e6a1f`](https://github.com/projectcaluma/alexandria/commit/91e6a1fdd6fe8fa9b89144a83f4ff94653c668fd))
