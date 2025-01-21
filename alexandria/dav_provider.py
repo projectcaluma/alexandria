@@ -98,36 +98,37 @@ class AlexandriaFileResource(ManabiFileResourceMixin, DAVNonCollection):
         return self.memory_file
 
     def end_write(self, *, with_errors):
-        file = self.file
-        if (
-            self.file.modified_by_user != self.user
-            or self.file.modified_by_group != self.group
-        ):
-            file = File(
-                variant=self.file.variant,
-                original=self.file.original,
-                name=self.file.name,
-                document=self.file.document,
-                encryption_status=self.file.encryption_status,
-                mime_type=self.file.mime_type,
-                created_by_user=self.user,
-                created_by_group=self.group,
-                modified_by_user=self.user,
-                modified_by_group=self.group,
-            )
-        file.size = self.memory_file.getbuffer().nbytes
-        self.memory_file.seek(0)
-        django_file = DjangoFile(name=file.name, file=self.memory_file)
-        file.content = django_file
+        if not with_errors:
+            file = self.file
+            if (
+                self.file.modified_by_user != self.user
+                or self.file.modified_by_group != self.group
+            ):
+                file = File(
+                    variant=self.file.variant,
+                    original=self.file.original,
+                    name=self.file.name,
+                    document=self.file.document,
+                    encryption_status=self.file.encryption_status,
+                    mime_type=self.file.mime_type,
+                    created_by_user=self.user,
+                    created_by_group=self.group,
+                    modified_by_user=self.user,
+                    modified_by_group=self.group,
+                )
+            file.size = self.memory_file.getbuffer().nbytes
+            self.memory_file.seek(0)
+            django_file = DjangoFile(name=file.name, file=self.memory_file)
+            file.content = django_file
 
-        try:
-            validate_file(file)
-        except ValidationError:
-            raise DAVError(HTTP_FORBIDDEN)
+            try:
+                validate_file(file)
+            except ValidationError:
+                raise DAVError(HTTP_FORBIDDEN)
 
-        file.save()
-        self.file = file
-        self.memory_file.do_close()
+            file.save()
+            self.file = file
+            self.memory_file.do_close()
         super().end_write(with_errors=with_errors)
 
 
