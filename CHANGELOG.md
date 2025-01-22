@@ -1,3 +1,8 @@
+# 6.4.4
+
+### Fix
+* **dav:** Don't create new file if errors were raised ([`a48197d`](https://github.com/projectcaluma/alexandria/commit/a48197dcf8086688efc5a50421159fb68551bfaf))
+
 # 6.4.3
 
 ### Fix
