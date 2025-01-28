@@ -1,3 +1,38 @@
+# 7.0.0
+
+### Feature
+* Remove category filter (b9126f06f1317b25bd239594dd42956bc158cc31)
+* Add document title and description to search (71fd43f428cbf40e1e8b303f31b1a4cf4dbb607a)
+* Search utility (e96aff8f6a6819eb4981b3bd75b51f9aca03f281)
+* Add "only_newest" filter for files (2b42cb9f17a38c6b3bb73b406fc1fe1969f64528)
+* Implement improved fulltext search (99a007827c87b158b4e0560acdde03cffab8dccc)
+* Move thumbnail generation to celery (6d30dcd0533be084b8596cc1536ca69894fdc174)
+
+### Fix
+* Clone files with s3 copy (f191fae359110cb32e55e5315c45139d627d46a6)
+* Update DGAP (c2c357b74f5409b92700f1724afae85be3b4b2e2)
+* Revalidate mimetypes after moving document to different category (46066ac030808fde94bfc263f8b303e21bea0482)
+* Remove version from errors (e39470f77183be42e3761abe0abf0fe15c1e174f)
+* Stricter mime type handling (4b8ab5b71b19d34d0000ba5fe008ee80aecc1c4c)
+
+### Breaking
+* remove category filter (b9126f06f1317b25bd239594dd42956bc158cc31)
+* This changes the structure and type of the search endpoint's data.  (99a007827c87b158b4e0560acdde03cffab8dccc)
+
+# 6.4.4
+
+### Fix
+* **dav:** Don't create new file if errors were raised ([`a48197d`](https://github.com/projectcaluma/alexandria/commit/a48197dcf8086688efc5a50421159fb68551bfaf))
+
+# 6.4.3
+
+### Fix
+* **dav:** Raise error if content length of put request is zero ([`488c21f`](https://github.com/projectcaluma/alexandria/commit/488c21f3af753f9c02b053629f72052502312bad))
+
+# 6.4.2
+### Fix
+* **document:** Dont assume that a document has files ([`91e6a1f`](https://github.com/projectcaluma/alexandria/commit/91e6a1fdd6fe8fa9b89144a83f4ff94653c668fd))
+
 # 6.4.1
 ### Fix
 * **document:** Revalidate mimetypes after moving document to different category ([`46066ac`](https://github.com/projectcaluma/alexandria/commit/46066ac030808fde94bfc263f8b303e21bea0482))
