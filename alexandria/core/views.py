@@ -10,7 +10,6 @@ from django.conf import settings
 from django.core.exceptions import ValidationError as DjangoCoreValidationError
 from django.core.files.base import ContentFile
 from django.http import FileResponse
-from django.utils.module_loading import import_string
 from django.utils.translation import gettext as _
 from django_presigned_url.presign_urls import verify_presigned_request
 from generic_permissions.permissions import AllowAny, PermissionViewMixin
@@ -40,8 +39,10 @@ from rest_framework_json_api.views import (
     RelatedMixin,
 )
 
+from alexandria.core.utils import get_user_and_group_from_request
+
 from . import models, serializers
-from .api import create_document_file
+from .api import copy_document, create_document_file
 from .filters import (
     CategoryFilterSet,
     DocumentFilterSet,
@@ -115,6 +116,33 @@ class DocumentViewSet(PermissionViewMixin, VisibilityViewMixin, ModelViewSet):
 
         return response
 
+    @action(
+        methods=["post"],
+        detail=True,
+        url_path="copy",
+    )
+    def copy(self, request, pk=None):
+        document = self.get_object()
+        user, group = get_user_and_group_from_request(request)
+
+        copy_request_serializer = serializers.CopyRequestSerializer(data=request.data)
+        copy_request_serializer.is_valid(raise_exception=True)
+        category = (
+            copy_request_serializer.validated_data.get("category", False)
+            or document.category
+        )
+
+        copied_document = copy_document(
+            document=document,
+            category=category,
+            user=user,
+            group=group,
+        )
+
+        serializer = self.get_serializer(copied_document)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=HTTP_201_CREATED, headers=headers)
+
     @action(methods=["post"], detail=True)
     def convert(self, request, pk=None):
         if not settings.ALEXANDRIA_ENABLE_PDF_CONVERSION:
@@ -135,9 +163,7 @@ class DocumentViewSet(PermissionViewMixin, VisibilityViewMixin, ModelViewSet):
 
         response.raise_for_status()
 
-        user, group = import_string(settings.ALEXANDRIA_GET_USER_AND_GROUP_FUNCTION)(
-            request
-        )
+        user, group = get_user_and_group_from_request(request)
 
         file_name = f"{splitext(file.name)[0]}.pdf"
         document_title = f"{splitext(document.title)[0]}.pdf"

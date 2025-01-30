@@ -397,6 +397,79 @@ def test_move_document_to_new_category(
 
 
 @pytest.mark.parametrize(
+    "to_category,expected_status",
+    [
+        ("same", HTTP_201_CREATED),
+        ("new", HTTP_201_CREATED),
+        ("null", HTTP_201_CREATED),
+        ("not_defined", HTTP_201_CREATED),
+        ("non_existent", HTTP_400_BAD_REQUEST),
+        ("not_allowed", HTTP_400_BAD_REQUEST),
+    ],
+)
+def test_copy_document(
+    admin_client,
+    category_factory,
+    file_factory,
+    document_factory,
+    to_category,
+    expected_status,
+):
+    category_not_allowed = category_factory.create(allowed_mime_types=["plain/text"])
+    category = category_factory()
+    document = document_factory(category=category)
+    file_factory.create(document=document, name="Image.jpeg", mime_type="image/jpeg")
+    temp_category = category_factory()
+    temp_category_pk = temp_category.pk
+    temp_category.delete()
+
+    if to_category == "non_existent":
+        target_category_pk = temp_category_pk
+    elif to_category == "new":
+        target_category_pk = category_factory().pk
+    elif to_category == "not_allowed":
+        target_category_pk = category_not_allowed.pk
+    else:
+        target_category_pk = document.category.pk
+
+    data = {
+        "data": {
+            "type": "documents",
+            "id": document.pk,
+            "relationships": {
+                "category": {
+                    "data": {
+                        "id": target_category_pk,
+                        "type": "categories",
+                    }
+                }
+            },
+        }
+    }
+
+    if to_category == "not_defined":
+        data["data"]["relationships"] = {}
+    elif to_category == "null":
+        data["data"]["relationships"]["category"] = None
+
+    url = reverse("document-copy", args=[document.pk])
+    response = admin_client.post(url, data=data)
+
+    assert response.status_code == expected_status
+    if to_category == "not_allowed":
+        assert (
+            response.json()["errors"][0]["detail"]
+            == f"File type image/jpeg is not allowed in category {category_not_allowed.pk}."
+        )
+
+    if expected_status == HTTP_201_CREATED:
+        assert (
+            response.json()["data"]["relationships"]["category"]["data"]["id"]
+            == target_category_pk
+        )
+
+
+@pytest.mark.parametrize(
     "presigned, expected_status",
     [(True, HTTP_200_OK), (False, HTTP_403_FORBIDDEN)],
 )
