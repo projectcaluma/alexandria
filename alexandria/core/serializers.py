@@ -5,7 +5,6 @@ from django.conf import settings
 from django.db.transaction import atomic
 from django.template.defaultfilters import slugify
 from django.utils import translation
-from django.utils.module_loading import import_string
 from generic_permissions.validation import ValidatorMixin
 from generic_permissions.visibilities import (
     VisibilityResourceRelatedField,
@@ -14,6 +13,8 @@ from generic_permissions.visibilities import (
 from rest_framework_json_api import serializers
 from rest_framework_json_api.relations import SerializerMethodResourceRelatedField
 from rest_framework_json_api.views import Serializer
+
+from alexandria.core.utils import get_user_and_group_from_request
 
 from . import models
 
@@ -27,15 +28,10 @@ class BaseSerializer(
 
     created_at = serializers.DateTimeField(read_only=True)
 
-    def get_user_and_group(self):
-        return import_string(settings.ALEXANDRIA_GET_USER_AND_GROUP_FUNCTION)(
-            self.context.get("request")
-        )
-
     def is_valid(self, *args, **kwargs):
         # Prime data so the validators are called (and default values filled
         # if client didn't pass them.)
-        user, group = self.get_user_and_group()
+        user, group = get_user_and_group_from_request(self.context.get("request"))
         self.initial_data.setdefault("created_by_group", group)
         self.initial_data.setdefault("modified_by_group", group)
         self.initial_data.setdefault("created_by_user", user)
@@ -45,7 +41,7 @@ class BaseSerializer(
     def validate(self, *args, **kwargs):
         validated_data = super().validate(*args, **kwargs)
 
-        user, group = self.get_user_and_group()
+        user, group = get_user_and_group_from_request(self.context.get("request"))
         validated_data["modified_by_user"] = user
         validated_data["modified_by_group"] = group
 
@@ -324,7 +320,7 @@ class WebDAVSerializer(BaseSerializer):
         request = self.context.get("request")
         host = request.get_host() if request else "localhost"
         scheme = request.scheme if request else "http"
-        user, group = self.get_user_and_group()
+        user, group = get_user_and_group_from_request(self.context.get("request"))
         return instance.get_latest_original().get_webdav_url(
             user, group, f"{scheme}://{host}"
         )
@@ -364,3 +360,12 @@ class SearchResultSerializer(Serializer):
             "name",
         )
         read_only_fields = fields
+
+
+class CopyRequestSerializer(Serializer):
+    category = serializers.ResourceRelatedField(
+        queryset=models.Category.objects,
+        required=False,
+        allow_null=True,
+        allow_empty=True,
+    )
