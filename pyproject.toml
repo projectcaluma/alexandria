@@ -47,7 +47,7 @@ redis = "^5.0.8"
 [tool.poetry.group.dev.dependencies]
 django-extensions = "3.2.3"
 django-test-migrations = "1.4.0"
-factory-boy = "3.3.1"
+factory-boy = "3.3.3"
 gitlint = "0.19.1"
 moto = { extras = ["s3"], version = "5.0.28" }
 pdbpp = "0.10.3"
