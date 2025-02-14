@@ -48,7 +48,11 @@ class AlexandriaFileResource(ManabiFileResourceMixin, DAVNonCollection):
         super().__init__(path, environ)
         self._cb_config = cb_hook_config
         self._token = environ["manabi.token"]
-        self.user, self.group, file_pk = self._token.payload
+        self.user, self.group = self._token.payload
+
+        # Extract the UUID from the path which is a combination of the UUID and
+        # the filename
+        file_pk = Path(path).parts[1]
 
         # We only serve the newest original File of the Document.
         self.file = (

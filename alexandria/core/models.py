@@ -250,16 +250,16 @@ class File(UUIDModel):
     size = models.IntegerField()
 
     def get_webdav_url(self, username, group, host="http://localhost:8000"):
-        # The path doesn't need to match the actual file path, because we're accessing
-        # the file via the `File.pk`. So we can use just the name, that will then be
-        # the last part of the URL
-        path = Path(self.name)
+        # The path used to lock the file consists of the UUID and the actual
+        # filename in order to be able to identify the correct file but also
+        # show a meaningful filename in the respective editor (e.g. MS Word).
+        path = Path(str(self.pk)) / Path(self.name)
+
         key = Key.from_dictionary({"manabi": {"key": settings.MANABI_SHARED_KEY}})
 
-        # we encode `username`, `group` and `File.pk` into the token. That way, we can
-        # easily access the file via it's model and also apply/validate `user` and
-        # `group`
-        payload = (username, group, str(self.pk))
+        # We encode `username` and `group` into the token to easily
+        # apply/validate `user` and `group`
+        payload = (username, group)
         token = Token(key, path, payload=payload)
 
         try:

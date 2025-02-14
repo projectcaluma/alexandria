@@ -102,6 +102,7 @@ def test_dav_propfind(db, manabi, file_factory, snapshot):
 
     content_file = ContentFile(b"hello world", name="test.txt")
     file = file_factory(
+        pk="5fa8513e-7d50-46de-addb-5abaa6e1478e",
         name="test.txt",
         content=content_file,
         size=content_file.size,
@@ -116,12 +117,13 @@ def test_dav_propfind(db, manabi, file_factory, snapshot):
 
 def test_dav_not_found(db, settings):
     key = Key.from_dictionary({"manabi": {"key": settings.MANABI_SHARED_KEY}})
-    payload = ("username", "groupname", str(uuid4()))
-    token = Token(key, Path("/"), payload=payload)
+    payload = ("username", "groupname")
+    path = Path(str(uuid4())) / Path("myfile.docx")
+    token = Token(key, path, payload=payload)
 
     assert (
         AlexandriaProvider("/").get_file_resource(
-            "/",
+            f"/{str(path)}",
             environ={"manabi.token": token, "wsgidav.provider": AlexandriaProvider},
             _=None,
         )
