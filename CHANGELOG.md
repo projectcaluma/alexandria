@@ -1,3 +1,8 @@
+# 7.0.1
+
+### Fix
+* **dav:** Incorporate file UUID into WebDAV path to avoid wrong locks ([`5c2e50a`](https://github.com/projectcaluma/alexandria/commit/5c2e50a08774926af0428a92f4fe2e61f5da3d05))
+
 # 7.0.0
 
 ### Feature
