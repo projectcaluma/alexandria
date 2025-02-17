@@ -4,7 +4,7 @@
   <?xml version="1.0" ?>
   <ns0:multistatus xmlns:ns0="DAV:">
     <ns0:response>
-      <ns0:href>/dav/test.txt</ns0:href>
+      <ns0:href>/dav/5fa8513e-7d50-46de-addb-5abaa6e1478e/test.txt</ns0:href>
       <ns0:propstat>
         <ns0:prop>
           <ns0:resourcetype/>
