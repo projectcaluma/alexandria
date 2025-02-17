@@ -14,7 +14,8 @@
       "description": "{\"en\": \"\"}",
       "allowed_mime_types": "[\"application/pdf\", \"image/jpeg\", \"image/png\", \"image/gif\", \"application/msword\", \"application/vnd.openxmlformats-officedocument.wordprocessingml.document\", \"application/vnd.ms-excel\", \"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet\", \"application/vnd.ms-powerpoint\", \"application/vnd.openxmlformats-officedocument.presentationml.presentation\", \"application/vnd.ms-outlook\", \"msg\"]",
       "color": "#CB68C1",
-      "parent": null
+      "parent": null,
+      "sort": 3
     }
   },
   {
@@ -32,7 +33,8 @@
       "description": "{\"en\": \"\"}",
       "allowed_mime_types": null,
       "color": "#9CDD69",
-      "parent": null
+      "parent": null,
+      "sort": 0
     }
   },
   {
@@ -50,7 +52,8 @@
       "description": "{\"en\": \"\"}",
       "allowed_mime_types": null,
       "color": "#8791EC",
-      "parent": null
+      "parent": null,
+      "sort": 4
     }
   },
   {
@@ -68,7 +71,8 @@
       "description": "{\"en\": \"\"}",
       "allowed_mime_types": null,
       "color": "#DB8B72",
-      "parent": null
+      "parent": null,
+      "sort": 7
     }
   },
   {
@@ -86,7 +90,27 @@
       "description": "{\"en\": \"\"}",
       "allowed_mime_types": null,
       "color": "#9CDD69",
-      "parent": "beilagen-zum-gesuch"
+      "parent": "beilagen-zum-gesuch",
+      "sort": 1
+    }
+  },
+  {
+    "model": "alexandria_core.category",
+    "pk": "plans",
+    "fields": {
+      "created_at": "2020-08-04T13:24:00.677Z",
+      "created_by_user": null,
+      "created_by_group": null,
+      "modified_at": "2020-08-04T13:24:00.677Z",
+      "modified_by_user": null,
+      "modified_by_group": null,
+      "metainfo": {},
+      "name": "{\"en\": \"Plans\"}",
+      "description": "{\"en\": \"\"}",
+      "allowed_mime_types": null,
+      "color": "#9CDD69",
+      "parent": "beilagen-zum-gesuch",
+      "sort": 2
     }
   },
   {
@@ -104,7 +128,8 @@
       "description": "{\"en\": \"\"}",
       "allowed_mime_types": null,
       "color": "#66CFC9",
-      "parent": null
+      "parent": null,
+      "sort": 5
     }
   },
   {
