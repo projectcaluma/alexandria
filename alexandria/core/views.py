@@ -216,7 +216,7 @@ class FileViewSet(
     @action(methods=["get"], detail=False)
     def multi(self, request, **kwargs):
         if not request.query_params.get("filter[files]"):
-            raise ValidationError(_('Specifying a "files" filter is mandatory!'))
+            raise ValidationError(_('"files" filter is mandatory!'))
 
         try:
             queryset = self.filter_queryset(self.get_queryset())
@@ -228,10 +228,7 @@ class FileViewSet(
                 raise NotFound()
         except DjangoCoreValidationError:  # pragma: todo cover
             raise ValidationError(
-                _(
-                    'The "files" filter must consist of a comma delimited list of '
-                    "File PKs!"
-                )
+                _('The "files" filter must consist of a comma delimited list of UUIDs!')
             )
 
         with NamedTemporaryFile() as file_obj:
@@ -290,7 +287,7 @@ class WebDAVViewSet(
             instance.get_latest_original().mime_type
             not in settings.ALEXANDRIA_MANABI_ALLOWED_MIMETYPES
         ):
-            raise NotFound(_("WebDAV is not enabled for this documents mime type."))
+            raise NotFound(_("WebDAV is not enabled for this mime type."))
         # call DGAP
         self._check_object_permissions(request, instance)
         super().check_object_permissions(request, instance)

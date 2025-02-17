@@ -74,7 +74,8 @@ def parse_languages(languages):
 
 LANGUAGE_CODE = env.str("LANGUAGE_CODE", "en")
 LANGUAGES = (
-    parse_languages(env.list("LANGUAGES", default=["en"])) or global_settings.LANGUAGES
+    parse_languages(env.list("LANGUAGES", default=["en", "de"]))
+    or global_settings.LANGUAGES
 )
 
 TIME_ZONE = env.str("TIME_ZONE", "UTC")

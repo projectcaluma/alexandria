@@ -11,7 +11,7 @@ ENV DJANGO_SETTINGS_MODULE=alexandria.settings.django \
 RUN \
   --mount=type=cache,target=/var/cache/apt \
   apt-get update && apt-get install -y --no-install-recommends \
-    build-essential libpq-dev wait-for-it \
+    build-essential libpq-dev gettext wait-for-it \
     # Default dependencies for preview-generator
     ghostscript imagemagick libfile-mimeinfo-perl libimage-exiftool-perl \
     libjpeg-dev libmagic1 libsecret-1-0 poppler-utils webp zlib1g-dev \
