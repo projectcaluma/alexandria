@@ -40,19 +40,19 @@ def make_uuid():
 class BaseModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     created_by_user = models.CharField(
-        _("created by user"), max_length=150, blank=True, null=True
+        _("Created by user"), max_length=150, blank=True, null=True
     )
     created_by_group = models.CharField(
-        _("created by group"), max_length=255, blank=True, null=True
+        _("Created by group"), max_length=255, blank=True, null=True
     )
     modified_at = models.DateTimeField(auto_now=True, db_index=True)
     modified_by_user = models.CharField(
-        _("modified by user"), max_length=150, blank=True, null=True
+        _("Modified by user"), max_length=150, blank=True, null=True
     )
     modified_by_group = models.CharField(
-        _("modified by group"), max_length=255, blank=True, null=True
+        _("Modified by group"), max_length=255, blank=True, null=True
     )
-    metainfo = models.JSONField(_("metainfo"), default=dict)
+    metainfo = models.JSONField(_("Metainfo"), default=dict)
 
     class Meta:
         abstract = True
@@ -86,21 +86,21 @@ class SlugModel(BaseModel):
 
 
 COLOR_RE = re.compile("^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$")
-color_validator = RegexValidator(COLOR_RE, _("Enter a valid color."), "invalid")
+color_validator = RegexValidator(
+    COLOR_RE, _("Please enter a valid HEX color code."), "invalid"
+)
 
 
 class Category(SlugModel):
-    name = LocalizedCharField(
-        _("category name"), blank=False, null=False, required=False
-    )
+    name = LocalizedCharField(_("Name"), blank=False, null=False, required=False)
     description = LocalizedTextField(
-        _("category description"), null=True, blank=True, required=False
+        _("Description"), null=True, blank=True, required=False
     )
     allowed_mime_types = ArrayField(
         base_field=models.CharField(max_length=255),
         blank=True,
         null=True,
-        verbose_name=_("allowed mime types"),
+        verbose_name=_("Allowed mime types"),
     )
     color = models.CharField(
         max_length=18,
@@ -125,9 +125,9 @@ class TagSynonymGroup(BaseModel):
 
 
 class Tag(UUIDModel):
-    name = models.CharField(_("tag name"), blank=False, null=False, max_length=100)
+    name = models.CharField(_("Name"), blank=False, null=False, max_length=100)
     description = LocalizedTextField(
-        _("tag description"), null=True, blank=True, required=False
+        _("Description"), null=True, blank=True, required=False
     )
     tag_synonym_group = models.ForeignKey(
         TagSynonymGroup,
@@ -139,15 +139,15 @@ class Tag(UUIDModel):
 
 
 class Mark(SlugModel):
-    name = LocalizedTextField(_("Mark name"), blank=False, null=False, max_length=100)
+    name = LocalizedTextField(_("Name"), blank=False, null=False, max_length=100)
     description = LocalizedTextField(
-        _("Mark description"), null=True, blank=True, required=False
+        _("Description"), null=True, blank=True, required=False
     )
 
 
 class Document(UUIDModel):
-    title = models.CharField(_("document title"), blank=True, null=True)
-    description = models.TextField(_("document description"), null=True, blank=True)
+    title = models.CharField(_("Title"), blank=True, null=True)
+    description = models.TextField(_("Description"), null=True, blank=True)
     category = models.ForeignKey(
         Category,
         on_delete=models.SET_NULL,
@@ -229,11 +229,11 @@ class File(UUIDModel):
         blank=True,
         related_name="renderings",
     )
-    name = models.CharField(_("file name"), max_length=255)
+    name = models.CharField(_("Name"), max_length=255)
     document = models.ForeignKey(
         Document, on_delete=models.CASCADE, related_name="files"
     )
-    checksum = models.CharField(_("checksum"), max_length=255, null=True, blank=True)
+    checksum = models.CharField(_("Checksum"), max_length=255, null=True, blank=True)
     encryption_status = models.CharField(
         choices=EncryptionStatus.choices,
         max_length=12,
