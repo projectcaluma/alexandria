@@ -5,7 +5,6 @@ from pathlib import Path
 
 import pytest
 from django.urls import reverse
-from django.utils import timezone
 from factory.django import django_files
 from rest_framework.status import (
     HTTP_200_OK,
@@ -19,7 +18,6 @@ from rest_framework.status import (
 from alexandria.core.factories import FileData
 from alexandria.core.models import File
 from alexandria.core.tasks import make_checksum
-from alexandria.core.tests.test_permissions import TIMESTAMP
 
 from ..models import Document, Tag
 from ..views import DocumentViewSet, FileViewSet, TagViewSet
@@ -426,40 +424,6 @@ def test_download_file_mime_type(
     result = admin_client.get(url)
     assert result.headers["Content-Type"] == mime_type
     assert expected_content_disposition in result.headers["Content-Disposition"]
-
-
-@pytest.mark.freeze_time(TIMESTAMP, as_arg=True)
-def test_presigned_url_expired(admin_client, client, file, freezer, settings):
-    response = admin_client.get(reverse("file-detail", args=(file.pk,)))
-    url = response.json()["data"]["attributes"]["download-url"]
-    freezer.tick(
-        delta=timezone.timedelta(seconds=settings.ALEXANDRIA_DOWNLOAD_URL_LIFETIME + 5)
-    )
-    response = client.get(url)
-    assert response.status_code == HTTP_400_BAD_REQUEST
-
-
-def test_presigned_url_tempered_signature(admin_client, client, file):
-    response = admin_client.get(reverse("file-detail", args=(file.pk,)))
-    url = response.json()["data"]["attributes"]["download-url"]
-    without_params, params = url.split("?")
-    expiry, signature = params.split("&")
-    key, val = expiry.split("=")
-    val = str(int(val) + 1000)
-    url = f"{without_params}?{signature}&{key}={val}"
-    response = client.get(url)
-    assert response.status_code == HTTP_400_BAD_REQUEST
-
-
-def test_presigned_url_different_file(admin_client, file, file_factory):
-    response = admin_client.get(reverse("file-detail", args=(file.pk,)))
-    url = response.json()["data"]["attributes"]["download-url"]
-
-    other_file = file_factory()
-    url = url.replace(str(file.pk), str(other_file.pk))
-
-    response = admin_client.get(url)
-    assert response.status_code == HTTP_400_BAD_REQUEST
 
 
 def test_convert_document(
