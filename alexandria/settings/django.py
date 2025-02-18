@@ -1,4 +1,5 @@
 import re
+from pathlib import Path
 
 from django.conf import global_settings
 
@@ -74,9 +75,11 @@ def parse_languages(languages):
 
 LANGUAGE_CODE = env.str("LANGUAGE_CODE", "en")
 LANGUAGES = (
-    parse_languages(env.list("LANGUAGES", default=["en", "de"]))
+    parse_languages(env.list("LANGUAGES", default=["en", "de", "it"]))
     or global_settings.LANGUAGES
 )
+PROJECT_ROOT = (Path(__file__) / Path("../..")).resolve()
+LOCALE_PATHS = [str(PROJECT_ROOT / Path("locale"))]
 
 TIME_ZONE = env.str("TIME_ZONE", "UTC")
 USE_I18N = True

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-18 13:29+0000\n"
+"POT-Creation-Date: 2025-02-18 14:03+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,79 +18,77 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: alexandria/core/api.py:25
+#: alexandria/core/api.py
 msgid "(copy)"
 msgstr "(Kopie)"
 
-#: alexandria/core/models.py:44
+#: alexandria/core/models.py
 msgid "Created by user"
 msgstr "Erstellt durch Benutzer"
 
-#: alexandria/core/models.py:47
+#: alexandria/core/models.py
 msgid "Created by group"
 msgstr "Erstellt durch Gruppe"
 
-#: alexandria/core/models.py:51
+#: alexandria/core/models.py
 msgid "Modified by user"
 msgstr "Bearbeitet durch Benutzer"
 
-#: alexandria/core/models.py:54
+#: alexandria/core/models.py
 msgid "Modified by group"
 msgstr "Bearbeitet durch Gruppe"
 
-#: alexandria/core/models.py:56
+#: alexandria/core/models.py
 msgid "Metainfo"
 msgstr "Metainformationen"
 
-#: alexandria/core/models.py:91
+#: alexandria/core/models.py
 msgid "Please enter a valid HEX color code."
 msgstr "Bitte geben Sie einen validen HEX Farbcode ein."
 
-#: alexandria/core/models.py:96 alexandria/core/models.py:129
-#: alexandria/core/models.py:143 alexandria/core/models.py:233
+#: alexandria/core/models.py
 msgid "Name"
 msgstr "Name"
 
-#: alexandria/core/models.py:98 alexandria/core/models.py:131
-#: alexandria/core/models.py:145 alexandria/core/models.py:151
+#: alexandria/core/models.py
 msgid "Description"
 msgstr "Beschreibung"
 
-#: alexandria/core/models.py:104
+#: alexandria/core/models.py
 msgid "Allowed mime types"
 msgstr "Erlaubte Dateitypen"
 
-#: alexandria/core/models.py:150
+#: alexandria/core/models.py
 msgid "Title"
 msgstr "Titel"
 
-#: alexandria/core/models.py:237
+#: alexandria/core/models.py
 msgid "Checksum"
 msgstr "Checksumme"
 
-#: alexandria/core/validations.py:31
+#: alexandria/core/validations.py
 msgid "File is infected with malware."
 msgstr "Datei ist mit Malware infiziert"
 
-#: alexandria/core/validations.py:35
+#: alexandria/core/validations.py
 msgid "Malware scan had an error: "
 msgstr "Malware-Scan hatte einen Fehler:"
 
-#: alexandria/core/validations.py:53
+#: alexandria/core/validations.py
 #, python-format
 msgid "File type %(mime_type)s is not allowed in category %(category)s."
 msgstr ""
 "Dateityp %(mime_type)s ist in der Kategorie %(category)s nicht erlaubt."
 
-#: alexandria/core/validations.py:71
+#: alexandria/core/validations.py
 msgid "Missing Content-Type header"
 msgstr "Fehlender Content-Type header"
 
-#: alexandria/core/validations.py:73
+#: alexandria/core/validations.py
 msgid "Unknown file extension"
 msgstr "Unbekannte Dateiendung"
 
-#: alexandria/core/validations.py:80
+#: alexandria/core/validations.py
 #, python-format
 msgid ""
 "Content-Type %(content_type)s does not match file extension %(extension)s."
@@ -98,7 +96,7 @@ msgstr ""
 "Content-Type %(content_type) stimmt nicht mit der Dateiendung %(extension)s "
 "überein."
 
-#: alexandria/core/validations.py:92
+#: alexandria/core/validations.py
 #, python-format
 msgid ""
 "Content-Type %(content_type)s does not match detected file content "
@@ -107,29 +105,29 @@ msgstr ""
 "Content-Type %(content_type)s stimmt nicht mit dem erkannten Dateityp "
 "%(file_content_type)s überein."
 
-#: alexandria/core/views.py:149
+#: alexandria/core/views.py
 msgid "PDF conversion is not enabled."
 msgstr "PDF-Konvertierung ist nicht aktiviert."
 
-#: alexandria/core/views.py:246
+#: alexandria/core/views.py
 msgid "\"files\" filter is mandatory!"
 msgstr "Der Filter \"files\" ist obligatorisch!"
 
-#: alexandria/core/views.py:258
+#: alexandria/core/views.py
 msgid "The \"files\" filter must consist of a comma delimited list of UUIDs!"
 msgstr ""
 "Der \"files\" Filter muss aus einer kommaseparierten Liste von UUIDs "
 "bestehen!"
 
-#: alexandria/core/views.py:276
+#: alexandria/core/views.py
 msgid "For downloading a file use the presigned download URL."
 msgstr ""
 "Zum Herunterladen einer Datei verwenden Sie die vorgegebene Download-URL."
 
-#: alexandria/core/views.py:301
+#: alexandria/core/views.py
 msgid "WebDAV is not enabled."
 msgstr "WebDAV ist nicht aktiviert."
 
-#: alexandria/core/views.py:311
+#: alexandria/core/views.py
 msgid "WebDAV is not enabled for this mime type."
 msgstr "WebDAV ist für diesen Dateityp nicht aktiviert"
