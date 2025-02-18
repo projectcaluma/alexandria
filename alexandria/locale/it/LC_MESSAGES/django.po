@@ -20,78 +20,81 @@ msgstr ""
 
 #: alexandria/core/api.py
 msgid "(copy)"
-msgstr ""
+msgstr "(copia)"
 
 #: alexandria/core/models.py
 msgid "Created by user"
-msgstr ""
+msgstr "Creato da utente"
 
 #: alexandria/core/models.py
 msgid "Created by group"
-msgstr ""
+msgstr "Creato da gruppo"
 
 #: alexandria/core/models.py
 msgid "Modified by user"
-msgstr ""
+msgstr "Modificato da utente"
 
 #: alexandria/core/models.py
 msgid "Modified by group"
-msgstr ""
+msgstr "Modificato  da gruppo"
 
 #: alexandria/core/models.py
 msgid "Metainfo"
-msgstr ""
+msgstr "Metadati"
 
 #: alexandria/core/models.py
 msgid "Please enter a valid HEX color code."
-msgstr ""
+msgstr "Inserire un codice colore HEX valido."
 
 #: alexandria/core/models.py
 msgid "Name"
-msgstr ""
+msgstr "Nome"
 
 #: alexandria/core/models.py
 msgid "Description"
-msgstr ""
+msgstr "Descrizione"
 
 #: alexandria/core/models.py
 msgid "Allowed mime types"
-msgstr ""
+msgstr "Tipi di file consentiti"
 
 #: alexandria/core/models.py
 msgid "Title"
-msgstr ""
+msgstr "Titolo"
 
 #: alexandria/core/models.py
 msgid "Checksum"
-msgstr ""
+msgstr "Checksum"
 
 #: alexandria/core/validations.py
 msgid "File is infected with malware."
-msgstr ""
+msgstr "Il file è infetto da malware."
 
 #: alexandria/core/validations.py
 msgid "Malware scan had an error: "
-msgstr ""
+msgstr "La scansione del malware ha avuto un errore: "
 
 #: alexandria/core/validations.py
 #, python-format
 msgid "File type %(mime_type)s is not allowed in category %(category)s."
 msgstr ""
+"Il tipo di file %(mime_type)s non è consentito nella categoria %(category)s."
 
 #: alexandria/core/validations.py
 msgid "Missing Content-Type header"
-msgstr ""
+msgstr "Intestazione Content-Type mancante"
 
 #: alexandria/core/validations.py
 msgid "Unknown file extension"
-msgstr ""
+msgstr "Estensione file sconosciuta"
 
 #: alexandria/core/validations.py
 #, python-format
 msgid ""
 "Content-Type %(content_type)s does not match file extension %(extension)s."
 msgstr ""
+"Il tipo di contenuto %(content_type)s non corrisponde all'estensione "
+"%(extension)s del file."
 
 #: alexandria/core/validations.py
 #, python-format
@@ -99,27 +102,31 @@ msgid ""
 "Content-Type %(content_type)s does not match detected file content "
 "%(file_content_type)s."
 msgstr ""
+"Il tipo di contenuto %(content_type)s non corrisponde al contenuto del file "
+"%(file_content_type)s."
 
 #: alexandria/core/views.py
 msgid "PDF conversion is not enabled."
-msgstr ""
+msgstr "La conversione PDF non è attivata."
 
 #: alexandria/core/views.py
 msgid "\"files\" filter is mandatory!"
-msgstr ""
+msgstr "Il filtro \"files\" è obbligatorio!"
 
 #: alexandria/core/views.py
 msgid "The \"files\" filter must consist of a comma delimited list of UUIDs!"
 msgstr ""
+"Il filtro \"files\" deve essere costituito da un elenco di UUID delimitato da "
+"virgole!"
 
 #: alexandria/core/views.py
 msgid "For downloading a file use the presigned download URL."
-msgstr ""
+msgstr "Per scaricare un file, utilizzare l'URL di download predefinito."
 
 #: alexandria/core/views.py
 msgid "WebDAV is not enabled."
-msgstr ""
+msgstr "WebDAV non è attivato."
 
 #: alexandria/core/views.py
 msgid "WebDAV is not enabled for this mime type."
-msgstr ""
+msgstr "WebDAV non è abilitato per questo tipo di file."

@@ -67,3 +67,11 @@ flush: ## Flush the database
 .PHONY: dump
 dump: ## dump alexandria data
 	@docker compose run --rm alexandria ./manage.py dumpdata alexandria_core | jq > initial_data.json
+
+.PHONY: makemessages
+makemessages: ## Update translation files for all languages
+	@docker compose run --rm --no-deps alexandria ./manage.py makemessages -a --add-location file
+
+.PHONY: compilemessages
+compilemessages: ## Generate compiled translation files
+	@docker compose run --rm --no-deps alexandria ./manage.py compilemessages
