@@ -1,3 +1,13 @@
+# 7.1.0
+
+### Feature
+* **copy:** Add api endpoint to copy a document ([`1e2977a`](https://github.com/projectcaluma/alexandria/commit/1e2977ae8789ccc8d524b31b00c7fcd733535fb3))
+* **category:** Add the sort property on the category model ([`938da2b`](https://github.com/projectcaluma/alexandria/commit/938da2ba8e6f607901431624630fdcf43d70684d))
+
+### Fix
+* **i18n:** Add italian translations ([`b4fd9c1`](https://github.com/projectcaluma/alexandria/commit/b4fd9c180856d2ee6e67f51e6ed781a48f33bc7e))
+* **i18n:** Add missing translations for EN and DE ([`525bde5`](https://github.com/projectcaluma/alexandria/commit/525bde55bd3145873e2f88796a23e7ed7f649dc6))
+
 # 7.0.1
 
 ### Fix
