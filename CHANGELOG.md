@@ -1,3 +1,8 @@
+# 7.1.1
+
+### Fix
+* **i18n:** Move translations to core app ([`72ee5b3`](https://github.com/projectcaluma/alexandria/commit/72ee5b37e06cf0740e0c7c45a85ab1d220b5e10e))
+
 # 7.1.0
 
 ### Feature
