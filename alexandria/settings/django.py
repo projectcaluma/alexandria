@@ -79,7 +79,7 @@ LANGUAGES = (
     or global_settings.LANGUAGES
 )
 PROJECT_ROOT = (Path(__file__) / Path("../..")).resolve()
-LOCALE_PATHS = [str(PROJECT_ROOT / Path("locale"))]
+LOCALE_PATHS = [str(PROJECT_ROOT / Path("core/locale"))]
 
 TIME_ZONE = env.str("TIME_ZONE", "UTC")
 USE_I18N = True
