@@ -1,3 +1,8 @@
+# 7.1.2
+
+### Fix
+* **mark:** Fix data type and requiredness of mark name ([`c0fd2f8`](https://github.com/projectcaluma/alexandria/commit/c0fd2f8e70cddb97577b782a90ee4e7b6741196e))
+
 # 7.1.1
 
 ### Fix
