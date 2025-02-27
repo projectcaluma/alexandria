@@ -140,7 +140,7 @@ class Tag(UUIDModel):
 
 
 class Mark(SlugModel):
-    name = LocalizedTextField(_("Name"), blank=False, null=False, max_length=100)
+    name = LocalizedCharField(_("Name"), blank=False, null=False, required=False)
     description = LocalizedTextField(
         _("Description"), null=True, blank=True, required=False
     )
