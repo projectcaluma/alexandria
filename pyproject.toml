@@ -22,7 +22,7 @@ boto3 = "^1.34.157"
 clamdpy = "^0.1.0.post1"
 django = "~4.2.15"
 django-environ = ">=0.9.0,<0.13.0"
-django-filter = ">=22.1,<25.0"
+django-filter = ">=22.1,<26.0"
 django-generic-api-permissions = "^0.4.7"
 # beta version for better dependency version ranges https://github.com/SectorLabs/django-localized-fields/issues/95
 django-localized-fields = "^6.8b5"
