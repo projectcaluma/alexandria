@@ -34,7 +34,6 @@ manabi = "^1.4.0"
 mozilla-django-oidc = ">=2,<5"
 preview-generator = "^0.29"
 psutil = ">=5.9.8,<8.0.0"
-psycopg = "^3.2.1"
 python-magic = "^0.4.27"
 requests = "^2.31.0"
 tika = "^2.6.0"
@@ -44,6 +43,7 @@ gunicorn = "^23.0.0"
 pghstore = "^2.0.2"
 celery = "^5.4.0"
 redis = "^5.0.8"
+psycopg = {extras = ["binary"], version = "^3.2.5"}
 
 [tool.poetry.group.dev.dependencies]
 django-extensions = "3.2.3"
