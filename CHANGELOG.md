@@ -1,3 +1,9 @@
+# 7.1.3
+
+### Chores
+
+* **deps:** Bump django-filter from 24.3 to 25.1 ([`6dce5e`](https://github.com/projectcaluma/alexandria/commit/6dce5ee0bd08df88c9eb0efb92f0e9cf2d0de5dd))
+
 # 7.1.2
 
 ### Fix
