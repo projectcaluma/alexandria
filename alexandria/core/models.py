@@ -1,14 +1,12 @@
 import re
 import uuid
 from pathlib import Path
-from tempfile import NamedTemporaryFile
 
 from django.conf import settings
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.postgres.indexes import GinIndex
 from django.contrib.postgres.search import SearchVectorField
 from django.core.exceptions import ImproperlyConfigured, ObjectDoesNotExist
-from django.core.files import File as DjangoFile
 from django.core.validators import RegexValidator
 from django.db import models, transaction
 from django.dispatch import receiver
@@ -18,7 +16,6 @@ from localized_fields.fields import LocalizedCharField, LocalizedTextField
 from manabi.token import Key, Token
 from rest_framework_json_api.relations import reverse
 
-from alexandria.storages.backends.s3 import S3Storage
 from alexandria.storages.fields import DynamicStorageFileField
 
 
@@ -171,38 +168,11 @@ class Document(UUIDModel):
 
         self.pk = None
         self.save()
+        new_name = f"{self.pk}_{latest_original.name}"
 
-        storage = File.content.field.storage
         latest_original.pk = None
         latest_original.document = self
-        if isinstance(storage, S3Storage):
-            new_name = f"{self.pk}_{latest_original.name}"
-            copy_args = {
-                "CopySource": {
-                    "Bucket": settings.ALEXANDRIA_S3_BUCKET_NAME,
-                    "Key": latest_original.content.name,
-                },
-                # Destination settings
-                "Bucket": settings.ALEXANDRIA_S3_BUCKET_NAME,
-                "Key": new_name,
-            }
-
-            if settings.ALEXANDRIA_ENABLE_AT_REST_ENCRYPTION:
-                copy_args["CopySourceSSECustomerKey"] = storage.ssec_secret
-                copy_args["CopySourceSSECustomerAlgorithm"] = "AES256"
-                copy_args["SSECustomerKey"] = storage.ssec_secret
-                copy_args["SSECustomerAlgorithm"] = "AES256"
-
-            storage.bucket.meta.client.copy_object(**copy_args)
-            latest_original.content = new_name
-            latest_original.save()
-        else:
-            with NamedTemporaryFile() as tmp:
-                temp_file = Path(tmp.name)
-                with temp_file.open("w+b") as file:
-                    file.write(latest_original.content.file.file.read())
-                    latest_original.content = DjangoFile(file)
-                    latest_original.save()
+        latest_original.content.copy(new_name)
 
         return self
 

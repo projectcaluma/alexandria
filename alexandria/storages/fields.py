@@ -1,4 +1,8 @@
+from pathlib import Path
+from tempfile import NamedTemporaryFile
+
 from django.conf import ImproperlyConfigured, settings
+from django.core.files import File as DjangoFile
 from django.core.files.storage import storages
 from django.db import models
 from django.db.models.fields.files import FieldFile
@@ -10,14 +14,52 @@ from alexandria.storages.backends.s3 import SsecGlobalS3Storage
 class DynamicStorageFieldFile(FieldFile):
     def __init__(self, instance, field, name):
         super().__init__(instance, field, name)
-        self.storage = storages.create_storage(
-            {"BACKEND": settings.ALEXANDRIA_FILE_STORAGE}
-        )
+        storage_backend = settings.ALEXANDRIA_FILE_STORAGE
         if settings.ALEXANDRIA_ENABLE_AT_REST_ENCRYPTION:
             from alexandria.core.models import File
 
             if instance.encryption_status == File.EncryptionStatus.SSEC_GLOBAL_KEY:
-                self.storage = SsecGlobalS3Storage()
+                storage_backend = "alexandria.storages.backends.s3.SsecGlobalS3Storage"
+        self.storage = storages.create_storage({"BACKEND": storage_backend})
+
+    def copy(self, target_name: str):
+        """
+        Copy file content to target.
+
+        NOTE: this will copy the content and this copy will be the new reference of the FileField.
+        This means that there will be no pointer to the original content,
+        unless you made a copy of the parent model instance beforhands by e.g.
+        setting `file_instance.pk` to `None` before calling `file_instance.content.copy`.
+        """
+        # S3 compatible storage: copy in same bucket with s3 copy
+        if isinstance(self.storage, S3Storage):
+            copy_args = {
+                "CopySource": {
+                    "Bucket": self.storage.bucket,
+                    "Key": self.name,
+                },
+                # Destination settings
+                "Bucket": self.storage.bucket,
+                "Key": target_name,
+            }
+            if isinstance(self.storage, SsecGlobalS3Storage):
+                copy_args["CopySourceSSECustomerKey"] = self.storage.ssec_secret
+                copy_args["CopySourceSSECustomerAlgorithm"] = "AES256"
+                copy_args["SSECustomerKey"] = self.storage.ssec_secret
+                copy_args["SSECustomerAlgorithm"] = "AES256"
+
+            self.storage.bucket.meta.client.copy_object(**copy_args)
+            self.instance.content = target_name
+            self.instance.save()
+            return
+
+        # otherwise use filesystem storage
+        with NamedTemporaryFile() as tmp:
+            temp_file = Path(tmp.name)
+            with temp_file.open("w+b") as file:
+                file.write(self.read())
+                self.instance.content = DjangoFile(file, target_name)
+                self.instance.save()
 
 
 class DynamicStorageFileField(models.FileField):
@@ -56,8 +98,8 @@ class DynamicStorageFileField(models.FileField):
                     "Set `ALEXANDRIA_FILE_STORAGE` to `alexandria.storages.s3.S3Storage`."
                 )
                 raise ImproperlyConfigured(msg)
-            storage = SsecGlobalS3Storage()
             if instance.encryption_status == File.EncryptionStatus.SSEC_GLOBAL_KEY:
-                self.storage = storage
-        _file = super().pre_save(instance, add)
-        return _file
+                self.storage = storages.create_storage(
+                    {"BACKEND": "alexandria.storages.backends.s3.SsecGlobalS3Storage"}
+                )
+        return super().pre_save(instance, add)

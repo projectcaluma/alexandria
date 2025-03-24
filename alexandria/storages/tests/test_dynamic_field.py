@@ -27,7 +27,7 @@ def test_dynamic_storage_select_global_ssec(
     mocker.patch("alexandria.core.tasks.create_thumbnail.delay", side_effect=None)
     if raises is not None:
         with pytest.raises(raises):
-            file_factory()
+            file_factory(encryption_status=settings.ALEXANDRIA_ENCRYPTION_METHOD)
         return
     file_factory(encryption_status=settings.ALEXANDRIA_ENCRYPTION_METHOD)
     assert SsecGlobalS3Storage.save.called_once()
