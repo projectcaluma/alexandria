@@ -9,6 +9,7 @@ from django.contrib.postgres.indexes import GinIndex
 from django.contrib.postgres.search import SearchVectorField
 from django.core.exceptions import ImproperlyConfigured, ObjectDoesNotExist
 from django.core.files import File as DjangoFile
+from django.core.files.storage import storages
 from django.core.validators import RegexValidator
 from django.db import models, transaction
 from django.dispatch import receiver
@@ -172,7 +173,10 @@ class Document(UUIDModel):
         self.pk = None
         self.save()
 
-        storage = File.content.field.storage
+        storage_backend = settings.ALEXANDRIA_FILE_STORAGE
+        if settings.ALEXANDRIA_ENABLE_AT_REST_ENCRYPTION:
+            storage_backend = "alexandria.storages.backends.s3.SsecGlobalS3Storage"
+        storage = storages.create_storage({"BACKEND": storage_backend})
         latest_original.pk = None
         latest_original.document = self
         if isinstance(storage, S3Storage):
