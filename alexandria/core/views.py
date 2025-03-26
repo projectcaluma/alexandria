@@ -271,10 +271,15 @@ class FileViewSet(
     @permission_classes([AllowAny])
     @action(methods=["get"], detail=True)
     def download(self, request, pk=None):
-        if not verify_presigned_request(reverse("file-download", args=[pk]), request):
-            raise PermissionDenied(
-                _("For downloading a file use the presigned download URL.")
-            )
+        try:
+            if not verify_presigned_request(
+                reverse("file-download", args=[pk]), request
+            ):
+                raise PermissionDenied(
+                    _("For downloading a file use the presigned download URL.")
+                )
+        except DjangoCoreValidationError as exp:
+            raise PermissionDenied(*exp.messages)
 
         obj = models.File.objects.get(pk=pk)
 
