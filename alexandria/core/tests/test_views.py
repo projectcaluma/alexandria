@@ -484,6 +484,16 @@ def test_download_file(admin_client, file, presigned, expected_status):
     assert result.status_code == expected_status
 
 
+def test_download_file_expired(admin_client, file, freezer):
+    freezer.move_to("2025-03-20")
+    response = admin_client.get(reverse("file-detail", args=(file.pk,)))
+    url = response.json()["data"]["attributes"]["download-url"]
+    freezer.move_to("2025-03-21")
+
+    result = admin_client.get(url)
+    assert result.status_code == HTTP_403_FORBIDDEN
+
+
 @pytest.mark.parametrize(
     "mime_type,expected_content_disposition",
     [("application/pdf", "inline"), ("text/html", "attachment")],
