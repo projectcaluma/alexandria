@@ -54,9 +54,7 @@ def test_document_no_files(
 
 
 def test_clone_document_s3(db, mocker, settings, file_factory):
-    settings.ALEXANDRIA_FILE_STORAGE = (
-        "alexandria.storages.backends.s3.SsecGlobalS3Storage"
-    )
+    settings.ALEXANDRIA_FILE_STORAGE = "alexandria.storages.backends.s3.S3Storage"
     settings.ALEXANDRIA_ENABLE_AT_REST_ENCRYPTION = True
     name = "name-of-the-file"
     mocker.patch("storages.backends.s3.S3Storage.save", return_value=name)
@@ -73,12 +71,14 @@ def test_clone_document_s3(db, mocker, settings, file_factory):
             content=FileData.png,
             content_type="image/png",
         ),
+        encryption_status=File.EncryptionStatus.SSEC_GLOBAL_KEY,
     )
 
     file_factory(
         original=original_file,
         variant=File.Variant.THUMBNAIL,
         document=original_file.document,
+        encryption_status=File.EncryptionStatus.SSEC_GLOBAL_KEY,
     )
 
     original_document_pk = original_file.document.pk
