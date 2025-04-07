@@ -1,3 +1,8 @@
+# 7.2.0
+
+### Feature
+* **storages:** Move copy to storage field ([`1d55d90`](https://github.com/projectcaluma/alexandria/commit/1d55d9043a362207d8559c6ec6ea21e5aba7cd78))
+
 # 7.1.3
 
 ### Chores
