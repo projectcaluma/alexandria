@@ -2451,14 +2451,14 @@ files = [
 
 [[package]]
 name = "python-semantic-release"
-version = "7.33.3"
+version = "7.34.6"
 description = "Automatic Semantic Versioning for Python projects"
 optional = false
 python-versions = "*"
 groups = ["dev"]
 files = [
-    {file = "python-semantic-release-7.33.3.tar.gz", hash = "sha256:6f1b28e16ac7bcd67722945794a66ae7df7dcaabcc719324f89cce7015fe5c88"},
-    {file = "python_semantic_release-7.33.3-py3-none-any.whl", hash = "sha256:911b9cef443d1eb2d6449a42d3728e9c54c01fe7a35e5a7fb607b5f9c764451d"},
+    {file = "python-semantic-release-7.34.6.tar.gz", hash = "sha256:e9b8fb788024ae9510a924136d573588415a16eeca31cc5240f2754a80a2e831"},
+    {file = "python_semantic_release-7.34.6-py3-none-any.whl", hash = "sha256:7e3969ba4663d9b2087b02bf3ac140e202551377bf045c34e09bfe19753e19ab"},
 ]
 
 [package.dependencies]
@@ -2466,7 +2466,7 @@ click = ">=7,<9"
 click-log = ">=0.3,<1"
 dotty-dict = ">=1.3.0,<2"
 gitpython = ">=3.0.8,<4"
-invoke = ">=1.4.1,<2"
+invoke = ">=1.4.1,<3"
 packaging = "*"
 python-gitlab = ">=2,<4"
 requests = ">=2.25,<3"
@@ -2477,7 +2477,7 @@ wheel = "*"
 
 [package.extras]
 dev = ["black", "isort", "tox"]
-docs = ["Jinja2 (==3.0.3)", "Sphinx (==1.3.6)"]
+docs = ["Jinja2 (==3.0.3)", "Sphinx (==1.8.6)"]
 mypy = ["mypy", "types-requests"]
 test = ["coverage (>=5,<6)", "mock (==1.3.0)", "pytest (>=7,<8)", "pytest-mock (>=2,<3)", "pytest-xdist (>=1,<2)", "responses (==0.13.3)"]
 
@@ -3431,4 +3431,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10.0,<4.0"
-content-hash = "cdf5ef39e487bca11d4f0a16ae45f13352c44316fbb3f58b7b24d8802d047198"
+content-hash = "1e9ca7896682dc81ca38d9d56cf11adc47dd153fb8047372029fdd9976103bf2"
