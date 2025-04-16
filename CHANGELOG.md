@@ -1,3 +1,9 @@
+# 7.2.1
+
+### Fix
+
+* **file:** Prevent validation exception for presigned url expiry ([`88e9523`](https://github.com/projectcaluma/alexandria/commit/88e952323a968864383d3b15b93d223fdaf6e673))
+
 # 7.2.0
 
 ### Feature
