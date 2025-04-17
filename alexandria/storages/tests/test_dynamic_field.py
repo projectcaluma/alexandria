@@ -29,8 +29,33 @@ def test_dynamic_storage_select_global_ssec(
         with pytest.raises(raises):
             file_factory(encryption_status=settings.ALEXANDRIA_ENCRYPTION_METHOD)
         return
-    file_factory(encryption_status=settings.ALEXANDRIA_ENCRYPTION_METHOD)
+    file = file_factory(encryption_status=settings.ALEXANDRIA_ENCRYPTION_METHOD)
     assert SsecGlobalS3Storage.save.called_once()
+
+    # test copy file parameters through S3 copy
+    mock_api_call = mocker.patch(
+        "botocore.client.BaseClient._make_api_call", return_value=None
+    )
+    current_filename = file.content.name
+    new_filename = "new-file-name"
+    file.content.copy(new_filename)
+
+    assert mock_api_call.called_once()
+    assert mock_api_call.call_args[0] == (
+        "CopyObject",
+        {
+            "CopySource": {
+                "Bucket": settings.ALEXANDRIA_S3_BUCKET_NAME,
+                "Key": current_filename,
+            },
+            "CopySourceSSECustomerAlgorithm": "AES256",
+            "CopySourceSSECustomerKey": settings.ALEXANDRIA_S3_STORAGE_SSEC_SECRET,
+            "Bucket": settings.ALEXANDRIA_S3_BUCKET_NAME,
+            "Key": new_filename,
+            "SSECustomerAlgorithm": "AES256",
+            "SSECustomerKey": settings.ALEXANDRIA_S3_STORAGE_SSEC_SECRET,
+        },
+    )
 
 
 @pytest.mark.parametrize(
