@@ -41,20 +41,18 @@ def copy_document(
     document_files = models.File.objects.filter(
         document=document, variant=models.File.Variant.ORIGINAL.value
     ).order_by("created_at")
-    new_files = []
     for document_file in document_files:
-        new_files.append(
-            create_file(
-                name=document_file.name,
-                document=new_document,
-                content=document_file.content,
-                mime_type=document_file.mime_type,
-                size=document_file.size,
-                user=document_file.created_by_user,
-                group=document_file.created_by_group,
-                metainfo=document_file.metainfo,
-            )
+        new_file = create_file(
+            name=document_file.name,
+            document=new_document,
+            content=document_file.content,
+            mime_type=document_file.mime_type,
+            size=document_file.size,
+            user=document_file.created_by_user,
+            group=document_file.created_by_group,
+            metainfo=document_file.metainfo,
         )
+        new_file.content.copy(f"{new_file.pk}_{new_file.name}")
 
     return new_document
 
