@@ -35,11 +35,11 @@ class DynamicStorageFieldFile(FieldFile):
         if isinstance(self.storage, S3Storage):
             copy_args = {
                 "CopySource": {
-                    "Bucket": self.storage.bucket,
+                    "Bucket": self.storage.bucket.name,
                     "Key": self.name,
                 },
                 # Destination settings
-                "Bucket": self.storage.bucket,
+                "Bucket": self.storage.bucket.name,
                 "Key": target_name,
             }
             if isinstance(self.storage, SsecGlobalS3Storage):
