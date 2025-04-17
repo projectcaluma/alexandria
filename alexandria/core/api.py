@@ -42,7 +42,7 @@ def copy_document(
         document=document, variant=models.File.Variant.ORIGINAL.value
     ).order_by("created_at")
     for document_file in document_files:
-        create_file(
+        new_file = create_file(
             name=document_file.name,
             document=new_document,
             content=document_file.content,
@@ -52,6 +52,7 @@ def copy_document(
             group=document_file.created_by_group,
             metainfo=document_file.metainfo,
         )
+        new_file.content.copy(f"{new_file.pk}_{new_file.name}")
 
     return new_document
 
