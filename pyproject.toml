@@ -37,7 +37,7 @@ psutil = ">=5.9.8,<8.0.0"
 psycopg = "^3.2.1"
 python-magic = "^0.4.27"
 requests = "^2.31.0"
-tika = "^2.6.0"
+tika = ">=2.6,<4.0"
 tqdm = "^4.66.5"
 gunicorn = "^23.0.0"
 # only needed in migrate_document_title_and_description.py, can be dropped in the future
