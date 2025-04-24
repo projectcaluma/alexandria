@@ -1,3 +1,10 @@
+# 7.2.2
+
+### Fix
+
+* **api:** Copy file content as well and add fix command ([`0db5208`](https://github.com/nlzet/alexandria/commit/0db5208789eff17d737ed6324a03e94cd853ab25))
+* **storage:** Pass S3 bucket names instead of objects ([`1913cf1`](https://github.com/nlzet/alexandria/commit/1913cf1457ed32e1e691144018f87dfdbafbe6de))i
+
 # 7.2.1
 
 ### Fix
