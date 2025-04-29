@@ -53,10 +53,10 @@ class Command(BaseCommand):
             )
 
             for duplicate in duplicates:
-                # Check if the duplicate has a checksum and skip if it does not match
-                # the original. If it does not have a checksum, we try to copy the
-                # original file.
-                if duplicate.checksum and duplicate.checksum != checksum:
+                # Check if the duplicate and original have a checksum, and skip if it
+                # does not match the original. If one of them does not have a checksum
+                # we try to copy the original file.
+                if checksum and duplicate.checksum and duplicate.checksum != checksum:
                     self.stderr.write(
                         self.style.ERROR(
                             f"Failed: File ID {duplicate.pk} with filename {filename} has a different checksum than the original."
