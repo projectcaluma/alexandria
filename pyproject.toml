@@ -27,7 +27,7 @@ django-generic-api-permissions = "^0.4.7"
 # beta version for better dependency version ranges https://github.com/SectorLabs/django-localized-fields/issues/95
 django-localized-fields = "^6.8b5"
 django-storages = { extras = ['s3'], version = "^1.14.2" }
-django-presigned-url = "^0.1.0"
+django-presigned-url = "^0.1.1"
 djangorestframework = "^3.13.0"
 djangorestframework-jsonapi = ">=5.0.0,<8.0.0"
 manabi = "^1.4.0"
