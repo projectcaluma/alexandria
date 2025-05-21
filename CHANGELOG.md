@@ -1,3 +1,10 @@
+# 7.2.3
+
+### Fix
+
+* **webdav:** Close db connections if unused or obsolete ([`15d9b48`](https://github.com/projectcaluma/alexandria/commit/15d9b48b636941731551b3484f7971d7d21d0b1c))
+* **deps:** Update django-presigned-url ([`3600584`](https://github.com/projectcaluma/alexandria/commit/3600584e2b52e36059f12d764aa0b626f0b70b5c))
+
 # 7.2.2
 
 ### Fix
