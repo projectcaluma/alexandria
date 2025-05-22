@@ -35,6 +35,7 @@ services:
       - PYTHONUNBUFFERED=1
       - CELERY_RDB_HOST=0.0.0.0. # to be able to telnet from outside the container
       - ALEXANDRIA_USE_MANABI=true
+      - DJANGO_ENABLE_SILK=true
 
   minio:
     environment:

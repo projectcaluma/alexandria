@@ -9,6 +9,7 @@ from .alexandria import default, env, environ
 SECRET_KEY = env.str("SECRET_KEY", default=default("uuuuuuuuuu"))
 DEBUG = env.bool("DEBUG", default=default(True, False))
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=default(["*"]))
+ENABLE_SILK = env.bool("DJANGO_ENABLE_SILK", default=False)
 
 
 # Application definition
@@ -184,3 +185,36 @@ CELERY_TASK_ACKS_LATE = env.bool(
     default=True,
 )
 CELERY_TASK_SOFT_TIME_LIMIT = env.int("CELERY_TASK_SOFT_TIME_LIMIT", default=60)
+
+if ENABLE_SILK and not env.bool("TEST_SUITE_RUNNING", False):  # pragma: no cover
+    BASE_DIR = Path(__file__).resolve().parent.parent
+    STATIC_ROOT = BASE_DIR / "staticfiles"
+    STATIC_URL = "/static/"
+    TEMPLATES = [
+        {
+            "BACKEND": "django.template.backends.django.DjangoTemplates",
+            "DIRS": [],
+            "APP_DIRS": True,
+            "OPTIONS": {
+                "context_processors": [
+                    "django.template.context_processors.debug",
+                    "django.template.context_processors.request",
+                ],
+            },
+        }
+    ]
+    INSTALLED_APPS.append("django.contrib.sessions")
+    INSTALLED_APPS.append("silk")
+    INSTALLED_APPS.append("django.contrib.staticfiles")
+    MIDDLEWARE.extend(
+        [
+            "django.contrib.sessions.middleware.SessionMiddleware",
+            "silk.middleware.SilkyMiddleware",
+        ]
+    )
+
+    SILKY_AUTHENTICATION = False
+    SILKY_AUTHORISATION = False
+    SILKY_META = True
+    SILKY_PYTHON_PROFILER = True
+    SILKY_PYTHON_PROFILER_BINARY = True    

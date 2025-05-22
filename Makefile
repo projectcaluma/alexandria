@@ -35,7 +35,7 @@ shell_plus: ## Run shell_plus
 .PHONY: debug-alexandria
 debug-alexandria: ## start an api container with service ports for debugging
 	@docker compose stop alexandria
-	@echo "Run './manage.py runserver 0:8000' to start the debugging server"
+	@echo "Run './manage.py runserver 0:8000' and './manage.py collectstatic' (for silk) to start the debugging server"
 	@docker compose run --rm --user root --use-aliases --service-ports alexandria bash
 
 .PHONY: debug-celery
