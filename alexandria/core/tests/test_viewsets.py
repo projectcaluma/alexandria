@@ -23,6 +23,18 @@ from ..views import (
 )
 
 
+@pytest.fixture
+def disable_relationship_visibilities(settings):
+    settings.GENERIC_PERMISSIONS_BYPASS_VISIBILITIES = {
+        "alexandria_core.Category": "__all__",
+        "alexandria_core.Document": "__all__",
+        "alexandria_core.File": "__all__",
+        "alexandria_core.Mark": "__all__",
+        "alexandria_core.Tag": "__all__",
+        "alexandria_core.TagSynonymGroup": "__all__",
+    }
+
+
 @pytest.fixture()
 def deterministic_uuids(mocker):
     # md5 hex digests are the same length as UUIDs, so django happily accepts
@@ -62,7 +74,7 @@ def deterministic_uuids(mocker):
         MarkViewSet,
     ]
 )
-def viewset(request):
+def viewset(request, disable_relationship_visibilities):
     """
     Viewset fixture listing viewsets for generic testing.
 
