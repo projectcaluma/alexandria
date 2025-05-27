@@ -1,3 +1,9 @@
+# 7.2.4
+
+### Fix
+
+* **performance:** Add correct prefetches for all viewsets ([`e7e0a05`](https://github.com/projectcaluma/alexandria/commit/e7e0a05d588ea5ef0176977d5391a064d76d6946))
+
 # 7.2.3
 
 ### Fix
