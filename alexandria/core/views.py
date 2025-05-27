@@ -69,13 +69,18 @@ class CategoryViewSet(
     serializer_class = serializers.CategorySerializer
     queryset = models.Category.objects.all()
     filterset_class = CategoryFilterSet
-    select_for_includes = {"parent": ["parent"]}
-    prefetch_for_includes = {"children": ["children"]}
+    prefetch_for_includes = {
+        "__all__": ["children"],
+        "children": ["children__parent"],
+    }
 
 
 class TagSynonymGroupViewSet(PermissionViewMixin, VisibilityViewMixin, ModelViewSet):
     serializer_class = serializers.TagSynonymGroupSerializer
     queryset = models.TagSynonymGroup.objects.all().distinct()
+    prefetch_for_includes = {
+        "__all__": ["tags"],
+    }
 
 
 class TagViewSet(PermissionViewMixin, VisibilityViewMixin, ModelViewSet):
@@ -83,7 +88,7 @@ class TagViewSet(PermissionViewMixin, VisibilityViewMixin, ModelViewSet):
     queryset = models.Tag.objects.all().distinct()
     filterset_class = TagFilterSet
     search_fields = ("name", "description")
-    select_for_includes = {"tag_synonym_group": ["tag_synonym_group"]}
+    prefetch_for_includes = {"tag_synonym_group": ["tag_synonym_group__tags"]}
     ordering_fields = "__all__"
     ordering = ["name"]
 
@@ -98,8 +103,12 @@ class DocumentViewSet(PermissionViewMixin, VisibilityViewMixin, ModelViewSet):
     serializer_class = serializers.DocumentSerializer
     queryset = models.Document.objects.all()
     filterset_class = DocumentFilterSet
-    select_for_includes = {"category": ["category"]}
-    prefetch_for_includes = {"tags": ["tags"], "files": ["files"]}
+    select_for_includes = {"category": ["category__parent"]}
+    prefetch_for_includes = {
+        "__all__": ["marks", "tags", "files"],
+        "files": ["files__renderings", "files__original"],
+        "category": ["category__children"],
+    }
 
     def update(self, request, *args, **kwargs):
         document = self.get_object()
@@ -207,8 +216,10 @@ class FileViewSet(
 
     queryset = models.File.objects.all()
     filterset_class = FileFilterSet
-    select_for_includes = {"document": ["document"], "original": ["original"]}
-    prefetch_for_includes = {"renderings": ["renderings"]}
+    prefetch_for_includes = {
+        "__all__": ["renderings"],
+        "document": ["document__marks", "document__tags", "document__files"],
+    }
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
