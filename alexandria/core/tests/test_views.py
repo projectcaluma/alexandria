@@ -272,11 +272,13 @@ def test_created_validation(admin_client, document_factory, field, value):
 
 
 def test_multi_download(admin_client, file_factory):
-    file_factory(name="my_file3.png")  # should not be returned
-    file1 = file_factory(name="a_file(1)")
-    file2 = file_factory(name="a_file")
-    file3 = file_factory(name="a_file")
-    file4 = file_factory(name="b_file.png")
+    file_factory(
+        name="my_file3.png", document__title="my_file3.png"
+    )  # should not be returned
+    file1 = file_factory(name="a_file(1)", document__title="a_file(1)")
+    file2 = file_factory(name="a_file", document__title="a_file")
+    file3 = file_factory(name="a_file", document__title="a_file")
+    file4 = file_factory(name="b_file.png", document__title="b_file.png")
 
     url = reverse("file-multi")
 
@@ -308,6 +310,74 @@ def test_multi_download(admin_client, file_factory):
     assert filelist[3].filename == "b_file.png"
     file4.content.file.seek(0)
     assert zip.open(file4.name).read() == file4.content.file.read()
+
+
+@pytest.mark.parametrize(
+    "input_list,output_names",
+    [
+        (
+            [
+                # not renamed
+                {
+                    "filename": "a_file.jpg",
+                    "title": "a_file.jpg",
+                },
+                {
+                    # extension lost on rename
+                    "filename": "b_file.jpg",
+                    "title": "b_file",
+                },
+                {
+                    # appended title after the extension
+                    "filename": "b_file.jpg",
+                    "title": "b_file.jpg test",
+                },
+                {
+                    # appended same title after the extension to test duplicate suffix
+                    "filename": "random_name.jpg",
+                    "title": "b_file.jpg test",
+                },
+                {
+                    # extension changed
+                    "filename": "c_file.jpg",
+                    "title": "c_file.png",
+                },
+            ],
+            [
+                "a_file.jpg",  # original name/title
+                "b_file.jpg",  # extension recovered
+                "b_file.jpg test.jpg",  # extension recovered on appended title
+                "b_file.jpg test(1).jpg",  # suffix on recovered extension appended title
+                "c_file.png.jpg",  # original extension recovered on top of renamed title
+            ],
+        ),
+    ],
+)
+def test_multi_download_renamed(admin_client, file_factory, input_list, output_names):
+    files = []
+    for input in input_list:
+        files.append(
+            file_factory(name=input["filename"], document__title=input["title"])
+        )
+
+    url = reverse("file-multi")
+    resp = admin_client.get(
+        url, {"filter[files]": f"{','.join([str(file.pk) for file in files])}"}
+    )
+    assert resp.status_code == HTTP_200_OK
+    assert resp.filename == "files.zip"
+
+    zip_buffer = io.BytesIO()
+    for c in resp.streaming_content:
+        zip_buffer.write(c)
+    zip = zipfile.ZipFile(zip_buffer)
+
+    assert len(zip.filelist) == len(files)
+    filelist = [
+        file.filename for file in sorted(zip.filelist, key=lambda a: a.filename)
+    ]
+
+    assert set(filelist) == set(output_names)
 
 
 @pytest.mark.parametrize(
