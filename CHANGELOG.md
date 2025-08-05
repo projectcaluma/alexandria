@@ -1,3 +1,9 @@
+# 7.3.0
+
+### Feature
+
+* **export:** Use renamed filenames in export zip ([`4d64d4a`](https://github.com/nlzet/alexandria/commit/4d64d4a45ab51158551c4492934e57cd3fc2a961))
+
 # 7.2.4
 
 ### Fix
