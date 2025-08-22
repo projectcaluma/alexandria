@@ -92,3 +92,37 @@ def test_clone_document_s3(db, mocker, settings, file_factory):
         != original.get_latest_original().content.name
     )
     assert mocked.call_args[0][1]["CopySource"]["Key"] == name
+
+
+@pytest.mark.parametrize(
+    "input_file,output_name",
+    [
+        (
+            # not renamed
+            {"filename": "a_file.jpg", "title": "a_file.jpg"},
+            "a_file.jpg",  # original name/title
+        ),
+        (
+            # extension lost on rename
+            {"filename": "b_file.jpg", "title": "b_file"},
+            "b_file.jpg",  # extension recovered
+        ),
+        (
+            # appended title after the extension
+            {"filename": "b_file.jpg", "title": "b_file.jpg test"},
+            "b_file.jpg test.jpg",  # extension recovered on appended title
+        ),
+        (
+            # extension changed
+            {"filename": "c_file.jpg", "title": "c_file.png"},
+            "c_file.png.jpg",  # original extension recovered on top of renamed title
+        ),
+    ],
+)
+def testdownload_renamed(admin_client, file_factory, input_file, output_name):
+    assert (
+        output_name
+        == file_factory(
+            name=input_file["filename"], document__title=input_file["title"]
+        ).get_download_filename()
+    )

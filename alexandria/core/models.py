@@ -257,6 +257,29 @@ class File(UUIDModel):
 
         return make_presigned_url(reverse("file-download", args=[self.pk]), request)
 
+    def get_download_filename(self):
+        name = (
+            self.document.title if self.document and self.document.title else self.name
+        )
+        (base_name, *maybe_ext) = name.rsplit(".", 1)
+        (_, *maybe_ext_original) = self.name.rsplit(".", 1)
+
+        # maybe_ext/maybe_ext_original is now a 0- or 1-sized list
+        extension = f".{maybe_ext[0]}" if maybe_ext else ""
+
+        # fallback to original file extension if lost due to renaming
+        if maybe_ext_original and maybe_ext_original[0] != extension:
+            extension = f".{maybe_ext_original[0]}"
+
+            # use the full renamed document title as base name,
+            # but strip the extension if it is the same as the original
+            # to avoid double extensions like "document.pdf.pdf"
+            base_name = (
+                name if not name.endswith(extension) else name[: -len(extension)]
+            )
+
+        return f"{base_name}{extension}"
+
     class Meta:
         ordering = ["-created_at"]
         indexes = [GinIndex(fields=["content_vector"])]
