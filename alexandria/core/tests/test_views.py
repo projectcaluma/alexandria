@@ -342,13 +342,25 @@ def test_multi_download(admin_client, file_factory):
                     "filename": "c_file.jpg",
                     "title": "c_file.png",
                 },
+                {
+                    # double extension
+                    "filename": "d_file.tar.gz",
+                    "title": "d_file.tar.gz",
+                },
+                {
+                    # renamed to same double extension
+                    "filename": "e_file.tar.gz",
+                    "title": "d_file.tar.gz",
+                },
             ],
             [
                 "a_file.jpg",  # original name/title
                 "b_file.jpg",  # extension recovered
                 "b_file.jpg test.jpg",  # extension recovered on appended title
-                "b_file.jpg test(1).jpg",  # suffix on recovered extension appended title
+                "b_file(1).jpg test.jpg",  # suffix on recovered extension appended title
                 "c_file.png.jpg",  # original extension recovered on top of renamed title
+                "d_file.tar.gz",  # original double extension
+                "d_file(1).tar.gz",  # suffix on original double extension
             ],
         ),
     ],
