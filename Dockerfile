@@ -1,4 +1,4 @@
-FROM python:3.10-slim AS base
+FROM python:3.10-slim-bookworm AS base
 
 ENV DJANGO_SETTINGS_MODULE=alexandria.settings.django \
     PYTHONFAULTHANDLER=1 \
