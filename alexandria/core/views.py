@@ -2,7 +2,7 @@ import io
 import itertools
 import logging
 import zipfile
-from os.path import splitext
+from pathlib import Path
 from tempfile import NamedTemporaryFile
 
 import requests
@@ -174,8 +174,8 @@ class DocumentViewSet(PermissionViewMixin, VisibilityViewMixin, ModelViewSet):
 
         user, group = get_user_and_group_from_request(request)
 
-        file_name = f"{splitext(file.name)[0]}.pdf"
-        document_title = f"{splitext(document.title)[0]}.pdf"
+        file_name = f"{Path(file.name).stem}.pdf"
+        document_title = f"{Path(document.title).stem}.pdf"
         converted_document, __ = create_document_file(
             user=user,
             group=group,
@@ -235,26 +235,8 @@ class FileViewSet(
 
                 temp_file.seek(0)
 
-                name = _file.document.title
                 suffixes = itertools.count(start=1)
-                (base_name, *maybe_ext) = name.rsplit(".", 1)
-                (_, *maybe_ext_original) = _file.name.rsplit(".", 1)
-
-                # maybe_ext/maybe_ext_original is now a 0- or 1-sized list
-                extension = f".{maybe_ext[0]}" if maybe_ext else ""
-
-                # fallback to original file extension if lost due to renaming
-                if maybe_ext_original and maybe_ext_original[0] != extension:
-                    extension = f".{maybe_ext_original[0]}"
-
-                    # use the full renamed document title as base name,
-                    # but strip the extension if it is the same as the original
-                    # to avoid double extensions like "document.pdf.pdf"
-                    base_name = (
-                        name
-                        if not name.endswith(extension)
-                        else name[: -len(extension)]
-                    )
+                base_name, extension = _file.get_download_filename()
 
                 name = f"{base_name}{extension}"
                 while name in seen_names:
@@ -312,10 +294,12 @@ class FileViewSet(
         obj = models.File.objects.get(pk=pk)
 
         unsafe = obj.mime_type not in settings.SAFE_FOR_INLINE_DISPOSITION
+        base_name, extension = obj.get_download_filename()
+
         return FileResponse(
             obj.content.file.file,
             as_attachment=unsafe,
-            filename=obj.name,
+            filename=f"{base_name}{extension}",
             content_type=obj.mime_type,
         )
 
