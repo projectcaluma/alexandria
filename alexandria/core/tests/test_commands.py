@@ -29,8 +29,8 @@ def test_encrypt_files(db, settings, mocker, file_factory):
     file_global.refresh_from_db()
     file_object.refresh_from_db()
 
-    assert SsecGlobalS3Storage.save.called_once()
-    assert SsecGlobalS3Storage.open.called_once()
+    SsecGlobalS3Storage.save.assert_called()
+    SsecGlobalS3Storage.open.assert_called()
     assert file_old.encryption_status == File.EncryptionStatus.SSEC_GLOBAL_KEY
     assert file_global.encryption_status == File.EncryptionStatus.SSEC_GLOBAL_KEY
     assert file_object.encryption_status == File.EncryptionStatus.SSEC_OBJECT_KEY

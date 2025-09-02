@@ -30,7 +30,7 @@ def test_dynamic_storage_select_global_ssec(
             file_factory(encryption_status=settings.ALEXANDRIA_ENCRYPTION_METHOD)
         return
     file = file_factory(encryption_status=settings.ALEXANDRIA_ENCRYPTION_METHOD)
-    assert SsecGlobalS3Storage.save.called_once()
+    SsecGlobalS3Storage.save.assert_called_once()
 
     # test copy file parameters through S3 copy
     mock_api_call = mocker.patch(
@@ -40,7 +40,7 @@ def test_dynamic_storage_select_global_ssec(
     new_filename = "new-file-name"
     file.content.copy(new_filename)
 
-    assert mock_api_call.called_once()
+    mock_api_call.assert_called_once()
     assert mock_api_call.call_args[0] == (
         "CopyObject",
         {
