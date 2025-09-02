@@ -263,6 +263,7 @@ class SearchFilterSet(FileFilterSet):
                     F("name"),
                     Value(" "),
                     F("content_text"),
+                    output_field=TextField(),
                 ),
                 search_query,
             ),

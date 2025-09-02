@@ -229,7 +229,7 @@ class FileViewSet(
     def _write_zip(self, file_obj, queryset):
         with zipfile.ZipFile(file_obj, "w", zipfile.ZIP_DEFLATED) as zipf:
             seen_names = set()
-            for _file in queryset.order_by("-name").iterator():
+            for _file in queryset.order_by("-name").iterator(chunk_size=50):
                 temp_file = io.BytesIO()
                 temp_file.write(_file.content.file.file.read())
 
