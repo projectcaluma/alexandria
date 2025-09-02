@@ -89,10 +89,12 @@
       'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."checksum", "alexandria_core_file"."encryption_status", "alexandria_core_file"."content_vector", "alexandria_core_file"."content_text", "alexandria_core_file"."language", "alexandria_core_file"."content", "alexandria_core_file"."mime_type", "alexandria_core_file"."size" FROM "alexandria_core_file" WHERE "alexandria_core_file"."id" = \'ea416ed0759d46a8de58f63a59077499\'::uuid LIMIT 21',
       'COMMIT',
       'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."checksum", "alexandria_core_file"."encryption_status", "alexandria_core_file"."content_vector", "alexandria_core_file"."content_text", "alexandria_core_file"."language", "alexandria_core_file"."content", "alexandria_core_file"."mime_type", "alexandria_core_file"."size" FROM "alexandria_core_file" WHERE "alexandria_core_file"."document_id" = \'f561aaf6ef0bf14d4208bb46a4ccb3ad\'::uuid ORDER BY "alexandria_core_file"."created_at" DESC',
+      'SELECT 1 AS "a" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."id" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" = \'f561aaf6ef0bf14d4208bb46a4ccb3ad\'::uuid LIMIT 1',
       'SELECT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."metainfo", "alexandria_core_tag"."id", "alexandria_core_tag"."name", "alexandria_core_tag"."description", "alexandria_core_tag"."tag_synonym_group_id" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."id" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" = \'f561aaf6ef0bf14d4208bb46a4ccb3ad\'::uuid',
+      'SELECT 1 AS "a" FROM "alexandria_core_mark" INNER JOIN "alexandria_core_document_marks" ON ("alexandria_core_mark"."slug" = "alexandria_core_document_marks"."mark_id") WHERE "alexandria_core_document_marks"."document_id" = \'f561aaf6ef0bf14d4208bb46a4ccb3ad\'::uuid LIMIT 1',
       'SELECT "alexandria_core_mark"."created_at", "alexandria_core_mark"."created_by_user", "alexandria_core_mark"."created_by_group", "alexandria_core_mark"."modified_at", "alexandria_core_mark"."modified_by_user", "alexandria_core_mark"."modified_by_group", "alexandria_core_mark"."metainfo", "alexandria_core_mark"."slug", "alexandria_core_mark"."name", "alexandria_core_mark"."description" FROM "alexandria_core_mark" INNER JOIN "alexandria_core_document_marks" ON ("alexandria_core_mark"."slug" = "alexandria_core_document_marks"."mark_id") WHERE "alexandria_core_document_marks"."document_id" = \'f561aaf6ef0bf14d4208bb46a4ccb3ad\'::uuid',
     ]),
-    'query_count': 17,
+    'query_count': 19,
     'request': dict({
       'CONTENT_LENGTH': '388',
       'CONTENT_TYPE': 'multipart/form-data; boundary=BoUnDaRyStRiNg; charset=utf-8',
@@ -426,6 +428,7 @@
 # name: test_api_destroy[DocumentViewSet]
   dict({
     'queries': list([
+      'SELECT 1 AS "a" FROM "alexandria_core_document" LIMIT 1',
       'SELECT "alexandria_core_document"."created_at", "alexandria_core_document"."created_by_user", "alexandria_core_document"."created_by_group", "alexandria_core_document"."modified_at", "alexandria_core_document"."modified_by_user", "alexandria_core_document"."modified_by_group", "alexandria_core_document"."metainfo", "alexandria_core_document"."id", "alexandria_core_document"."title", "alexandria_core_document"."description", "alexandria_core_document"."category_id", "alexandria_core_document"."date" FROM "alexandria_core_document" WHERE "alexandria_core_document"."id" = \'9dd4e461268c8034f5c8564e155c67a6\'::uuid LIMIT 21',
       'SELECT ("alexandria_core_document_marks"."document_id") AS "_prefetch_related_val_document_id", "alexandria_core_mark"."created_at", "alexandria_core_mark"."created_by_user", "alexandria_core_mark"."created_by_group", "alexandria_core_mark"."modified_at", "alexandria_core_mark"."modified_by_user", "alexandria_core_mark"."modified_by_group", "alexandria_core_mark"."metainfo", "alexandria_core_mark"."slug", "alexandria_core_mark"."name", "alexandria_core_mark"."description" FROM "alexandria_core_mark" INNER JOIN "alexandria_core_document_marks" ON ("alexandria_core_mark"."slug" = "alexandria_core_document_marks"."mark_id") WHERE "alexandria_core_document_marks"."document_id" IN (\'9dd4e461268c8034f5c8564e155c67a6\'::uuid)',
       'SELECT ("alexandria_core_document_tags"."document_id") AS "_prefetch_related_val_document_id", "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."metainfo", "alexandria_core_tag"."id", "alexandria_core_tag"."name", "alexandria_core_tag"."description", "alexandria_core_tag"."tag_synonym_group_id" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."id" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" IN (\'9dd4e461268c8034f5c8564e155c67a6\'::uuid)',
@@ -437,7 +440,7 @@
       'DELETE FROM "alexandria_core_document" WHERE "alexandria_core_document"."id" IN (\'9dd4e461268c8034f5c8564e155c67a6\'::uuid)',
       'COMMIT',
     ]),
-    'query_count': 10,
+    'query_count': 11,
     'request': dict({
       'PATH_INFO': '/api/v1/documents/9dd4e461-268c-8034-f5c8-564e155c67a6',
       'QUERY_STRING': '',
@@ -451,6 +454,7 @@
 # name: test_api_destroy[FileViewSet]
   dict({
     'queries': list([
+      'SELECT 1 AS "a" FROM "alexandria_core_file" LIMIT 1',
       'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."checksum", "alexandria_core_file"."encryption_status", "alexandria_core_file"."content_vector", "alexandria_core_file"."content_text", "alexandria_core_file"."language", "alexandria_core_file"."content", "alexandria_core_file"."mime_type", "alexandria_core_file"."size" FROM "alexandria_core_file" WHERE "alexandria_core_file"."id" = \'9336ebf25087d91c818ee6e9ec29f8c1\'::uuid LIMIT 21',
       'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."checksum", "alexandria_core_file"."encryption_status", "alexandria_core_file"."content_vector", "alexandria_core_file"."content_text", "alexandria_core_file"."language", "alexandria_core_file"."content", "alexandria_core_file"."mime_type", "alexandria_core_file"."size" FROM "alexandria_core_file" WHERE "alexandria_core_file"."original_id" IN (\'9336ebf25087d91c818ee6e9ec29f8c1\'::uuid) ORDER BY "alexandria_core_file"."created_at" DESC',
       'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."checksum", "alexandria_core_file"."encryption_status", "alexandria_core_file"."content_vector", "alexandria_core_file"."content_text", "alexandria_core_file"."language", "alexandria_core_file"."content", "alexandria_core_file"."mime_type", "alexandria_core_file"."size" FROM "alexandria_core_file" WHERE "alexandria_core_file"."original_id" IN (\'9336ebf25087d91c818ee6e9ec29f8c1\'::uuid) ORDER BY "alexandria_core_file"."created_at" DESC',
@@ -459,7 +463,7 @@
       'DELETE FROM "alexandria_core_file" WHERE "alexandria_core_file"."id" IN (\'9336ebf25087d91c818ee6e9ec29f8c1\'::uuid, \'f561aaf6ef0bf14d4208bb46a4ccb3ad\'::uuid)',
       'COMMIT',
     ]),
-    'query_count': 7,
+    'query_count': 8,
     'request': dict({
       'PATH_INFO': '/api/v1/files/9336ebf2-5087-d91c-818e-e6e9ec29f8c1',
       'QUERY_STRING': '',
@@ -473,13 +477,14 @@
 # name: test_api_destroy[MarkViewSet]
   dict({
     'queries': list([
+      'SELECT DISTINCT 1 AS "a" FROM "alexandria_core_mark" LIMIT 1',
       'SELECT DISTINCT "alexandria_core_mark"."created_at", "alexandria_core_mark"."created_by_user", "alexandria_core_mark"."created_by_group", "alexandria_core_mark"."modified_at", "alexandria_core_mark"."modified_by_user", "alexandria_core_mark"."modified_by_group", "alexandria_core_mark"."metainfo", "alexandria_core_mark"."slug", "alexandria_core_mark"."name", "alexandria_core_mark"."description" FROM "alexandria_core_mark" WHERE "alexandria_core_mark"."slug" = \'note-act-source\' LIMIT 21',
       'BEGIN',
       'DELETE FROM "alexandria_core_document_marks" WHERE "alexandria_core_document_marks"."mark_id" IN (\'note-act-source\')',
       'DELETE FROM "alexandria_core_mark" WHERE "alexandria_core_mark"."slug" IN (\'note-act-source\')',
       'COMMIT',
     ]),
-    'query_count': 5,
+    'query_count': 6,
     'request': dict({
       'PATH_INFO': '/api/v1/marks/note-act-source',
       'QUERY_STRING': '',
@@ -493,13 +498,14 @@
 # name: test_api_destroy[TagViewSet]
   dict({
     'queries': list([
+      'SELECT DISTINCT 1 AS "a" FROM "alexandria_core_tag" LIMIT 1',
       'SELECT DISTINCT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."metainfo", "alexandria_core_tag"."id", "alexandria_core_tag"."name", "alexandria_core_tag"."description", "alexandria_core_tag"."tag_synonym_group_id" FROM "alexandria_core_tag" WHERE "alexandria_core_tag"."id" = \'9dd4e461268c8034f5c8564e155c67a6\'::uuid LIMIT 21',
       'BEGIN',
       'DELETE FROM "alexandria_core_document_tags" WHERE "alexandria_core_document_tags"."tag_id" IN (\'9dd4e461268c8034f5c8564e155c67a6\'::uuid)',
       'DELETE FROM "alexandria_core_tag" WHERE "alexandria_core_tag"."id" IN (\'9dd4e461268c8034f5c8564e155c67a6\'::uuid)',
       'COMMIT',
     ]),
-    'query_count': 5,
+    'query_count': 6,
     'request': dict({
       'PATH_INFO': '/api/v1/tags/9dd4e461-268c-8034-f5c8-564e155c67a6',
       'QUERY_STRING': '',
@@ -513,10 +519,11 @@
 # name: test_api_detail[CategoryViewSet]
   dict({
     'queries': list([
+      'SELECT 1 AS "a" FROM "alexandria_core_category" LIMIT 1',
       'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."metainfo", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description", "alexandria_core_category"."allowed_mime_types", "alexandria_core_category"."color", "alexandria_core_category"."parent_id", "alexandria_core_category"."sort" FROM "alexandria_core_category" WHERE "alexandria_core_category"."slug" = \'note-act-source\' LIMIT 21',
       'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."metainfo", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description", "alexandria_core_category"."allowed_mime_types", "alexandria_core_category"."color", "alexandria_core_category"."parent_id", "alexandria_core_category"."sort" FROM "alexandria_core_category" WHERE "alexandria_core_category"."parent_id" IN (\'note-act-source\') ORDER BY "alexandria_core_category"."sort" ASC',
     ]),
-    'query_count': 2,
+    'query_count': 3,
     'request': dict({
       'CONTENT_TYPE': 'application/octet-stream',
       'PATH_INFO': '/api/v1/categories/note-act-source',
@@ -575,13 +582,14 @@
 # name: test_api_detail[DocumentViewSet]
   dict({
     'queries': list([
+      'SELECT 1 AS "a" FROM "alexandria_core_document" LIMIT 1',
       'SELECT "alexandria_core_document"."created_at", "alexandria_core_document"."created_by_user", "alexandria_core_document"."created_by_group", "alexandria_core_document"."modified_at", "alexandria_core_document"."modified_by_user", "alexandria_core_document"."modified_by_group", "alexandria_core_document"."metainfo", "alexandria_core_document"."id", "alexandria_core_document"."title", "alexandria_core_document"."description", "alexandria_core_document"."category_id", "alexandria_core_document"."date", "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."metainfo", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description", "alexandria_core_category"."allowed_mime_types", "alexandria_core_category"."color", "alexandria_core_category"."parent_id", "alexandria_core_category"."sort", T3."created_at", T3."created_by_user", T3."created_by_group", T3."modified_at", T3."modified_by_user", T3."modified_by_group", T3."metainfo", T3."slug", T3."name", T3."description", T3."allowed_mime_types", T3."color", T3."parent_id", T3."sort" FROM "alexandria_core_document" LEFT OUTER JOIN "alexandria_core_category" ON ("alexandria_core_document"."category_id" = "alexandria_core_category"."slug") LEFT OUTER JOIN "alexandria_core_category" T3 ON ("alexandria_core_category"."parent_id" = T3."slug") WHERE "alexandria_core_document"."id" = \'9dd4e461268c8034f5c8564e155c67a6\'::uuid LIMIT 21',
       'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."metainfo", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description", "alexandria_core_category"."allowed_mime_types", "alexandria_core_category"."color", "alexandria_core_category"."parent_id", "alexandria_core_category"."sort" FROM "alexandria_core_category" WHERE "alexandria_core_category"."parent_id" IN (\'note-act-source\') ORDER BY "alexandria_core_category"."sort" ASC',
       'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."checksum", "alexandria_core_file"."encryption_status", "alexandria_core_file"."content_vector", "alexandria_core_file"."content_text", "alexandria_core_file"."language", "alexandria_core_file"."content", "alexandria_core_file"."mime_type", "alexandria_core_file"."size" FROM "alexandria_core_file" WHERE "alexandria_core_file"."document_id" IN (\'9dd4e461268c8034f5c8564e155c67a6\'::uuid) ORDER BY "alexandria_core_file"."created_at" DESC',
       'SELECT ("alexandria_core_document_marks"."document_id") AS "_prefetch_related_val_document_id", "alexandria_core_mark"."created_at", "alexandria_core_mark"."created_by_user", "alexandria_core_mark"."created_by_group", "alexandria_core_mark"."modified_at", "alexandria_core_mark"."modified_by_user", "alexandria_core_mark"."modified_by_group", "alexandria_core_mark"."metainfo", "alexandria_core_mark"."slug", "alexandria_core_mark"."name", "alexandria_core_mark"."description" FROM "alexandria_core_mark" INNER JOIN "alexandria_core_document_marks" ON ("alexandria_core_mark"."slug" = "alexandria_core_document_marks"."mark_id") WHERE "alexandria_core_document_marks"."document_id" IN (\'9dd4e461268c8034f5c8564e155c67a6\'::uuid)',
       'SELECT ("alexandria_core_document_tags"."document_id") AS "_prefetch_related_val_document_id", "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."metainfo", "alexandria_core_tag"."id", "alexandria_core_tag"."name", "alexandria_core_tag"."description", "alexandria_core_tag"."tag_synonym_group_id" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."id" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" IN (\'9dd4e461268c8034f5c8564e155c67a6\'::uuid)',
     ]),
-    'query_count': 5,
+    'query_count': 6,
     'request': dict({
       'CONTENT_TYPE': 'application/octet-stream',
       'PATH_INFO': '/api/v1/documents/9dd4e461-268c-8034-f5c8-564e155c67a6',
@@ -754,6 +762,7 @@
 # name: test_api_detail[FileViewSet]
   dict({
     'queries': list([
+      'SELECT 1 AS "a" FROM "alexandria_core_file" LIMIT 1',
       'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."checksum", "alexandria_core_file"."encryption_status", "alexandria_core_file"."content_vector", "alexandria_core_file"."content_text", "alexandria_core_file"."language", "alexandria_core_file"."content", "alexandria_core_file"."mime_type", "alexandria_core_file"."size" FROM "alexandria_core_file" WHERE "alexandria_core_file"."id" = \'9336ebf25087d91c818ee6e9ec29f8c1\'::uuid LIMIT 21',
       'SELECT "alexandria_core_document"."created_at", "alexandria_core_document"."created_by_user", "alexandria_core_document"."created_by_group", "alexandria_core_document"."modified_at", "alexandria_core_document"."modified_by_user", "alexandria_core_document"."modified_by_group", "alexandria_core_document"."metainfo", "alexandria_core_document"."id", "alexandria_core_document"."title", "alexandria_core_document"."description", "alexandria_core_document"."category_id", "alexandria_core_document"."date" FROM "alexandria_core_document" WHERE "alexandria_core_document"."id" IN (\'9dd4e461268c8034f5c8564e155c67a6\'::uuid)',
       'SELECT ("alexandria_core_document_marks"."document_id") AS "_prefetch_related_val_document_id", "alexandria_core_mark"."created_at", "alexandria_core_mark"."created_by_user", "alexandria_core_mark"."created_by_group", "alexandria_core_mark"."modified_at", "alexandria_core_mark"."modified_by_user", "alexandria_core_mark"."modified_by_group", "alexandria_core_mark"."metainfo", "alexandria_core_mark"."slug", "alexandria_core_mark"."name", "alexandria_core_mark"."description" FROM "alexandria_core_mark" INNER JOIN "alexandria_core_document_marks" ON ("alexandria_core_mark"."slug" = "alexandria_core_document_marks"."mark_id") WHERE "alexandria_core_document_marks"."document_id" IN (\'9dd4e461268c8034f5c8564e155c67a6\'::uuid)',
@@ -762,7 +771,7 @@
       'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."checksum", "alexandria_core_file"."encryption_status", "alexandria_core_file"."content_vector", "alexandria_core_file"."content_text", "alexandria_core_file"."language", "alexandria_core_file"."content", "alexandria_core_file"."mime_type", "alexandria_core_file"."size" FROM "alexandria_core_file" WHERE "alexandria_core_file"."original_id" IN (\'9336ebf25087d91c818ee6e9ec29f8c1\'::uuid) ORDER BY "alexandria_core_file"."created_at" DESC',
       'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."checksum", "alexandria_core_file"."encryption_status", "alexandria_core_file"."content_vector", "alexandria_core_file"."content_text", "alexandria_core_file"."language", "alexandria_core_file"."content", "alexandria_core_file"."mime_type", "alexandria_core_file"."size" FROM "alexandria_core_file" WHERE "alexandria_core_file"."original_id" = \'f561aaf6ef0bf14d4208bb46a4ccb3ad\'::uuid ORDER BY "alexandria_core_file"."created_at" DESC',
     ]),
-    'query_count': 7,
+    'query_count': 8,
     'request': dict({
       'CONTENT_TYPE': 'application/octet-stream',
       'PATH_INFO': '/api/v1/files/9336ebf2-5087-d91c-818e-e6e9ec29f8c1',
@@ -924,9 +933,10 @@
 # name: test_api_detail[MarkViewSet]
   dict({
     'queries': list([
+      'SELECT DISTINCT 1 AS "a" FROM "alexandria_core_mark" LIMIT 1',
       'SELECT DISTINCT "alexandria_core_mark"."created_at", "alexandria_core_mark"."created_by_user", "alexandria_core_mark"."created_by_group", "alexandria_core_mark"."modified_at", "alexandria_core_mark"."modified_by_user", "alexandria_core_mark"."modified_by_group", "alexandria_core_mark"."metainfo", "alexandria_core_mark"."slug", "alexandria_core_mark"."name", "alexandria_core_mark"."description" FROM "alexandria_core_mark" WHERE "alexandria_core_mark"."slug" = \'note-act-source\' LIMIT 21',
     ]),
-    'query_count': 1,
+    'query_count': 2,
     'request': dict({
       'CONTENT_TYPE': 'application/octet-stream',
       'PATH_INFO': '/api/v1/marks/note-act-source',
@@ -970,9 +980,10 @@
 # name: test_api_detail[TagViewSet]
   dict({
     'queries': list([
+      'SELECT DISTINCT 1 AS "a" FROM "alexandria_core_tag" LIMIT 1',
       'SELECT DISTINCT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."metainfo", "alexandria_core_tag"."id", "alexandria_core_tag"."name", "alexandria_core_tag"."description", "alexandria_core_tag"."tag_synonym_group_id" FROM "alexandria_core_tag" WHERE "alexandria_core_tag"."id" = \'9dd4e461268c8034f5c8564e155c67a6\'::uuid LIMIT 21',
     ]),
-    'query_count': 1,
+    'query_count': 2,
     'request': dict({
       'CONTENT_TYPE': 'application/octet-stream',
       'PATH_INFO': '/api/v1/tags/9dd4e461-268c-8034-f5c8-564e155c67a6',
@@ -1017,10 +1028,11 @@
 # name: test_api_list[CategoryViewSet]
   dict({
     'queries': list([
+      'SELECT 1 AS "a" FROM "alexandria_core_category" LIMIT 1',
       'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."metainfo", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description", "alexandria_core_category"."allowed_mime_types", "alexandria_core_category"."color", "alexandria_core_category"."parent_id", "alexandria_core_category"."sort" FROM "alexandria_core_category" ORDER BY "alexandria_core_category"."sort" ASC',
       'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."metainfo", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description", "alexandria_core_category"."allowed_mime_types", "alexandria_core_category"."color", "alexandria_core_category"."parent_id", "alexandria_core_category"."sort" FROM "alexandria_core_category" WHERE "alexandria_core_category"."parent_id" IN (\'note-act-source\', \'run-too-successful\', \'story-thing-piece\') ORDER BY "alexandria_core_category"."sort" ASC',
     ]),
-    'query_count': 2,
+    'query_count': 3,
     'request': dict({
       'CONTENT_TYPE': 'application/octet-stream',
       'PATH_INFO': '/api/v1/categories',
@@ -1162,13 +1174,14 @@
 # name: test_api_list[DocumentViewSet]
   dict({
     'queries': list([
+      'SELECT 1 AS "a" FROM "alexandria_core_document" LIMIT 1',
       'SELECT "alexandria_core_document"."created_at", "alexandria_core_document"."created_by_user", "alexandria_core_document"."created_by_group", "alexandria_core_document"."modified_at", "alexandria_core_document"."modified_by_user", "alexandria_core_document"."modified_by_group", "alexandria_core_document"."metainfo", "alexandria_core_document"."id", "alexandria_core_document"."title", "alexandria_core_document"."description", "alexandria_core_document"."category_id", "alexandria_core_document"."date", "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."metainfo", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description", "alexandria_core_category"."allowed_mime_types", "alexandria_core_category"."color", "alexandria_core_category"."parent_id", "alexandria_core_category"."sort", T3."created_at", T3."created_by_user", T3."created_by_group", T3."modified_at", T3."modified_by_user", T3."modified_by_group", T3."metainfo", T3."slug", T3."name", T3."description", T3."allowed_mime_types", T3."color", T3."parent_id", T3."sort" FROM "alexandria_core_document" LEFT OUTER JOIN "alexandria_core_category" ON ("alexandria_core_document"."category_id" = "alexandria_core_category"."slug") LEFT OUTER JOIN "alexandria_core_category" T3 ON ("alexandria_core_category"."parent_id" = T3."slug")',
       'SELECT "alexandria_core_category"."created_at", "alexandria_core_category"."created_by_user", "alexandria_core_category"."created_by_group", "alexandria_core_category"."modified_at", "alexandria_core_category"."modified_by_user", "alexandria_core_category"."modified_by_group", "alexandria_core_category"."metainfo", "alexandria_core_category"."slug", "alexandria_core_category"."name", "alexandria_core_category"."description", "alexandria_core_category"."allowed_mime_types", "alexandria_core_category"."color", "alexandria_core_category"."parent_id", "alexandria_core_category"."sort" FROM "alexandria_core_category" WHERE "alexandria_core_category"."parent_id" IN (\'moment-poor\', \'note-act-source\', \'right-professor\') ORDER BY "alexandria_core_category"."sort" ASC',
       'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."checksum", "alexandria_core_file"."encryption_status", "alexandria_core_file"."content_vector", "alexandria_core_file"."content_text", "alexandria_core_file"."language", "alexandria_core_file"."content", "alexandria_core_file"."mime_type", "alexandria_core_file"."size" FROM "alexandria_core_file" WHERE "alexandria_core_file"."document_id" IN (\'9dd4e461268c8034f5c8564e155c67a6\'::uuid, \'ea416ed0759d46a8de58f63a59077499\'::uuid, \'f561aaf6ef0bf14d4208bb46a4ccb3ad\'::uuid) ORDER BY "alexandria_core_file"."created_at" DESC',
       'SELECT ("alexandria_core_document_marks"."document_id") AS "_prefetch_related_val_document_id", "alexandria_core_mark"."created_at", "alexandria_core_mark"."created_by_user", "alexandria_core_mark"."created_by_group", "alexandria_core_mark"."modified_at", "alexandria_core_mark"."modified_by_user", "alexandria_core_mark"."modified_by_group", "alexandria_core_mark"."metainfo", "alexandria_core_mark"."slug", "alexandria_core_mark"."name", "alexandria_core_mark"."description" FROM "alexandria_core_mark" INNER JOIN "alexandria_core_document_marks" ON ("alexandria_core_mark"."slug" = "alexandria_core_document_marks"."mark_id") WHERE "alexandria_core_document_marks"."document_id" IN (\'9dd4e461268c8034f5c8564e155c67a6\'::uuid, \'ea416ed0759d46a8de58f63a59077499\'::uuid, \'f561aaf6ef0bf14d4208bb46a4ccb3ad\'::uuid)',
       'SELECT ("alexandria_core_document_tags"."document_id") AS "_prefetch_related_val_document_id", "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."metainfo", "alexandria_core_tag"."id", "alexandria_core_tag"."name", "alexandria_core_tag"."description", "alexandria_core_tag"."tag_synonym_group_id" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."id" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" IN (\'9dd4e461268c8034f5c8564e155c67a6\'::uuid, \'ea416ed0759d46a8de58f63a59077499\'::uuid, \'f561aaf6ef0bf14d4208bb46a4ccb3ad\'::uuid)',
     ]),
-    'query_count': 5,
+    'query_count': 6,
     'request': dict({
       'CONTENT_TYPE': 'application/octet-stream',
       'PATH_INFO': '/api/v1/documents',
@@ -1525,6 +1538,7 @@
 # name: test_api_list[FileViewSet]
   dict({
     'queries': list([
+      'SELECT 1 AS "a" FROM "alexandria_core_file" LIMIT 1',
       'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."checksum", "alexandria_core_file"."encryption_status", "alexandria_core_file"."content_vector", "alexandria_core_file"."content_text", "alexandria_core_file"."language", "alexandria_core_file"."content", "alexandria_core_file"."mime_type", "alexandria_core_file"."size" FROM "alexandria_core_file" ORDER BY "alexandria_core_file"."created_at" DESC',
       'SELECT "alexandria_core_document"."created_at", "alexandria_core_document"."created_by_user", "alexandria_core_document"."created_by_group", "alexandria_core_document"."modified_at", "alexandria_core_document"."modified_by_user", "alexandria_core_document"."modified_by_group", "alexandria_core_document"."metainfo", "alexandria_core_document"."id", "alexandria_core_document"."title", "alexandria_core_document"."description", "alexandria_core_document"."category_id", "alexandria_core_document"."date" FROM "alexandria_core_document" WHERE "alexandria_core_document"."id" IN (\'04adb4e2f055c978c9bb101ee1bc5cd4\'::uuid, \'9dd4e461268c8034f5c8564e155c67a6\'::uuid, \'ea416ed0759d46a8de58f63a59077499\'::uuid)',
       'SELECT ("alexandria_core_document_marks"."document_id") AS "_prefetch_related_val_document_id", "alexandria_core_mark"."created_at", "alexandria_core_mark"."created_by_user", "alexandria_core_mark"."created_by_group", "alexandria_core_mark"."modified_at", "alexandria_core_mark"."modified_by_user", "alexandria_core_mark"."modified_by_group", "alexandria_core_mark"."metainfo", "alexandria_core_mark"."slug", "alexandria_core_mark"."name", "alexandria_core_mark"."description" FROM "alexandria_core_mark" INNER JOIN "alexandria_core_document_marks" ON ("alexandria_core_mark"."slug" = "alexandria_core_document_marks"."mark_id") WHERE "alexandria_core_document_marks"."document_id" IN (\'04adb4e2f055c978c9bb101ee1bc5cd4\'::uuid, \'9dd4e461268c8034f5c8564e155c67a6\'::uuid, \'ea416ed0759d46a8de58f63a59077499\'::uuid)',
@@ -1537,7 +1551,7 @@
       'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."checksum", "alexandria_core_file"."encryption_status", "alexandria_core_file"."content_vector", "alexandria_core_file"."content_text", "alexandria_core_file"."language", "alexandria_core_file"."content", "alexandria_core_file"."mime_type", "alexandria_core_file"."size" FROM "alexandria_core_file" WHERE "alexandria_core_file"."original_id" = \'dad3a37aa9d50688b5157698acfd7aee\'::uuid ORDER BY "alexandria_core_file"."created_at" DESC',
       'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."checksum", "alexandria_core_file"."encryption_status", "alexandria_core_file"."content_vector", "alexandria_core_file"."content_text", "alexandria_core_file"."language", "alexandria_core_file"."content", "alexandria_core_file"."mime_type", "alexandria_core_file"."size" FROM "alexandria_core_file" WHERE "alexandria_core_file"."original_id" = \'fb0e22c79ac75679e9881e6ba183b354\'::uuid ORDER BY "alexandria_core_file"."created_at" DESC',
     ]),
-    'query_count': 11,
+    'query_count': 12,
     'request': dict({
       'CONTENT_TYPE': 'application/octet-stream',
       'PATH_INFO': '/api/v1/files',
@@ -1929,9 +1943,10 @@
 # name: test_api_list[MarkViewSet]
   dict({
     'queries': list([
+      'SELECT DISTINCT 1 AS "a" FROM "alexandria_core_mark" LIMIT 1',
       'SELECT DISTINCT "alexandria_core_mark"."created_at", "alexandria_core_mark"."created_by_user", "alexandria_core_mark"."created_by_group", "alexandria_core_mark"."modified_at", "alexandria_core_mark"."modified_by_user", "alexandria_core_mark"."modified_by_group", "alexandria_core_mark"."metainfo", "alexandria_core_mark"."slug", "alexandria_core_mark"."name", "alexandria_core_mark"."description" FROM "alexandria_core_mark"',
     ]),
-    'query_count': 1,
+    'query_count': 2,
     'request': dict({
       'CONTENT_TYPE': 'application/octet-stream',
       'PATH_INFO': '/api/v1/marks',
@@ -2031,9 +2046,10 @@
 # name: test_api_list[TagViewSet]
   dict({
     'queries': list([
+      'SELECT DISTINCT 1 AS "a" FROM "alexandria_core_tag" LIMIT 1',
       'SELECT DISTINCT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."metainfo", "alexandria_core_tag"."id", "alexandria_core_tag"."name", "alexandria_core_tag"."description", "alexandria_core_tag"."tag_synonym_group_id" FROM "alexandria_core_tag" ORDER BY "alexandria_core_tag"."name" ASC',
     ]),
-    'query_count': 1,
+    'query_count': 2,
     'request': dict({
       'CONTENT_TYPE': 'application/octet-stream',
       'PATH_INFO': '/api/v1/tags',
@@ -2209,10 +2225,12 @@
 # name: test_api_patch[DocumentViewSet]
   dict({
     'queries': list([
+      'SELECT 1 AS "a" FROM "alexandria_core_document" LIMIT 1',
       'SELECT "alexandria_core_document"."created_at", "alexandria_core_document"."created_by_user", "alexandria_core_document"."created_by_group", "alexandria_core_document"."modified_at", "alexandria_core_document"."modified_by_user", "alexandria_core_document"."modified_by_group", "alexandria_core_document"."metainfo", "alexandria_core_document"."id", "alexandria_core_document"."title", "alexandria_core_document"."description", "alexandria_core_document"."category_id", "alexandria_core_document"."date" FROM "alexandria_core_document" WHERE "alexandria_core_document"."id" = \'9dd4e461268c8034f5c8564e155c67a6\'::uuid LIMIT 21',
       'SELECT ("alexandria_core_document_marks"."document_id") AS "_prefetch_related_val_document_id", "alexandria_core_mark"."created_at", "alexandria_core_mark"."created_by_user", "alexandria_core_mark"."created_by_group", "alexandria_core_mark"."modified_at", "alexandria_core_mark"."modified_by_user", "alexandria_core_mark"."modified_by_group", "alexandria_core_mark"."metainfo", "alexandria_core_mark"."slug", "alexandria_core_mark"."name", "alexandria_core_mark"."description" FROM "alexandria_core_mark" INNER JOIN "alexandria_core_document_marks" ON ("alexandria_core_mark"."slug" = "alexandria_core_document_marks"."mark_id") WHERE "alexandria_core_document_marks"."document_id" IN (\'9dd4e461268c8034f5c8564e155c67a6\'::uuid)',
       'SELECT ("alexandria_core_document_tags"."document_id") AS "_prefetch_related_val_document_id", "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."metainfo", "alexandria_core_tag"."id", "alexandria_core_tag"."name", "alexandria_core_tag"."description", "alexandria_core_tag"."tag_synonym_group_id" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."id" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" IN (\'9dd4e461268c8034f5c8564e155c67a6\'::uuid)',
       'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."checksum", "alexandria_core_file"."encryption_status", "alexandria_core_file"."content_vector", "alexandria_core_file"."content_text", "alexandria_core_file"."language", "alexandria_core_file"."content", "alexandria_core_file"."mime_type", "alexandria_core_file"."size" FROM "alexandria_core_file" WHERE "alexandria_core_file"."document_id" IN (\'9dd4e461268c8034f5c8564e155c67a6\'::uuid) ORDER BY "alexandria_core_file"."created_at" DESC',
+      'SELECT 1 AS "a" FROM "alexandria_core_document" LIMIT 1',
       'SELECT "alexandria_core_document"."created_at", "alexandria_core_document"."created_by_user", "alexandria_core_document"."created_by_group", "alexandria_core_document"."modified_at", "alexandria_core_document"."modified_by_user", "alexandria_core_document"."modified_by_group", "alexandria_core_document"."metainfo", "alexandria_core_document"."id", "alexandria_core_document"."title", "alexandria_core_document"."description", "alexandria_core_document"."category_id", "alexandria_core_document"."date" FROM "alexandria_core_document" WHERE "alexandria_core_document"."id" = \'9dd4e461268c8034f5c8564e155c67a6\'::uuid LIMIT 21',
       'SELECT ("alexandria_core_document_marks"."document_id") AS "_prefetch_related_val_document_id", "alexandria_core_mark"."created_at", "alexandria_core_mark"."created_by_user", "alexandria_core_mark"."created_by_group", "alexandria_core_mark"."modified_at", "alexandria_core_mark"."modified_by_user", "alexandria_core_mark"."modified_by_group", "alexandria_core_mark"."metainfo", "alexandria_core_mark"."slug", "alexandria_core_mark"."name", "alexandria_core_mark"."description" FROM "alexandria_core_mark" INNER JOIN "alexandria_core_document_marks" ON ("alexandria_core_mark"."slug" = "alexandria_core_document_marks"."mark_id") WHERE "alexandria_core_document_marks"."document_id" IN (\'9dd4e461268c8034f5c8564e155c67a6\'::uuid)',
       'SELECT ("alexandria_core_document_tags"."document_id") AS "_prefetch_related_val_document_id", "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."metainfo", "alexandria_core_tag"."id", "alexandria_core_tag"."name", "alexandria_core_tag"."description", "alexandria_core_tag"."tag_synonym_group_id" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."id" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" IN (\'9dd4e461268c8034f5c8564e155c67a6\'::uuid)',
@@ -2222,6 +2240,7 @@
       'SELECT "alexandria_core_mark"."created_at", "alexandria_core_mark"."created_by_user", "alexandria_core_mark"."created_by_group", "alexandria_core_mark"."modified_at", "alexandria_core_mark"."modified_by_user", "alexandria_core_mark"."modified_by_group", "alexandria_core_mark"."metainfo", "alexandria_core_mark"."slug", "alexandria_core_mark"."name", "alexandria_core_mark"."description" FROM "alexandria_core_mark" WHERE "alexandria_core_mark"."slug" = \'father-should-keep\' LIMIT 21',
       'SELECT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."metainfo", "alexandria_core_tag"."id", "alexandria_core_tag"."name", "alexandria_core_tag"."description", "alexandria_core_tag"."tag_synonym_group_id" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."id" = "alexandria_core_document_tags"."tag_id") WHERE ("alexandria_core_document_tags"."document_id" = \'9dd4e461268c8034f5c8564e155c67a6\'::uuid AND NOT ("alexandria_core_tag"."id" IN (SELECT U0."id" FROM "alexandria_core_tag" U0 INNER JOIN "alexandria_core_document_tags" U1 ON (U0."id" = U1."tag_id") WHERE U1."document_id" = \'9dd4e461268c8034f5c8564e155c67a6\'::uuid)))',
       'SELECT "alexandria_core_mark"."created_at", "alexandria_core_mark"."created_by_user", "alexandria_core_mark"."created_by_group", "alexandria_core_mark"."modified_at", "alexandria_core_mark"."modified_by_user", "alexandria_core_mark"."modified_by_group", "alexandria_core_mark"."metainfo", "alexandria_core_mark"."slug", "alexandria_core_mark"."name", "alexandria_core_mark"."description" FROM "alexandria_core_mark" INNER JOIN "alexandria_core_document_marks" ON ("alexandria_core_mark"."slug" = "alexandria_core_document_marks"."mark_id") WHERE ("alexandria_core_document_marks"."document_id" = \'9dd4e461268c8034f5c8564e155c67a6\'::uuid AND NOT ("alexandria_core_mark"."slug" IN (SELECT U0."slug" FROM "alexandria_core_mark" U0 INNER JOIN "alexandria_core_document_marks" U1 ON (U0."slug" = U1."mark_id") WHERE U1."document_id" = \'9dd4e461268c8034f5c8564e155c67a6\'::uuid)))',
+      'SELECT 1 AS "a" FROM "alexandria_core_document" LIMIT 1',
       'SELECT "alexandria_core_document"."created_at", "alexandria_core_document"."created_by_user", "alexandria_core_document"."created_by_group", "alexandria_core_document"."modified_at", "alexandria_core_document"."modified_by_user", "alexandria_core_document"."modified_by_group", "alexandria_core_document"."metainfo", "alexandria_core_document"."id", "alexandria_core_document"."title", "alexandria_core_document"."description", "alexandria_core_document"."category_id", "alexandria_core_document"."date" FROM "alexandria_core_document" WHERE "alexandria_core_document"."id" = \'9dd4e461268c8034f5c8564e155c67a6\'::uuid LIMIT 21',
       'SELECT ("alexandria_core_document_marks"."document_id") AS "_prefetch_related_val_document_id", "alexandria_core_mark"."created_at", "alexandria_core_mark"."created_by_user", "alexandria_core_mark"."created_by_group", "alexandria_core_mark"."modified_at", "alexandria_core_mark"."modified_by_user", "alexandria_core_mark"."modified_by_group", "alexandria_core_mark"."metainfo", "alexandria_core_mark"."slug", "alexandria_core_mark"."name", "alexandria_core_mark"."description" FROM "alexandria_core_mark" INNER JOIN "alexandria_core_document_marks" ON ("alexandria_core_mark"."slug" = "alexandria_core_document_marks"."mark_id") WHERE "alexandria_core_document_marks"."document_id" IN (\'9dd4e461268c8034f5c8564e155c67a6\'::uuid)',
       'SELECT ("alexandria_core_document_tags"."document_id") AS "_prefetch_related_val_document_id", "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."metainfo", "alexandria_core_tag"."id", "alexandria_core_tag"."name", "alexandria_core_tag"."description", "alexandria_core_tag"."tag_synonym_group_id" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."id" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" IN (\'9dd4e461268c8034f5c8564e155c67a6\'::uuid)',
@@ -2238,13 +2257,15 @@
       'SELECT "alexandria_core_mark"."slug" FROM "alexandria_core_mark" INNER JOIN "alexandria_core_document_marks" ON ("alexandria_core_mark"."slug" = "alexandria_core_document_marks"."mark_id") WHERE "alexandria_core_document_marks"."document_id" = \'9dd4e461268c8034f5c8564e155c67a6\'::uuid',
       'COMMIT',
       'SELECT "alexandria_core_file"."created_at", "alexandria_core_file"."created_by_user", "alexandria_core_file"."created_by_group", "alexandria_core_file"."modified_at", "alexandria_core_file"."modified_by_user", "alexandria_core_file"."modified_by_group", "alexandria_core_file"."metainfo", "alexandria_core_file"."id", "alexandria_core_file"."variant", "alexandria_core_file"."original_id", "alexandria_core_file"."name", "alexandria_core_file"."document_id", "alexandria_core_file"."checksum", "alexandria_core_file"."encryption_status", "alexandria_core_file"."content_vector", "alexandria_core_file"."content_text", "alexandria_core_file"."language", "alexandria_core_file"."content", "alexandria_core_file"."mime_type", "alexandria_core_file"."size" FROM "alexandria_core_file" WHERE "alexandria_core_file"."document_id" = \'9dd4e461268c8034f5c8564e155c67a6\'::uuid ORDER BY "alexandria_core_file"."created_at" DESC',
+      'SELECT 1 AS "a" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."id" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" = \'9dd4e461268c8034f5c8564e155c67a6\'::uuid LIMIT 1',
       'SELECT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."metainfo", "alexandria_core_tag"."id", "alexandria_core_tag"."name", "alexandria_core_tag"."description", "alexandria_core_tag"."tag_synonym_group_id" FROM "alexandria_core_tag" INNER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."id" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" = \'9dd4e461268c8034f5c8564e155c67a6\'::uuid',
+      'SELECT 1 AS "a" FROM "alexandria_core_mark" INNER JOIN "alexandria_core_document_marks" ON ("alexandria_core_mark"."slug" = "alexandria_core_document_marks"."mark_id") WHERE "alexandria_core_document_marks"."document_id" = \'9dd4e461268c8034f5c8564e155c67a6\'::uuid LIMIT 1',
       'SELECT "alexandria_core_mark"."created_at", "alexandria_core_mark"."created_by_user", "alexandria_core_mark"."created_by_group", "alexandria_core_mark"."modified_at", "alexandria_core_mark"."modified_by_user", "alexandria_core_mark"."modified_by_group", "alexandria_core_mark"."metainfo", "alexandria_core_mark"."slug", "alexandria_core_mark"."name", "alexandria_core_mark"."description" FROM "alexandria_core_mark" INNER JOIN "alexandria_core_document_marks" ON ("alexandria_core_mark"."slug" = "alexandria_core_document_marks"."mark_id") WHERE "alexandria_core_document_marks"."document_id" = \'9dd4e461268c8034f5c8564e155c67a6\'::uuid',
       'SELECT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."metainfo", "alexandria_core_tag"."id", "alexandria_core_tag"."name", "alexandria_core_tag"."description", "alexandria_core_tag"."tag_synonym_group_id" FROM "alexandria_core_tag" LEFT OUTER JOIN "alexandria_core_document_tags" ON ("alexandria_core_tag"."id" = "alexandria_core_document_tags"."tag_id") WHERE "alexandria_core_document_tags"."document_id" IS NULL',
       'BEGIN',
       'COMMIT',
     ]),
-    'query_count': 31,
+    'query_count': 36,
     'request': dict({
       'CONTENT_LENGTH': '813',
       'CONTENT_TYPE': 'application/vnd.api+json',
@@ -2377,13 +2398,14 @@
 # name: test_api_patch[MarkViewSet]
   dict({
     'queries': list([
+      'SELECT DISTINCT 1 AS "a" FROM "alexandria_core_mark" LIMIT 1',
       'SELECT DISTINCT "alexandria_core_mark"."created_at", "alexandria_core_mark"."created_by_user", "alexandria_core_mark"."created_by_group", "alexandria_core_mark"."modified_at", "alexandria_core_mark"."modified_by_user", "alexandria_core_mark"."modified_by_group", "alexandria_core_mark"."metainfo", "alexandria_core_mark"."slug", "alexandria_core_mark"."name", "alexandria_core_mark"."description" FROM "alexandria_core_mark" WHERE "alexandria_core_mark"."slug" = \'note-act-source\' LIMIT 21',
       '''
         UPDATE "alexandria_core_mark" SET "created_at" = '2017-05-21 00:00:00+00:00'::timestamptz, "created_by_user" = 'admin', "created_by_group" = 'admin', "modified_at" = '2017-05-21 00:00:00+00:00'::timestamptz, "modified_by_user" = 'admin', "modified_by_group" = 'admin', "metainfo" = '{}'::jsonb, "name" = '"en"=>"Erin Scott","de"=>"","fr"=>""'::hstore, "description" = '"en"=>"Far bit among again. Station story first. Team suggest traditional boy above.
         Central meeting anyone remember. There today material minute ago get. Range whose scientist draw free property consider.","de"=>"","fr"=>""'::hstore WHERE "alexandria_core_mark"."slug" = 'note-act-source'
       ''',
     ]),
-    'query_count': 2,
+    'query_count': 3,
     'request': dict({
       'CONTENT_LENGTH': '540',
       'CONTENT_TYPE': 'application/vnd.api+json',
@@ -2456,13 +2478,14 @@
 # name: test_api_patch[TagViewSet]
   dict({
     'queries': list([
+      'SELECT DISTINCT 1 AS "a" FROM "alexandria_core_tag" LIMIT 1',
       'SELECT DISTINCT "alexandria_core_tag"."created_at", "alexandria_core_tag"."created_by_user", "alexandria_core_tag"."created_by_group", "alexandria_core_tag"."modified_at", "alexandria_core_tag"."modified_by_user", "alexandria_core_tag"."modified_by_group", "alexandria_core_tag"."metainfo", "alexandria_core_tag"."id", "alexandria_core_tag"."name", "alexandria_core_tag"."description", "alexandria_core_tag"."tag_synonym_group_id" FROM "alexandria_core_tag" WHERE "alexandria_core_tag"."id" = \'9dd4e461268c8034f5c8564e155c67a6\'::uuid LIMIT 21',
       '''
         UPDATE "alexandria_core_tag" SET "created_at" = '2017-05-21 00:00:00+00:00'::timestamptz, "created_by_user" = 'admin', "created_by_group" = 'admin', "modified_at" = '2017-05-21 00:00:00+00:00'::timestamptz, "modified_by_user" = 'admin', "modified_by_group" = 'admin', "metainfo" = '{}'::jsonb, "name" = 'Pamela Horton', "description" = '"en"=>"Effort meet relationship far. Option program interesting station. First where during teach country talk across.
         Argue move appear catch toward help wind. Material minute ago get.","de"=>"","fr"=>""'::hstore, "tag_synonym_group_id" = NULL WHERE "alexandria_core_tag"."id" = '9dd4e461268c8034f5c8564e155c67a6'::uuid
       ''',
     ]),
-    'query_count': 2,
+    'query_count': 3,
     'request': dict({
       'CONTENT_LENGTH': '572',
       'CONTENT_TYPE': 'application/vnd.api+json',
