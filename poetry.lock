@@ -1731,14 +1731,14 @@ files = [
 
 [[package]]
 name = "pdbpp"
-version = "0.11.6"
+version = "0.11.7"
 description = "pdb++, a drop-in replacement for pdb"
 optional = false
 python-versions = "*"
 groups = ["dev"]
 files = [
-    {file = "pdbpp-0.11.6-py3-none-any.whl", hash = "sha256:8e024d36bd2f35a3b19d8732524c696b8b4aef633250d28547198e746cd81ccb"},
-    {file = "pdbpp-0.11.6.tar.gz", hash = "sha256:36a73c5bcf0c3c35034be4cf99e6106e3ee0c8f5e0faafc2cf9be5f1481eb4b7"},
+    {file = "pdbpp-0.11.7-py3-none-any.whl", hash = "sha256:51916b63693898cf4881b36b4501c83947758d73f582f1f84893662b163bdb75"},
+    {file = "pdbpp-0.11.7.tar.gz", hash = "sha256:cb6604ac31a35ed0f2a29650a8c022b26284620be3e01cfd41b683b91da1ff14"},
 ]
 
 [package.dependencies]
@@ -1937,14 +1937,14 @@ testing = ["pytest", "pytest-benchmark"]
 
 [[package]]
 name = "pre-commit"
-version = "4.2.0"
+version = "4.3.0"
 description = "A framework for managing and maintaining multi-language pre-commit hooks."
 optional = false
 python-versions = ">=3.9"
 groups = ["dev"]
 files = [
-    {file = "pre_commit-4.2.0-py2.py3-none-any.whl", hash = "sha256:a009ca7205f1eb497d10b845e52c838a98b6cdd2102a6c8e4540e94ee75c58bd"},
-    {file = "pre_commit-4.2.0.tar.gz", hash = "sha256:601283b9757afd87d40c4c4a9b2b5de9637a8ea02eaff7adc2d0fb4e04841146"},
+    {file = "pre_commit-4.3.0-py2.py3-none-any.whl", hash = "sha256:2b0747ad7e6e967169136edffee14c16e148a778a54e4f967921aa1ebf2308d8"},
+    {file = "pre_commit-4.3.0.tar.gz", hash = "sha256:499fe450cc9d42e9d58e606262795ecb64dd05438943c62b66f6a8673da30b16"},
 ]
 
 [package.dependencies]
@@ -2261,37 +2261,38 @@ tests = ["pexpect", "pytest", "pytest-coverage", "pytest-timeout"]
 
 [[package]]
 name = "pytest"
-version = "8.3.5"
+version = "8.4.1"
 description = "pytest: simple powerful testing with Python"
 optional = false
-python-versions = ">=3.8"
+python-versions = ">=3.9"
 groups = ["dev"]
 files = [
-    {file = "pytest-8.3.5-py3-none-any.whl", hash = "sha256:c69214aa47deac29fad6c2a4f590b9c4a9fdb16a403176fe154b79c0b4d4d820"},
-    {file = "pytest-8.3.5.tar.gz", hash = "sha256:f4efe70cc14e511565ac476b57c279e12a855b11f48f212af1080ef2263d3845"},
+    {file = "pytest-8.4.1-py3-none-any.whl", hash = "sha256:539c70ba6fcead8e78eebbf1115e8b589e7565830d7d006a8723f19ac8a0afb7"},
+    {file = "pytest-8.4.1.tar.gz", hash = "sha256:7c67fd69174877359ed9371ec3af8a3d2b04741818c51e5e99cc1742251fa93c"},
 ]
 
 [package.dependencies]
-colorama = {version = "*", markers = "sys_platform == \"win32\""}
-exceptiongroup = {version = ">=1.0.0rc8", markers = "python_version < \"3.11\""}
-iniconfig = "*"
-packaging = "*"
+colorama = {version = ">=0.4", markers = "sys_platform == \"win32\""}
+exceptiongroup = {version = ">=1", markers = "python_version < \"3.11\""}
+iniconfig = ">=1"
+packaging = ">=20"
 pluggy = ">=1.5,<2"
+pygments = ">=2.7.2"
 tomli = {version = ">=1", markers = "python_version < \"3.11\""}
 
 [package.extras]
-dev = ["argcomplete", "attrs (>=19.2)", "hypothesis (>=3.56)", "mock", "pygments (>=2.7.2)", "requests", "setuptools", "xmlschema"]
+dev = ["argcomplete", "attrs (>=19.2)", "hypothesis (>=3.56)", "mock", "requests", "setuptools", "xmlschema"]
 
 [[package]]
 name = "pytest-celery"
-version = "1.2.0"
+version = "1.2.1"
 description = "Pytest plugin for Celery"
 optional = false
 python-versions = "<4.0,>=3.8"
 groups = ["dev"]
 files = [
-    {file = "pytest_celery-1.2.0-py3-none-any.whl", hash = "sha256:d81d22a3bed21eb180fa2ee2dd701a00cc4f7c3f1d578e99620c887cad331fb6"},
-    {file = "pytest_celery-1.2.0.tar.gz", hash = "sha256:de605eca1b0134c136910c8ed161cc3996b0c8aaafd29170878a396eed81b5b1"},
+    {file = "pytest_celery-1.2.1-py3-none-any.whl", hash = "sha256:0441ab0c2a712b775be16ffda3d7deb31995fd7b5e9d71630e7ea98b474346a3"},
+    {file = "pytest_celery-1.2.1.tar.gz", hash = "sha256:7873fb3cf4fbfe9b0dd15d359bdb8bbab4a41c7e48f5b0adb7d36138d3704d52"},
 ]
 
 [package.dependencies]
@@ -3466,4 +3467,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10.0,<4.0"
-content-hash = "0befeea602bb8747aeeefad2f205de8fdf08c1147b6a8f82244c37157d0e09eb"
+content-hash = "6c6b5645fff63de307e4087d8ea5627beea3b8628c9c5ac8f88dca45433fe1a0"
