@@ -520,7 +520,7 @@ def test_copy_document(
     if to_category == "not_defined":
         data["data"]["relationships"] = {}
     elif to_category == "null":
-        data["data"]["relationships"]["category"] = None
+        data["data"]["relationships"]["category"]["data"] = None
 
     url = reverse("document-copy", args=[document.pk])
     response = admin_client.post(url, data=data)
