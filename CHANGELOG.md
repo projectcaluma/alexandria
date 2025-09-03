@@ -1,3 +1,17 @@
+# 8.0.0
+
+### Feature
+
+* **deps:** Update dependencies ([`e829724`](https://github.com/projectcaluma/alexandria/commit/e8297243316e42dc77fc870980efa497505bfdb9))
+
+### Fix
+
+* **deps:** Fix docker base image based on debian bookworm ([`bdd528c`](https://github.com/projectcaluma/alexandria/commit/bdd528c7d84e49ad56013fccdfa6d5c8feb1ef79))
+
+### Breaking
+
+* Remove support for Python < 3.12 ([`e829724`](https://github.com/projectcaluma/alexandria/commit/e8297243316e42dc77fc870980efa497505bfdb9))
+
 # 7.3.0
 
 ### Feature
