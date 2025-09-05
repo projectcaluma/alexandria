@@ -54,7 +54,7 @@ moto = { extras = ["s3"], version = "5.1.11" }
 pdbpp = "0.11.7"
 pillow = "11.3.0"
 pre-commit = "4.3.0"
-pytest = "8.4.1"
+pytest = "8.4.2"
 pytest-celery = "1.2.1"
 pytest-cov = "6.2.1"
 pytest-django = "4.11.1"
