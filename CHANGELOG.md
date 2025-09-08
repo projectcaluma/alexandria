@@ -1,3 +1,9 @@
+# 8.0.1
+
+### Fix
+
+* **download:** Use renamed filename in single and multi download ([`39d9b93`](https://github.com/nlzet/alexandria/commit/39d9b932e4d79fde875f25bb14dd231d9b5d14a5))
+
 # 8.0.0
 
 ### Feature
