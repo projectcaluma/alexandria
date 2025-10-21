@@ -153,6 +153,7 @@ ALEXANDRIA_S3_BUCKET_NAME = env.str(
 )
 # Object parameter translate to specific headers and values in put and get requests
 ALEXANDRIA_S3_OBJECT_PARAMETERS = {}
+ALEXANDRIA_S3_CLIENT_CONFIG = env.dict("ALEXANDRIA_S3_CLIENT_CONFIG", default={})
 # Shared secret for at-rest encryption of objects
 # NOTE: required to be 32 bytes long
 ALEXANDRIA_S3_STORAGE_SSEC_SECRET = env.str(
