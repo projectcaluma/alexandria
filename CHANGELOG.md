@@ -1,3 +1,8 @@
+# 8.1.0
+### Feature
+
+* **s3:** Add setting for CLIENT_CONFIG ([`c28c6a8`](https://github.com/projectcaluma/alexandria/commit/c28c6a8992641773777222ff32cdd9c9a0239e3d))
+
 # 8.0.1
 
 ### Fix
