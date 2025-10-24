@@ -5,6 +5,7 @@ from tempfile import NamedTemporaryFile
 
 import tika.language
 import tika.parser
+from celery.utils.log import get_task_logger
 from django.conf import settings
 from django.contrib.postgres.search import SearchVector
 from django.db.models import Value
@@ -13,7 +14,6 @@ from preview_generator.manager import PreviewManager
 
 from alexandria.core.models import File
 from celery import shared_task
-from celery.utils.log import get_task_logger
 
 logger = get_task_logger(__name__)
 
