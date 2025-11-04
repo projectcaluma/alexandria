@@ -200,6 +200,14 @@ ALEXANDRIA_MANABI_DAV_URI_SCHEMES = env.dict(
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": "ms-excel:ofe|u|",
     },
 )
+ALEXANDRIA_MANABI_VERSION_CREATION_THRESHOLD_ENABLED = env.bool(
+    "ALEXANDRIA_MANABI_VERSION_CREATION_THRESHOLD_ENABLED",
+    default=False,
+)
+ALEXANDRIA_MANABI_VERSION_CREATION_THRESHOLD_SECONDS = env.int(
+    "ALEXANDRIA_MANABI_VERSION_CREATION_THRESHOLD_SECONDS",
+    default=60 * 30,
+)
 MANABI_SHARED_KEY = env.str(
     "MANABI_SHARED_KEY", default=default("2QhWg20fXq0xlnJUkFTDgFoA3JWqvb86OejD9mAVFCW")
 )

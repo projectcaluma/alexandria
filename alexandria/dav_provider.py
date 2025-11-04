@@ -1,9 +1,12 @@
 import io
 import time
+from datetime import timedelta
 from pathlib import Path
 
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.files.base import File as DjangoFile
+from django.utils.timezone import now
 from manabi.filesystem import ManabiFileResourceMixin, ManabiProvider
 from wsgidav.dav_error import HTTP_BAD_REQUEST, HTTP_FORBIDDEN, DAVError
 from wsgidav.dav_provider import DAVNonCollection
@@ -104,10 +107,7 @@ class AlexandriaFileResource(ManabiFileResourceMixin, DAVNonCollection):
     def end_write(self, *, with_errors):
         if not with_errors:
             file = self.file
-            if (
-                self.file.modified_by_user != self.user
-                or self.file.modified_by_group != self.group
-            ):
+            if self.should_create_new_version():
                 file = File(
                     variant=self.file.variant,
                     original=self.file.original,
@@ -134,6 +134,35 @@ class AlexandriaFileResource(ManabiFileResourceMixin, DAVNonCollection):
             self.file = file
             self.memory_file.do_close()
         super().end_write(with_errors=with_errors)
+
+    def should_create_new_version(self):
+        """Return `True` if a new version of the saved file should be created.
+
+        A new version should be created:
+
+        A) if the previous author or group is differing - another author's edit
+           should always imply a new version, so the old author's changes will
+           remain
+        B) Optional: For the same author, every N seconds, a "snapshot" should
+           be created as well.
+        """
+
+        if (
+            self.file.modified_by_user != self.user
+            or self.file.modified_by_group != self.group
+        ):
+            return True
+
+        if settings.ALEXANDRIA_MANABI_VERSION_CREATION_THRESHOLD_ENABLED:
+            delta = now() - self.file.modified_at
+            threshold = timedelta(
+                seconds=settings.ALEXANDRIA_MANABI_VERSION_CREATION_THRESHOLD_SECONDS
+            )
+
+            if delta > threshold:
+                return True
+
+        return False
 
 
 class AlexandriaProvider(ManabiProvider):

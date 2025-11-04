@@ -1,3 +1,4 @@
+from datetime import timedelta
 from pathlib import Path
 from uuid import uuid4
 from xml.dom import minidom
@@ -251,3 +252,56 @@ def test_dav_without_content(db, manabi, settings, file_factory):
 
     assert "400 Bad Request" in str(e)
     assert file.document.files.filter(variant=File.Variant.ORIGINAL).count() == 1
+
+
+@pytest.mark.parametrize(
+    ("user", "group", "seconds_since_last_modification", "should_create_version"),
+    [
+        ("some-user", "some-group", 0, False),
+        ("other-user", "some-group", 0, True),
+        ("some-user", "other-group", 0, True),
+        ("some-user", "some-group", 29 * 60, False),
+        ("some-user", "some-group", 45 * 60, True),
+    ],
+)
+def test_dav_versioning(
+    db,
+    file_factory,
+    freezer,
+    group,
+    manabi,
+    seconds_since_last_modification,
+    settings,
+    should_create_version,
+    user,
+):
+    settings.ALEXANDRIA_MANABI_DAV_URI_SCHEMES = {"text/plain": "ms-word:ofe|u|"}
+    settings.ALEXANDRIA_MANABI_VERSION_CREATION_THRESHOLD_ENABLED = True
+    settings.ALEXANDRIA_MANABI_VERSION_CREATION_THRESHOLD_SECONDS = 30 * 60
+
+    file = file_factory(
+        name="test.txt",
+        mime_type="text/plain",
+        modified_by_user="some-user",
+        modified_by_group="some-group",
+    )
+
+    freezer.move_to(
+        file.modified_at + timedelta(seconds=seconds_since_last_modification)
+    )
+
+    dav_app = TestApp(get_dav())
+
+    response = dav_app.put(
+        get_webdav_url_without_uri_scheme(file, user, group),
+        b"foobar",
+    )
+
+    assert response.status_code == status.HTTP_204_NO_CONTENT
+
+    assert (
+        file.document.files.filter(variant=File.Variant.ORIGINAL)
+        .exclude(pk=file.pk)
+        .exists()
+        == should_create_version
+    )
