@@ -151,6 +151,8 @@ Supported backends:
 - `ALEXANDRIA_MANABI_DAV_URL_PATH`: Set the path segement where WebDAV is being served
 - `ALEXANDRIA_MANABI_ALLOWED_MIMETYPES`: List of which mime types can be served through WebDAV. (default: docx, xlsx)
 - `ALEXANDRIA_MANABI_DAV_URI_SCHEMES`: Dictionary of which mime types will be mapped to which WebDAV URI scheme. (default: docx, xlsx for editing in MS Word / Excel)
+- `ALEXANDRIA_MANABI_VERSION_CREATION_THRESHOLD_ENABLED`: If enabled, alexandria will create a new version of a file being edited via WebDAV every `n` seconds (see option below). Default is `False`.
+- `ALEXANDRIA_MANABI_VERSION_CREATION_THRESHOLD_SECONDS`: Seconds after which a new version of a file being edited via WebDAV will be created. Default is `1800` (30 minutes).
 - `MANABI_SHARED_KEY`: Can be generated with:
 
 ```py
@@ -180,6 +182,7 @@ ALEXANDRIA_MANABI_DAV_URI_SCHEMES = {
 - `ALEXANDRIA_CONTENT_SEARCH_TYPE`: Django full text search type. (default: phrase)
 
 #### Celery (optional)
+
 For checksums and file content search [celery](https://docs.celeryq.dev) with a redis broker is used.
 
 - `REDIS_HOST`: Redis host (default: redis)
