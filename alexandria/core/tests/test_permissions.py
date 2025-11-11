@@ -44,14 +44,16 @@ def test_document_permission(
 
     class CustomPermission:
         @permission_for(Document)
-        def has_permission_for_document(self, request):
+        def has_permission_for_document(self, request, *args, **kwargs):
             if request.method == "PATCH":
                 return request.data["title"] == "new"
             elif request.method in {"DELETE", "POST"}:
                 return request.user.username == "admin"
 
         @object_permission_for(Document)
-        def has_object_permission_for_document(self, request, instance):
+        def has_object_permission_for_document(
+            self, request, instance, *args, **kwargs
+        ):
             assert isinstance(instance, Document)
             if request.user.username == "admin":
                 return True
@@ -128,13 +130,15 @@ def test_file_permission(
 
     class CustomPermission:
         @permission_for(File)
-        def has_permission_for_document(self, request):
+        def has_permission_for_document(self, request, *args, **kwargs):
             if request.user.username == "admin" or allow_delete:
                 return True
             return False
 
         @object_permission_for(File)
-        def has_object_permission_for_document(self, request, instance):
+        def has_object_permission_for_document(
+            self, request, instance, *args, **kwargs
+        ):
             assert isinstance(instance, File)
             if request.user.username == "admin" and allow_delete:
                 return True
@@ -191,11 +195,13 @@ def test_webdav_permission(
 
     class CustomPermission:
         @permission_for(Document)
-        def has_permission_for_document(self, request):
+        def has_permission_for_document(self, request, *args, **kwargs):
             return request.user.username == "admin"
 
         @object_permission_for(Document)
-        def has_object_permission_for_document(self, request, instance):
+        def has_object_permission_for_document(
+            self, request, instance, *args, **kwargs
+        ):
             return request.user.username == "admin"
 
     PermissionsConfig.register_handler_class(CustomPermission)

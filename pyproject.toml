@@ -23,7 +23,7 @@ clamdpy = "^0.1.0.post1"
 django = ">=4.2,<5.3"
 django-environ = ">=0.9.0,<0.13.0"
 django-filter = ">=22.1,<26.0"
-django-generic-api-permissions = ">=1.0.0,<3"
+django-generic-api-permissions = ">=1.0.0,<4"
 # beta version for better dependency version ranges https://github.com/SectorLabs/django-localized-fields/issues/95
 django-localized-fields = "^6.8b5"
 django-storages = { extras = ['s3'], version = "^1.14.2" }
