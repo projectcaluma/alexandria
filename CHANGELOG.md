@@ -1,4 +1,12 @@
+# 8.2.0
+
+### Feature
+
+* **deps:** Update DGAP to v3 ([`32855b4`](https://github.com/projectcaluma/alexandria/commit/32855b44fe6d1c7584f0862812f0f9bad0fd529e))
+* **dav:** Allow automatic versioning in dav after a period of time ([`9996b8e`](https://github.com/projectcaluma/alexandria/commit/9996b8e8096792a65cc9639cc95ae60b2f49e044))
+
 # 8.1.0
+
 ### Feature
 
 * **s3:** Add setting for CLIENT_CONFIG ([`c28c6a8`](https://github.com/projectcaluma/alexandria/commit/c28c6a8992641773777222ff32cdd9c9a0239e3d))
