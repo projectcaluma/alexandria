@@ -87,6 +87,43 @@ def test_generate_content_vector(
     assert file_without_vector.language == "de"
 
 
+def test_generate_missing_checksums(
+    db,
+    settings,
+    document_factory,
+    file_factory,
+):
+    settings.ALEXANDRIA_ENABLE_CHECKSUM = False
+    document = document_factory(title="name", description="desc")
+    file_without_checksum = file_factory(name="old", document=document)
+
+    settings.ALEXANDRIA_ENABLE_CHECKSUM = True
+    file_with_checksum = file_factory(name="neu.docx", document=document)
+
+    file_with_checksum.refresh_from_db()
+    file_without_checksum.refresh_from_db()
+
+    assert (
+        file_with_checksum.checksum
+        == "sha256:6e94c5bf30f49e56597aa0cddc0ec3953fe0f9d8cfc71d32b96bcde0372a1bd9"
+    )
+    assert file_without_checksum.checksum is None
+
+    call_command("generate_missing_checksums")
+
+    file_with_checksum.refresh_from_db()
+    file_without_checksum.refresh_from_db()
+
+    assert (
+        file_with_checksum.checksum
+        == "sha256:6e94c5bf30f49e56597aa0cddc0ec3953fe0f9d8cfc71d32b96bcde0372a1bd9"
+    )
+    assert (
+        file_without_checksum.checksum
+        == "sha256:6e94c5bf30f49e56597aa0cddc0ec3953fe0f9d8cfc71d32b96bcde0372a1bd9"
+    )
+
+
 def test_generate_content_vector_disabled(db, settings, file_factory):
     settings.ALEXANDRIA_ENABLE_CONTENT_SEARCH = False
 
