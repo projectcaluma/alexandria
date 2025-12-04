@@ -23,7 +23,7 @@ All User Interface interactions should be as simple as possible and easily under
 - docker
 - docker-compose
 
-After installing and configuring those, download [docker-compose.yml](https://raw.githubusercontent.com/projectcaluma/alexandria/master/docker-compose.yml) and run the following commands:
+After installing and configuring those, download [compose.yml](https://raw.githubusercontent.com/projectcaluma/alexandria/refs/heads/main/compose.yaml) and run the following commands:
 
 ```bash
 # only needs to be run once

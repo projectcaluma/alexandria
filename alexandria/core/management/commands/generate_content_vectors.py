@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.core.management.base import BaseCommand
+from django.template.defaultfilters import filesizeformat, truncatechars
 from psutil import virtual_memory
 from tqdm import tqdm
 
@@ -23,9 +24,15 @@ class Command(BaseCommand):
         settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION = False
 
         failed_files = []
-        query = File.objects.filter(variant="original", content_vector__isnull=True)
+        query = File.objects.filter(
+            variant="original", content_vector__isnull=True
+        ).order_by("size")
         # iterate over files in batches to prevent memory exhaustion
-        for file in tqdm(query.iterator(50), "Generating vectors", query.count()):
+        pbar = tqdm(query.iterator(50), "", query.count())
+        for file in pbar:
+            pbar.set_description(
+                f"Processing {truncatechars(file.name, 50):<50} ({filesizeformat(file.size):>10})"
+            )
             try:
                 set_content_vector(file.pk)
             except Exception as e:  # noqa: B902
