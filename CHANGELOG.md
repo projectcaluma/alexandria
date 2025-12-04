@@ -1,3 +1,8 @@
+# 8.3.0
+### Feature
+
+* Add checksum generation command ([`995b777`](https://github.com/projectcaluma/alexandria/commit/995b7774ee1984a52819f6b6afd6659d6437fdca))
+
 # 8.2.0
 
 ### Feature
