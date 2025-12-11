@@ -137,8 +137,8 @@ Supported backends:
 #### ClamAV (optional)
 
 - `ALEXANDRIA_CLAMD_ENABLED`: Set this to `True` to enable ClamAV (virus scanner).
-- `ALEXANDRIA_CLAMD_TCP_SOCKET`: ClamAV service socket
-- `ALEXANDRIA_CLAMD_TCP_ADDR`: ClamAV service address
+- `ALEXANDRIA_CLAMD_TCP_PORT`: ClamAV service tcp port (default: 3310)
+- `ALEXANDRIA_CLAMD_TCP_ADDR`: ClamAV service address (default: localhost)
 
 #### [Document Merge Service](https://github.com/adfinis/document-merge-service) (optional)
 

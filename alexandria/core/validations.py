@@ -19,7 +19,7 @@ def validate_file_infection(file_content):
         return
 
     scanner = ClamdNetworkSocket(
-        settings.ALEXANDRIA_CLAMD_TCP_ADDR, settings.ALEXANDRIA_CLAMD_TCP_SOCKET
+        settings.ALEXANDRIA_CLAMD_TCP_ADDR, settings.ALEXANDRIA_CLAMD_TCP_PORT
     )
 
     file_content.seek(0)
