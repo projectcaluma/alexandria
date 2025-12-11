@@ -119,5 +119,4 @@ def create_thumbnail(file_pk: str):
             mime_type="image/jpeg",
             size=file.size,
         )
-
-    return thumb_file
+        return str(thumb_file.pk)
