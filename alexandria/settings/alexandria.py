@@ -151,6 +151,7 @@ ALEXANDRIA_S3_VERIFY = env.bool("ALEXANDRIA_S3_VERIFY", default=False)
 ALEXANDRIA_S3_BUCKET_NAME = env.str(
     "ALEXANDRIA_S3_BUCKET_NAME", default="alexandria-media"
 )
+ALEXANDRIA_S3_REGION_NAME = env.str("ALEXANDRIA_S3_REGION_NAME", default=None)
 # Object parameter translate to specific headers and values in put and get requests
 ALEXANDRIA_S3_OBJECT_PARAMETERS = {}
 ALEXANDRIA_S3_CLIENT_CONFIG = env.dict("ALEXANDRIA_S3_CLIENT_CONFIG", default={})
