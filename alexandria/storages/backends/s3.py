@@ -14,6 +14,7 @@ class S3Storage(OriginalS3Storage):
             "endpoint_url": setting("ALEXANDRIA_S3_ENDPOINT_URL"),
             "bucket_name": setting("ALEXANDRIA_S3_BUCKET_NAME"),
             # optional settings
+            "region_name": setting("ALEXANDRIA_S3_REGION_NAME"),
             "use_ssl": setting("ALEXANDRIA_S3_USE_SSL"),
             "verify": setting("ALEXANDRIA_S3_VERIFY"),
             "object_parameters": setting("ALEXANDRIA_S3_OBJECT_PARAMETERS", {}),
