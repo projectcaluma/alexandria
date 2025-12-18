@@ -1,7 +1,7 @@
 import re
-import uuid
 from pathlib import Path
 
+import uuid_extensions
 from django.conf import settings
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.postgres.indexes import GinIndex
@@ -27,12 +27,12 @@ def make_uuid():
     """Return a new random UUID value.
 
     This indirection is done for testing purposes, so test code can mock
-    uuid.uuid4(). If we wouldn't do this, then the models would have a direct
-    reference that doesn't get mocked away.
+    uuid_extensions.uuid7(). If we wouldn't do this, then the models would have
+    a direct reference that doesn't get mocked away.
 
     We can't replace it with a lambda because Django Migrations can't handle them.
     """
-    return uuid.uuid4()
+    return uuid_extensions.uuid7()
 
 
 class BaseModel(models.Model):

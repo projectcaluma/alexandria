@@ -1,10 +1,10 @@
 from datetime import timedelta
 from pathlib import Path
-from uuid import uuid4
 from xml.dom import minidom
 
 import boto3
 import pytest
+import uuid_extensions
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured, ValidationError
 from django.core.files.base import ContentFile
@@ -119,7 +119,7 @@ def test_dav_propfind(db, manabi, file_factory, snapshot):
 def test_dav_not_found(db, settings):
     key = Key.from_dictionary({"manabi": {"key": settings.MANABI_SHARED_KEY}})
     payload = ("username", "groupname")
-    path = Path(str(uuid4())) / Path("myfile.docx")
+    path = Path(str(uuid_extensions.uuid7())) / Path("myfile.docx")
     token = Token(key, path, payload=payload)
 
     assert (
