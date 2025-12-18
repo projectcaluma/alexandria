@@ -70,6 +70,14 @@ def test_anonymous_writing(
         ("unsupported", "png", "image/png", None, 0, HTTP_400_BAD_REQUEST),
         # mime type not allowed by category
         ("png", "png", "image/png", ["application/pdf"], 1, HTTP_400_BAD_REQUEST),
+        # zip with standard content type
+        ("zip", "zip", "application/zip", None, 0, HTTP_201_CREATED),
+        # zip with Windows content type
+        ("zip", "zip", "application/x-zip-compressed", None, 0, HTTP_201_CREATED),
+        # zip with alternative content type
+        ("zip", "zip", "application/x-zip", None, 0, HTTP_201_CREATED),
+        # zip with compressed variant
+        ("zip", "zip", "application/zip-compressed", None, 0, HTTP_201_CREATED),
     ],
 )
 def test_file_upload(
@@ -101,7 +109,8 @@ def test_file_upload(
     if status == HTTP_400_BAD_REQUEST:
         return
 
-    assert doc.files.filter(name="file.png", variant="original").exists()
+    expected_filename = f"file.{extension}"
+    assert doc.files.filter(name=expected_filename, variant="original").exists()
     assert (
         File.objects.filter(variant=File.Variant.THUMBNAIL).count() == thumbnail_count
     )

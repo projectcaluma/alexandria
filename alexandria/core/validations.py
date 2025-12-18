@@ -74,6 +74,14 @@ class AlexandriaValidator:
 
         if content_type_header == "application/octet-stream":
             content_type_header = extension_type
+        # ZIP content-type headers are depending on the OS, e.g. on Windows they might be uploaded as
+        # "application/x-zip-compressed"
+        if extension_type == "application/zip" and content_type_header in [
+            "application/x-zip-compressed",
+            "application/x-zip",
+            "application/zip-compressed",
+        ]:
+            content_type_header = "application/zip"
         if content_type_header != extension_type:
             raise ValidationError(
                 gettext_lazy(

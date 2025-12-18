@@ -35,6 +35,8 @@ class FileData:
 
     invalid = b"xyz123xyz123xyz123xyz123xyz123xyz123xyz123xyz123xyz123"
 
+    zip = b"PK\x05\x06" + b"\x00" * 18
+
 
 class BaseFactory(DjangoModelFactory):
     created_by_user = "admin"
