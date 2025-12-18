@@ -1,3 +1,13 @@
+# 8.4.0
+### Feature
+
+* **s3:** Add env config for region_name parameter ([`688dd90`](https://github.com/projectcaluma/alexandria/commit/688dd9082fa1ddd48a7be591c5775cc207eb7d5c))
+
+### Fix
+
+* Allow non-standard content types for zip uploads ([#968](https://github.com/projectcaluma/alexandria/issues/968)) ([`0861162`](https://github.com/projectcaluma/alexandria/commit/0861162014c880467bbac2706340333aa6ddb402))
+* **celery:** Make celery task result serializable ([`78de8b6`](https://github.com/projectcaluma/alexandria/commit/78de8b6496a5f5920b028091297bb8c487d4d0f0))
+
 # 8.3.0
 ### Feature
 
