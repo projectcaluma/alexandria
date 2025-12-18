@@ -173,6 +173,7 @@ class Document(UUIDModel):
         latest_original.pk = None
         latest_original.document = self
         latest_original.content.copy(new_name)
+        latest_original.save()
 
         return self
 

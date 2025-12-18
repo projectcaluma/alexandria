@@ -70,6 +70,7 @@ class Command(BaseCommand):
                     # perform the copy operation
                     if not options["dry"]:
                         duplicate.content.copy(f"{duplicate.pk}_{duplicate.name}")
+                        duplicate.save()
 
                     self.stdout.write(
                         self.style.SUCCESS(

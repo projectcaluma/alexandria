@@ -50,7 +50,6 @@ class DynamicStorageFieldFile(FieldFile):
 
             self.storage.bucket.meta.client.copy_object(**copy_args)
             self.instance.content = target_name
-            self.instance.save()
             return
 
         # otherwise use filesystem storage
@@ -59,7 +58,6 @@ class DynamicStorageFieldFile(FieldFile):
             with temp_file.open("w+b") as file:
                 file.write(self.read())
                 self.instance.content = DjangoFile(file, target_name)
-                self.instance.save()
 
 
 class DynamicStorageFileField(models.FileField):

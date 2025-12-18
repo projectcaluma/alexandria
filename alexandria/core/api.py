@@ -53,6 +53,7 @@ def copy_document(
             metainfo=document_file.metainfo,
         )
         new_file.content.copy(f"{new_file.pk}_{new_file.name}")
+        new_file.save()
 
     return new_document
 
