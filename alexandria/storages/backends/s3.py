@@ -1,4 +1,3 @@
-from botocore.config import Config as BotoConfig
 from django.conf import ImproperlyConfigured, settings as django_settings
 from storages.backends.s3 import S3Storage as OriginalS3Storage
 from storages.utils import setting
@@ -18,7 +17,6 @@ class S3Storage(OriginalS3Storage):
             "use_ssl": setting("ALEXANDRIA_S3_USE_SSL"),
             "verify": setting("ALEXANDRIA_S3_VERIFY"),
             "object_parameters": setting("ALEXANDRIA_S3_OBJECT_PARAMETERS", {}),
-            "client_config": BotoConfig(**setting("ALEXANDRIA_S3_CLIENT_CONFIG")),
         }
 
 
