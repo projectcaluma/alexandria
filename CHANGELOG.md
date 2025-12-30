@@ -1,3 +1,8 @@
+# 8.4.1
+### Fix
+
+* Revert "feat(s3): add setting for CLIENT_CONFIG" ([#971](https://github.com/projectcaluma/alexandria/issues/971)) ([`64b5bbd`](https://github.com/projectcaluma/alexandria/commit/64b5bbda71310eb2784b53ad8a45e389b3b8ab5c))
+
 # 8.4.0
 ### Feature
 
