@@ -1,9 +1,9 @@
 import io
-import uuid
 import zipfile
 from pathlib import Path
 
 import pytest
+import uuid_extensions
 from django.urls import reverse
 from factory.django import django_files
 from rest_framework.status import (
@@ -405,7 +405,7 @@ def test_multi_download_renamed(admin_client, file_factory, input_list, output_n
     "params,expected_status",
     [
         ({}, HTTP_400_BAD_REQUEST),
-        ({"filter[files]": str(uuid.uuid4())}, HTTP_404_NOT_FOUND),
+        ({"filter[files]": str(uuid_extensions.uuid7())}, HTTP_404_NOT_FOUND),
         ({"filter[files]": "no uuid"}, HTTP_400_BAD_REQUEST),
     ],
 )
