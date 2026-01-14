@@ -1,3 +1,8 @@
+# 8.4.2
+### Fix
+
+* Add support for MANABI_DEBUG setting ([#974](https://github.com/projectcaluma/alexandria/issues/974)) ([`ee85532`](https://github.com/projectcaluma/alexandria/commit/ee855320ed90c40ddcd875fd5b30d516164b42ce))
+
 # 8.4.1
 ### Fix
 
