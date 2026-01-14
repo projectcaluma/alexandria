@@ -5,7 +5,7 @@ from django.conf import settings
 from django.db import connections
 from manabi import ManabiAuthenticator, ManabiDAVApp
 from manabi.lock import ManabiDbLockStorage
-from manabi.log import HeaderLogger
+from manabi.log import HeaderLogger, verbose_logging
 from wsgidav.dir_browser import WsgiDavDirBrowser
 from wsgidav.error_printer import ErrorPrinter
 from wsgidav.mw.base_mw import BaseMiddleware
@@ -69,6 +69,9 @@ def get_dav():
     root_folder = settings.MEDIA_ROOT
     if settings.ALEXANDRIA_FILE_STORAGE == "alexandria.storages.backends.s3.S3Storage":
         root_folder = "/"
+
+    if settings.MANABI_DEBUG:  # pragma: no cover
+        verbose_logging()
 
     config = {
         "lock_storage": ManabiDbLockStorage(ttl, postgres_dsn),
