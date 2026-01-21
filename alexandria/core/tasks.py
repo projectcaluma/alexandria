@@ -42,10 +42,17 @@ def set_content_vector(file_pk: str, document_update: bool = False):
 
     base_vector = file_name_vector + document_name_vector + document_desc_vector
 
-    if not parsed_content:
-        # Update only content_vector and content_text to avoid race conditions
-        File.objects.filter(pk=file.pk).update(
-            content_vector=base_vector, content_text=""
+    if not parsed_content or (parsed_content.get("status", None) != 200):
+        # If there is no parsed_content or the request to Tika failed,
+        # update only content_vector and content_text to avoid race conditions
+        file = File.objects.filter(pk=file.pk).first()
+        file.update(
+            content_vector=base_vector,
+            content_text="",
+            metainfo={
+                **file.metainfo,
+                "tika_error_status": parsed_content.get("status", None),
+            },
         )
         return
 
