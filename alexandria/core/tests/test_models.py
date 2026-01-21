@@ -127,6 +127,40 @@ def test_clone_document_s3(db, mocker, settings, file_factory):
             {"filename": "d_file.tar.gz", "title": "d_file.tar.gz"},
             "d_file.tar.gz",  # kept double extension
         ),
+        (
+            # unsafe filename, forbidden characters"
+            {"filename": "test.txt", "title": 'test<>:"/\|?*.txt'},
+            "test.txt",
+        ),
+        (
+            # unsafe filename, windows drive letter ":"
+            {"filename": "test.txt", "title": "c:\\test.txt"},
+            "ctest.txt",
+        ),
+        (
+            # unsafe filename, "space before extension"
+            {"filename": "test.csv", "title": " test .csv"},
+            "test.csv",
+        ),
+        # test for reserved keywords on Windows, e.g.:
+        # CON, PRN, AUX, NUL,
+        # COM1 COM2 COM3 COM4 COM5 COM6 COM7 COM8 COM9
+        # LPT1 LPT2 LPT3 LPT4 LPT5 LPT6 LPT7 LPT8 LPT9
+        (
+            # unsafe filename, "reserved keyword"
+            {"filename": "test.txt", "title": "con.txt"},
+            "con_.txt",
+        ),
+        (
+            # unsafe filename, "reserved keyword"
+            {"filename": "test.txt", "title": "LPT9.txt"},
+            "LPT9_.txt",
+        ),
+        # e.g. COM10 is valid and should not be changed
+        (
+            {"filename": "test.txt", "title": "COM10.txt"},
+            "COM10.txt",  # kept as is
+        ),
     ],
 )
 def test_download_renamed(admin_client, file_factory, input_file, output_name):
