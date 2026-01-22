@@ -70,9 +70,6 @@ def get_dav():
     if settings.ALEXANDRIA_FILE_STORAGE == "alexandria.storages.backends.s3.S3Storage":
         root_folder = "/"
 
-    if settings.MANABI_DEBUG:  # pragma: no cover
-        verbose_logging()
-
     config = {
         "lock_storage": ManabiDbLockStorage(ttl, postgres_dsn),
         "provider_mapping": {
@@ -96,5 +93,6 @@ def get_dav():
             "secure": settings.MANABI_SECURE,
         },
         "suppress_version_info": True,
+        "logging": {"enable": settings.MANABI_DEBUG},
     }
     return ManabiDAVApp(config)
