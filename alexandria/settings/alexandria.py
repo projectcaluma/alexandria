@@ -213,6 +213,7 @@ MANABI_SHARED_KEY = env.str(
 )
 MANABI_SECURE = True if ENV == "production" else False
 MANABI_DEBUG = env.bool("MANABI_DEBUG", default=False)
+MANABI_TOKEN_TTL = env.int("MANABI_TOKEN_TTL", default=1200)
 
 
 # Content search

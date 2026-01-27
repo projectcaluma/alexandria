@@ -65,7 +65,7 @@ def get_dav():
         f"password={settings.DATABASES['default']['PASSWORD']} "
         f"sslmode={settings.DATABASES['default']['OPTIONS'].get('sslmode', 'prefer')}"
     )
-    ttl = 600
+    ttl = settings.MANABI_TOKEN_TTL
     root_folder = settings.MEDIA_ROOT
     if settings.ALEXANDRIA_FILE_STORAGE == "alexandria.storages.backends.s3.S3Storage":
         root_folder = "/"
