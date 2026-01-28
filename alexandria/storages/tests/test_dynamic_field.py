@@ -22,9 +22,11 @@ def test_dynamic_storage_select_global_ssec(
 
     mocker.patch("storages.backends.s3.S3Storage.save", return_value="name-of-the-file")
     # Patch away file opens
-    mocker.patch("alexandria.core.tasks.set_checksum.delay", side_effect=None)
-    mocker.patch("alexandria.core.tasks.set_content_vector.delay", side_effect=None)
-    mocker.patch("alexandria.core.tasks.create_thumbnail.delay", side_effect=None)
+    mocker.patch("alexandria.core.tasks.set_checksum.apply_async", side_effect=None)
+    mocker.patch(
+        "alexandria.core.tasks.set_content_vector.apply_async", side_effect=None
+    )
+    mocker.patch("alexandria.core.tasks.create_thumbnail.apply_async", side_effect=None)
     if raises is not None:
         with pytest.raises(raises):
             file_factory(encryption_status=settings.ALEXANDRIA_ENCRYPTION_METHOD)
