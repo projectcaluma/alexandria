@@ -65,7 +65,7 @@ def get_dav():
         f"password={settings.DATABASES['default']['PASSWORD']} "
         f"sslmode={settings.DATABASES['default']['OPTIONS'].get('sslmode', 'prefer')}"
     )
-    ttl = 600
+    refresh = settings.MANABI_TOKEN_REFRESH_TIMEOUT
     root_folder = settings.MEDIA_ROOT
     if settings.ALEXANDRIA_FILE_STORAGE == "alexandria.storages.backends.s3.S3Storage":
         root_folder = "/"
@@ -74,7 +74,7 @@ def get_dav():
         verbose_logging()
 
     config = {
-        "lock_storage": ManabiDbLockStorage(ttl, postgres_dsn),
+        "lock_storage": ManabiDbLockStorage(refresh, postgres_dsn),
         "provider_mapping": {
             settings.ALEXANDRIA_MANABI_DAV_URL_PATH: AlexandriaProvider(
                 root_folder, cb_hook_config=None
@@ -91,8 +91,8 @@ def get_dav():
         ],
         "manabi": {
             "key": settings.MANABI_SHARED_KEY,
-            "refresh": ttl,
-            "initial": ttl,
+            "refresh": refresh,
+            "initial": settings.MANABI_TOKEN_ACTIVATE_TIMEOUT,
             "secure": settings.MANABI_SECURE,
         },
         "suppress_version_info": True,

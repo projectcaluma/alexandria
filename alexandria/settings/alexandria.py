@@ -214,6 +214,14 @@ MANABI_SHARED_KEY = env.str(
 MANABI_SECURE = True if ENV == "production" else False
 MANABI_DEBUG = env.bool("MANABI_DEBUG", default=False)
 
+# Use a relatively long refresh timeout because since Word 2509, the server-sent lock timeout is ignored,
+# and re-locking is done after ~40mins.
+# https://learn.microsoft.com/en-us/answers/questions/5629856/webdav-lock-issues-with-ms-office-v2509-monthly-cu
+MANABI_TOKEN_REFRESH_TIMEOUT = env.int("MANABI_TOKEN_REFRESH_TIMEOUT", default=60 * 60)
+MANABI_TOKEN_ACTIVATE_TIMEOUT = env.int(
+    "MANABI_TOKEN_ACTIVATE_TIMEOUT", default=10 * 60
+)
+
 
 # Content search
 ALEXANDRIA_ENABLE_CONTENT_SEARCH = env.bool(
