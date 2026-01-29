@@ -121,7 +121,9 @@ class DocumentViewSet(PermissionViewMixin, VisibilityViewMixin, ModelViewSet):
         models.Tag.objects.all().filter(documents__pk__isnull=True).delete()
 
         if update_content_vector and document.files.count():
-            set_content_vector.delay_on_commit(document.get_latest_original().pk, True)
+            set_content_vector.apply_async_on_commit(
+                args=[document.get_latest_original().pk, True], queue="tika"
+            )
 
         return response
 
