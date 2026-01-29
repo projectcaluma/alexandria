@@ -192,6 +192,10 @@ For checksums and file content search [celery](https://docs.celeryq.dev) with a 
 - `CELERY_BROKER_URL`: Broker url (default: `redis://{REDIS_USER}:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/0`)
 - `CELERY_TASK_ACKS_LATE`: Tasks only are marked complete after finishing (default: True)
 - `CELERY_TASK_SOFT_TIME_LIMIT`: Prevents task existing forever (default: 60)
+- `ALEXANDRIA_DEFAULT_CELERY_QUEUE`: Default queue to be used for all celery tasks (default: `celery`)
+- `ALEXANDRIA_CHECKSUM_CELERY_QUEUE`: Task queue for checksum tasks (default: `ALEXANDRIA_DEFAULT_CELERY_QUEUE`)
+- `ALEXANDRIA_THUMBNAIL_CELERY_QUEUE`: Task queue for thumbnail generation tasks (default: `ALEXANDRIA_DEFAULT_CELERY_QUEUE`)
+- `ALEXANDRIA_CONTENT_SEARCH_CELERY_QUEUE`: Task queue for content vector generation tasks (default: `ALEXANDRIA_DEFAULT_CELERY_QUEUE`)
 
 #### Development
 
