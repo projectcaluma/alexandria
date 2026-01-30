@@ -1,3 +1,13 @@
+# 8.5.0
+### Feature
+
+* Make token timeouts configurable ([#978](https://github.com/projectcaluma/alexandria/issues/978)) ([`492fedf`](https://github.com/projectcaluma/alexandria/commit/492fedf34f00dcc5e9e2f6f607a7d60937fc1b98))
+* **celery:** Make queues customizable ([`dccb184`](https://github.com/projectcaluma/alexandria/commit/dccb18428d6c92b4a1cac41304d8fdd22f8765de))
+
+### Documentation
+
+* **celery:** Add alexandria queue envvars to readme ([`67d3fff`](https://github.com/projectcaluma/alexandria/commit/67d3fff72058e5c85a2f2602d3bea9e7c6930cf3))
+
 # 8.4.2
 ### Fix
 
