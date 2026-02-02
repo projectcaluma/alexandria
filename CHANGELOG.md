@@ -1,3 +1,8 @@
+# 8.6.0
+### Feature
+
+* **files:** Replace breaking characters in filenames during download ([`45869a5`](https://github.com/nlzet/alexandria/commit/45869a55c1eec1cd96c79fce272099670f572c93))
+
 # 8.5.0
 ### Feature
 
