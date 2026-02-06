@@ -1,5 +1,6 @@
 import json
 import logging
+from datetime import datetime
 
 from django.conf import settings
 from django.db.transaction import atomic
@@ -194,6 +195,12 @@ class FileSerializer(BaseSerializer):
         validated_data["size"] = validated_data["content"].size
 
         return validated_data
+
+    def create(self, validated_data):
+        file = super().create(validated_data)
+        file.document.modified_at = datetime.now()
+        file.document.save(update_fields=["modified_at"])
+        return file
 
     def _prepare_multipart(self):
         """Massage multipart data into jsonapi-compatible form."""

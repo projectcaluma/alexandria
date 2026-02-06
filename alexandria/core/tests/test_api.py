@@ -25,6 +25,25 @@ def test_create_document_file(db, category):
     assert file.name == "Mee.pdf"
 
 
+def test_create_file(db, document):
+    modified_before = document.modified_at
+    api.create_file(
+        document,
+        "Foo2",
+        "Baz2",
+        "Mee2.pdf",
+        SimpleUploadedFile(
+            name="test2.jpg",
+            content=FileData.png,
+            content_type="jpg",
+        ),
+        "image/jpeg",
+        2,
+    )
+    document.refresh_from_db()
+    assert (document.modified_at - modified_before).microseconds > 0
+
+
 @pytest.mark.parametrize(
     "same_category",
     [

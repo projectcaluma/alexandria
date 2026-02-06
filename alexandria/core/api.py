@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 from os.path import splitext
 
 from django.conf import settings
@@ -134,5 +135,8 @@ def create_file(
     )
     validate_file(file)
     file.save()
+
+    file.document.modified_at = datetime.now()
+    file.document.save(update_fields=["modified_at"])
 
     return file

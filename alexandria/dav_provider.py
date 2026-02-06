@@ -1,6 +1,6 @@
 import io
 import time
-from datetime import timedelta
+from datetime import datetime, timedelta
 from pathlib import Path
 
 from django.conf import settings
@@ -133,6 +133,9 @@ class AlexandriaFileResource(ManabiFileResourceMixin, DAVNonCollection):
             file.save()
             self.file = file
             self.memory_file.do_close()
+
+            file.document.modified_at = datetime.now()
+            file.document.save(update_fields=["modified_at"])
         super().end_write(with_errors=with_errors)
 
     def should_create_new_version(self):
