@@ -1,7 +1,6 @@
 import io
 import uuid
 import zipfile
-from pathlib import Path
 
 import pytest
 from django.urls import reverse
@@ -601,7 +600,7 @@ def test_download_file_mime_type(
 
 
 def test_convert_document(
-    admin_client, document_factory, file_factory, settings, mocker
+    admin_client, document_factory, file_factory, settings, mocker, testfile
 ):
     settings.ALEXANDRIA_ENABLE_PDF_CONVERSION = True
     document = document_factory(title="document.docx")
@@ -610,7 +609,7 @@ def test_convert_document(
     response = mocker.Mock()
     response.status_code = HTTP_200_OK
 
-    with Path(__file__).with_name("pdf-test.pdf").open("rb") as test_file:
+    with open(testfile("pdf-test-en.pdf"), "rb") as test_file:
         response.content = test_file.read()
     mocker.patch("requests.post", return_value=response)
     url = reverse("document-convert", args=[document.pk])

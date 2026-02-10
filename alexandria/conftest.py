@@ -48,9 +48,21 @@ def _make_clean_media_dir(settings):
 
 
 @pytest.fixture(autouse=True)
-def mock_tika(mocker):
-    mocker.patch("tika.parser.from_buffer", return_value={"content": "Important text"})
-    mocker.patch("tika.language.from_buffer", return_value="en")
+def mock_tika(mocker, request):
+    if request.node.get_closest_marker("no_mock_tika"):
+        return
+
+    get_content_mock = mocker.patch(
+        "alexandria.core.tika.TikaClient.get_content_from_buffer",
+        return_value="Important text",
+    )
+
+    get_language_mock = mocker.patch(
+        "alexandria.core.tika.TikaClient.get_language_from_content",
+        return_value="en",
+    )
+
+    return (get_content_mock, get_language_mock)
 
 
 @pytest.fixture(autouse=True)
@@ -145,3 +157,11 @@ def document_post_data(category):
             )
         ),
     }
+
+
+@pytest.fixture
+def testfile():
+    def do(filename):
+        return Path(__file__).parent / "core" / "tests" / "data" / filename
+
+    return do

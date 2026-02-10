@@ -37,7 +37,6 @@ psutil = ">=5.9.8,<8.0.0"
 psycopg = "^3.2.1"
 python-magic = "^0.4.27"
 requests = "^2.31.0"
-tika = ">=2.6,<4.0"
 tqdm = "^4.66.5"
 gunicorn = "^23.0.0"
 # only needed in migrate_document_title_and_description.py, can be dropped in the future
@@ -64,6 +63,7 @@ pytest-factoryboy = "2.8.1"
 pytest-freezer = "0.4.9"
 pytest-mock = "3.15.1"
 pytest-randomly = "3.16.0"
+pytest-recording="0.13.4"
 python-semantic-release = "7.34.6"
 requests-mock = "1.12.1"
 ruff = "0.14.2"
@@ -94,6 +94,9 @@ env = [
     "OIDC_OP_INTROSPECT_ENDPOINT=mock://alexandria.github.com/openid/introspect",
     "OIDC_BEARER_TOKEN_REVALIDATION_TIME=60",
     "MOTO_S3_CUSTOM_ENDPOINTS=http://minio:9000",
+]
+markers = [
+    "no_mock_tika: disable the autouse Tika mock"
 ]
 
 [tool.semantic_release]
