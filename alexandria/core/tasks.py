@@ -3,8 +3,6 @@ from mimetypes import guess_extension
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 
-import tika.language
-import tika.parser
 from celery.utils.log import get_task_logger
 from django.conf import settings
 from django.contrib.postgres.search import SearchVector
@@ -13,6 +11,7 @@ from django.db.models.fields.files import ImageFile
 from preview_generator.manager import PreviewManager
 
 from alexandria.core.models import File
+from alexandria.core.tika import TikaClient
 from celery import shared_task
 
 logger = get_task_logger(__name__)
@@ -26,12 +25,7 @@ def set_content_vector(file_pk: str, document_update: bool = False):
         parsed_content = file.content_text
     else:
         file.content.file.file.seek(0)
-        # tika has an internal time limit of 300s, set the request limit to match that
-        # different values should be set in tika as well
-        # https://github.com/CogStack/tika-service/blob/master/README.md#tika-parsers-configuration
-        parsed_content = tika.parser.from_buffer(
-            file.content.file.file, requestOptions={"timeout": 300}
-        )["content"]
+        parsed_content = TikaClient.get_content_from_buffer(file.content.file.file)
 
     file_name = str(Path(file.name).stem)
     file_name_vector = SearchVector(Value(file_name), weight="D")
@@ -53,7 +47,7 @@ def set_content_vector(file_pk: str, document_update: bool = False):
         language = file.language
     else:
         # use part of content for language detection, beacause metadata is not reliable
-        language = tika.language.from_buffer(parsed_content[:1000])
+        language = TikaClient.get_language_from_content(parsed_content[:1000])
 
     config = settings.ALEXANDRIA_ISO_639_TO_PSQL_SEARCH_CONFIG.get(language, "simple")
     text_content = parsed_content.strip()

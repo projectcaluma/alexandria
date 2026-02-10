@@ -1,5 +1,4 @@
 import pytest
-import tika.parser
 from django.urls import reverse
 from rest_framework.status import (
     HTTP_200_OK,
@@ -7,24 +6,23 @@ from rest_framework.status import (
 
 
 @pytest.fixture
-def searchable_data(
-    db, settings, django_assert_num_queries, document_factory, file_factory, mocker
-):
+def searchable_data(db, settings, document_factory, file_factory, mock_tika):
     settings.ALEXANDRIA_ENABLE_CONTENT_SEARCH = True
     doc1 = document_factory(title="Apple")
     doc2 = document_factory(title="Pear", description="Apple")
 
-    mocker.patch("tika.parser.from_buffer", return_value={"content": "Important text"})
+    get_content_mock, _ = mock_tika
+
+    get_content_mock.return_value = "Important text"
     file_factory(document=doc1, name="Paris.png", mime_type="image/png")
 
-    mocker.patch("tika.parser.from_buffer", return_value={"content": "Title text"})
+    get_content_mock.return_value = "Title text"
     file_factory(document=doc1, name="London.png", mime_type="image/png")
 
-    mocker.patch("tika.parser.from_buffer", return_value={"content": "Hidden"})
+    get_content_mock.return_value = "Hidden"
     file_factory(document=doc2, name="Athens.jpeg", mime_type="image/jpeg")
 
-    mocker.patch("tika.parser.from_buffer", return_value={"content": "Important text"})
-    tika.parser.from_buffer.return_value = {"content": "Important text"}
+    get_content_mock.return_value = "Important text"
     file_factory(document=doc2, name="Bern.jpeg", mime_type="image/jpeg")
 
     return doc1, doc2
