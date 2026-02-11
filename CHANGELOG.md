@@ -1,3 +1,8 @@
+# 8.6.1
+### Fix
+
+* **deps:** Remove dependency to tika-python ([`f11fd69`](https://github.com/projectcaluma/alexandria/commit/f11fd6906e069d924144fb4dda55cfea0e5c0319))
+
 # 8.6.0
 ### Feature
 
