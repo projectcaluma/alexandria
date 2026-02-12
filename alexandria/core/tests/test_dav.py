@@ -66,6 +66,7 @@ def test_dav(db, manabi, settings, s3, file_factory, use_s3, same_user):
         file.modified_by_user = user
         file.modified_by_group = group
         file.save()
+        modified_before = file.document.modified_at
         dav_app = TestApp(get_dav())
         resp = dav_app.get(get_webdav_url_without_uri_scheme(file, "foobar", "foobar"))
         assert resp.status_code == status.HTTP_200_OK
@@ -95,6 +96,7 @@ def test_dav(db, manabi, settings, s3, file_factory, use_s3, same_user):
         assert new_file.modified_by_user == "foobar"
         new_file.content.seek(0)
         assert new_file.content.read() == b"foo bar"
+        assert (new_file.document.modified_at - modified_before).microseconds > 0
 
 
 @pytest.mark.freeze_time("1970-01-01")

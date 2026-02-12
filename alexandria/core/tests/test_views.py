@@ -94,6 +94,7 @@ def test_file_upload(
     settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION = True
     category = category_factory(allowed_mime_types=allowed_mime_types)
     doc = document_factory(category=category)
+    modified_before = doc.modified_at
     filename = f"file.{extension}"
     content = io.BytesIO(getattr(FileData, file_type))
     content.name = filename
@@ -113,6 +114,8 @@ def test_file_upload(
     assert (
         File.objects.filter(variant=File.Variant.THUMBNAIL).count() == thumbnail_count
     )
+    # make sure the documents `modified_at` has been updated
+    assert (doc.modified_at - modified_before).microseconds > 0
 
 
 def test_generate_checksum(admin_client, document_factory, settings):
