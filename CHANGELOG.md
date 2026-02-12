@@ -1,3 +1,8 @@
+# 8.7.0
+### Feature
+
+* Update document modified_at when file is added ([#982](https://github.com/projectcaluma/alexandria/issues/982)) ([`a0d9467`](https://github.com/projectcaluma/alexandria/commit/a0d94676fd2bdd015e020bbe0c0524afce40a23b))
+
 # 8.6.1
 ### Fix
 
