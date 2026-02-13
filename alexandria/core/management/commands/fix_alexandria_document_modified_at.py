@@ -1,5 +1,4 @@
 from django.core.management.base import BaseCommand
-from django.db import transaction
 from django.db.models import F, Max, Q
 from tqdm import tqdm
 
@@ -27,10 +26,8 @@ class Command(BaseCommand):
             help="Actually commit the changes to the database (default is dry-run)",
         )
 
-    @transaction.atomic
     def handle(self, *args, **options):
         commit = options["commit"]
-        sid = transaction.savepoint()
 
         self.stdout.write(
             self.style.WARNING(
@@ -61,8 +58,6 @@ class Command(BaseCommand):
 
         if total_documents == 0:
             self.stdout.write(self.style.SUCCESS("No documents need to be updated."))
-            if not commit:
-                transaction.savepoint_rollback(sid)
             return
 
         self.stdout.write(
@@ -73,10 +68,21 @@ class Command(BaseCommand):
         updated_count = 0
 
         with tqdm(total=total_documents, desc="Updating documents") as pbar:
-            while True:
-                batch = list(
-                    documents_queryset.values("id", "latest_file_modified")[:batch_size]
-                )
+            while updated_count < total_documents:
+                if commit:
+                    # commit: documents get updated and don't match query anymore
+                    batch = list(
+                        documents_queryset.values("id", "latest_file_modified")[
+                            :batch_size
+                        ]
+                    )
+                else:
+                    # dry-run: use offset to skip already processed documents
+                    batch = list(
+                        documents_queryset.values("id", "latest_file_modified")[
+                            updated_count : updated_count + batch_size
+                        ]
+                    )
 
                 if not batch:
                     break
@@ -95,9 +101,10 @@ class Command(BaseCommand):
                 for document in documents_list:
                     document.modified_at = modified_at_lookup[document.id]
 
-                # bulk update all documents in this batch
+                # bulk update all documents in this batch (only if commit is True)
                 if documents_list:
-                    Document.objects.bulk_update(documents_list, ["modified_at"])
+                    if commit:
+                        Document.objects.bulk_update(documents_list, ["modified_at"])
                     updated_count += len(documents_list)
                     pbar.update(len(documents_list))
 
@@ -107,12 +114,10 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS("=" * 60))
 
         if commit:
-            transaction.savepoint_commit(sid)
             self.stdout.write(
                 self.style.SUCCESS("\nChanges have been committed to the database.")
             )
         else:
-            transaction.savepoint_rollback(sid)
             self.stdout.write(
                 self.style.WARNING(
                     "\nDRY-RUN: No changes were made. Use --commit to apply changes."
