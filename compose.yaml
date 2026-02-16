@@ -1,6 +1,5 @@
 ---
 x-alexandria-common: &alexandria-common
-  image: ghcr.io/projectcaluma/alexandria:dev
   depends_on:
     - db
     - minio
@@ -27,6 +26,7 @@ services:
 
   alexandria:
     <<: *alexandria-common
+    image: ghcr.io/projectcaluma/alexandria:dev
     ports:
       - "8000:8000"
 
@@ -88,6 +88,7 @@ services:
 
   celery:
     <<: *alexandria-common
+    image: ghcr.io/projectcaluma/alexandria-celery:dev
     volumes:
       - ./celery/entrypoint.sh:/entrypoint.sh
     entrypoint: /entrypoint.sh
