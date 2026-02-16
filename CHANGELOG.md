@@ -1,3 +1,12 @@
+# 8.7.1
+### Chore
+
+* Improve transaction handling in cmd for fixing modified at ([#985](https://github.com/projectcaluma/alexandria/issues/985)) ([`6b9a512`](https://github.com/projectcaluma/alexandria/commit/a070c9711a174535f908685e3f7e8e6a42006950))
+
+### Fix
+
+* Set different image for celery dev ([#986](https://github.com/projectcaluma/alexandria/issues/986)) ([`6b9a512`](https://github.com/projectcaluma/alexandria/commit/6b9a512adf32d98f6af4a31067599ccd29a7322c))
+
 # 8.7.0
 ### Feature
 
