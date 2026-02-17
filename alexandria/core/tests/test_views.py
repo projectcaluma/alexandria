@@ -1,9 +1,11 @@
 import io
 import uuid
 import zipfile
+from datetime import datetime
 
 import pytest
 from django.urls import reverse
+from django.utils import timezone
 from factory.django import django_files
 from rest_framework.status import (
     HTTP_200_OK,
@@ -291,6 +293,12 @@ def test_multi_download(admin_client, file_factory):
     file3 = file_factory(name="a_file", document__title="a_file")
     file4 = file_factory(name="b_file.png", document__title="b_file.png")
 
+    fixed_dt = timezone.make_aware(datetime(2024, 1, 19, 10, 15, 30))
+
+    for f in (file1, file2, file3, file4):
+        f.created_at = fixed_dt
+        f.save(update_fields=["created_at"])
+
     url = reverse("file-multi")
 
     resp = admin_client.get(
@@ -320,7 +328,12 @@ def test_multi_download(admin_client, file_factory):
     assert zip.open("a_file(2)").read() == file3.content.file.read()
     assert filelist[3].filename == "b_file.png"
     file4.content.file.seek(0)
+
     assert zip.open(file4.name).read() == file4.content.file.read()
+    assert zip.getinfo("a_file").date_time == (2024, 1, 19, 10, 15, 30)
+    assert zip.getinfo("a_file(1)").date_time == (2024, 1, 19, 10, 15, 30)
+    assert zip.getinfo("a_file(2)").date_time == (2024, 1, 19, 10, 15, 30)
+    assert zip.getinfo("b_file.png").date_time == (2024, 1, 19, 10, 15, 30)
 
 
 @pytest.mark.parametrize(
