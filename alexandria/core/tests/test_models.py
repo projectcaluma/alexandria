@@ -115,7 +115,7 @@ def test_clone_document_s3(db, mocker, settings, file_factory):
         (
             # appended title after the extension
             {"filename": "b_file.jpg", "title": "b_file.jpg test"},
-            "b_file.jpg test.jpg",  # extension recovered on appended title
+            "b_file.jpg_test.jpg",  # extension recovered on appended title
         ),
         (
             # extension changed
@@ -133,6 +133,16 @@ def test_clone_document_s3(db, mocker, settings, file_factory):
             "test.txt",
         ),
         (
+            # unsafe filename, extension lost"
+            {"filename": "test.txt", "title": "Test:++2 -.pdf*/|:?2<>"},
+            "Test++2_-.pdf2.txt",
+        ),
+        (
+            # unsafe filename, / as a directory separator"
+            {"filename": "test.txt", "title": "test/filename.txt"},
+            "testfilename.txt",
+        ),
+        (
             # unsafe filename, windows drive letter ":"
             {"filename": "test.txt", "title": "c:\\test.txt"},
             "ctest.txt",
@@ -140,7 +150,7 @@ def test_clone_document_s3(db, mocker, settings, file_factory):
         (
             # unsafe filename, "space before extension"
             {"filename": "test.csv", "title": " test .csv"},
-            "test.csv",
+            "test_.csv",
         ),
         # test for reserved keywords on Windows, e.g.:
         # CON, PRN, AUX, NUL,
