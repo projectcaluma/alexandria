@@ -266,6 +266,8 @@ class FileViewSet(
                     filename=name, date_time=_to_zip_date_time(_file.created_at)
                 )
                 info.compress_type = zipfile.ZIP_DEFLATED
+
+                # Set Unix file permissions inside the zip (rw-r--r--). Otherwise some tools show odd defaults.
                 info.external_attr = 0o644 << 16
 
                 zipf.writestr(info, temp_file.read())
