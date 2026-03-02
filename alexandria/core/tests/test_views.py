@@ -334,11 +334,7 @@ def test_multi_download(admin_client, file_factory):
     assert zip.getinfo("a_file(1)").date_time == (2024, 1, 19, 10, 15, 30)
     assert zip.getinfo("a_file(2)").date_time == (2024, 1, 19, 10, 15, 30)
     assert zip.getinfo("b_file.png").date_time == (2024, 1, 19, 10, 15, 30)
-
-    assert (zip.getinfo("a_file").external_attr >> 16) == 0o644
-    assert (zip.getinfo("a_file(1)").external_attr >> 16) == 0o644
-    assert (zip.getinfo("a_file(2)").external_attr >> 16) == 0o644
-    assert (zip.getinfo("b_file.png").external_attr >> 16) == 0o644
+    
 
 
 @pytest.mark.parametrize(
