@@ -337,7 +337,6 @@ def test_multi_download(admin_client, file_factory):
 
 
 def test_to_zip_date_time_edge_cases():
-
     result = _to_zip_date_time(None)
     assert isinstance(result, tuple)
     assert len(result) == 6
