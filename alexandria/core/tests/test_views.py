@@ -21,7 +21,7 @@ from alexandria.core.models import File
 from alexandria.core.tasks import make_checksum
 
 from ..models import Document, Tag
-from ..views import DocumentViewSet, FileViewSet, TagViewSet
+from ..views import DocumentViewSet, FileViewSet, TagViewSet, _to_zip_date_time
 
 
 @pytest.mark.parametrize("allow_anon", [True, False])
@@ -334,6 +334,29 @@ def test_multi_download(admin_client, file_factory):
     assert zip.getinfo("a_file(1)").date_time == (2024, 1, 19, 10, 15, 30)
     assert zip.getinfo("a_file(2)").date_time == (2024, 1, 19, 10, 15, 30)
     assert zip.getinfo("b_file.png").date_time == (2024, 1, 19, 10, 15, 30)
+
+
+def test_to_zip_date_time_edge_cases():
+
+    result = _to_zip_date_time(None)
+    assert isinstance(result, tuple)
+    assert len(result) == 6
+
+    naive_dt = datetime(2024, 1, 19, 10, 15, 30)
+    expected_dt = timezone.localtime(
+        timezone.make_aware(naive_dt, timezone.get_current_timezone())
+    )
+    assert _to_zip_date_time(naive_dt) == (
+        expected_dt.year,
+        expected_dt.month,
+        expected_dt.day,
+        expected_dt.hour,
+        expected_dt.minute,
+        expected_dt.second,
+    )
+
+    pre_1980 = datetime(1970, 1, 1, 0, 0, 0)
+    assert _to_zip_date_time(pre_1980) == (1980, 1, 1, 0, 0, 0)
 
 
 @pytest.mark.parametrize(
