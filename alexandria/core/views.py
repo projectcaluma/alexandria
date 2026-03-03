@@ -268,7 +268,7 @@ class FileViewSet(
                 info.compress_type = zipfile.ZIP_DEFLATED
 
                 # Set Unix file permissions inside the zip (rw-r--r--). Otherwise some tools show odd defaults.
-                info.external_attr = 0o644 << 16 # pragma: no cover 
+                info.external_attr = 0o644 << 16  # pragma: no cover
 
                 zipf.writestr(info, temp_file.read())
 
