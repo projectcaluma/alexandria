@@ -1,3 +1,8 @@
+# 8.8.0
+### Feature
+
+* **files:** Replace more characters in filenames during download ([`32b2c53`](https://github.com/nlzet/alexandria/commit/32b2c5343837e2bc2cca7d64446efd8b2af57249))
+
 # 8.7.1
 ### Chore
 
