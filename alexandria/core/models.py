@@ -14,9 +14,9 @@ from django.utils.translation import gettext_lazy as _
 from django_presigned_url.presign_urls import make_presigned_url
 from localized_fields.fields import LocalizedCharField, LocalizedTextField
 from manabi.token import Key, Token
-from pathvalidate import sanitize_filename
 from rest_framework_json_api.relations import reverse
 
+from alexandria.core.utils import sanitize_filename
 from alexandria.storages.fields import DynamicStorageFileField
 
 
@@ -266,7 +266,6 @@ class File(UUIDModel):
 
         extension = "".join(Path(name).suffixes)
         base_name = name[: -len(extension)] if extension else name
-        base_name = sanitize_filename(base_name)
         ext_original = "".join(Path(self.name).suffixes)
 
         # fallback to original extension if lost due to rename
@@ -274,6 +273,9 @@ class File(UUIDModel):
             extension = ext_original
             # use original filename as base_name and add extension
             base_name = name
+
+        sanitized = sanitize_filename(f"{base_name}{extension}")
+        base_name = sanitized[: -len(extension)] if extension else sanitized
 
         return (
             base_name,
