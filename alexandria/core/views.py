@@ -10,6 +10,7 @@ from django.conf import settings
 from django.core.exceptions import ValidationError as DjangoCoreValidationError
 from django.core.files.base import ContentFile
 from django.http import FileResponse
+from django.utils import timezone
 from django.utils.translation import gettext as _
 from django_presigned_url.presign_urls import verify_presigned_request
 from generic_permissions.permissions import AllowAny, PermissionViewMixin
@@ -54,6 +55,22 @@ from .filters import (
 from .tasks import set_content_vector
 
 log = logging.getLogger(__name__)
+
+
+def _to_zip_date_time(dt):
+    if dt is None:
+        dt = timezone.now()
+
+    if timezone.is_naive(dt):
+        dt = timezone.make_aware(dt, timezone.get_current_timezone())
+
+    dt = timezone.localtime(dt)
+
+    # ZIP/DOS time can't be < 1980
+    if dt.year < 1980:
+        dt = dt.replace(year=1980, month=1, day=1, hour=0, minute=0, second=0)
+
+    return (dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second)
 
 
 class CategoryViewSet(
@@ -245,10 +262,16 @@ class FileViewSet(
                     name = f"{base_name}({next(suffixes)}){extension}"
                 seen_names.add(name)
 
-                zipf.writestr(
-                    name,
-                    temp_file.read(),
+                info = zipfile.ZipInfo(
+                    filename=name, date_time=_to_zip_date_time(_file.created_at)
                 )
+                info.compress_type = zipfile.ZIP_DEFLATED
+
+                # Set Unix file permissions inside the zip (rw-r--r--). Otherwise some tools show odd defaults.
+                info.external_attr = 0o644 << 16  # pragma: no cover
+
+                zipf.writestr(info, temp_file.read())
+
         file_obj.seek(0)
         return file_obj
 
