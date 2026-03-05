@@ -1,3 +1,8 @@
+# 8.8.1
+### Fix
+
+* Preserve file created_at in zip downloads ([#990](https://github.com/projectcaluma/alexandria/issues/990)) ([`582c099`](https://github.com/projectcaluma/alexandria/commit/582c099bd6e5de0a1901086306864bb96dd7e6b0))
+
 # 8.8.0
 ### Feature
 
