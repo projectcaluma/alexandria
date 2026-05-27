@@ -15,6 +15,8 @@ updates:
       - dependency-name: python-semantic-release
         versions:
           - ">=8"
+    cooldown:
+      default-days: 7
   - package-ecosystem: docker
     directory: "/"
     schedule:
@@ -27,6 +29,8 @@ updates:
       - dependency-name: python
         versions:
           - ">=3.13"
+    cooldown:
+      default-days: 7
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
@@ -34,3 +38,5 @@ updates:
       day: friday
       time: "12:00"
       timezone: "Europe/Zurich"
+    cooldown:
+      default-days: 7
