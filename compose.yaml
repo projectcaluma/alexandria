@@ -77,9 +77,11 @@ services:
       - "9998:9998"
 
   clamav:
-    image: tiredofit/clamav:2.6.17
+    image: clamav/clamav@sha256:f7954ca7ca13f0ebc301bb8a8b492a88db793192c48763a0b9a2ffb64dcf4bee
     ports:
       - "3310:3310"
+    volumes:
+      - clamav_data:/var/lib/clamav
 
   redis:
     image: redis:7.4
@@ -95,6 +97,7 @@ services:
 
 volumes:
   dbdata:
+  clamav_data:
   redis_data:
   minio_data:
     driver: local
