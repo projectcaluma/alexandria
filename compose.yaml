@@ -22,7 +22,7 @@ services:
       # https://hub.docker.com/_/postgres
       # - POSTGRES_PASSWORD=
     volumes:
-      - dbdata:/var/lib/postgresql/data
+      - dbdata18:/var/lib/postgresql
 
   alexandria:
     <<: *alexandria-common
@@ -94,7 +94,7 @@ services:
     entrypoint: /entrypoint.sh
 
 volumes:
-  dbdata:
+  dbdata18:
   redis_data:
   minio_data:
     driver: local
