@@ -61,7 +61,7 @@ def deterministic_uuids(mocker):
             )
         )
 
-    mocker.patch("uuid.uuid4", next_uuid)
+    mocker.patch("uuid_extensions.uuid7", next_uuid)
 
 
 @pytest.fixture(
