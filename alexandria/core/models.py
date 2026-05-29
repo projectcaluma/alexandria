@@ -1,5 +1,4 @@
 import re
-import uuid
 from pathlib import Path
 
 from django.conf import settings
@@ -15,6 +14,7 @@ from django_presigned_url.presign_urls import make_presigned_url
 from localized_fields.fields import LocalizedCharField, LocalizedTextField
 from manabi.token import Key, Token
 from rest_framework_json_api.relations import reverse
+from uuid_extensions import uuid7
 
 from alexandria.core.utils import sanitize_filename
 from alexandria.storages.fields import DynamicStorageFileField
@@ -33,7 +33,7 @@ def make_uuid():
 
     We can't replace it with a lambda because Django Migrations can't handle them.
     """
-    return uuid.uuid4()
+    return uuid7()
 
 
 class BaseModel(models.Model):
