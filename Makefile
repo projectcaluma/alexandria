@@ -14,7 +14,7 @@ start: ## Start the development server
 
 .PHONY: test
 test: ## Test the backend
-	@docker compose run --rm alexandria pytest --no-cov-on-fail --cov --create-db -vv
+	@docker compose run --rm alexandria sh -c 'wait-for-it db:5432 -- pytest --no-cov-on-fail --cov --create-db -vv'
 
 .PHONY: lint
 lint: ## Lint the backend

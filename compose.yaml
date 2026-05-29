@@ -15,14 +15,14 @@ x-alexandria-common: &alexandria-common
 
 services:
   db:
-    image: postgres:alpine
+    image: postgres:18.4-alpine3.23
     environment:
       - POSTGRES_USER=alexandria
       # following option is a must to configure on production system:
       # https://hub.docker.com/_/postgres
       # - POSTGRES_PASSWORD=
     volumes:
-      - dbdata:/var/lib/postgresql/data
+      - dbdata18:/var/lib/postgresql
 
   alexandria:
     <<: *alexandria-common
@@ -77,9 +77,11 @@ services:
       - "9998:9998"
 
   clamav:
-    image: tiredofit/clamav:2.6.17
+    image: clamav/clamav@sha256:f7954ca7ca13f0ebc301bb8a8b492a88db793192c48763a0b9a2ffb64dcf4bee
     ports:
       - "3310:3310"
+    volumes:
+      - clamav_data:/var/lib/clamav
 
   redis:
     image: redis:7.4
@@ -94,7 +96,8 @@ services:
     entrypoint: /entrypoint.sh
 
 volumes:
-  dbdata:
+  dbdata18:
+  clamav_data:
   redis_data:
   minio_data:
     driver: local
