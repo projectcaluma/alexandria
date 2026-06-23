@@ -1,11 +1,14 @@
 import logging
+import re
 from mimetypes import guess_type
 
 import magic
 from clamdpy import ClamdNetworkSocket
 from django.conf import settings
+from django.core.files.uploadedfile import UploadedFile
 from django.utils.translation import gettext_lazy
 from generic_permissions.validation import validator_for
+from pypdf import PdfReader
 from rest_framework.exceptions import ValidationError
 
 from alexandria.core.models import Document, File
@@ -58,6 +61,35 @@ def validate_mime_type(mime_type, category):
     return True
 
 
+def validate_pdf_version(content: UploadedFile, min_version: float) -> None:
+    """Validate minimum acceptable PDF version
+
+    Get PDF version from the file header (e.g. "%PDF-1.7") and compare it with
+    the minimum acceptable version that is set in ALEXANDRIA_MIN_PDF_VERSION.
+    Raise ValidationError when the header is invalid or the version is lower than
+    the one allowed.
+    """
+    pdf_version = PdfReader(content).pdf_header
+    match = re.search(r"%PDF-(\d+\.\d+)", pdf_version, re.IGNORECASE)
+
+    if not match:
+        raise ValidationError(
+            gettext_lazy(
+                "Invalid PDF header: %(pdf_version)s" % {"pdf_version": pdf_version}
+            )
+        )
+
+    version_number = float(match.group(1))
+    if version_number < min_version:
+        raise ValidationError(
+            gettext_lazy(
+                "PDF version %(pdf_version)s is not allowed. "
+                "The minimum required PDF version is %(min_version)s"
+                % {"pdf_version": version_number, "min_version": min_version}
+            )
+        )
+
+
 class AlexandriaValidator:
     @validator_for(File)
     def validate_file(self, data, context):
@@ -71,6 +103,12 @@ class AlexandriaValidator:
             raise ValidationError(gettext_lazy("Missing Content-Type header"))
         if not extension_type:
             raise ValidationError(gettext_lazy("Unknown file extension"))
+
+        # validate PDF version if minimum version is defined
+        if extension_type == "application/pdf" and (
+            min_version := settings.ALEXANDRIA_MIN_PDF_VERSION
+        ):
+            validate_pdf_version(data["content"], min_version)
 
         if content_type_header == "application/octet-stream":
             content_type_header = extension_type
