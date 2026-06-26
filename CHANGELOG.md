@@ -1,3 +1,13 @@
+# 8.9.0
+### Feature
+
+* Add validation for minimum acceptable PDF version ([`f820199`](https://github.com/projectcaluma/alexandria/commit/f820199c59b6629ff9c84fa4943da7340c32dde3))
+* **models:** Use UUID7 for primary keys ([`7690496`](https://github.com/projectcaluma/alexandria/commit/7690496d31baca544021f887acf5a8913b86c693))
+
+### Fix
+
+* **tests:** Wait for db to be ready before starting pytest ([`542036d`](https://github.com/projectcaluma/alexandria/commit/542036d515c337f7b76ceb895fde1edb8b4e8d48))
+
 # 8.8.1
 ### Fix
 
