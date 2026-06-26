@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-21 09:05+0000\n"
+"POT-Creation-Date: 2026-06-26 09:54+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -79,6 +79,20 @@ msgstr "Malware-Scan hatte einen Fehler:"
 msgid "File type %(mime_type)s is not allowed in category %(category)s."
 msgstr ""
 "Dateityp %(mime_type)s ist in der Kategorie %(category)s nicht erlaubt."
+
+#: alexandria/core/validations.py
+#, python-format
+msgid "Invalid PDF header: %(pdf_version)s"
+msgstr "Invalider PDF Header: %(pdf_version)s"
+
+#: alexandria/core/validations.py
+#, python-format
+msgid ""
+"PDF version %(pdf_version)s is not allowed. The minimum required PDF version "
+"is %(min_version)s"
+msgstr ""
+"Die PDF Version %(pdf_version)s ist nicht erlaubt. Die erforderliche "
+"Mindestversion ist %(min_version)s"
 
 #: alexandria/core/validations.py
 msgid "Missing Content-Type header"

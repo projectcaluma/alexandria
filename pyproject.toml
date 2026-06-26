@@ -46,6 +46,7 @@ celery = "^5.4.0"
 redis = ">=5.0.8,<7.0.0"
 uuid7 = "^0.1.0"
 pathvalidate = "^3.3.1"
+pypdf = "^6.14.0"
 
 [tool.poetry.group.dev.dependencies]
 django-extensions = "4.1"

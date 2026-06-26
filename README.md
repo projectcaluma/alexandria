@@ -105,6 +105,10 @@ Below is the list of configuration options which are available. Minimal example 
 - `ALEXANDRIA_THUMBNAIL_HEIGHT`: Height of generated thumbnails
 - `ALEXANDRIA_ENABLE_CHECKSUM`: Set to `false` to disable file checksums. Checksums are calculated after upload to allow later verification (not implemented in Alexandria)
 
+#### PDF version (optional)
+
+- `ALEXANDRIA_MIN_PDF_VERSION`: Minimum acceptable PDF version required
+
 #### Storage configuration (optional)
 
 Storage backends are configured globally. The storable object bears information on the encryption status allowing the ORM appropriate handling of the data.

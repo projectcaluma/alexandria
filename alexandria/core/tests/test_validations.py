@@ -1,5 +1,9 @@
+import io
+
 import pytest
 from clamdpy.models import ScanResult
+from django.urls import reverse
+from rest_framework import status
 
 from alexandria.core import validations
 
@@ -55,3 +59,74 @@ def test_validate_file_infection_infected(
     exc = exc_info.value.get_full_details()[0]
     assert exc["code"] == error_code
     assert exc["message"] == error_message
+
+
+@pytest.mark.parametrize(
+    "expected_error, expected_status, pdf_content",
+    [
+        pytest.param(
+            None,
+            status.HTTP_201_CREATED,
+            (
+                b"%PDF-1.7\n"
+                b"1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n"
+                b"2 0 obj\n<< /Type /Pages /Kids [] /Count 0 >>\nendobj\n"
+                b"xref\n0 3\n0000000000 65535 f\n0000000009 00000 n\n0000000056 00000 n\n"
+                b"trailer\n<< /Size 3 /Root 1 0 R >>\n"
+                b"startxref\n111\n%%EOF"
+            ),
+            id="pdf17",
+        ),
+        pytest.param(
+            "PDF version 1.4 is not allowed. The minimum required PDF version is 1.6",
+            status.HTTP_400_BAD_REQUEST,
+            (
+                b"%PDF-1.4\n"
+                b"1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n"
+                b"2 0 obj\n<< /Type /Pages /Kids [] /Count 0 >>\nendobj\n"
+                b"xref\n0 3\n0000000000 65535 f\n0000000009 00000 n\n0000000056 00000 n\n"
+                b"trailer\n<< /Size 3 /Root 1 0 R >>\n"
+                b"startxref\n111\n%%EOF"
+            ),
+            id="pdf14",
+        ),
+        pytest.param(
+            "Invalid PDF header: %invalid",
+            status.HTTP_400_BAD_REQUEST,
+            (
+                b"%invalid-1.4\n"
+                b"1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n"
+                b"2 0 obj\n<< /Type /Pages /Kids [] /Count 0 >>\nendobj\n"
+                b"xref\n0 3\n0000000000 65535 f\n0000000009 00000 n\n0000000056 00000 n\n"
+                b"trailer\n<< /Size 3 /Root 1 0 R >>\n"
+                b"startxref\n111\n%%EOF"
+            ),
+            id="invalid_pdf",
+        ),
+    ],
+)
+def test_validate_pdf_version(
+    db,
+    expected_error,
+    expected_status,
+    pdf_content,
+    admin_client,
+    settings,
+    document_factory,
+):
+    settings.ALEXANDRIA_MIN_PDF_VERSION = 1.6
+    doc = document_factory()
+
+    content = io.BytesIO(pdf_content)
+    content.name = "test.pdf"
+    content.content_type = "application/pdf"
+
+    data = {"name": "test.pdf", "document": str(doc.pk), "content": content}
+    url = reverse("file-list")
+    resp = admin_client.post(url, data=data, format="multipart")
+
+    assert resp.status_code == expected_status
+
+    if expected_error:
+        json = resp.json()
+        assert json["errors"][0]["detail"] == expected_error
