@@ -16,6 +16,8 @@ def test_clone_document(db, file_factory, content_type):
             content=getattr(FileData, content_type),
             content_type=content_type,
         ),
+        name="test.png",
+        mime_type="image/png",
     )
 
     if content_type != "unsupported":
@@ -24,6 +26,8 @@ def test_clone_document(db, file_factory, content_type):
             original=original_file,
             variant=File.Variant.THUMBNAIL,
             document=original_file.document,
+            name="test-thumbnail.png",
+            mime_type="image/png",
         )
 
     original_document_pk = original_file.document.pk

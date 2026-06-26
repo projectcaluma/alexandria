@@ -83,6 +83,11 @@ def mock_celery(mocker):
 
 
 @pytest.fixture
+def no_thumbnails(mocker):
+    mocker.patch("alexandria.core.tasks.create_thumbnail", side_effect=None)
+
+
+@pytest.fixture
 def admin_groups():
     return ["admin"]
 
