@@ -356,15 +356,22 @@ def test_document_category_filters(
     ],
 )
 def test_only_newest_filter(
-    db, admin_client, document_factory, file_factory, filter_val, expect_v1, expect_v2
+    db,
+    admin_client,
+    document_factory,
+    file_factory,
+    filter_val,
+    expect_v1,
+    expect_v2,
+    no_thumbnails,
 ):
     doc = document_factory()
     version_1 = file_factory(document=doc, variant="original")
     time.sleep(0.5)
     version_2 = file_factory(document=doc, variant="original")
 
-    # original and thumbnail (?)
-    assert doc.files.all().count() == 4
+    # only originals
+    assert doc.files.all().count() == 2
 
     filters = {
         "filter[variant]": "original",

@@ -64,6 +64,7 @@ def test_own_and_admin_visibility(
     admin_user,
     client,
     settings,
+    no_thumbnails,
 ):
     settings.GENERIC_PERMISSIONS_VISIBILITY_CLASSES = [
         "alexandria.core.visibilities.OwnAndAdmin"
@@ -89,4 +90,4 @@ def test_own_and_admin_visibility(
     assert len(resp.json()["data"]) == expected_count
 
     resp = client.get(reverse("file-list"))
-    assert len(resp.json()["data"]) == expected_count * 2
+    assert len(resp.json()["data"]) == expected_count
