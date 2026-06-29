@@ -74,9 +74,8 @@ def validate_pdf_version(content: UploadedFile, min_version: float) -> None:
 
     if not match:
         raise ValidationError(
-            gettext_lazy(
-                "Invalid PDF header: %(pdf_version)s" % {"pdf_version": pdf_version}
-            )
+            gettext_lazy("Invalid PDF header: %(pdf_version)s")
+            % {"pdf_version": pdf_version}
         )
 
     version_number = float(match.group(1))
@@ -85,8 +84,8 @@ def validate_pdf_version(content: UploadedFile, min_version: float) -> None:
             gettext_lazy(
                 "PDF version %(pdf_version)s is not allowed. "
                 "The minimum required PDF version is %(min_version)s"
-                % {"pdf_version": version_number, "min_version": min_version}
             )
+            % {"pdf_version": version_number, "min_version": min_version}
         )
 
 
