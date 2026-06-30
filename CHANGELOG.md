@@ -1,3 +1,8 @@
+# 8.9.1
+### Fix
+
+* Fix string formatting for correct translation ([`181ba6a`](https://github.com/projectcaluma/alexandria/commit/181ba6a9a373ce69ba74206887584bc71e7fd515))
+
 # 8.9.0
 ### Feature
 
