@@ -299,28 +299,18 @@ def set_file_attributes(sender, instance, **kwargs):
     from alexandria.core import tasks
 
     if settings.ALEXANDRIA_ENABLE_CHECKSUM and not instance.checksum:
-        checksum_celery_queue = settings.ALEXANDRIA_CHECKSUM_CELERY_QUEUE
-        tasks.set_checksum.apply_async_on_commit(
-            args=[instance.pk], queue=checksum_celery_queue
-        )
+        tasks.set_checksum.apply_async_on_commit(args=[instance.pk])
 
     if (
         settings.ALEXANDRIA_ENABLE_CONTENT_SEARCH
         and instance.variant == File.Variant.ORIGINAL
         and not instance.content_vector
     ):
-        tika_celery_queue = settings.ALEXANDRIA_CONTENT_SEARCH_CELERY_QUEUE
-        tasks.set_content_vector.apply_async_on_commit(
-            args=[instance.pk], queue=tika_celery_queue
-        )
+        tasks.set_content_vector.apply_async_on_commit(args=[instance.pk])
 
     if (
         instance.variant == File.Variant.ORIGINAL
         and instance.renderings.count() < 1
         and settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION
     ):
-        thumbnail_celery_queue = settings.ALEXANDRIA_THUMBNAIL_CELERY_QUEUE
-
-        tasks.create_thumbnail.apply_async_on_commit(
-            args=[instance.pk], queue=thumbnail_celery_queue
-        )
+        tasks.create_thumbnail.apply_async_on_commit(args=[instance.pk])
