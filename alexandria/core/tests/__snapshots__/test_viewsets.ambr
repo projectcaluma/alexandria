@@ -576,6 +576,8 @@
         }),
         'type': 'categories',
       }),
+      'included': list([
+      ]),
     }),
     'status': 200,
   })
@@ -972,6 +974,8 @@
         }),
         'type': 'tags',
       }),
+      'included': list([
+      ]),
     }),
     'status': 200,
   })
@@ -1117,6 +1121,8 @@
           }),
           'type': 'categories',
         }),
+      ]),
+      'included': list([
       ]),
     }),
     'status': 200,
@@ -2045,6 +2051,8 @@
           }),
           'type': 'tags',
         }),
+      ]),
+      'included': list([
       ]),
     }),
     'status': 200,
