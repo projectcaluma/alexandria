@@ -70,15 +70,15 @@ def mock_celery(mocker):
     mocker.patch("django.db.transaction.on_commit", side_effect=lambda f: f())
     mocker.patch(
         "alexandria.core.tasks.set_checksum.apply_async",
-        side_effect=lambda args, queue: tasks.set_checksum(*args),
+        side_effect=lambda args, **kwargs: tasks.set_checksum(*args),
     )
     mocker.patch(
         "alexandria.core.tasks.set_content_vector.apply_async",
-        side_effect=lambda args, queue: tasks.set_content_vector(*args),
+        side_effect=lambda args, **kwargs: tasks.set_content_vector(*args),
     )
     mocker.patch(
         "alexandria.core.tasks.create_thumbnail.apply_async",
-        side_effect=lambda args, queue: tasks.create_thumbnail(*args),
+        side_effect=lambda args, **kwargs: tasks.create_thumbnail(*args),
     )
 
 

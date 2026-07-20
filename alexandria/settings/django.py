@@ -184,3 +184,4 @@ CELERY_TASK_ACKS_LATE = env.bool(
     default=True,
 )
 CELERY_TASK_SOFT_TIME_LIMIT = env.int("CELERY_TASK_SOFT_TIME_LIMIT", default=60)
+CELERY_TASK_ROUTES = env.json("CELERY_TASK_ROUTES", default={})
