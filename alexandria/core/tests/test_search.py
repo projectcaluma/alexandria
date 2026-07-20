@@ -34,13 +34,13 @@ def searchable_data(db, settings, document_factory, file_factory, mock_tika):
         (
             {"filter[query]": "important"},
             {"Bern.jpeg", "Paris.png"},
-            2,
+            1,
         ),
-        ({"filter[query]": "London"}, {"London.png"}, 2),
+        ({"filter[query]": "London"}, {"London.png"}, 1),
         (
             {"filter[query]": "Apple"},
             {"Paris.png", "London.png", "Athens.jpeg", "Bern.jpeg"},
-            2,
+            1,
         ),
     ],
 )
@@ -74,7 +74,7 @@ def test_file_search(
 def test_search_empty(db, django_assert_num_queries, admin_client, searchable_data):
     doc1, doc2 = searchable_data
 
-    with django_assert_num_queries(1):
+    with django_assert_num_queries(0):
         response = admin_client.get(reverse("search-list"))
 
     assert response.status_code == HTTP_200_OK

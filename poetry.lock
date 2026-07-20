@@ -808,14 +808,14 @@ drf = ["djangorestframework"]
 
 [[package]]
 name = "django-generic-api-permissions"
-version = "3.0.0"
+version = "3.0.1"
 description = "Generic API permissions and visibilities for Django"
 optional = false
 python-versions = "<4,>=3.12"
 groups = ["main"]
 files = [
-    {file = "django_generic_api_permissions-3.0.0-py3-none-any.whl", hash = "sha256:25724dfc31573a51ef389b3e33499ec4604e91f2966762d770b641de894e5d82"},
-    {file = "django_generic_api_permissions-3.0.0.tar.gz", hash = "sha256:433893870a2a7dc3544302338420144aae26d2ed7d347f6b6339d4a916697da4"},
+    {file = "django_generic_api_permissions-3.0.1-py3-none-any.whl", hash = "sha256:f27382daaa7489cf5c6b140cd465bf5baa67f00b21e61f7af372956b2d5eaf73"},
+    {file = "django_generic_api_permissions-3.0.1.tar.gz", hash = "sha256:9cfea423f023343b086e9f60750baf6a116d09e5ff5c6c7d8974f78368590240"},
 ]
 
 [package.dependencies]
