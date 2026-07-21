@@ -1,3 +1,29 @@
+# 9.0.0
+### Breaking
+
+- The `ALEXANDRIA_DEFAULT_CELERY_QUEUE`, `ALEXANDRIA_CHECKSUM_CELERY_QUEUE`,
+  `ALEXANDRIA_THUMBNAIL_CELERY_QUEUE` and
+  `ALEXANDRIA_CONTENT_SEARCH_CELERY_QUEUE` settings are removed, and Alexandria
+  no longer passes `queue` when dispatching tasks. Any deployment that relied on
+  these settings to route Alexandria's tasks must migrate routing into the
+  consuming application.
+  
+  **Migration guide:**
+  
+  Drop Alexandria's queue env vars and route the tasks from your own
+  Django settings via `CELERY_TASK_ROUTES` instead:
+  
+  ```diff
+  -ALEXANDRIA_CONTENT_SEARCH_CELERY_QUEUE=tika
+  -ALEXANDRIA_THUMBNAIL_CELERY_QUEUE=thumbnails
+  -ALEXANDRIA_CHECKSUM_CELERY_QUEUE=checksum
+  +CELERY_TASK_ROUTES = {
+  +    "alexandria.core.tasks.set_content_vector": {"queue": "tika"},
+  +    "alexandria.core.tasks.create_thumbnail": {"queue": "thumbnails"},
+  +    "alexandria.core.tasks.set_checksum": {"queue": "checksum"},
+  +}
+  ```
+
 # 8.9.1
 ### Fix
 
