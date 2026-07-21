@@ -83,6 +83,21 @@ def test_generate_content_vector(
     assert file_without_vector.language == "de"
 
 
+def test_generate_content_vector_enqueue(db, settings, file_factory, mocker):
+    settings.ALEXANDRIA_ENABLE_CONTENT_SEARCH = False
+    settings.ALEXANDRIA_ENABLE_THUMBNAIL_GENERATION = False
+    files = [file_factory(name="first.pdf"), file_factory(name="second.pdf")]
+    settings.ALEXANDRIA_ENABLE_CONTENT_SEARCH = True
+    enqueue = mocker.patch(
+        "alexandria.core.management.commands.generate_content_vectors.set_content_vector.apply_async"
+    )
+
+    call_command("generate_content_vectors", enqueue=True)
+
+    enqueued_file_ids = [call.kwargs["args"][0] for call in enqueue.call_args_list]
+    assert sorted(enqueued_file_ids) == sorted(file.pk for file in files)
+
+
 def test_generate_missing_checksums(
     db,
     settings,
