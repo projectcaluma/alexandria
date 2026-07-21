@@ -54,7 +54,7 @@ django-test-migrations = "1.5.0"
 factory-boy = "3.3.3"
 gitlint = "0.19.1"
 moto = { extras = ["s3"], version = "5.2.2" }
-pdbpp = "0.11.7"
+pdbpp = "0.12.1"
 pillow = "12.3.0"
 pre-commit = "4.6.0"
 pytest = "8.4.2"
