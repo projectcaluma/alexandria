@@ -11,6 +11,13 @@ from alexandria.core.tasks import set_content_vector
 class Command(BaseCommand):
     help = "Fills content_vector for files that don't have their content vectorized for full text search."
 
+    def add_arguments(self, parser):
+        parser.add_argument(
+            "--enqueue",
+            action="store_true",
+            help="Enqueue content vector generation as Celery tasks instead of processing files synchronously.",
+        )
+
     def handle(self, *args, **options):
         if not settings.ALEXANDRIA_ENABLE_CONTENT_SEARCH:
             return self.stdout.write(
@@ -34,7 +41,11 @@ class Command(BaseCommand):
                 f"Processing {truncatechars(file.name, 50):<50} ({filesizeformat(file.size):>10})"
             )
             try:
-                set_content_vector(file.pk)
+                if options["enqueue"]:
+                    set_content_vector.apply_async(args=[file.pk])
+                else:
+                    set_content_vector(file.pk)
+
             except Exception as e:  # noqa: B902
                 failed_files.append(str(file.id))
                 self.stdout.write(
