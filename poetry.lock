@@ -394,14 +394,14 @@ files = [
 
 [[package]]
 name = "clamdpy"
-version = "0.1.0.post1"
+version = "0.2.0"
 description = "A Python wrapper around clamd, the ClamAV daemon"
 optional = false
-python-versions = ">=3.8"
+python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "clamdpy-0.1.0.post1-py3-none-any.whl", hash = "sha256:5c83dde4f8574e5340fb3f0cabf312c08782baec8481e15db57673c5616ab404"},
-    {file = "clamdpy-0.1.0.post1.tar.gz", hash = "sha256:17ba3cdd4853d1f7b41e07aec45d95a94bf29543d92b18fc17dc737c1e26588a"},
+    {file = "clamdpy-0.2.0-py3-none-any.whl", hash = "sha256:51631e0455309f74090876cce989153729f7a5319ad89164f65ec5276759d584"},
+    {file = "clamdpy-0.2.0.tar.gz", hash = "sha256:6e157f49fc64dc239fe1f662db31009aca92b33486b3124b7863e808edf5cd1f"},
 ]
 
 [[package]]
@@ -3486,4 +3486,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<4.0"
-content-hash = "0db1ce32332bbe0fd4c70d4cac793757f4c8d43f4dcc79342c8b0a444a0bb10b"
+content-hash = "2e6a80f7e58488610edb1e801f50b8da91abde98447d571333894b9a878c9a30"

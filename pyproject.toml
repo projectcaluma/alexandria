@@ -19,7 +19,7 @@ packages = [{ include = "alexandria" }]
 [tool.poetry.dependencies]
 python = ">=3.12,<4.0"
 boto3 = "^1.34.157"
-clamdpy = "^0.1.0.post1"
+clamdpy = ">=0.1,<0.3"
 django = ">=4.2,<5.3"
 django-environ = ">=0.9.0,<0.15.0"
 django-filter = ">=22.1,<26.0"
