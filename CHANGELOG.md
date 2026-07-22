@@ -1,3 +1,8 @@
+# 9.1.0
+### Feature
+
+* **celery:** Add enqueue option for content vector generation command ([`0bc096b`](https://github.com/nlzet/alexandria/commit/0bc096b8f238763cf29a4a0750627e72a439ef0c))
+
 # 9.0.0
 ### Breaking
 
