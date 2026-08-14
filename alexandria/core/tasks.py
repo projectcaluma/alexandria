@@ -86,7 +86,7 @@ def create_thumbnail(file_pk: str):
         manager = PreviewManager(str(temp_file.parent))
         with temp_file.open("wb") as f:
             f.write(file.content.file.file.read())
-        extension = guess_extension(file.mime_type)
+        extension = guess_extension(file.mime_type, strict=False)
         preview_kwargs = {"file_ext": extension}
         if settings.ALEXANDRIA_THUMBNAIL_WIDTH:  # pragma: no cover
             preview_kwargs["width"] = settings.ALEXANDRIA_THUMBNAIL_WIDTH

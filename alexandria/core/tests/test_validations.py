@@ -8,14 +8,23 @@ from rest_framework import status
 from alexandria.core import validations
 
 
-def test_validate_mime_type(db, category_factory):
-    category = category_factory(allowed_mime_types=["image/png"])
-    mime_type = "image/png"
-    assert validations.validate_mime_type(mime_type, category) is True
+@pytest.mark.parametrize(
+    ("mime_type", "file_extension", "expect_error"),
+    [
+        ("image/jpeg", "jpeg", False),
+        ("image/jpeg", "jpg", True),
+        ("image/png", "png", True),
+    ],
+)
+@pytest.mark.django_db
+def test_validate_mime_type(category_factory, mime_type, file_extension, expect_error):
+    category = category_factory(allowed_mime_types={"image/jpeg": ["jpeg"]})
 
-    mime_type = "image/jpeg"
-    with pytest.raises(validations.ValidationError):
-        validations.validate_mime_type(mime_type, category)
+    if expect_error:
+        with pytest.raises(validations.ValidationError):
+            validations.validate_mime_type(mime_type, file_extension, category)
+    else:
+        assert validations.validate_mime_type(mime_type, file_extension, category)
 
 
 def test_validate_file_infection(db, mocker, settings, file):

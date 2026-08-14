@@ -3,7 +3,6 @@ from pathlib import Path
 
 import uuid_extensions
 from django.conf import settings
-from django.contrib.postgres.fields import ArrayField
 from django.contrib.postgres.indexes import GinIndex
 from django.contrib.postgres.search import SearchVectorField
 from django.core.exceptions import ImproperlyConfigured, ObjectDoesNotExist
@@ -95,12 +94,7 @@ class Category(SlugModel):
     description = LocalizedTextField(
         _("Description"), null=True, blank=True, required=False
     )
-    allowed_mime_types = ArrayField(
-        base_field=models.CharField(max_length=255),
-        blank=True,
-        null=True,
-        verbose_name=_("Allowed mime types"),
-    )
+    allowed_mime_types = models.JSONField(_("Allowed mime types"), default=dict)
     color = models.CharField(
         max_length=18,
         default="#FFFFFF",

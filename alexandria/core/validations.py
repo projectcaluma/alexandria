@@ -11,7 +11,8 @@ from generic_permissions.validation import validator_for
 from pypdf import PdfReader
 from rest_framework.exceptions import ValidationError
 
-from alexandria.core.models import Document, File
+from alexandria.core.models import Category, Document, File
+from alexandria.core.utils import get_file_extension
 
 log = logging.getLogger(__name__)
 
@@ -40,21 +41,44 @@ def validate_file_infection(file_content):
         )
 
 
-def validate_file(file):
+def validate_file(file: File):
     validate_file_infection(file.content)
-    validate_mime_type(file.mime_type, file.document.category)
+    validate_mime_type(
+        file.mime_type,
+        get_file_extension(file.name),
+        file.document.category,
+    )
 
 
-def validate_mime_type(mime_type, category):
-    if (
-        category.allowed_mime_types is not None
-        and len(category.allowed_mime_types)
-        and mime_type not in category.allowed_mime_types
-    ):
+def validate_mime_type(mime_type: str, file_extension: str, category: Category) -> bool:
+    """Validate the mime type and file extension against the category.
+
+    The `allowed_mime_types` of a category map an allowed mime type to the
+    file extensions allowed for it. An empty mapping allows any mime type,
+    an empty value allows any file extension for that mime type.
+
+    Return `True` if the file is allowed, raise a `ValidationError` otherwise.
+    """
+    if not category.allowed_mime_types:
+        return True
+
+    if mime_type not in category.allowed_mime_types:
         raise ValidationError(
             gettext_lazy(
                 "File type %(mime_type)s is not allowed in category %(category)s."
                 % {"mime_type": mime_type, "category": category.pk}
+            )
+        )
+
+    allowed_file_extensions = category.allowed_mime_types[mime_type]
+
+    if allowed_file_extensions and file_extension not in [
+        extension.lower() for extension in allowed_file_extensions
+    ]:
+        raise ValidationError(
+            gettext_lazy(
+                "File extension %(file_extension)s is not allowed in category %(category)s."
+                % {"file_extension": file_extension, "category": category.pk}
             )
         )
 
@@ -96,7 +120,7 @@ class AlexandriaValidator:
 
         # Validate that the mime type is allowed in the category
         content_type_header = data["content"].content_type
-        extension_type, _ = guess_type(data["name"])
+        extension_type, _ = guess_type(data["name"], strict=False)
 
         if not content_type_header:  # pragma: no cover
             raise ValidationError(gettext_lazy("Missing Content-Type header"))
@@ -142,7 +166,11 @@ class AlexandriaValidator:
                 )
             )
 
-        validate_mime_type(content_type_header, data["document"].category)
+        validate_mime_type(
+            content_type_header,
+            get_file_extension(data["name"]),
+            data["document"].category,
+        )
         data["mime_type"] = content_type_header
 
         return data
@@ -156,5 +184,10 @@ class AlexandriaValidator:
                 # Validate if a document is moved to another category that the
                 # mime type of the file is still compatible with the category's
                 # mime types.
-                validate_mime_type(document.get_latest_original().mime_type, category)
+                latest_file = document.get_latest_original()
+                validate_mime_type(
+                    latest_file.mime_type,
+                    get_file_extension(latest_file.name),
+                    category,
+                )
         return data
