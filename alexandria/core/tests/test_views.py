@@ -62,23 +62,32 @@ def test_anonymous_writing(
     "file_type,extension,content_type,allowed_mime_types,thumbnail_count,status",
     [
         # happy case
-        ("png", "png", "image/png", None, 1, HTTP_201_CREATED),
+        ("png", "png", "image/png", {}, 1, HTTP_201_CREATED),
         # inconsistent extension
-        ("png", "jpeg", "image/png", None, 1, HTTP_400_BAD_REQUEST),
+        ("png", "jpeg", "image/png", {}, 1, HTTP_400_BAD_REQUEST),
         # missing extension
-        ("png", "", "image/png", None, 1, HTTP_400_BAD_REQUEST),
+        ("png", "", "image/png", {}, 1, HTTP_400_BAD_REQUEST),
         # inconsistent content
-        ("unsupported", "png", "image/png", None, 0, HTTP_400_BAD_REQUEST),
+        ("unsupported", "png", "image/png", {}, 0, HTTP_400_BAD_REQUEST),
         # mime type not allowed by category
-        ("png", "png", "image/png", ["application/pdf"], 1, HTTP_400_BAD_REQUEST),
+        ("png", "png", "image/png", {"application/pdf": None}, 1, HTTP_400_BAD_REQUEST),
+        # file extension not allowed by category
+        (
+            "jpeg",
+            "jpg",  # mime type is image/jpeg but file extension .jpg - only .jpeg is allowed
+            "image/jpeg",
+            {"image/jpeg": ["jpeg"]},
+            1,
+            HTTP_400_BAD_REQUEST,
+        ),
         # zip with standard content type
-        ("zip", "zip", "application/zip", None, 0, HTTP_201_CREATED),
+        ("zip", "zip", "application/zip", {}, 0, HTTP_201_CREATED),
         # zip with Windows content type
-        ("zip", "zip", "application/x-zip-compressed", None, 0, HTTP_201_CREATED),
+        ("zip", "zip", "application/x-zip-compressed", {}, 0, HTTP_201_CREATED),
         # zip with alternative content type
-        ("zip", "zip", "application/x-zip", None, 0, HTTP_201_CREATED),
+        ("zip", "zip", "application/x-zip", {}, 0, HTTP_201_CREATED),
         # zip with compressed variant
-        ("zip", "zip", "application/zip-compressed", None, 0, HTTP_201_CREATED),
+        ("zip", "zip", "application/zip-compressed", {}, 0, HTTP_201_CREATED),
     ],
 )
 def test_file_upload(
@@ -496,8 +505,10 @@ def test_document_delete_some_tags(admin_client, tag_factory, document_factory):
 def test_move_document_to_new_category(
     admin_client, category_factory, file_factory, document_factory
 ):
-    category_not_allowed = category_factory.create(allowed_mime_types=["plain/text"])
-    category_allowed = category_factory.create(allowed_mime_types=["image/jpeg"])
+    category_not_allowed = category_factory.create(
+        allowed_mime_types={"plain/text": None}
+    )
+    category_allowed = category_factory.create(allowed_mime_types={"image/jpeg": None})
     document = document_factory()
     file_factory.create(document=document, name="Image.jpeg", mime_type="image/jpeg")
 
@@ -543,7 +554,9 @@ def test_copy_document(
     to_category,
     expected_status,
 ):
-    category_not_allowed = category_factory.create(allowed_mime_types=["plain/text"])
+    category_not_allowed = category_factory.create(
+        allowed_mime_types={"plain/text": None}
+    )
     category = category_factory()
     document = document_factory(category=category)
     file_factory.create(document=document, name="Image.jpeg", mime_type="image/jpeg")

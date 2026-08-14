@@ -5,7 +5,7 @@
     ]),
     'query_count': 0,
     'request': dict({
-      'CONTENT_LENGTH': '643',
+      'CONTENT_LENGTH': '641',
       'CONTENT_TYPE': 'application/vnd.api+json',
       'PATH_INFO': '/api/v1/categories',
       'QUERY_STRING': '',
@@ -15,7 +15,8 @@
     'request_payload': dict({
       'data': dict({
         'attributes': dict({
-          'allowed-mime-types': None,
+          'allowed-mime-types': dict({
+          }),
           'color': '#f470c8',
           'created-at': '2017-05-21T00:00:00Z',
           'created-by-group': 'admin',
@@ -508,7 +509,8 @@
     'response': dict({
       'data': dict({
         'attributes': dict({
-          'allowed-mime-types': None,
+          'allowed-mime-types': dict({
+          }),
           'color': '#6f31bf',
           'created-at': '2017-05-21T00:00:00Z',
           'created-by-group': 'admin',
@@ -631,7 +633,8 @@
       'included': list([
         dict({
           'attributes': dict({
-            'allowed-mime-types': None,
+            'allowed-mime-types': dict({
+            }),
             'color': '#00bf75',
             'created-at': '2017-05-21T00:00:00Z',
             'created-by-group': 'admin',
@@ -953,7 +956,8 @@
       'data': list([
         dict({
           'attributes': dict({
-            'allowed-mime-types': None,
+            'allowed-mime-types': dict({
+            }),
             'color': '#c40f79',
             'created-at': '2017-05-21T00:00:00Z',
             'created-by-group': 'admin',
@@ -992,7 +996,8 @@
         }),
         dict({
           'attributes': dict({
-            'allowed-mime-types': None,
+            'allowed-mime-types': dict({
+            }),
             'color': '#4d74c1',
             'created-at': '2017-05-21T00:00:00Z',
             'created-by-group': 'admin',
@@ -1034,7 +1039,8 @@
         }),
         dict({
           'attributes': dict({
-            'allowed-mime-types': None,
+            'allowed-mime-types': dict({
+            }),
             'color': '#ddbb30',
             'created-at': '2017-05-21T00:00:00Z',
             'created-by-group': 'admin',
@@ -1260,7 +1266,8 @@
       'included': list([
         dict({
           'attributes': dict({
-            'allowed-mime-types': None,
+            'allowed-mime-types': dict({
+            }),
             'color': '#c91e70',
             'created-at': '2017-05-21T00:00:00Z',
             'created-by-group': 'admin',
@@ -1302,7 +1309,8 @@
         }),
         dict({
           'attributes': dict({
-            'allowed-mime-types': None,
+            'allowed-mime-types': dict({
+            }),
             'color': '#46c9a8',
             'created-at': '2017-05-21T00:00:00Z',
             'created-by-group': 'admin',
@@ -1341,7 +1349,8 @@
         }),
         dict({
           'attributes': dict({
-            'allowed-mime-types': None,
+            'allowed-mime-types': dict({
+            }),
             'color': '#db699c',
             'created-at': '2017-05-21T00:00:00Z',
             'created-by-group': 'admin',
@@ -1945,7 +1954,7 @@
     ]),
     'query_count': 0,
     'request': dict({
-      'CONTENT_LENGTH': '562',
+      'CONTENT_LENGTH': '560',
       'CONTENT_TYPE': 'application/vnd.api+json',
       'PATH_INFO': '/api/v1/categories/high-office-public',
       'QUERY_STRING': '',
@@ -1955,7 +1964,8 @@
     'request_payload': dict({
       'data': dict({
         'attributes': dict({
-          'allowed-mime-types': None,
+          'allowed-mime-types': dict({
+          }),
           'color': '#d8d643',
           'created-at': '2017-05-21T00:00:00Z',
           'created-by-group': 'admin',

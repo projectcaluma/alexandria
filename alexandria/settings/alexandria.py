@@ -173,6 +173,18 @@ ALEXANDRIA_ENABLE_CHECKSUM = env.bool("ALEXANDRIA_ENABLE_CHECKSUM", default=True
 # Minimum accepted PDF version
 ALEXANDRIA_MIN_PDF_VERSION = env.float("ALEXANDRIA_MIN_PDF_VERSION", default=None)
 
+# Additional mime types that are not known by the `mimetypes` module. They map a
+# mime type to its file extensions, e.g.
+# `text/plain=ili,itf;application/vnd.ms-outlook=msg`, and are registered as
+# non-standard types on app startup.
+ALEXANDRIA_CUSTOM_MIME_TYPES = env.dict(
+    "ALEXANDRIA_CUSTOM_MIME_TYPES",
+    cast={"value": [str]},
+    default={
+        "application/vnd.ms-outlook": ["msg"],
+    },
+)
+
 # Clamav service
 ALEXANDRIA_CLAMD_TCP_SOCKET = env.str("ALEXANDRIA_CLAMD_TCP_SOCKET", default=3310)
 ALEXANDRIA_CLAMD_TCP_ADDR = env.str("ALEXANDRIA_CLAMD_TCP_ADDR", default="localhost")

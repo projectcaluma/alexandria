@@ -60,6 +60,32 @@ Various additional features can be configured:
 
 - File content search: Search through the text content of uploaded data, such as PDF, DOCX or images. Alexandria extracts content with [Apache Tika](https://tika.apache.org/) and makes it searchable through [full text search](https://docs.djangoproject.com/en/dev/ref/contrib/postgres/search/). Currently only English, German, French, Italian are configured.
 
+### Allowed mime types
+
+Each category defines which files may be uploaded into it with its
+`allowed_mime_types` field. It maps an allowed mime type to the list of file
+extensions that are allowed for it:
+
+```json
+{
+  "application/pdf": null,
+  "text/plain": ["ili", "txt"]
+}
+```
+
+- A `null` or empty list allows any file extension for that mime type, e.g.
+  `application/pdf` above accepts both `document.pdf` and `document.PDF`.
+- An empty object (`{}`, the default) allows all mime types and therefore all
+  files.
+- Extensions are written without a leading dot and are compared case
+  insensitively.
+
+Both the mime type and the file extension are validated when a file is uploaded
+and when a document is moved to another category. The mime type of an upload
+must additionally be detectable by Python's `mimetypes` module - see [Custom
+mime types](#custom-mime-types-optional) for types it does not know out of the
+box.
+
 ### Configuration
 
 Alexandria is a [12factor app](https://12factor.net/) which means that configuration is stored in environment variables.
@@ -108,6 +134,17 @@ Below is the list of configuration options which are available. Minimal example 
 #### PDF version (optional)
 
 - `ALEXANDRIA_MIN_PDF_VERSION`: Minimum acceptable PDF version required
+
+#### Custom mime types (optional)
+
+- `ALEXANDRIA_CUSTOM_MIME_TYPES`: Mime types that are not known by Python's
+  [`mimetypes`](https://docs.python.org/3/library/mimetypes.html) module, mapping
+  a mime type to its file extensions (default: `application/vnd.ms-outlook=msg`)
+  - Format: `text/plain=ili,itf;application/vnd.ms-outlook=msg`
+  - Uploads of a file whose extension is unknown are rejected so any mime type
+    used in a category's `allowed_mime_types` must be detectable
+  - They are registered as non-standard types, therefore own code must use
+    non-strict lookups to detect them, e.g. `mimetypes.guess_type(name, strict=False)`
 
 #### Storage configuration (optional)
 

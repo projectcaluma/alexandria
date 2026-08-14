@@ -24,7 +24,7 @@ class Command(BaseCommand):
                 file.size = os.path.getsize(temp_file)
                 tmp.close()
 
-            mime_type, _ = mimetypes.guess_type(file.content.file.name)
+            mime_type, _ = mimetypes.guess_type(file.content.file.name, strict=False)
             if mime_type:
                 file.mime_type = mime_type
 

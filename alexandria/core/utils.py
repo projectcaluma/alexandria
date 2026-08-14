@@ -1,3 +1,5 @@
+from os.path import splitext
+
 from django.conf import settings
 from django.utils.module_loading import import_string
 from pathvalidate import sanitize_filename as pathvalidate_sanitize_filename
@@ -26,3 +28,14 @@ def sanitize_filename(filename):
     # sanitize the result filename again to make sure the
     # modified version is still safe.
     return pathvalidate_sanitize_filename(filename)
+
+
+def get_file_extension(filename: str) -> str:
+    """Return the lowercased extension of the given filename without the leading dot.
+
+    Returns an empty string if the filename has no extension.
+
+    >>> get_file_extension("Image.JPEG")
+    "jpeg"
+    """
+    return splitext(filename)[1][1:].lower()
