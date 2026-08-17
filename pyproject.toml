@@ -50,7 +50,7 @@ pypdf = "^6.14.0"
 
 [tool.poetry.group.dev.dependencies]
 django-extensions = "4.1"
-django-test-migrations = "1.5.0"
+django-test-migrations = "1.6.0"
 factory-boy = "3.3.3"
 gitlint = "0.19.1"
 moto = { extras = ["s3"], version = "5.2.2" }
