@@ -96,7 +96,7 @@ class AlexandriaValidator:
 
         # Validate that the mime type is allowed in the category
         content_type_header = data["content"].content_type
-        extension_type, _ = guess_type(data["name"])
+        extension_type, _ = guess_type(data["name"], False)
 
         if not content_type_header:  # pragma: no cover
             raise ValidationError(gettext_lazy("Missing Content-Type header"))

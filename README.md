@@ -109,6 +109,12 @@ Below is the list of configuration options which are available. Minimal example 
 
 - `ALEXANDRIA_MIN_PDF_VERSION`: Minimum acceptable PDF version required
 
+#### Custom mime types (optional)
+
+- `ALEXANDRIA_CUSTOM_MIME_TYPES`: Mime types that are not known by Python's [`mimetypes`](https://docs.python.org/3/library/mimetypes.html) module, mapping a mime type to its file extensions (default: `application/vnd.ms-outlook=.msg`)
+  - Format: `text/plain=.ili,.itf;application/vnd.ms-outlook=.msg`
+  - Uploads of a file whose extension is unknown are rejected so any mime type used in a category's `allowed_mime_types` must be detectable
+
 #### Storage configuration (optional)
 
 Storage backends are configured globally. The storable object bears information on the encryption status allowing the ORM appropriate handling of the data.
