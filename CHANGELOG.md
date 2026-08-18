@@ -1,3 +1,12 @@
+# 10.0.0
+### Feature
+
+* **category:** Validate file extensions per allowed mime type ([`af91e6b`](https://github.com/projectcaluma/alexandria/commit/af91e6b42ada88aa995fac73bbcbe054832f9c77))
+
+### Breaking
+
+* `Category.allowed_mime_types` changed from an array of mime types (`["image/jpeg"]`) to an object of mime type to file extensions (`{"image/jpeg": ["jpeg"]}`). Existing rows are migrated automatically, mapping every previously allowed mime type to `null` so no extension is restricted. API clients writing this field must be adapted, as must any code calling `alexandria.core.validations.validate_mime_type()`, which now takes the file extension as its second argument. ([`af91e6b`](https://github.com/projectcaluma/alexandria/commit/af91e6b42ada88aa995fac73bbcbe054832f9c77))
+
 # 9.1.0
 ### Feature
 
