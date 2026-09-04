@@ -1914,20 +1914,6 @@ pygments = "*"
 testing = ["coverage (<7.11.1)", "ipython", "pexpect", "pytest", "pytest-cov"]
 
 [[package]]
-name = "pghstore"
-version = "2.0.2"
-description = "PostgreSQL hstore formatter"
-optional = false
-python-versions = "*"
-groups = ["main"]
-files = [
-    {file = "pghstore-2.0.2.tar.gz", hash = "sha256:c6d152d454b6fea8ec13a46ff754b2c6ca76aebe752068d4f8d8f6a948dd5436"},
-]
-
-[package.dependencies]
-six = "*"
-
-[[package]]
 name = "pillow"
 version = "12.3.0"
 description = "Python Imaging Library (fork)"
@@ -3694,4 +3680,4 @@ type = ["pytest-mypy (>=1.0.1) ; platform_python_implementation != \"PyPy\""]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<4.0"
-content-hash = "280d4ef35648c4908a86e6299030ea0aaae57116ea8a28aa6c20a95d9ffee6fc"
+content-hash = "91702814a63a7d62dd0c6b1766d661c03ef51824a19280401b389290247c2752"
