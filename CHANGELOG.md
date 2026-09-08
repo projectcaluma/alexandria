@@ -1,4 +1,11 @@
+# 10.0.1
+
+### Fix
+
+* Drop pghstore dependency ([`a396e68`](https://github.com/projectcaluma/alexandria/commit/a396e685d2181426491434075f00e33e4a140d2a))
+
 # 10.0.0
+
 ### Feature
 
 * **category:** Validate file extensions per allowed mime type ([`af91e6b`](https://github.com/projectcaluma/alexandria/commit/af91e6b42ada88aa995fac73bbcbe054832f9c77))
@@ -21,12 +28,12 @@
   no longer passes `queue` when dispatching tasks. Any deployment that relied on
   these settings to route Alexandria's tasks must migrate routing into the
   consuming application.
-  
+
   **Migration guide:**
-  
+
   Drop Alexandria's queue env vars and route the tasks from your own
   Django settings via `CELERY_TASK_ROUTES` instead:
-  
+
   ```diff
   -ALEXANDRIA_CONTENT_SEARCH_CELERY_QUEUE=tika
   -ALEXANDRIA_THUMBNAIL_CELERY_QUEUE=thumbnails
