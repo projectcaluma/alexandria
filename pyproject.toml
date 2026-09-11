@@ -50,7 +50,7 @@ django-extensions = "4.1"
 django-test-migrations = "1.6.0"
 factory-boy = "3.3.3"
 gitlint = "0.19.1"
-moto = { extras = ["s3"], version = "5.2.2" }
+moto = { extras = ["s3"], version = "5.2.3" }
 pdbpp = "0.12.1"
 pillow = "12.3.0"
 pre-commit = "4.6.2"
