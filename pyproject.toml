@@ -92,7 +92,7 @@ env = [
     "OIDC_OP_USER_ENDPOINT=mock://alexandria.github.com/openid/userinfo",
     "OIDC_OP_INTROSPECT_ENDPOINT=mock://alexandria.github.com/openid/introspect",
     "OIDC_BEARER_TOKEN_REVALIDATION_TIME=60",
-    "MOTO_S3_CUSTOM_ENDPOINTS=http://minio:9000",
+    "MOTO_S3_CUSTOM_ENDPOINTS=http://garage:3900",
 ]
 markers = ["no_mock_tika: disable the autouse Tika mock"]
 

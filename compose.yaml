@@ -2,7 +2,7 @@
 x-alexandria-common: &alexandria-common
   depends_on:
     - db
-    - minio
+    - garage
     - tika
     - clamav
     - dms
@@ -46,30 +46,19 @@ services:
       - SECRET_KEY=aaa
       - DOCXTEMPLATE_JINJA_EXTENSIONS=
 
-  minio:
-    image: minio/minio:RELEASE.2023-11-06T22-26-08Z
+  garage:
+    image: dxflrs/garage:v2.4.1@sha256:9c96caa2612d3411acc5b0e6701fb238dbfba33e533a6d7d3d811a4b12d0d020
     volumes:
-      - minio_data:/data
+      - ./garage.toml:/etc/garage.toml:ro
+      - garage_meta:/var/lib/garage/meta
+      - garage_data:/var/lib/garage/data
     ports:
-      - "443:443"
-      - "9000:9000"
-      - "9090:9090"
+      - "3900:3900"
     environment:
-      - MINIO_ROOT_USER=very
-      - MINIO_ROOT_PASSWORD=secret
-    command: server data --console-address ":9090"
-
-  mc:
-    image: minio/mc:RELEASE.2023-11-06T04-19-23Z
-    restart: no
-    environment:
-      - MINIO_ROOT_USER=very
-      - MINIO_ROOT_PASSWORD=secret
-    # You might need to override the entrypoint in docker-compose.override.yml to reflect your setup
-    entrypoint: >
-      /bin/sh -c " mc config host add dc-minio http://minio:9000 $${MINIO_ROOT_USER} $${MINIO_ROOT_PASSWORD} --api S3v4; mc mb dc-minio/alexandria-media;"
-    depends_on:
-      - minio
+      - GARAGE_DEFAULT_ACCESS_KEY=very
+      - GARAGE_DEFAULT_SECRET_KEY=verysecretsecret
+      - GARAGE_DEFAULT_BUCKET=alexandria-media
+    command: /garage server --single-node --default-bucket
 
   tika:
     image: apache/tika:2.9.2.0-full
@@ -99,5 +88,5 @@ volumes:
   dbdata18:
   clamav_data:
   redis_data:
-  minio_data:
-    driver: local
+  garage_meta:
+  garage_data:
