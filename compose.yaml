@@ -15,7 +15,7 @@ x-alexandria-common: &alexandria-common
 
 services:
   db:
-    image: postgres:18.4-alpine3.23
+    image: postgres:18.4-alpine3.23@sha256:996d0920e4ff9df1fc19dacb904492f3c1ec0ec1cc338f0ad7123be7731c5f5e
     environment:
       - POSTGRES_USER=alexandria
       # following option is a must to configure on production system:
@@ -69,7 +69,7 @@ services:
     command: /garage server --single-node --default-bucket
 
   tika:
-    image: apache/tika:2.9.2.0-full
+    image: apache/tika:2.9.2.0-full@sha256:05ecf380b926fd558a3604a401c7c823667419afbdc94153adfb1244d97790fb
     ports:
       - "9998:9998"
 
@@ -81,7 +81,7 @@ services:
       - clamav_data:/var/lib/clamav
 
   redis:
-    image: redis:7.4
+    image: redis:7.4@sha256:4fa24486b8bcca8eec45ee0eb166edc674795e53a2b53d1a9ef263eecebaac85
     volumes:
       - redis_data:/redis/data
 
