@@ -172,8 +172,8 @@ Supported backends:
   - `ALEXANDRIA_S3_ENDPOINT_URL`: the url of the service
   - `ALEXANDRIA_S3_BUCKET_NAME`: the bucket name of the storage to access objects in path notation (not subdomain)
 
-  The development setup features a minio service, implementing the S3 protocol.
-  To use SSE-C in development make sure to generate a certificate for the minio container and set `ALEXANDRIA_S3_VERIFY` to `false`.
+  The development setup features a [Garage](https://garagehq.deuxfleurs.fr/) service, implementing the S3 protocol.
+  Its configuration lives in `garage.toml`. Garage supports SSE-C without TLS, so no certificate is needed in development.
 
 #### ClamAV (optional)
 

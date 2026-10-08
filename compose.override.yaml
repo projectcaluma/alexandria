@@ -35,16 +35,16 @@ services:
       - PYTHONUNBUFFERED=1
       - CELERY_RDB_HOST=0.0.0.0. # to be able to telnet from outside the container
       - ALEXANDRIA_USE_MANABI=true
+      - ALEXANDRIA_S3_ENDPOINT_URL=http://garage:3900
+      - ALEXANDRIA_S3_ACCESS_KEY=s3storageadmin
+      - ALEXANDRIA_S3_SECRET_KEY=s3storageSecretKey
+      - ALEXANDRIA_S3_REGION_NAME=garage
 
-  minio:
+  garage:
     environment:
-      - MINIO_ROOT_USER=minio
-      - MINIO_ROOT_PASSWORD=minio123
-
-  mc:
-    environment:
-      - MINIO_ROOT_USER=minio
-      - MINIO_ROOT_PASSWORD=minio123
+      - GARAGE_DEFAULT_ACCESS_KEY=s3storageadmin
+      - GARAGE_DEFAULT_SECRET_KEY=s3storageSecretKey
+      - GARAGE_DEFAULT_BUCKET=alexandria-media
 
   clamav:
     environment:

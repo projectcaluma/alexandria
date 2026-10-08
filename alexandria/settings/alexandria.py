@@ -114,7 +114,7 @@ PRESIGNED_URL_LIFETIME = ALEXANDRIA_DOWNLOAD_URL_LIFETIME
 # django-storages: https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html
 # boto3: https://boto3.amazonaws.com/v1/documentation/api/latest/index.html#boto3-documentation
 #
-# S3 compatible services like Amazon S3, Minio or Exoscale
+# S3 compatible services like Amazon S3, Garage, Minio or Exoscale
 #
 # In order to make use an S3 storage backend set `ALEXANDRIA_FILE_STORAGE` to one of
 #  - storages.backends.s3.S3Storage
