@@ -31,9 +31,10 @@ services:
       - "8000:8000"
 
   dms:
-    image: ghcr.io/adfinis/document-merge-service:6.4.4
+    image: ghcr.io/adfinis/document-merge-service:10.0.1@sha256:0f128d74a6ab2501a8ff43dacbb321a2b895d28560a5338b0a9f2c5ca7fcc8b3
     depends_on:
       - db
+      - gotenberg
     environment:
       - DATABASE_ENGINE=django.db.backends.postgresql
       - DATABASE_HOST=db
@@ -45,6 +46,13 @@ services:
       - OIDC_BEARER_TOKEN_REVALIDATION_TIME=300
       - SECRET_KEY=aaa
       - DOCXTEMPLATE_JINJA_EXTENSIONS=
+
+  gotenberg:
+    image: gotenberg/gotenberg:8.37.0-libreoffice@sha256:c85f019d6ae4927714507254331cc0ed72da7b619ee798e3a45de01f54372c12
+    environment:
+      - CHROMIUM_DISABLE_ROUTES=true
+      - PDFENGINES_DISABLE_ROUTES=true
+      - WEBHOOK_DISABLE=true
 
   garage:
     image: dxflrs/garage:v2.4.1@sha256:9c96caa2612d3411acc5b0e6701fb238dbfba33e533a6d7d3d811a4b12d0d020

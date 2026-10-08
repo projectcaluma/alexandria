@@ -186,6 +186,8 @@ Supported backends:
 - `ALEXANDRIA_ENABLE_PDF_CONVERSION`: Set this to `True` to enable the pdf conversion endpoint.
 - `ALEXANDRIA_DMS_URL`: URL where the document merge service is running
 
+Since v10, the document merge service delegates the PDF conversion to a [Gotenberg](https://gotenberg.dev/) sidecar (see `compose.yaml`).
+
 #### WebDAV (optional)
 
 - `ALEXANDRIA_USE_MANABI`: Set to `true` to enable WebDAV via Manabi
