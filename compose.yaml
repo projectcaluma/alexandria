@@ -31,7 +31,7 @@ services:
       - "8000:8000"
 
   dms:
-    image: ghcr.io/adfinis/document-merge-service:6.4.4
+    image: ghcr.io/adfinis/document-merge-service:10.0.1
     depends_on:
       - db
     environment:
