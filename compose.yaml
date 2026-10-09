@@ -81,7 +81,7 @@ services:
       - clamav_data:/var/lib/clamav
 
   redis:
-    image: redis:7.4.11@sha256:4fa24486b8bcca8eec45ee0eb166edc674795e53a2b53d1a9ef263eecebaac85
+    image: redis:8.10.1@sha256:8a1efc5f479551822b47424ccae982026b633f28818eab0387348120a61e10e2
     volumes:
       - redis_data:/redis/data
 
