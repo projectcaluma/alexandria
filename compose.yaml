@@ -9,8 +9,6 @@ x-alexandria-common: &alexandria-common
   environment:
     - DATABASE_HOST=db
     - DATABASE_PORT=5432
-    - TIKA_CLIENT_ONLY=true
-    - TIKA_SERVER_ENDPOINT=http://tika:9998
     - ALEXANDRIA_CLAMD_TCP_ADDR=clamav
 
 services:

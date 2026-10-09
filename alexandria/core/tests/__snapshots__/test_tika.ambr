@@ -3,21 +3,17 @@
   dict({
     'content': '''
       Überschrift!
-      
       Dieses Dokument wird nur zu Testzwecken benutzt.
-      
-      Als Open Source (aus englisch open source, wörtlich offene Quelle) 
-      wird Software bezeichnet, deren Quelltext öffentlich ist und von Dritten eingesehen, 
-      geändert und genutzt werden kann. Open-Source-Software kann unter Einhaltung der 
-      Lizenzbedingungen kostenfrei genutzt und verteilt werden.
-      
-      Software kann sowohl von Einzelpersonen aus altruistischen Motiven zu Open-Source-
-      Software gemacht werden als auch von Organisationen oder Unternehmen, 
-      um Entwicklungskosten zu teilen oder Marktanteile zu gewinnen. 
-      Befähigte Endbenutzer können die Software nach eigenen Bedürfnissen anpassen und 
-      eventuell als Abspaltung veröffentlichen, als auch mit „Pull Requests“ Verbesserungen 
+      Als Open Source (aus englisch open source, wörtlich offene Quelle) 
+      wird Software bezeichnet, deren Quelltext öffentlich ist und von Dritten eingesehen, 
+      geändert und genutzt werden kann. Open-Source-Software kann unter Einhaltung der 
+      Lizenzbedingungen kostenfrei genutzt und verteilt werden.
+      Software kann sowohl von Einzelpersonen aus altruistischen Motiven zu Open-Source-
+      Software gemacht werden als auch von Organisationen oder Unternehmen, 
+      um Entwicklungskosten zu teilen oder Marktanteile zu gewinnen. 
+      Befähigte Endbenutzer können die Software nach eigenen Bedürfnissen anpassen und 
+      eventuell als Abspaltung veröffentlichen, als auch mit „Pull Requests“ Verbesserungen 
       beitragen.
-      
       https://de.wikipedia.org/wiki/Englische_Sprache
       https://de.wikipedia.org/wiki/Pull_Request
       https://de.wikipedia.org/wiki/Abspaltung_(Softwareentwicklung)
@@ -35,9 +31,6 @@
 # name: test_tika[pdf-test-en.pdf]
   dict({
     'content': '''
-      Sample Scanned Image
-      
-      
       Sticky Note from Paperless
       This is a sample page scanned at 200dpi and converted to PDF. It is not searchable. That is, all you see is the original image of the source document.
       
@@ -62,7 +55,7 @@
       Permit me to introduce you to the facility of facsimile
       transmission.
       
-      In facsimile a photocell is caused to perform a raster scan over
+      In facsimile a photocell is caused to perform 4 raster scan over
       the subject copy. The variations of print density on the document
       
       cause the photocell to generate an analogous electrical video signal.
@@ -71,7 +64,7 @@
       remote destination over a radio or cable communications link.
       
       At the remote terminal, demodulation reconstructs the video
-      signal, which is used to modulate the density of print produced by a
+      Signal, which is used to modulate the density of print produced by a
       printing device. This device is scanning in a raster scan synchronised
       with that at the transmitting terminal. As a result, a facsimile
       copy of the subject document is produced.
@@ -80,12 +73,12 @@
       
       Yours sincerely,
       
-      THA.
+      ThA.
       P.J. CROSS
       Group Leader - Facsimile Research
       
       Registered in England: No. 2038
-      Registered Office: 60 Vicara Lane, Ilford. Eseex.
+      Registered Office: 60 Vicara Lane, Ilford. Essex.
       
       
       

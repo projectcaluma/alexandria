@@ -4,7 +4,6 @@ from alexandria.core.tika import TikaClient
 
 
 @pytest.mark.no_mock_tika
-@pytest.mark.vcr
 @pytest.mark.parametrize("filename", ["pdf-test-en.pdf", "pdf-test-de.pdf"])
 def test_tika(snapshot, testfile, filename):
     with open(testfile(filename), "rb") as f:
