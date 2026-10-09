@@ -74,7 +74,7 @@ services:
       - "9998:9998"
 
   clamav:
-    image: clamav/clamav@sha256:f7954ca7ca13f0ebc301bb8a8b492a88db793192c48763a0b9a2ffb64dcf4bee
+    image: clamav/clamav@sha256:ebec5bc138401b36ae987caa1a3fa3c3b2a21ed3d51f0bfa5852825e663e67b0
     ports:
       - "3310:3310"
     volumes:
