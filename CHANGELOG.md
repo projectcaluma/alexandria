@@ -1,3 +1,13 @@
+# 11.0.0
+
+### Feature
+
+* **tika:** Support Apache Tika v4 ([`0ea73ea`](https://github.com/projectcaluma/alexandria/commit/0ea73eade8ac5c4060aa4cffbabecfd28a3b163d))
+
+### Breaking
+
+* Apache Tika v4 is now required, older versions are no longer supported. ([`0ea73ea`](https://github.com/projectcaluma/alexandria/commit/0ea73eade8ac5c4060aa4cffbabecfd28a3b163d))
+
 # 10.0.1
 
 ### Fix
