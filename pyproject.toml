@@ -69,7 +69,7 @@ ruff = "0.15.22"
 syrupy = "5.5.3"
 watchdog = "6.0.0"
 webtest = "3.0.7"
-werkzeug = "3.1.8"
+werkzeug = "3.1.9"
 
 [tool.ruff.lint]
 extend-select = ["I"]
