@@ -74,14 +74,14 @@ services:
       - "9998:9998"
 
   clamav:
-    image: clamav/clamav@sha256:f7954ca7ca13f0ebc301bb8a8b492a88db793192c48763a0b9a2ffb64dcf4bee
+    image: clamav/clamav:1.5.4@sha256:ebec5bc138401b36ae987caa1a3fa3c3b2a21ed3d51f0bfa5852825e663e67b0
     ports:
       - "3310:3310"
     volumes:
       - clamav_data:/var/lib/clamav
 
   redis:
-    image: redis:7.4@sha256:4fa24486b8bcca8eec45ee0eb166edc674795e53a2b53d1a9ef263eecebaac85
+    image: redis:7.4.11@sha256:4fa24486b8bcca8eec45ee0eb166edc674795e53a2b53d1a9ef263eecebaac85
     volumes:
       - redis_data:/redis/data
 
