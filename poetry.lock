@@ -1021,18 +1021,15 @@ sftp = ["paramiko (>=1.15)"]
 
 [[package]]
 name = "django-test-migrations"
-version = "1.6.0"
+version = "1.7.0"
 description = "Test django schema and data migrations, including ordering"
 optional = false
-python-versions = "<4.0,>=3.10"
+python-versions = "<4.0,>=3.11"
 groups = ["dev"]
 files = [
-    {file = "django_test_migrations-1.6.0-py3-none-any.whl", hash = "sha256:ecff93a5aa8bbcba9862a057c658c4ca35d92848253ca5cb47bad372c81d528f"},
-    {file = "django_test_migrations-1.6.0.tar.gz", hash = "sha256:a36e13d3f6cb139707896a8e5acefa0fbb24df0ee19e4f986e37faa8ef858819"},
+    {file = "django_test_migrations-1.7.0-py3-none-any.whl", hash = "sha256:409d5437f7a2a9a47c4c9384902c8fa6d072c142f73b1d75a6df310831f9edea"},
+    {file = "django_test_migrations-1.7.0.tar.gz", hash = "sha256:9b199fa3817b28846455d8a13434eed44d15cd1bd89a5144902f8e5212bc1199"},
 ]
-
-[package.dependencies]
-typing-extensions = ">=4.16"
 
 [[package]]
 name = "djangorestframework"
@@ -3655,4 +3652,4 @@ type = ["pytest-mypy (>=1.0.1) ; platform_python_implementation != \"PyPy\""]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<4.0"
-content-hash = "26e0a9c55b7cec77e42ffbda13d4156c18ee75c7b8e64a7b7f5f171e86ff6a4b"
+content-hash = "5007dd19874219d1e87b9e17958e1f8a83c1c54cc9b52196cc87112f0c937144"
