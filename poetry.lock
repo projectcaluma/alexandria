@@ -2562,14 +2562,14 @@ pytest = ">=3.6"
 
 [[package]]
 name = "pytest-mock"
-version = "3.15.1"
+version = "3.16.0"
 description = "Thin-wrapper around the mock package for easier use with pytest"
 optional = false
-python-versions = ">=3.9"
+python-versions = ">=3.10"
 groups = ["dev"]
 files = [
-    {file = "pytest_mock-3.15.1-py3-none-any.whl", hash = "sha256:0a25e2eb88fe5168d535041d09a4529a188176ae608a6d249ee65abc0949630d"},
-    {file = "pytest_mock-3.15.1.tar.gz", hash = "sha256:1849a238f6f396da19762269de72cb1814ab44416fa73a8686deac10b0d87a0f"},
+    {file = "pytest_mock-3.16.0-py3-none-any.whl", hash = "sha256:007cfeb257801d88d9c0b2a7b5a15a15e73b71968dfd72e7bf8c4a2f8393aec8"},
+    {file = "pytest_mock-3.16.0.tar.gz", hash = "sha256:5a8395528b8f498205f3718f575228d0edaed7425fff638f87d1a6c3e0383636"},
 ]
 
 [package.dependencies]
@@ -3655,4 +3655,4 @@ type = ["pytest-mypy (>=1.0.1) ; platform_python_implementation != \"PyPy\""]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<4.0"
-content-hash = "e3ce01568cce33f2b16a7bbe458be06310986f581654f7ff0eff84ebc9439301"
+content-hash = "68f0b02c28e4db92a605773f5a98a496819918349f91444442f5d1a0783e88b4"
