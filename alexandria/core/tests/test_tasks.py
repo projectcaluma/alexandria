@@ -1,7 +1,7 @@
 from alexandria.core import tasks
 
 
-def test_set_content_vector(db, settings, file_factory):
+def test_set_content_vector(db, mocker, settings, file_factory):
     settings.ALEXANDRIA_ENABLE_CONTENT_SEARCH = False
     file = file_factory()
     settings.ALEXANDRIA_ENABLE_CONTENT_SEARCH = True
@@ -11,6 +11,13 @@ def test_set_content_vector(db, settings, file_factory):
     file.refresh_from_db()
 
     assert file.content_vector is not None
+    assert file.text_content is not None
+
+    mocker.patch("tika.parser.from_buffer", return_value={"status": 400})
+    tasks.set_content_vector(file.pk)
+    assert file.content_vector is not None
+    assert file.text_content == ""
+    assert file.metainfo["tika_error_status"] == 400
 
 
 def test_set_checksum(db, settings, file_factory):
