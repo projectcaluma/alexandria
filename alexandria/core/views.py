@@ -296,7 +296,7 @@ class FileViewSet(
         with NamedTemporaryFile() as file_obj:
             file_obj = self._write_zip(file_obj, queryset)
             response = FileResponse(
-                open(file_obj.name, "rb"),
+                open(file_obj.name, "rb"),  # noqa: SIM115
                 content_type="application/zip",
                 filename="files.zip",
             )

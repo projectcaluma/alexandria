@@ -1,7 +1,6 @@
 import json
 import time
 from itertools import combinations
-from typing import Optional
 
 import pytest
 from django.urls import reverse
@@ -132,12 +131,12 @@ def test_tag_filter(
     resp = admin_client.get(url, {"filter[tags]": filter})
     assert resp.status_code == HTTP_200_OK
     result = resp.json()
-    received_ids = set([obj["id"] for obj in result["data"]])
-    expected_ids = set([str(documents[doc].pk) for doc in expect_documents])
+    received_ids = {obj["id"] for obj in result["data"]}
+    expected_ids = {str(documents[doc].pk) for doc in expect_documents}
     assert received_ids == expected_ids
 
 
-def test_tag_synonym_filter(  # noqa: C901
+def test_tag_synonym_filter(
     db, document_factory, tag_factory, admin_client, tag_synonym_group_factory
 ):
     url = reverse("document-list")
@@ -153,11 +152,8 @@ def test_tag_synonym_filter(  # noqa: C901
 
     def create_tagged_docs(
         synonyms: list, grouped: bool = True
-    ) -> Optional[TagSynonymGroup]:
-        try:
-            assert len(synonyms) > 0
-        except (TypeError, AssertionError) as e:  # pragma: todo cover
-            raise e
+    ) -> TagSynonymGroup | None:
+        assert len(synonyms) > 0
 
         if grouped:
             tag_group = tag_synonym_group_factory(
@@ -174,12 +170,12 @@ def test_tag_synonym_filter(  # noqa: C901
             for color in synonyms:
                 document_factory(tags=[tag_factory(name=color)])
 
-    for key, value in groups.items():
+    for key in groups:
         groups[key] = create_tagged_docs(tagged_group[key])
 
     create_tagged_docs(ungrouped, False)
 
-    key = list(groups.keys())[0]
+    key = next(iter(groups))
     tag_sets_base = [
         doc.tags.all().values_list("id", flat=True)
         for doc in Document.objects.filter(tags__tag_synonym_group=groups[key])
@@ -193,17 +189,17 @@ def test_tag_synonym_filter(  # noqa: C901
         resp = admin_client.get(url, {"filter[tags]": tags})
         assert resp.status_code == HTTP_200_OK
         result = resp.json()
-        assert set(
-            [str(doc.id) for doc in tag_group_synonyms1_tagged_documents]
-        ) == set([obj["id"] for obj in result["data"]])
+        assert {str(doc.id) for doc in tag_group_synonyms1_tagged_documents} == {
+            obj["id"] for obj in result["data"]
+        }
 
     for tag in ungrouped:
         resp = admin_client.get(url, {"filter[tags]": [Tag.objects.get(name=tag).id]})
         assert resp.status_code == HTTP_200_OK
         result = resp.json()
-        assert set(
-            [str(doc.id) for doc in Tag.objects.get(name=tag).documents.all()]
-        ) == set([obj["id"] for obj in result["data"]])
+        assert {str(doc.id) for doc in Tag.objects.get(name=tag).documents.all()} == {
+            obj["id"] for obj in result["data"]
+        }
 
 
 @pytest.mark.parametrize(
@@ -247,7 +243,6 @@ def test_active_group_filter(
         lambda name: name.lower(),
         lambda name: name.upper(),
         lambda name: name.lower()[:-3],
-        lambda name: name.lower()[:-3],
         lambda name: name.upper()[:-3],
     ],
 )
@@ -261,7 +256,7 @@ def test_tag_search(db, tag_factory, mangle, admin_client):
     assert resp.status_code == HTTP_200_OK
     result = resp.json()
 
-    received_ids = set([obj["id"] for obj in result["data"]])
+    received_ids = {obj["id"] for obj in result["data"]}
     assert str(tags[0].pk) in received_ids
 
 
@@ -280,7 +275,7 @@ def test_has_parent(db, admin_client, category_factory, has_parent, expected_cou
     assert response.status_code == HTTP_200_OK
     result = response.json()
 
-    received_ids = set([obj["id"] for obj in result["data"]])
+    received_ids = {obj["id"] for obj in result["data"]}
     assert len(received_ids) == expected_count
 
 

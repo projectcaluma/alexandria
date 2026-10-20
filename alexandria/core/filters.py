@@ -241,7 +241,7 @@ class SearchFilterSet(FileFilterSet):
                 search_type=settings.ALEXANDRIA_CONTENT_SEARCH_TYPE,
             )
         ]
-        for lang, config in settings.ALEXANDRIA_ISO_639_TO_PSQL_SEARCH_CONFIG.items():
+        for config in settings.ALEXANDRIA_ISO_639_TO_PSQL_SEARCH_CONFIG.values():
             query_fragment = SearchQuery(
                 value,
                 config=config,

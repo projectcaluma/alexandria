@@ -72,8 +72,6 @@ def test_file_search(
 
 
 def test_search_empty(db, django_assert_num_queries, admin_client, searchable_data):
-    doc1, doc2 = searchable_data
-
     with django_assert_num_queries(0):
         response = admin_client.get(reverse("search-list"))
 

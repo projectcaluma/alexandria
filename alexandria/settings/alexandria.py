@@ -226,7 +226,7 @@ ALEXANDRIA_MANABI_VERSION_CREATION_THRESHOLD_SECONDS = env.int(
 MANABI_SHARED_KEY = env.str(
     "MANABI_SHARED_KEY", default=default("2QhWg20fXq0xlnJUkFTDgFoA3JWqvb86OejD9mAVFCW")
 )
-MANABI_SECURE = True if ENV == "production" else False
+MANABI_SECURE = ENV == "production"
 MANABI_DEBUG = env.bool("MANABI_DEBUG", default=False)
 
 # Use a relatively long refresh timeout because since Word 2509, the server-sent lock timeout is ignored,

@@ -68,8 +68,8 @@ def create_document_file(
     file_content: File,
     mime_type: str,
     file_size: int,
-    additional_document_attributes={},
-    additional_file_attributes={},
+    additional_document_attributes=None,
+    additional_file_attributes=None,
 ):
     """
     Create a document and file with the given attributes.
@@ -84,7 +84,7 @@ def create_document_file(
         created_by_group=group,
         modified_by_user=user,
         modified_by_group=group,
-        **additional_document_attributes,
+        **(additional_document_attributes or {}),
     )
     file = create_file(
         document=document,
@@ -94,7 +94,7 @@ def create_document_file(
         content=file_content,
         mime_type=mime_type,
         size=file_size,
-        **additional_file_attributes,
+        **(additional_file_attributes or {}),
     )
 
     return document, file

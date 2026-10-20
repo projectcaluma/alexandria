@@ -1,5 +1,7 @@
+from pathlib import Path
+
 import pytest
-from django.core.files import File as DjangoFile
+from django.core.files.base import ContentFile
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.db.models import ObjectDoesNotExist
 
@@ -64,7 +66,7 @@ def test_clone_document_s3(db, mocker, settings, file_factory):
     mocker.patch("storages.backends.s3.S3Storage.save", return_value=name)
     mocker.patch(
         "storages.backends.s3.S3Storage.open",
-        return_value=DjangoFile(open("README.md", "rb")),
+        return_value=ContentFile(Path("README.md").read_bytes(), name="README.md"),
     )
     mocked = mocker.patch("botocore.client.BaseClient._make_api_call")
 
@@ -133,7 +135,7 @@ def test_clone_document_s3(db, mocker, settings, file_factory):
         ),
         (
             # unsafe filename, forbidden characters"
-            {"filename": "test.txt", "title": 'test<>:"/\|?*.txt'},
+            {"filename": "test.txt", "title": r'test<>:"/\|?*.txt'},
             "test.txt",
         ),
         (

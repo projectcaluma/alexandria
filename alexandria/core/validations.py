@@ -66,8 +66,8 @@ def validate_mime_type(mime_type: str, file_extension: str, category: Category) 
         raise ValidationError(
             gettext_lazy(
                 "File type %(mime_type)s is not allowed in category %(category)s."
-                % {"mime_type": mime_type, "category": category.pk}
             )
+            % {"mime_type": mime_type, "category": category.pk}
         )
 
     allowed_file_extensions = category.allowed_mime_types[mime_type]
@@ -78,8 +78,8 @@ def validate_mime_type(mime_type: str, file_extension: str, category: Category) 
         raise ValidationError(
             gettext_lazy(
                 "File extension %(file_extension)s is not allowed in category %(category)s."
-                % {"file_extension": file_extension, "category": category.pk}
             )
+            % {"file_extension": file_extension, "category": category.pk}
         )
 
     return True
@@ -147,8 +147,8 @@ class AlexandriaValidator:
             raise ValidationError(
                 gettext_lazy(
                     "Content-Type %(content_type)s does not match file extension %(extension)s."
-                    % {"content_type": content_type_header, "extension": extension_type}
                 )
+                % {"content_type": content_type_header, "extension": extension_type}
             )
 
         data["content"].seek(0)
@@ -159,11 +159,11 @@ class AlexandriaValidator:
             raise ValidationError(
                 gettext_lazy(
                     "Content-Type %(content_type)s does not match detected file content %(file_content_type)s."
-                    % {
-                        "content_type": content_type_header,
-                        "file_content_type": file_content_type,
-                    }
                 )
+                % {
+                    "content_type": content_type_header,
+                    "file_content_type": file_content_type,
+                }
             )
 
         validate_mime_type(
@@ -180,7 +180,7 @@ class AlexandriaValidator:
         if context["request"].method == "PATCH" and "category" in data:
             category = data["category"]
             document = context["view"].get_object()
-            if not document.category.pk == category.pk and document.files.count():
+            if document.category.pk != category.pk and document.files.count():
                 # Validate if a document is moved to another category that the
                 # mime type of the file is still compatible with the category's
                 # mime types.

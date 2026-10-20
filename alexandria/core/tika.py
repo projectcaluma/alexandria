@@ -40,7 +40,7 @@ class TikaClient:
 
             return content.strip() if content else None
         except HTTPError as e:  # pragma: no cover
-            log.warning(f"Tika failed with error: {str(e)}")
+            log.warning(f"Tika failed with error: {e!s}")
 
             return None
 
@@ -68,6 +68,6 @@ class TikaClient:
 
             return response.text.strip()
         except HTTPError as e:  # pragma: no cover
-            log.warning(f"Tika failed with error: {str(e)}")
+            log.warning(f"Tika failed with error: {e!s}")
 
             return None
