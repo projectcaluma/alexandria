@@ -1,5 +1,6 @@
+from collections.abc import Callable
 from functools import partial
-from typing import Any, Callable, Dict, List, Tuple
+from typing import Any
 
 from django.conf import settings
 from django.db import connections
@@ -29,17 +30,17 @@ class ManageDjangoConnectionsMiddleware(BaseMiddleware):
     """
 
     def __call__(
-        self, environ: Dict[str, Any], start_response: Callable
-    ) -> List[bytes]:
+        self, environ: dict[str, Any], start_response: Callable
+    ) -> list[bytes]:
         self.cleanup_db_connections()
         return self.next_app(environ, partial(self.process, environ, start_response))
 
     def process(
         self,
-        environ: Dict[str, Any],
+        environ: dict[str, Any],
         start_response: Callable,
         status: int,
-        headers: List[Tuple[str, str]],
+        headers: list[tuple[str, str]],
         exc_info=None,
     ):
         res = start_response(status, headers, exc_info)

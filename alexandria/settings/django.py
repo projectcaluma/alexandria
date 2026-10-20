@@ -3,7 +3,7 @@ from pathlib import Path
 
 from django.conf import global_settings
 
-from .alexandria import *  # noqa
+from .alexandria import *
 from .alexandria import default, env, environ
 
 SECRET_KEY = env.str("SECRET_KEY", default=default("uuuuuuuuuu"))
@@ -24,7 +24,7 @@ INSTALLED_APPS = [
     "manabi_migrations",
 ]
 
-if ENV == "dev":  # noqa
+if ENV == "dev":
     INSTALLED_APPS.append("django_extensions")
 
 MIDDLEWARE = [
@@ -154,8 +154,8 @@ def parse_admins(admins):
         match = re.search(r"(.+) \<(.+@.+)\>", admin)
         if not match:  # pragma: no cover
             raise environ.ImproperlyConfigured(
-                'In ADMINS admin "{0}" is not in correct '
-                '"Firstname Lastname <email@example.com>"'.format(admin)
+                f'In ADMINS admin "{admin}" is not in correct '
+                '"Firstname Lastname <email@example.com>"'
             )
         result.append((match.group(1), match.group(2)))
     return result

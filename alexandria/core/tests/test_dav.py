@@ -126,7 +126,7 @@ def test_dav_not_found(db, settings):
 
     assert (
         AlexandriaProvider("/").get_file_resource(
-            f"/{str(path)}",
+            f"/{path!s}",
             environ={"manabi.token": token, "wsgidav.provider": AlexandriaProvider},
             _=None,
         )

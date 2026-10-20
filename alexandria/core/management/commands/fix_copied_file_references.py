@@ -90,7 +90,7 @@ class Command(BaseCommand):
                                 f" > Failed: Error while fixing File ID {duplicate.pk} with filename {duplicate.content.name}, client error: {e} (Checksum: {checksum})"
                             )
                         )
-                except Exception as e:
+                except Exception as e:  # noqa: BLE001
                     self.stderr.write(
                         self.style.ERROR(
                             f" > Failed: Error while fixing File ID {duplicate.pk} with filename {duplicate.content.name}, error: {e} (Checksum: {checksum})"

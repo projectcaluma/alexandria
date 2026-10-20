@@ -43,7 +43,7 @@ def _make_clean_media_dir(settings):
     test_media_root = Path(settings.MEDIA_ROOT) / "test"
     test_media_root.mkdir(parents=True, exist_ok=True)
     settings.MEDIA_ROOT = str(test_media_root)
-    pytest.yield_fixture
+    yield
     shutil.rmtree(test_media_root)
 
 

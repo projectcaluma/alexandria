@@ -114,8 +114,8 @@ def fixture(
         # pytest factory boy doesn't have native ManyToMany support
         # so needs to be handled manually
         if isinstance(relation_type, ManyToManyDescriptor):
-            print("{0}_{1}".format(viewset.factory_name, name))
-            request.getfixturevalue("{0}_{1}".format(viewset.factory_name, name))
+            print(f"{viewset.factory_name}_{name}")
+            request.getfixturevalue(f"{viewset.factory_name}_{name}")
 
     return fixture
 
@@ -167,7 +167,7 @@ def assert_response(
 
 @pytest.mark.freeze_time("2017-05-21")
 def test_api_list(fixture, request, admin_client, snapshot, viewset):
-    url = reverse("{0}-list".format(viewset.base_name))
+    url = reverse(f"{viewset.base_name}-list")
 
     # create more data for proper num queries check
     request.getfixturevalue(viewset.factory_name + "_factory").create_batch(2)
@@ -181,7 +181,7 @@ def test_api_list(fixture, request, admin_client, snapshot, viewset):
 
 @pytest.mark.freeze_time("2017-05-21")
 def test_api_detail(fixture, admin_client, viewset, snapshot):
-    url = reverse("{0}-detail".format(viewset.base_name), args=[fixture.pk])
+    url = reverse(f"{viewset.base_name}-detail", args=[fixture.pk])
 
     included = getattr(viewset.serializer_class, "included_serializers", {})
     with CaptureQueriesContext(connection) as context:
@@ -197,7 +197,7 @@ def test_api_detail(fixture, admin_client, viewset, snapshot):
 
 @pytest.mark.freeze_time("2017-05-21")
 def test_api_create(fixture, admin_client, viewset, snapshot, document_post_data):
-    url = reverse("{0}-list".format(viewset.base_name))
+    url = reverse(f"{viewset.base_name}-list")
 
     serializer = viewset.serializer_class(fixture)
     renderer = JSONRenderer()
@@ -227,7 +227,7 @@ def test_api_create(fixture, admin_client, viewset, snapshot, document_post_data
 
 @pytest.mark.freeze_time("2017-05-21")
 def test_api_patch(fixture, admin_client, viewset, snapshot):
-    url = reverse("{0}-detail".format(viewset.base_name), args=[fixture.pk])
+    url = reverse(f"{viewset.base_name}-detail", args=[fixture.pk])
     if viewset.get_view_name() == "File":
         return
     serializer = viewset.serializer_class(fixture)
@@ -242,7 +242,7 @@ def test_api_patch(fixture, admin_client, viewset, snapshot):
 
 @pytest.mark.freeze_time("2017-05-21")
 def test_api_destroy(fixture, admin_client, snapshot, viewset):
-    url = reverse("{0}-detail".format(viewset.base_name), args=[fixture.pk])
+    url = reverse(f"{viewset.base_name}-detail", args=[fixture.pk])
 
     with CaptureQueriesContext(connection) as context:
         response = admin_client.delete(url)

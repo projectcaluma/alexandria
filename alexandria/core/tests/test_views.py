@@ -312,9 +312,7 @@ def test_multi_download(admin_client, file_factory):
 
     resp = admin_client.get(
         url,
-        {
-            "filter[files]": f"{str(file1.pk)},{str(file2.pk)},{str(file3.pk)},{str(file4.pk)}"
-        },
+        {"filter[files]": f"{file1.pk!s},{file2.pk!s},{file3.pk!s},{file4.pk!s}"},
     )
     assert resp.status_code == HTTP_200_OK
     assert resp.filename == "files.zip"
@@ -497,9 +495,11 @@ def test_document_delete_some_tags(admin_client, tag_factory, document_factory):
 
     assert response.status_code == HTTP_200_OK
     assert Tag.objects.all().count() == 3
-    assert set(Tag.objects.all().values_list("pk", flat=True)) == set(
-        [tag_1.pk, tag_2.pk, tag_3.pk]
-    )
+    assert set(Tag.objects.all().values_list("pk", flat=True)) == {
+        tag_1.pk,
+        tag_2.pk,
+        tag_3.pk,
+    }
 
 
 def test_move_document_to_new_category(

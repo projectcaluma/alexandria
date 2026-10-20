@@ -41,7 +41,7 @@ class AlexandriaAuthenticationBackend(OIDCAuthenticationBackend):
         """Return user details dictionary."""
 
         basic = base64.b64encode(
-            f"{self.OIDC_RP_CLIENT_ID}:{self.OIDC_RP_CLIENT_SECRET}".encode("utf-8")
+            f"{self.OIDC_RP_CLIENT_ID}:{self.OIDC_RP_CLIENT_SECRET}".encode()
         ).decode()
         headers = {
             "Authorization": f"Basic {basic}",
@@ -66,7 +66,7 @@ class AlexandriaAuthenticationBackend(OIDCAuthenticationBackend):
                 e.response.status_code in [401, 403]
                 and self.OIDC_OP_INTROSPECT_ENDPOINT
             ):
-                raise e
+                raise
 
             # check introspection if userinfo fails (confidental client)
             claims = self.cached_request(

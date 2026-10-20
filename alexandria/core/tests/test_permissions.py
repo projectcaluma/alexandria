@@ -55,9 +55,7 @@ def test_document_permission(
             self, request, instance, *args, **kwargs
         ):
             assert isinstance(instance, Document)
-            if request.user.username == "admin":
-                return True
-            return False
+            return request.user.username == "admin"
 
     PermissionsConfig.register_handler_class(CustomPermission)
     ObjectPermissionsConfig.register_handler_class(CustomPermission)
@@ -131,18 +129,14 @@ def test_file_permission(
     class CustomPermission:
         @permission_for(File)
         def has_permission_for_document(self, request, *args, **kwargs):
-            if request.user.username == "admin" or allow_delete:
-                return True
-            return False
+            return request.user.username == "admin" or allow_delete
 
         @object_permission_for(File)
         def has_object_permission_for_document(
             self, request, instance, *args, **kwargs
         ):
             assert isinstance(instance, File)
-            if request.user.username == "admin" and allow_delete:
-                return True
-            return False
+            return request.user.username == "admin" and allow_delete
 
     PermissionsConfig.register_handler_class(CustomPermission)
     ObjectPermissionsConfig.register_handler_class(CustomPermission)

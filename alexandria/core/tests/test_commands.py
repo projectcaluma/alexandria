@@ -1,7 +1,8 @@
 from io import StringIO
+from pathlib import Path
 
 import pytest
-from django.core.files import File as DjangoFile
+from django.core.files.base import ContentFile
 from django.core.management import call_command
 
 from alexandria.core.models import File
@@ -20,7 +21,9 @@ def test_encrypt_files(db, settings, mocker, file_factory):
     mocker.patch("storages.backends.s3.S3Storage.save")
     mocker.patch("storages.backends.s3.S3Storage.open")
     SsecGlobalS3Storage.save.return_value = "name-of-the-file"
-    SsecGlobalS3Storage.open.return_value = DjangoFile(open("README.md", "rb"))
+    SsecGlobalS3Storage.open.return_value = ContentFile(
+        Path("README.md").read_bytes(), name="README.md"
+    )
     call_command("encrypt_files")
 
     file_old.refresh_from_db()

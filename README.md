@@ -203,6 +203,7 @@ Since v10, the document merge service delegates the PDF conversion to a [Gotenbe
 
 ```py
 import manabi
+
 manabi.keygen()
 ```
 
@@ -212,12 +213,12 @@ If you want to enable WebDAV for e.g. MS Powerpoint files you can do that by con
 ALEXANDRIA_MANABI_ALLOWED_MIMETYPES = [
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    "application/vnd.openxmlformats-officedocument.presentationml.presentation", # New
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation",  # New
 ]
 ALEXANDRIA_MANABI_DAV_URI_SCHEMES = {
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document": "ms-word:ofe|u|",
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": "ms-excel:ofe|u|",
-    "application/vnd.openxmlformats-officedocument.presentationml.presentation": "ms-powerpoint:ofe|u|" # New, see https://learn.microsoft.com/en-us/office/client-developer/office-uri-schemes for more information
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation": "ms-powerpoint:ofe|u|",  # New, see https://learn.microsoft.com/en-us/office/client-developer/office-uri-schemes for more information
 }
 ```
 

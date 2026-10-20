@@ -46,7 +46,7 @@ class Command(BaseCommand):
                 else:
                     set_content_vector(file.pk)
 
-            except Exception as e:  # noqa: B902
+            except Exception as e:  # noqa: BLE001
                 failed_files.append(str(file.id))
                 self.stdout.write(
                     self.style.WARNING(f"Error processing {file.id}: {e}")
