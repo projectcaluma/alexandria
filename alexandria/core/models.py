@@ -258,9 +258,9 @@ class File(UUIDModel):
         except AttributeError:
             name = self.name
 
-        extension = "".join(Path(name).suffixes)
+        extension = Path(name).suffix
         base_name = name[: -len(extension)] if extension else name
-        ext_original = "".join(Path(self.name).suffixes)
+        ext_original = Path(self.name).suffix
 
         # fallback to original extension if lost due to rename
         if ext_original and ext_original != extension:
