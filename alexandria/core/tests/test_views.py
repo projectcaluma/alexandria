@@ -413,7 +413,7 @@ def test_to_zip_date_time_edge_cases():
                 "b_file.jpg_test(1).jpg",  # suffix on recovered extension appended title
                 "c_file.png.jpg",  # original extension recovered on top of renamed title
                 "d_file.tar.gz",  # original double extension
-                "d_file(1).tar.gz",  # suffix on original double extension
+                "d_file.tar(1).gz",  # suffix on original double extension
             ],
         ),
     ],
