@@ -1,3 +1,9 @@
+# 11.0.1
+
+### Fix
+
+* **download:** Use only last suffix as file extension ([`e74f131`](https://github.com/projectcaluma/alexandria/commit/e74f131aded8a43ab214f6e44c7120eff8abf3f1))
+
 # 11.0.0
 
 ### Feature
