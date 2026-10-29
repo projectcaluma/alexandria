@@ -1,3 +1,4 @@
+import mimetypes
 import re
 from pathlib import Path
 
@@ -252,15 +253,22 @@ class File(UUIDModel):
 
         return make_presigned_url(reverse("file-download", args=[self.pk]), request)
 
+    def get_extension(self, filename):
+        path = Path(filename.lower())
+        file_type, encoding = mimetypes.guess_type(path.name)
+        if encoding and file_type and path.suffix not in mimetypes.suffix_map:
+            return "".join(path.suffixes[-2:])
+        return path.suffix
+
     def get_download_filename(self):
         try:
             name = self.document.title
         except AttributeError:
             name = self.name
 
-        extension = "".join(Path(name).suffixes)
+        extension = self.get_extension(name)
         base_name = name[: -len(extension)] if extension else name
-        ext_original = "".join(Path(self.name).suffixes)
+        ext_original = self.get_extension(self.name)
 
         # fallback to original extension if lost due to rename
         if ext_original and ext_original != extension:

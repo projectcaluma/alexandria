@@ -405,6 +405,16 @@ def test_to_zip_date_time_edge_cases():
                     "filename": "e_file.tar.gz",
                     "title": "d_file.tar.gz",
                 },
+                {
+                    # remove all extensions from the file name
+                    "filename": "f_file.docx.pdf",
+                    "title": "g_file",
+                },
+                {
+                    # rename version suffix in the file name
+                    "filename": "h_file.v1.pdf",
+                    "title": "h_file.v2.pdf",
+                },
             ],
             [
                 "a_file.jpg",  # original name/title
@@ -414,6 +424,8 @@ def test_to_zip_date_time_edge_cases():
                 "c_file.png.jpg",  # original extension recovered on top of renamed title
                 "d_file.tar.gz",  # original double extension
                 "d_file(1).tar.gz",  # suffix on original double extension
+                "g_file.pdf",  # only use last suffix as file extension
+                "h_file.v2.pdf",  # rename version suffix
             ],
         ),
     ],
