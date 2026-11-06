@@ -67,7 +67,7 @@ services:
     command: /garage server --single-node --default-bucket
 
   tika:
-    image: apache/tika:4.1.0-1-full@sha256:ab9cc988828c594d32d6409e1850d1c8d83152ea793ef5fe0e7862ac0f9e5891
+    image: apache/tika:4.2.0-1-full@sha256:4774eaac44f86cdf648ae7b5a367016eaf6f9052adec31e5cff07cff1a0c6e24
     ports:
       - "9998:9998"
 
