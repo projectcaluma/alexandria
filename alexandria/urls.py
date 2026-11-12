@@ -6,4 +6,8 @@ urlpatterns = [
         "api/v1/",
         include("alexandria.core.urls"),
     ),
+    path(
+        "api/v1/",
+        include("alexandria.esign.urls"),
+    ),
 ]
