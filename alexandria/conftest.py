@@ -30,6 +30,7 @@ def register_module(module):
 
 
 register_module(importlib.import_module(".core.factories", "alexandria"))
+register_module(importlib.import_module(".esign.factories", "alexandria"))
 
 
 @pytest.fixture(autouse=True)

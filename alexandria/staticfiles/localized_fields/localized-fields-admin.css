@@ -1,0 +1,53 @@
+.localized-fields-widget {
+    display: inline-block;
+}
+
+.localized-fields-widget.tabs {
+    display: block;
+    margin: 0;
+    border-bottom: 1px solid #eee;
+}
+
+.localized-fields-widget.tabs .localized-fields-widget.tab {
+    display: inline-block;
+    margin-left: 5px;
+    border: 1px solid #79aec8;
+    border-bottom: none;
+    border-radius: 4px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    background: #79aec8;
+    color: #fff;
+    font-weight: 400;
+    opacity: 0.5;
+}
+
+.localized-fields-widget.tabs .localized-fields-widget.tab:first-child {
+    margin-left: 0;
+}
+
+.localized-fields-widget.tabs .localized-fields-widget.tab:hover {
+    background: #417690;
+    border-color: #417690;
+    opacity: 1;
+}
+
+.localized-fields-widget.tabs .localized-fields-widget.tab label {
+    padding: 5px 10px;
+    display: inline;
+    text-decoration: none;
+    color: #fff;
+    width: initial;
+    cursor: pointer;
+}
+
+.localized-fields-widget.tabs .localized-fields-widget.tab.active,
+.localized-fields-widget.tabs .localized-fields-widget.tab.active:hover {
+    background: #79aec8;
+    border-color: #79aec8;
+    opacity: 1;
+}
+
+.localized-fields-widget p.file-upload {
+    margin-left: 0;
+}

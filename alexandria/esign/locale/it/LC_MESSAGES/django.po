@@ -1,0 +1,145 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-12 10:47+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: alexandria/esignatures/api.py:28
+msgid "(copy)"
+msgstr ""
+
+#: alexandria/esignatures/models.py:42
+msgid "Created by user"
+msgstr ""
+
+#: alexandria/esignatures/models.py:45
+msgid "Created by group"
+msgstr ""
+
+#: alexandria/esignatures/models.py:49
+msgid "Modified by user"
+msgstr ""
+
+#: alexandria/esignatures/models.py:52
+msgid "Modified by group"
+msgstr ""
+
+#: alexandria/esignatures/models.py:54
+msgid "Metainfo"
+msgstr ""
+
+#: alexandria/esignatures/models.py:89
+msgid "Please enter a valid HEX color code."
+msgstr ""
+
+#: alexandria/esignatures/models.py:94 alexandria/esignatures/models.py:122
+#: alexandria/esignatures/models.py:136 alexandria/esignatures/models.py:199
+msgid "Name"
+msgstr ""
+
+#: alexandria/esignatures/models.py:96 alexandria/esignatures/models.py:124
+#: alexandria/esignatures/models.py:138 alexandria/esignatures/models.py:144
+msgid "Description"
+msgstr ""
+
+#: alexandria/esignatures/models.py:98
+msgid "Allowed mime types"
+msgstr ""
+
+#: alexandria/esignatures/models.py:143
+msgid "Title"
+msgstr ""
+
+#: alexandria/esignatures/models.py:203
+msgid "Checksum"
+msgstr ""
+
+#: alexandria/esignatures/validations.py:35
+msgid "File is infected with malware."
+msgstr ""
+
+#: alexandria/esignatures/validations.py:39
+msgid "Malware scan had an error: "
+msgstr ""
+
+#: alexandria/esignatures/validations.py:68
+#, python-format
+msgid "File type %(mime_type)s is not allowed in category %(category)s."
+msgstr ""
+
+#: alexandria/esignatures/validations.py:80
+#, python-format
+msgid ""
+"File extension %(file_extension)s is not allowed in category %(category)s."
+msgstr ""
+
+#: alexandria/esignatures/validations.py:101
+#, python-format
+msgid "Invalid PDF header: %(pdf_version)s"
+msgstr ""
+
+#: alexandria/esignatures/validations.py:109
+#, python-format
+msgid ""
+"PDF version %(pdf_version)s is not allowed. The minimum required PDF version "
+"is %(min_version)s"
+msgstr ""
+
+#: alexandria/esignatures/validations.py:126
+msgid "Missing Content-Type header"
+msgstr ""
+
+#: alexandria/esignatures/validations.py:128
+msgid "Unknown file extension"
+msgstr ""
+
+#: alexandria/esignatures/validations.py:149
+#, python-format
+msgid ""
+"Content-Type %(content_type)s does not match file extension %(extension)s."
+msgstr ""
+
+#: alexandria/esignatures/validations.py:161
+#, python-format
+msgid ""
+"Content-Type %(content_type)s does not match detected file content "
+"%(file_content_type)s."
+msgstr ""
+
+#: alexandria/esignatures/views.py:177
+msgid "PDF conversion is not enabled."
+msgstr ""
+
+#: alexandria/esignatures/views.py:281
+msgid "\"files\" filter is mandatory!"
+msgstr ""
+
+#: alexandria/esignatures/views.py:293
+msgid "The \"files\" filter must consist of a comma delimited list of UUIDs!"
+msgstr ""
+
+#: alexandria/esignatures/views.py:314
+msgid "For downloading a file use the presigned download URL."
+msgstr ""
+
+#: alexandria/esignatures/views.py:343
+msgid "WebDAV is not enabled."
+msgstr ""
+
+#: alexandria/esignatures/views.py:353
+msgid "WebDAV is not enabled for this mime type."
+msgstr ""
