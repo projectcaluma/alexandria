@@ -268,3 +268,17 @@ SAFE_FOR_INLINE_DISPOSITION = env.list(
 
 # Tika
 TIKA_SERVER_URL = env.str("TIKA_SERVER_URL", default="http://tika:9998")
+
+# Electronic signatures
+# Signature provider, signing is disabled without one. Development default:
+# local provider with a self-signed certificate
+ALEXANDRIA_ESIGN_BACKEND = env.str(
+    "ALEXANDRIA_ESIGN_BACKEND",
+    default=default("alexandria.esign.backends.local.LocalBackend", None),
+)
+# Fernet key to encrypt the DeepSign service account passwords, generate
+# with `python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"`
+ALEXANDRIA_ESIGN_ENCRYPTION_KEY = env.str(
+    "ALEXANDRIA_ESIGN_ENCRYPTION_KEY",
+    default=default("Y6ARqJXoX8dO2RiGFBIWaFLX_UlFzQFCg_fmv1F3_Ww=", None),
+)

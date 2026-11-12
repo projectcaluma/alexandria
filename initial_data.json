@@ -146,18 +146,37 @@
     }
   },
   {
-    "model": "alexandria_core.mark",
-    "pk": "decision",
+    "model": "alexandria_core.category",
+    "pk": "decision-documents",
     "fields": {
-      "created_at": "2020-08-04T13:24:00.690Z",
+      "created_at": "2026-11-17T08:00:00.000Z",
       "created_by_user": null,
       "created_by_group": null,
-      "modified_at": "2020-08-04T13:24:00.690Z",
+      "modified_at": "2026-11-17T08:00:00.000Z",
       "modified_by_user": null,
       "modified_by_group": null,
       "metainfo": {},
-      "name": "{\"en\": \"Decision\", \"de\": \"\", \"it\": \"\"}",
-      "description": "{\"en\": \"\", \"de\": \"\", \"it\": \"\"}"
+      "name": "{\"en\": \"Decision documents\", \"de\": \"Entscheiddokumente\", \"it\": \"\"}",
+      "description": "{\"en\": \"\", \"de\": \"\", \"it\": \"\"}",
+      "allowed_mime_types": {"application/pdf": null},
+      "color": "#5B8C5A",
+      "parent": null,
+      "sort": 8
+    }
+  },
+  {
+    "model": "alexandria_core.mark",
+    "pk": "stamp",
+    "fields": {
+      "created_at": "2026-11-17T08:00:00.000Z",
+      "created_by_user": null,
+      "created_by_group": null,
+      "modified_at": "2026-11-17T08:00:00.000Z",
+      "modified_by_user": null,
+      "modified_by_group": null,
+      "metainfo": {"categories": ["decision-documents"]},
+      "name": "{\"en\": \"To be stamped\", \"de\": \"Zu stempeln\", \"it\": \"\"}",
+      "description": "{\"en\": \"Stamped with the decision\", \"de\": \"Wird mit dem Entscheid gestempelt\", \"it\": \"\"}"
     }
   }
 ]

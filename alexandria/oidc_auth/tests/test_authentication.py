@@ -138,3 +138,22 @@ def test_authentication_dev(
         with pytest.raises(ImproperlyConfigured) as exc:
             user = OIDCAuthentication().authenticate(request)
         assert exc.match("The Dev auth backend can only be used in DEBUG mode!")
+
+
+@pytest.mark.django_db
+@pytest.mark.parametrize(
+    "token,expected_group",
+    [
+        ("dev-group", "dev-group"),
+        ("secondary-group", "secondary-group"),
+        ("Token", "dev-group"),
+    ],
+)
+def test_authentication_dev_active_group(rf, settings, token, expected_group):
+    settings.DEBUG = True
+
+    request = rf.get("/openid", HTTP_AUTHORIZATION=f"Bearer {token}")
+    user, _ = OIDCAuthentication().authenticate(request)
+
+    assert user.group == expected_group
+    assert sorted(user.groups) == ["dev-group", "secondary-group"]

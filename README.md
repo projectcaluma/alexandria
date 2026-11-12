@@ -222,6 +222,19 @@ ALEXANDRIA_MANABI_DAV_URI_SCHEMES = {
 }
 ```
 
+#### Digital signatures (optional)
+
+The `esign` module signs PDFs and stamps them with a timestamp. Signed and stamped PDFs are stored as new version of the document. One signature provider is configured per deployment, the frontend doesn't know which one (enable it in ember-alexandria with `enableSignatures`).
+
+- `ALEXANDRIA_ESIGN_BACKEND`: Signature provider. Signing is disabled without one, existing signatures are still shown (default: none, in development `alexandria.esign.backends.local.LocalBackend`)
+  - `alexandria.esign.backends.local.LocalBackend`: Development only (requires `DEBUG`). Signs and stamps with a self-signed certificate, without confirmation. Validators report these signatures as untrusted.
+- `ALEXANDRIA_ESIGN_ENCRYPTION_KEY`: Fernet key to encrypt the stored DeepSign credentials. Required in production, generate with `python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"`. Changing it makes stored credentials unreadable.
+
+Permissions: signing and stamping are checked as object permission on the document with the actions `sign` and `stamp`. Map them in your permission classes like other document actions, e.g. to only allow signing in certain categories. `can-sign` on the document reflects this, so the frontend hides the action.
+
+Requests the frontend stopped polling are cleaned up by a Celery task after their timeout (see [Celery](#celery-optional)).
+
+
 #### File content search (optional)
 
 - `ALEXANDRIA_ENABLE_CONTENT_SEARCH`: Set to `True` to enable file content extraction
