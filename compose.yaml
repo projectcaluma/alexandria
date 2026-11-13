@@ -29,7 +29,7 @@ services:
       - "8000:8000"
 
   dms:
-    image: ghcr.io/adfinis/document-merge-service:10.0.1@sha256:0f128d74a6ab2501a8ff43dacbb321a2b895d28560a5338b0a9f2c5ca7fcc8b3
+    image: ghcr.io/adfinis/document-merge-service:10.2.0@sha256:bdfebe2a9684686385bbf8a72ff462ce592d36f40cc6a22ea16ce5bf763b1aba
     depends_on:
       - db
       - gotenberg
