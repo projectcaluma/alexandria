@@ -46,7 +46,7 @@ services:
       - DOCXTEMPLATE_JINJA_EXTENSIONS=
 
   gotenberg:
-    image: gotenberg/gotenberg:8.37.0-libreoffice@sha256:c85f019d6ae4927714507254331cc0ed72da7b619ee798e3a45de01f54372c12
+    image: gotenberg/gotenberg:9.0.0-libreoffice@sha256:7f8d54f6ec37e95b68f9297f726213e200dd99439b4ae41241dbdca1d0474270
     environment:
       - CHROMIUM_DISABLE_ROUTES=true
       - PDFENGINES_DISABLE_ROUTES=true
