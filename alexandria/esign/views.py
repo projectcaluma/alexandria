@@ -132,3 +132,62 @@ class SignatureViewSet(
     serializer_class = serializers.SignatureSerializer
     queryset = models.Signature.objects.select_related("file", "signature_request")
     filterset_class = SignatureFilterSet
+
+
+class DeepSignServiceAccountViewSet(
+    PermissionViewMixin,
+    VisibilityViewMixin,
+    CreateModelMixin,
+    RetrieveModelMixin,
+    ListModelMixin,
+    GenericViewSet,
+):
+    """Connection state of the DeepSign service account of the user's group.
+
+    POST starts the connection and returns the DeepSign `connection_url`.
+    """
+
+    permission_classes = (IsAuthenticated,)
+    serializer_class = serializers.DeepSignServiceAccountSerializer
+    queryset = models.DeepSignServiceAccount.objects.all()
+
+    def get_queryset(self):
+        # The connection URL contains the state token, only expose own group
+        _user, group = get_user_and_group_from_request(self.request)
+        return super().get_queryset().for_group(group)
+
+
+@method_decorator(csrf_exempt, name="dispatch")
+class DeepSignCallbackView(View):
+    """Receive service account credentials from DeepSign.
+
+    DeepSign makes the admin's browser post a form (`response_mode=form_post`)
+    to this endpoint, so it is unauthenticated. The request is authenticated
+    by the state token handed out with the connection URL.
+    """
+
+    http_method_names = ["post"]
+
+    def post(self, request):
+        try:
+            state = json.loads(request.POST["state"])
+            account = models.DeepSignServiceAccount.objects.get(
+                group=state["group"], state_token=state["token"]
+            )
+            account.account_id = request.POST["service_account_id"]
+            account.username = request.POST["service_account_username"]
+            account.password = request.POST["service_account_password"]
+        except (
+            KeyError,
+            TypeError,
+            json.JSONDecodeError,
+            models.DeepSignServiceAccount.DoesNotExist,
+        ):
+            return HttpResponseBadRequest()
+
+        account.connected_at = timezone.now()
+        # Invalidate the state, a callback can only be used once
+        account.state_token = models.make_state_token()
+        account.save()
+
+        return HttpResponseRedirect(settings.ALEXANDRIA_DEEPSIGN_CALLBACK_REDIRECT_URL)

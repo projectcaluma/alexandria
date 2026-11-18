@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name="SignatureProviderCredentials",
+            name="DeepSignServiceAccount",
             fields=[
                 ("created_at", models.DateTimeField(auto_now_add=True, db_index=True)),
                 (
@@ -72,24 +72,42 @@ class Migration(migrations.Migration):
                     models.CharField(max_length=255, unique=True, verbose_name="Group"),
                 ),
                 (
-                    "provider",
+                    "state_token",
                     models.CharField(
-                        choices=[("deepsign", "DeepSign")],
-                        default="deepsign",
-                        max_length=32,
-                        verbose_name="Provider",
+                        default=alexandria.esign.models.make_state_token,
+                        max_length=64,
+                        unique=True,
+                        verbose_name="State token",
                     ),
                 ),
                 (
                     "account_id",
-                    models.CharField(max_length=255, verbose_name="Account ID"),
+                    models.CharField(
+                        blank=True, max_length=255, verbose_name="Account ID"
+                    ),
                 ),
-                ("username", models.CharField(max_length=255, verbose_name="Username")),
-                ("password", models.CharField(max_length=255, verbose_name="Password")),
+                (
+                    "username",
+                    models.CharField(
+                        blank=True, max_length=255, verbose_name="Username"
+                    ),
+                ),
+                (
+                    "password",
+                    alexandria.esign.fields.EncryptedTextField(
+                        blank=True, verbose_name="Password"
+                    ),
+                ),
+                (
+                    "connected_at",
+                    models.DateTimeField(
+                        blank=True, null=True, verbose_name="Connected at"
+                    ),
+                ),
             ],
             options={
-                "verbose_name": "Signature provider credentials",
-                "verbose_name_plural": "Signature provider credentials",
+                "verbose_name": "DeepSign service account",
+                "verbose_name_plural": "DeepSign service accounts",
             },
         ),
         migrations.CreateModel(
@@ -144,6 +162,21 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 (
+                    "signature_type",
+                    models.CharField(
+                        blank=True,
+                        choices=[
+                            ("timestamp", "Timestamp"),
+                            ("advanced", "Advanced"),
+                            ("qualified", "Qualified"),
+                        ],
+                        help_text="Kind of signature requested, set by the backend",
+                        max_length=16,
+                        null=True,
+                        verbose_name="Signature type",
+                    ),
+                ),
+                (
                     "status",
                     models.CharField(
                         choices=[
@@ -153,21 +186,12 @@ class Migration(migrations.Migration):
                             ("done", "Done"),
                             ("timeout", "Timeout"),
                             ("rejected", "Rejected"),
+                            ("registration_required", "Registration required"),
                         ],
                         db_index=True,
                         default="open",
-                        max_length=16,
+                        max_length=32,
                         verbose_name="Status",
-                    ),
-                ),
-                (
-                    "hash_key",
-                    models.CharField(
-                        blank=True,
-                        help_text="ID of the signature request at the provider",
-                        max_length=255,
-                        null=True,
-                        verbose_name="Hash key",
                     ),
                 ),
                 (
@@ -180,12 +204,41 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 (
-                    "digest",
-                    models.JSONField(
+                    "action_url",
+                    models.URLField(
                         blank=True,
-                        help_text="Serialized prepared byte range digest",
+                        help_text="URL the user has to open, e.g. an external signing tool",
+                        max_length=2048,
                         null=True,
-                        verbose_name="Digest",
+                        verbose_name="Action URL",
+                    ),
+                ),
+                (
+                    "provider_reference",
+                    models.CharField(
+                        blank=True,
+                        help_text="ID of the request at the provider",
+                        max_length=255,
+                        null=True,
+                        verbose_name="Provider reference",
+                    ),
+                ),
+                (
+                    "provider_status",
+                    models.CharField(
+                        blank=True,
+                        help_text="Raw status of the request at the provider",
+                        max_length=255,
+                        null=True,
+                        verbose_name="Provider status",
+                    ),
+                ),
+                (
+                    "provider_data",
+                    models.JSONField(
+                        default=dict,
+                        help_text="Backend specific state kept between polls",
+                        verbose_name="Provider data",
                     ),
                 ),
                 (

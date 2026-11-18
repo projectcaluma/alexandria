@@ -179,3 +179,37 @@ class Signature(UUIDModel):
         return (
             f"{self.get_signature_type_display()} {self.signer_name} ({self.signed_at})"
         )
+
+
+class DeepSignServiceAccountQuerySet(models.QuerySet):
+    def for_group(self, group):
+        return self.filter(group=group)
+
+    def connected(self):
+        return self.filter(connected_at__isnull=False)
+
+
+class DeepSignServiceAccount(UUIDModel):
+    """DeepSign service account of a group (organisation).
+
+    Created when the connection is started. DeepSign delivers the credentials
+    through the callback, which is authenticated with `state_token`.
+    """
+
+    group = models.CharField(_("Group"), max_length=255, unique=True)
+    state_token = models.CharField(
+        _("State token"), max_length=64, unique=True, default=make_state_token
+    )
+    account_id = models.CharField(_("Account ID"), max_length=255, blank=True)
+    username = models.CharField(_("Username"), max_length=255, blank=True)
+    password = EncryptedTextField(_("Password"), blank=True)
+    connected_at = models.DateTimeField(_("Connected at"), null=True, blank=True)
+
+    objects = DeepSignServiceAccountQuerySet.as_manager()
+
+    class Meta:
+        verbose_name = _("DeepSign service account")
+        verbose_name_plural = _("DeepSign service accounts")
+
+    def __str__(self):
+        return self.group

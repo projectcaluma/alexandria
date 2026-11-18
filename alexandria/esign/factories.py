@@ -22,3 +22,15 @@ class SignatureFactory(BaseFactory):
 
     class Meta:
         model = models.Signature
+
+
+class DeepSignServiceAccountFactory(BaseFactory):
+    group = "admin"
+    account_id = Faker("uuid4")
+    username = Faker("user_name")
+    password = Faker("password")
+    connected_at = LazyFunction(timezone.now)
+
+    class Meta:
+        model = models.DeepSignServiceAccount
+        django_get_or_create = ("group",)

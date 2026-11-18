@@ -10,6 +10,7 @@ from alexandria.core.utils import get_user_and_group_from_request
 from . import api, models
 from .api import SIGNABLE_MIME_TYPES, stamp_file
 from .backends import get_backend
+from .backends.deepsign import build_connection_url
 from .permissions import SIGN, STAMP, has_document_permission
 
 
@@ -167,3 +168,36 @@ class SignatureSerializer(SignableFileMixin, BaseSerializer):
         )
 
 
+class DeepSignServiceAccountSerializer(BaseSerializer):
+    connection_url = serializers.SerializerMethodField()
+
+    def get_connection_url(self, account):
+        return build_connection_url(account)
+
+    def create(self, validated_data):
+        """Start (or restart) the connection for the group of the user.
+
+        A new state token invalidates connection URLs handed out before.
+        """
+        _user, group = get_user_and_group_from_request(self.context.get("request"))
+        account, _created = models.DeepSignServiceAccount.objects.update_or_create(
+            group=group,
+            defaults={
+                "state_token": models.make_state_token(),
+                "modified_by_user": validated_data["modified_by_user"],
+                "modified_by_group": validated_data["modified_by_group"],
+            },
+            create_defaults={**validated_data, "group": group},
+        )
+        return account
+
+    class Meta:
+        model = models.DeepSignServiceAccount
+        # Same as the URL, the default would be "deep-sign-service-accounts"
+        resource_name = "deepsign-service-accounts"
+        fields = BaseSerializer.Meta.fields + (
+            "group",
+            "connected_at",
+            "connection_url",
+        )
+        read_only_fields = ("group", "connected_at")
