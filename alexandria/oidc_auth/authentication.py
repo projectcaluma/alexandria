@@ -105,23 +105,23 @@ class DevelopmentAuthenticationBackend(AlexandriaAuthenticationBackend):
                 "The Dev auth backend can only be used in DEBUG mode!"
             )
 
-    def get_introspection(self, access_token, id_token, payload):  # pragma: no cover
+    # The token selects the active group: `Bearer secondary-group` makes it
+    # the first group, any other token results in `dev-group`
+    GROUPS = ["dev-group", "secondary-group"]
+
+    def _claims(self, access_token):
         return {
             settings.OIDC_USERNAME_CLAIM: "dev",
-            settings.OIDC_GROUPS_CLAIM: ["dev-group", "secondary-group"],
+            settings.OIDC_GROUPS_CLAIM: sorted(
+                self.GROUPS, key=lambda group: group != access_token
+            ),
         }
+
+    def get_introspection(self, access_token, id_token, payload):  # pragma: no cover
+        return self._claims(access_token)
 
     def get_userinfo_or_introspection(self, access_token) -> dict:  # pragma: no cover
-        return {
-            settings.OIDC_USERNAME_CLAIM: "dev",
-            settings.OIDC_GROUPS_CLAIM: ["dev-group", "secondary-group"],
-        }
+        return self._claims(access_token)
 
     def get_or_create_user(self, access_token, id_token, payload):
-        return self._oidc_user(
-            access_token,
-            {
-                settings.OIDC_USERNAME_CLAIM: "dev",
-                settings.OIDC_GROUPS_CLAIM: ["dev-group", "secondary-group"],
-            },
-        )
+        return self._oidc_user(access_token, self._claims(access_token))

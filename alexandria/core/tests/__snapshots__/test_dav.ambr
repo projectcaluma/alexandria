@@ -2,41 +2,41 @@
 # name: test_dav_propfind
   '''
   <?xml version="1.0" ?>
-  <ns0:multistatus xmlns:ns0="DAV:">
-    <ns0:response>
-      <ns0:href>/dav/5fa8513e-7d50-46de-addb-5abaa6e1478e/test.txt</ns0:href>
-      <ns0:propstat>
-        <ns0:prop>
-          <ns0:resourcetype/>
-          <ns0:creationdate>1970-01-01T00:00:00Z</ns0:creationdate>
-          <ns0:getcontentlength>11</ns0:getcontentlength>
-          <ns0:getcontenttype>text/plain</ns0:getcontenttype>
-          <ns0:getlastmodified>Thu, 01 Jan 1970 00:00:00 GMT</ns0:getlastmodified>
-          <ns0:displayname>test.txt</ns0:displayname>
-          <ns0:lockdiscovery/>
-          <ns0:supportedlock>
-            <ns0:lockentry>
-              <ns0:lockscope>
-                <ns0:exclusive/>
-              </ns0:lockscope>
-              <ns0:locktype>
-                <ns0:write/>
-              </ns0:locktype>
-            </ns0:lockentry>
-            <ns0:lockentry>
-              <ns0:lockscope>
-                <ns0:shared/>
-              </ns0:lockscope>
-              <ns0:locktype>
-                <ns0:write/>
-              </ns0:locktype>
-            </ns0:lockentry>
-          </ns0:supportedlock>
-        </ns0:prop>
-        <ns0:status>HTTP/1.1 200 OK</ns0:status>
-      </ns0:propstat>
-    </ns0:response>
-  </ns0:multistatus>
+  <D:multistatus xmlns:D="DAV:">
+    <D:response>
+      <D:href>/dav/5fa8513e-7d50-46de-addb-5abaa6e1478e/test.txt</D:href>
+      <D:propstat>
+        <D:prop>
+          <D:resourcetype/>
+          <D:creationdate>1970-01-01T00:00:00Z</D:creationdate>
+          <D:getcontentlength>11</D:getcontentlength>
+          <D:getcontenttype>text/plain</D:getcontenttype>
+          <D:getlastmodified>Thu, 01 Jan 1970 00:00:00 GMT</D:getlastmodified>
+          <D:displayname>test.txt</D:displayname>
+          <D:lockdiscovery/>
+          <D:supportedlock>
+            <D:lockentry>
+              <D:lockscope>
+                <D:exclusive/>
+              </D:lockscope>
+              <D:locktype>
+                <D:write/>
+              </D:locktype>
+            </D:lockentry>
+            <D:lockentry>
+              <D:lockscope>
+                <D:shared/>
+              </D:lockscope>
+              <D:locktype>
+                <D:write/>
+              </D:locktype>
+            </D:lockentry>
+          </D:supportedlock>
+        </D:prop>
+        <D:status>HTTP/1.1 200 OK</D:status>
+      </D:propstat>
+    </D:response>
+  </D:multistatus>
   
   '''
 # ---

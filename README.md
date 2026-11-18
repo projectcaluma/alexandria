@@ -222,6 +222,45 @@ ALEXANDRIA_MANABI_DAV_URI_SCHEMES = {
 }
 ```
 
+#### Digital signatures (optional)
+
+The `esign` module signs PDFs (e.g. QES via DeepSign) and stamps them with a timestamp. Signed and stamped PDFs are stored as new version of the document. One signature provider is configured per deployment, the frontend doesn't know which one (enable it in ember-alexandria with `enableSignatures`).
+
+- `ALEXANDRIA_ESIGN_BACKEND`: Signature provider. Signing is disabled without one, existing signatures are still shown (default: none, in development `alexandria.esign.backends.local.LocalBackend`)
+  - `alexandria.esign.backends.deepsign.DeepSignBackend`: DeepSign hash signing, confirmed in the DeepID app
+  - `alexandria.esign.backends.local.LocalBackend`: Development only (requires `DEBUG`). Signs and stamps with a self-signed certificate, without confirmation. Validators report these signatures as untrusted.
+- `ALEXANDRIA_ESIGN_ENCRYPTION_KEY`: Fernet key to encrypt the stored DeepSign credentials. Required in production, generate with `python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"`. Changing it makes stored credentials unreadable.
+
+Permissions: signing and stamping are checked as object permission on the document with the actions `sign` and `stamp`. Map them in your permission classes like other document actions, e.g. to only allow signing in certain categories. `can-sign` on the document reflects this, so the frontend hides the action.
+
+Requests the frontend stopped polling are cleaned up by a Celery task after their timeout (see [Celery](#celery-optional)).
+
+##### DeepSign
+
+Each group (organisation) connects its own DeepSign service account: `POST /api/v1/deepsign-service-accounts` returns the `connection-url`, DeepSign then sends the credentials to `/api/v1/deepsign/callback`.
+
+- `ALEXANDRIA_DEEPSIGN_PARTNER_CLIENT_ID` / `ALEXANDRIA_DEEPSIGN_PARTNER_CLIENT_SECRET`: Partner credentials issued by DeepCloud
+- `ALEXANDRIA_DEEPSIGN_CONNECTION_URL`: DeepBox third party connection URL (e.g. `https://admin.deepbox.swiss/third-party-connection/`)
+- `ALEXANDRIA_DEEPSIGN_CALLBACK_URL`: Public URL of `/api/v1/deepsign/callback`
+- `ALEXANDRIA_DEEPSIGN_CALLBACK_REDIRECT_URL`: Where the browser is redirected to after connecting (default: `/`)
+- `ALEXANDRIA_DEEPSIGN_TOKEN_URL`, `ALEXANDRIA_DEEPSIGN_GATEWAY_URL`, `ALEXANDRIA_DEEPSIGN_SIGN_URL`: DeepSign API URLs (default in development: integration environment)
+- `ALEXANDRIA_DEEPSIGN_SIGNATURE_MODE`: `qualified` (default), `advanced` or `timestamp`
+- `ALEXANDRIA_DEEPSIGN_JURISDICTION`: `zertes` (default) or `eidas`
+- `ALEXANDRIA_DEEPSIGN_PERSON_REF_PREFIX`: Prefix of the DeepID person reference, followed by the username (default: `alexandria-`)
+- `ALEXANDRIA_DEEPSIGN_TIMEOUT_SECONDS`: Time to confirm a signature in the DeepID app (default: `150`)
+- `ALEXANDRIA_DEEPSIGN_SIGNATURE_BYTES_RESERVED`: Space reserved in the PDF for the signature (default: `59898`)
+- `ALEXANDRIA_DEEPSIGN_STAMP_DATA_FUNCTION`: Function `(file, user, group) -> {"image": bytes, "text": str}` returning the visible stamp, e.g. the stamp image of the municipality. Without it, stamps are invisible timestamps. Development default: `alexandria.esign.dev.example_stamp_data`
+- `ALEXANDRIA_DEEPSIGN_STAMP_PAGE` / `ALEXANDRIA_DEEPSIGN_STAMP_BOX` / `ALEXANDRIA_DEEPSIGN_STAMP_OPACITY`: Position (page index, `x1,y1,x2,y2` in PDF points from the bottom left corner) and opacity of the visible stamp (default: top right corner of page 1, `0.6`)
+
+##### Switching the signature provider in development
+
+1. Development uses the local provider by default. For DeepSign, set `ALEXANDRIA_ESIGN_BACKEND=alexandria.esign.backends.deepsign.DeepSignBackend` in `.env` together with the partner credentials (`ALEXANDRIA_DEEPSIGN_PARTNER_CLIENT_ID`, `ALEXANDRIA_DEEPSIGN_PARTNER_CLIENT_SECRET`, `ALEXANDRIA_DEEPSIGN_CONNECTION_URL`, `ALEXANDRIA_DEEPSIGN_CALLBACK_URL`). Remove the line to use the local provider again.
+2. Restart the backend: `docker compose up -d alexandria` (or restart your `docker compose run` session)
+3. DeepSign only: connect a service account for your group (dev auth: `dev-group`), see [DeepSign](#deepsign). The local provider is enabled for every group.
+4. Reload the frontend (`enableSignatures` is enabled in the ember-alexandria dummy app)
+
+Existing signatures and requests stay, they are not tied to the provider.
+
 #### File content search (optional)
 
 - `ALEXANDRIA_ENABLE_CONTENT_SEARCH`: Set to `True` to enable file content extraction

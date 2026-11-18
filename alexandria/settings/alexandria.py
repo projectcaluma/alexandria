@@ -268,3 +268,89 @@ SAFE_FOR_INLINE_DISPOSITION = env.list(
 
 # Tika
 TIKA_SERVER_URL = env.str("TIKA_SERVER_URL", default="http://tika:9998")
+
+# Electronic signatures
+# Signature provider, signing is disabled without one. Development default:
+# local provider with a self-signed certificate
+ALEXANDRIA_ESIGN_BACKEND = env.str(
+    "ALEXANDRIA_ESIGN_BACKEND",
+    default=default("alexandria.esign.backends.local.LocalBackend", None),
+)
+# DeepSign service account connection, see
+# https://admin.deepbox.swiss/third-party-connection/
+ALEXANDRIA_DEEPSIGN_CONNECTION_URL = env.str(
+    "ALEXANDRIA_DEEPSIGN_CONNECTION_URL",
+    default="https://admin.deepbox.swiss/third-party-connection/",
+)
+ALEXANDRIA_DEEPSIGN_PARTNER_CLIENT_ID = env.str(
+    "ALEXANDRIA_DEEPSIGN_PARTNER_CLIENT_ID", default=None
+)
+# Public URL of the connection callback endpoint
+ALEXANDRIA_DEEPSIGN_CALLBACK_URL = env.str(
+    "ALEXANDRIA_DEEPSIGN_CALLBACK_URL", default=None
+)
+# Where the browser is redirected to after the callback
+ALEXANDRIA_DEEPSIGN_CALLBACK_REDIRECT_URL = env.str(
+    "ALEXANDRIA_DEEPSIGN_CALLBACK_REDIRECT_URL", default="/"
+)
+ALEXANDRIA_DEEPSIGN_PARTNER_CLIENT_SECRET = env.str(
+    "ALEXANDRIA_DEEPSIGN_PARTNER_CLIENT_SECRET", default=None
+)
+# DeepSign API, defaults to the integration environment in development
+ALEXANDRIA_DEEPSIGN_TOKEN_URL = env.str(
+    "ALEXANDRIA_DEEPSIGN_TOKEN_URL",
+    default=default(
+        "https://int.deepcloud.swiss/auth/realms/sso/protocol/openid-connect/token",
+        None,
+    ),
+)
+ALEXANDRIA_DEEPSIGN_GATEWAY_URL = env.str(
+    "ALEXANDRIA_DEEPSIGN_GATEWAY_URL",
+    default=default("https://deepgateway.int.deepcloud.swiss/api/v1", None),
+)
+ALEXANDRIA_DEEPSIGN_SIGN_URL = env.str(
+    "ALEXANDRIA_DEEPSIGN_SIGN_URL",
+    default=default("https://api.int.sign.deepbox.swiss/api/v1", None),
+)
+ALEXANDRIA_DEEPSIGN_SIGNATURE_MODE = env.str(
+    "ALEXANDRIA_DEEPSIGN_SIGNATURE_MODE", default="qualified"
+)
+ALEXANDRIA_DEEPSIGN_JURISDICTION = env.str(
+    "ALEXANDRIA_DEEPSIGN_JURISDICTION", default="zertes"
+)
+# DeepSign person reference is `<prefix><username>`
+ALEXANDRIA_DEEPSIGN_PERSON_REF_PREFIX = env.str(
+    "ALEXANDRIA_DEEPSIGN_PERSON_REF_PREFIX", default="alexandria-"
+)
+# The DeepID app discards unconfirmed requests after 2 minutes
+ALEXANDRIA_DEEPSIGN_TIMEOUT_SECONDS = env.int(
+    "ALEXANDRIA_DEEPSIGN_TIMEOUT_SECONDS", default=150
+)
+ALEXANDRIA_DEEPSIGN_HTTP_TIMEOUT_SECONDS = env.int(
+    "ALEXANDRIA_DEEPSIGN_HTTP_TIMEOUT_SECONDS", default=30
+)
+# Space reserved in the PDF for the CMS signature returned by DeepSign
+ALEXANDRIA_DEEPSIGN_SIGNATURE_BYTES_RESERVED = env.int(
+    "ALEXANDRIA_DEEPSIGN_SIGNATURE_BYTES_RESERVED", default=59898
+)
+# Fernet key to encrypt the DeepSign service account passwords, generate
+# with `python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"`
+ALEXANDRIA_ESIGN_ENCRYPTION_KEY = env.str(
+    "ALEXANDRIA_ESIGN_ENCRYPTION_KEY",
+    default=default("Y6ARqJXoX8dO2RiGFBIWaFLX_UlFzQFCg_fmv1F3_Ww=", None),
+)
+# Visible stamp: page index and box `x1,y1,x2,y2` in PDF points from the
+# bottom left corner (default: top right corner of an A4 page)
+ALEXANDRIA_DEEPSIGN_STAMP_PAGE = env.int("ALEXANDRIA_DEEPSIGN_STAMP_PAGE", default=0)
+ALEXANDRIA_DEEPSIGN_STAMP_BOX = env.list(
+    "ALEXANDRIA_DEEPSIGN_STAMP_BOX", cast=float, default=[415, 722, 565, 812]
+)
+ALEXANDRIA_DEEPSIGN_STAMP_OPACITY = env.float(
+    "ALEXANDRIA_DEEPSIGN_STAMP_OPACITY", default=0.6
+)
+# Function `(file, user, group) -> {"image": bytes, "text": str}` returning
+# the visible stamp, e.g. the stamp image of the municipality
+ALEXANDRIA_DEEPSIGN_STAMP_DATA_FUNCTION = env.str(
+    "ALEXANDRIA_DEEPSIGN_STAMP_DATA_FUNCTION",
+    default=default("alexandria.esign.dev.example_stamp_data", None),
+)
