@@ -13,7 +13,7 @@ x-alexandria-common: &alexandria-common
 
 services:
   db:
-    image: postgres:18.6-alpine3.23@sha256:885cf05d376c7cf27afef02073e6bdac3841252537f16e244fd1c1e6a7c99fb1
+    image: postgres:18.6-alpine3.23@sha256:f1031bf693d8d60b0a0380c51a3510607c7a93c7c1d18bf7af94a3a8dbeb40b8
     environment:
       - POSTGRES_USER=alexandria
       # following option is a must to configure on production system:
