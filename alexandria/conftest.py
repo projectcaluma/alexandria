@@ -30,6 +30,7 @@ def register_module(module):
 
 
 register_module(importlib.import_module(".core.factories", "alexandria"))
+register_module(importlib.import_module(".esign.factories", "alexandria"))
 
 
 @pytest.fixture(autouse=True)
@@ -127,6 +128,12 @@ def admin_client(db, admin_user):
 @pytest.fixture(scope="function", autouse=True)
 def _autoclear_cache():
     cache.clear()
+
+
+@pytest.fixture(autouse=True)
+def fake_esign_backend(settings):
+    # The development default (local provider) requires DEBUG
+    settings.ALEXANDRIA_ESIGN_BACKEND = "alexandria.esign.tests.backends.FakeBackend"
 
 
 @pytest.fixture(autouse=True)

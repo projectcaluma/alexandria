@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.auth",
     "alexandria.core.apps.DefaultConfig",
+    "alexandria.esign.apps.DefaultConfig",
     "generic_permissions.apps.GenericPermissionsConfig",
     "manabi_migrations",
 ]
