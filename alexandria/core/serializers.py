@@ -6,6 +6,7 @@ from django.conf import settings
 from django.db.transaction import atomic
 from django.template.defaultfilters import slugify
 from django.utils import translation
+from django.utils.translation import gettext as _
 from generic_permissions.validation import ValidatorMixin
 from generic_permissions.visibilities import (
     VisibilityResourceRelatedField,
@@ -16,6 +17,7 @@ from rest_framework_json_api.relations import SerializerMethodResourceRelatedFie
 from rest_framework_json_api.views import Serializer
 
 from alexandria.core.utils import get_user_and_group_from_request
+from alexandria.esign import api as esign_api, models as esign_models
 
 from . import models
 
@@ -259,6 +261,9 @@ class DocumentSerializer(BaseSerializer):
         queryset=models.File.objects.all(), required=False, many=True
     )
     content = serializers.FileField(write_only=True, required=True)
+    can_sign = serializers.SerializerMethodField()
+    is_signed = serializers.SerializerMethodField()
+    is_stamped = serializers.SerializerMethodField()
 
     included_serializers = {
         "category": CategorySerializer,
@@ -266,6 +271,52 @@ class DocumentSerializer(BaseSerializer):
         "marks": MarkSerializer,
         "files": FileSerializer,
     }
+
+    def get_can_sign(self, document):
+        """Whether the user can sign the latest original file."""
+        # Shared by all documents of a list response
+        cache = self.context.setdefault("esign_enabled_groups", {})
+        return esign_api.can_sign(document, self.context.get("request"), cache)
+
+    def _current_signature_types(self, document):
+        # Shared by `is_signed` and `is_stamped`, and all documents of a list
+        cache = self.context.setdefault("esign_signature_types", {})
+        if document.pk not in cache:
+            cache[document.pk] = {
+                s.signature_type for s in esign_api.current_signatures(document)
+            }
+        return cache[document.pk]
+
+    def get_is_signed(self, document):
+        """Whether the latest file contains a signature created here."""
+        return bool(
+            self._current_signature_types(document)
+            - {esign_models.Signature.Type.TIMESTAMP}
+        )
+
+    def get_is_stamped(self, document):
+        """Whether the latest file contains a stamp created here."""
+        return esign_models.Signature.Type.TIMESTAMP in self._current_signature_types(
+            document
+        )
+
+    def validate(self, *args, **kwargs):
+        data = super().validate(*args, **kwargs)
+
+        # Marks can be limited to categories, also checked when moving
+        if "marks" in data or "category" in data:
+            category = data.get("category", getattr(self.instance, "category", None))
+            marks = data.get(
+                "marks", self.instance.marks.all() if self.instance else []
+            )
+            for mark in marks:
+                if not mark.allows_category(category):
+                    raise serializers.ValidationError(
+                        _('The mark "%(mark)s" is not allowed in "%(category)s".')
+                        % {"mark": mark.name, "category": category and category.name}
+                    )
+
+        return data
 
     @atomic
     def create(self, validated_data):
@@ -316,6 +367,9 @@ class DocumentSerializer(BaseSerializer):
             "tags",
             "marks",
             "content",
+            "can_sign",
+            "is_signed",
+            "is_stamped",
         )
         extra_kwargs = {"content": {"write_only": True}}
 

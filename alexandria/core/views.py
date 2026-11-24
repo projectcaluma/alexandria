@@ -122,7 +122,8 @@ class DocumentViewSet(PermissionViewMixin, VisibilityViewMixin, ModelViewSet):
     filterset_class = DocumentFilterSet
     select_for_includes = {"category": ["category__parent"]}
     prefetch_for_includes = {
-        "__all__": ["marks", "tags", "files"],
+        # files__signatures: current signatures (esign `can_sign`, `is_signed`)
+        "__all__": ["marks", "tags", "files", "files__signatures"],
         "files": ["files__renderings", "files__original"],
         "category": ["category__children"],
     }
@@ -237,7 +238,13 @@ class FileViewSet(
     filterset_class = FileFilterSet
     prefetch_for_includes = {
         "__all__": ["renderings"],
-        "document": ["document__marks", "document__tags", "document__files"],
+        "document": [
+            "document__marks",
+            "document__tags",
+            "document__files",
+            # Current signatures (esign `can_sign`, `is_signed`)
+            "document__files__signatures",
+        ],
     }
 
     def get_serializer_context(self):

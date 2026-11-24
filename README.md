@@ -222,6 +222,25 @@ ALEXANDRIA_MANABI_DAV_URI_SCHEMES = {
 }
 ```
 
+#### Digital signatures (optional)
+
+The `esign` module signs PDFs (e.g. QES) and stamps them with a timestamp. Signed and stamped PDFs are stored as new version of the document. One signature provider is configured per deployment, the frontend doesn't know which one (enable it in ember-alexandria with `enableSignatures`).
+
+- `ALEXANDRIA_ESIGN_BACKEND`: Signature provider. Signing is disabled without one, existing signatures are still shown (default: none, in development `alexandria.esign.backends.local.LocalBackend`)
+  - `alexandria.esign.backends.local.LocalBackend`: Development only (requires `DEBUG`). Signs and stamps with a self-signed certificate, without confirmation. Validators report these signatures as untrusted.
+
+Permissions: signing and stamping are checked as object permission on the document with the actions `sign` and `stamp`. Map them in your permission classes like other document actions, e.g. to only allow signing in certain categories. `can-sign` on the document reflects this, so the frontend hides the action.
+
+Requests the frontend stopped polling are cleaned up by a Celery task after their timeout (see [Celery](#celery-optional)).
+
+##### Switching the signature provider in development
+
+1. Development uses the local provider by default. To use another provider, set `ALEXANDRIA_ESIGN_BACKEND` in `.env` together with the settings of that provider. Remove the line to use the local provider again.
+2. Restart the backend: `docker compose up -d alexandria` (or restart your `docker compose run` session)
+3. Reload the frontend (`enableSignatures` is enabled in the ember-alexandria dummy app)
+
+Existing signatures and requests stay, they are not tied to the provider.
+
 #### File content search (optional)
 
 - `ALEXANDRIA_ENABLE_CONTENT_SEARCH`: Set to `True` to enable file content extraction

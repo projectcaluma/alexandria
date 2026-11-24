@@ -268,3 +268,11 @@ SAFE_FOR_INLINE_DISPOSITION = env.list(
 
 # Tika
 TIKA_SERVER_URL = env.str("TIKA_SERVER_URL", default="http://tika:9998")
+
+# Electronic signatures
+# Signature provider, signing is disabled without one. Development default:
+# local provider with a self-signed certificate
+ALEXANDRIA_ESIGN_BACKEND = env.str(
+    "ALEXANDRIA_ESIGN_BACKEND",
+    default=default("alexandria.esign.backends.local.LocalBackend", None),
+)
