@@ -6,6 +6,7 @@ from django.conf import settings
 from django.db.transaction import atomic
 from django.template.defaultfilters import slugify
 from django.utils import translation
+from django.utils.translation import gettext as _
 from generic_permissions.validation import ValidatorMixin
 from generic_permissions.visibilities import (
     VisibilityResourceRelatedField,
@@ -266,6 +267,24 @@ class DocumentSerializer(BaseSerializer):
         "marks": MarkSerializer,
         "files": FileSerializer,
     }
+
+    def validate(self, *args, **kwargs):
+        data = super().validate(*args, **kwargs)
+
+        # Marks can be limited to categories, also checked when moving
+        if "marks" in data or "category" in data:
+            category = data.get("category", getattr(self.instance, "category", None))
+            marks = data.get(
+                "marks", self.instance.marks.all() if self.instance else []
+            )
+            for mark in marks:
+                if not mark.allows_category(category):
+                    raise serializers.ValidationError(
+                        _('The mark "%(mark)s" is not allowed in "%(category)s".')
+                        % {"mark": mark.name, "category": category and category.name}
+                    )
+
+        return data
 
     @atomic
     def create(self, validated_data):

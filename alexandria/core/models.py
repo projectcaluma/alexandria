@@ -138,6 +138,26 @@ class Mark(SlugModel):
         _("Description"), null=True, blank=True, required=False
     )
 
+    def allows_category(self, category: "Category | None") -> bool:
+        """Return whether documents in `category` may have this mark.
+
+        `metainfo["categories"]` limits a mark to the listed category slugs
+        (including all their descendants). Without it, the mark is allowed in
+        all categories.
+        """
+        allowed = self.metainfo.get("categories")
+        if not allowed:
+            return True
+        if not isinstance(allowed, list):
+            # A string would match substrings of slugs
+            allowed = [allowed]
+
+        while category is not None:
+            if category.pk in allowed:
+                return True
+            category = category.parent
+        return False
+
 
 class Document(UUIDModel):
     title = models.CharField(_("Title"), blank=True, null=True)
